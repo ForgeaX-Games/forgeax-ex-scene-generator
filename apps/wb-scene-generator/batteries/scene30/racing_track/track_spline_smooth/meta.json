@@ -1,0 +1,44 @@
+{
+  "id": "track_spline_smooth",
+  "label": "赛道样条平滑",
+  "description": "对骨架多边形顶点执行 Catmull-Rom 样条插值，输出光滑闭合中心线点序列。",
+  "description-en": "Applies Catmull-Rom spline interpolation to skeleton polygon vertices, producing a smooth closed centerline point sequence.",
+  "icon": "扁平插画风格小图标。一条流畅的曲线闭合回路，曲线为亮蓝色，若干控制点标记为白色圆点，背景深色，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["racing", "track", "spline", "smooth", "catmull-rom", "chaos"],
+  "tag_labels": ["赛车", "赛道", "样条", "平滑", "catmull-rom", "chaos"],
+  "inputs": [
+    {
+      "name": "skeleton",
+      "type": "array",
+      "label": "骨架顶点",
+      "description": "来自 track_skeleton_generate 的闭合多边形顶点 JSON 字符串",
+      "description-en": "Closed polygon vertices JSON string from track_skeleton_generate."
+    },
+    {
+      "name": "samplesPerSegment",
+      "type": "number",
+      "label": "每段采样数",
+      "description": "每两个骨架顶点之间插值的采样点数，越大曲线越细腻",
+      "description-en": "Number of interpolated samples between each pair of skeleton vertices.",
+      "default": 30
+    },
+    {
+      "name": "tension",
+      "type": "number",
+      "label": "张力系数",
+      "description": "样条张力 [0~1]，0 = 过控制点的宽松曲线，1 = 紧贴控制点的折线",
+      "description-en": "Spline tension [0~1]; 0 is loose, 1 is tight.",
+      "default": 0.5
+    }
+  ],
+  "outputs": [
+    {
+      "name": "centerline",
+      "type": "array",
+      "label": "中心线点列",
+      "description": "平滑闭合中心线采样点 JSON 字符串 [{x,y}...]",
+      "description-en": "Smooth closed centerline sample points as JSON string [{x,y}...]."
+    }
+  ]
+}

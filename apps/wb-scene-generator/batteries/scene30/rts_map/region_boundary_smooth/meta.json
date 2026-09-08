@@ -1,0 +1,59 @@
+{
+  "id": "region_boundary_smooth",
+  "label": "区域边界平滑",
+  "description": "三阶段边界平滑：BFS填充间隙格子→高斯加权投票迭代平滑锯齿边界→重刻均匀宽度间隙，将多区域 ID 网格的断续锯齿边界变为连续平滑曲线。",
+  "description-en": "Three-phase boundary smoother for multi-region ID grids: BFS gap fill → iterative Gaussian-weighted majority vote smoothing → uniform gap re-carving. Turns jagged pixelated borders into smooth continuous curves.",
+  "icon": "俯视视角，多个彩色区域之间有平滑的细线边界，区域轮廓圆润流畅，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["region", "smooth", "boundary", "voronoi", "gaussian", "morphology", "pcg", "rts"],
+  "tag_labels": ["区域", "平滑", "边界", "Voronoi", "高斯", "形态学", "PCG", "RTS"],
+  "inputs": [
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "区域 ID 网格",
+      "description": "多区域 ID 网格，1-based 区域编号，0=间隙/空地（来自 rts_base_shape_gen 或 rts_base_shape_poisson 的 regionGrid 输出）",
+      "description-en": "Multi-region ID grid with 1-based region IDs; 0=gap/empty. Typically the regionGrid output of rts_base_shape_gen or rts_base_shape_poisson."
+    },
+    {
+      "name": "iterations",
+      "type": "number",
+      "label": "平滑迭代次数",
+      "description": "高斯投票平滑的迭代轮数，越多越平滑但越耗时，建议 2~5，默认 3",
+      "description-en": "Number of Gaussian vote smoothing iterations. More = smoother but slower. Recommended 2-5, default 3.",
+      "default": 3
+    },
+    {
+      "name": "kernelRadius",
+      "type": "number",
+      "label": "平滑核半径",
+      "description": "高斯核的邻域半径（格），越大越平滑但越慢，建议 1~4，默认 2",
+      "description-en": "Radius of the Gaussian kernel in cells. Larger = smoother but slower. Recommended 1-4, default 2.",
+      "default": 2
+    },
+    {
+      "name": "gapWidth",
+      "type": "number",
+      "label": "间隙宽度",
+      "description": "重刻边界间隙的宽度（格），0=不重刻（输出完整无缝分区），建议 1~3，默认 1",
+      "description-en": "Width of re-carved boundary gap in cells. 0=no gap (seamless output). Recommended 1-3, default 1.",
+      "default": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "smoothGrid",
+      "type": "grid",
+      "label": "平滑区域网格",
+      "description": "平滑后的多区域 ID 网格（含重刻的间隙=0）",
+      "description-en": "Smoothed multi-region ID grid with re-carved gap cells (0)."
+    },
+    {
+      "name": "baseGrid",
+      "type": "grid",
+      "label": "平台二值掩码",
+      "description": "二值掩码：1=有区域，0=间隙",
+      "description-en": "Binary mask: 1=region, 0=gap."
+    }
+  ]
+}

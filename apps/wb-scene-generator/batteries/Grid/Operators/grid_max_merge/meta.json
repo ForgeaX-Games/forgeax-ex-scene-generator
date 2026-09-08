@@ -1,0 +1,29 @@
+{
+  "id": "grid_max_merge",
+  "label": "多值合并",
+  "name-en": "Merge",
+  "description": "检测多个相同大小网格中的非零值，逐格取所有输入网格的最大值合并为一个网格。",
+  "description-en": "Merges multiple same-size grids by taking the maximum value at each cell across all inputs.",
+  "icon": "多个半透明蓝紫色矩形网格叠合，箭头指向一个高亮合并网格，表示多层取最大值合并。扁平插画风格，蓝紫色和白色为主色，背景简洁浅灰。",
+  "version": "2.0.0",
+  "tags": ["grid", "merge", "max", "combine"],
+  "tag_labels": ["网格", "合并", "最大值", "叠加"],
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "多值合并结果：逐格取所有输入网格的最大值。",
+      "description-en": "Max-merge result: each cell holds the maximum value across all input grids."
+    }
+  ],
+  "dynamicInputs": {
+    "prefix": "grid_",
+    "labelTemplate": "网格$i",
+    "minCount": 2,
+    "type": "grid",
+    "access": "item"
+  }
+}

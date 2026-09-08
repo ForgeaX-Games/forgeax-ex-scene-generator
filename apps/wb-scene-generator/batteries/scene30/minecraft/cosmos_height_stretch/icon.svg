@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_cosmos_height_stretch" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a16207"/>
+      <stop offset="100%" stop-color="#b17e33"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_cosmos_height_stretch)"/>
+
+  <path fill="#fff" d="M2 18h8v2H2v-2zm0-4h8v2H2v-2zm0-4h8v2H2v-2zm0-4h8v2H2V6z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M14 6h8v2h-8V6zm0 4h8v2h-8v-2zm0 4h8v2h-8v-2zm0 4h8v2h-8v-2z"/>
+  <path fill="#fff" d="M11 9l1.41-1.41L12 5.17 9.83 7.38 11 9z"/>
+  <path fill="#fff" d="M11 15l1.41-1.41L12 11.17 9.83 13.38 11 15z"/>
+  <path fill="#fff" d="M12 5l-1.41 1.41L12 8.83 14.17 6.62 12 5z"/>
+  <path fill="#fff" d="M12 17v-8h-1v8h1z"/>
+
+</svg>

@@ -1,0 +1,78 @@
+{
+  "id": "diamond_square",
+  "label": "菱形方块地形",
+  "description": "Diamond-Square 算法生成随机分形地形高度图，输出 0~1 归一化网格",
+  "description-en": "Diamond-Square algorithm for generating fractal terrain heightmaps, outputs a 0~1 normalized grid.",
+  "icon": "像素方块构成的山脉地形剪影，阶梯状的方块从高到低排列成山峰形状，带有菱形网格分割线，简洁像素风格",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "terrain",
+    "diamond_square",
+    "heightmap",
+    "pcg"
+  ],
+  "tag_labels": [
+    "地形",
+    "菱形方块",
+    "高度图",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "power",
+      "type": "number",
+      "label": "网格幂次",
+      "default": 7,
+      "min": 2,
+      "max": 10,
+      "description": "网格边长 = 2^power + 1（例如 7 → 129×129，8 → 257×257）",
+      "description-en": "Grid side length = 2^power + 1 (e.g. 7 → 129×129, 8 → 257×257)."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "label": "粗糙度",
+      "default": 0.5,
+      "description": "地形粗糙度（0~1），值越大地形越崎岖；值越小越平滑",
+      "description-en": "Terrain roughness (0~1); higher = more rugged, lower = smoother."
+    },
+    {
+      "name": "initHeight",
+      "type": "number",
+      "label": "初始高度",
+      "default": 0.5,
+      "description": "四个角点的初始高度值（0~1）",
+      "description-en": "Initial height value for the four corners (0~1)."
+    },
+    {
+      "name": "spread",
+      "type": "number",
+      "label": "扰动幅度",
+      "default": 1,
+      "description": "初始随机扰动幅度，每层迭代按粗糙度衰减",
+      "description-en": "Initial random displacement amplitude; decays by roughness each iteration."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 使用默认种子，不同种子产生不同地形",
+      "description-en": "Random seed; 0 uses default seed. Different seeds produce different terrains."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "地形网格",
+      "description": "输出高度图网格，值域归一化到 0~1（连续浮点值）。渲染器自动识别为连续值网格，使用单色 + 透明度渐变显示",
+      "description-en": "Output heightmap grid, values normalized to 0~1 (continuous floats). Renderer auto-detects as continuous grid, displays with single color + alpha gradient."
+    }
+  ],
+  "alg_tag": [
+    "Diamond-Square算法生成随机高度地形图",
+    "随机地形生成"
+  ]
+}

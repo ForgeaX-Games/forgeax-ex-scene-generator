@@ -1,0 +1,35 @@
+{
+  "id": "furniture_rank_split",
+  "label": "家具拆分",
+  "description": "将家具数组按 rank 拆成主列表（rank 1-7）和填充列表（rank 8-9），填充列表 rank 重置为 1、2。",
+  "description-en": "Splits a furniture array into a main list (rank 1-7) and a fill list (rank 8-9), resetting fill ranks to 1 and 2.",
+  "icon": "一列家具卡片被一条横线分成上下两组，上方7张卡片标注主家具，下方2张卡片标注填充，扁平插画风格，主色蓝色和橙色，背景简洁白色。",
+  "version": "1.0.0",
+  "tags": ["scene", "furniture", "split", "indoor"],
+  "tag_labels": ["场景", "家具", "拆分", "室内"],
+  "inputs": [
+    {
+      "name": "list",
+      "type": "array",
+      "label": "家具清单",
+      "description": "家具对象数组，每个元素含 rank 字段",
+      "description-en": "Array of furniture objects, each containing a rank field."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "main_list",
+      "type": "array",
+      "label": "主家具清单",
+      "description": "rank 1-7 的家具对象数组，rank 保持原值",
+      "description-en": "Array of furniture objects with rank 1-7, rank preserved."
+    },
+    {
+      "name": "fill_list",
+      "type": "array",
+      "label": "填充家具清单",
+      "description": "rank 8-9 的家具对象数组，rank 重置为 1、2",
+      "description-en": "Array of furniture objects with rank 8-9, rank reset to 1 and 2."
+    }
+  ]
+}

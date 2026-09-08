@@ -1,0 +1,39 @@
+{
+  "id": "alg_region_subtract",
+  "label": "区域求差",
+  "name-en": "RegionSubtract",
+  "description": "对两张同形状 0/1 网格做差：a 非零且 b 为零的格输出 1，其余输出 0。常用于「在区域中扣掉子区域」「在墙体上扣掉门洞」等场景。",
+  "description-en": "Per-cell subtract of two same-shape grids: outputs 1 when a is non-zero and b is zero, otherwise 0. Useful for cutting sub-regions out of a region.",
+  "icon": "深色背景上左侧一张方形网格被右侧一张较小网格做差，结果显示带缺口的轮廓，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "subtract", "mask", "boolean", "compose"],
+  "tag_labels": ["区域", "差集", "掩码", "布尔", "组合"],
+  "inputs": [
+    {
+      "name": "a",
+      "type": "grid",
+      "required": true,
+      "label": "被减区域",
+      "description": "被减的二维区域 grid。",
+      "description-en": "The grid to be subtracted from."
+    },
+    {
+      "name": "b",
+      "type": "grid",
+      "required": true,
+      "label": "减去区域",
+      "description": "要减去的二维区域 grid；与 a 同形状。a 非零且 b 为零的格输出 1，其余输出 0。",
+      "description-en": "The grid to subtract; must share a's shape."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "label": "差集",
+      "description": "差集结果（0/1 网格），形状与 a 一致。",
+      "description-en": "Subtraction result (0/1 grid) with the same shape as a."
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "group_1782200000002_poisc",
+  "name": "PoiScatter",
+  "nameEn": "PoiScatter",
+  "author": "wwz",
+  "nodes": [
+    { "id": "ps-pt", "opId": "scene_passthrough", "name": "scene_passthrough", "position": { "x": 0, "y": 0 }, "params": {} },
+    { "id": "ps-ex", "opId": "node_explode", "name": "node_explode", "position": { "x": 220, "y": 0 }, "params": {} },
+    { "id": "ps-rg", "opId": "rect_grid", "name": "rect_grid", "position": { "x": 440, "y": -80 }, "params": {} },
+    { "id": "ps-vs", "opId": "voxel_slice", "name": "voxel_slice", "position": { "x": 640, "y": 0 }, "params": {} },
+    { "id": "ps-zone", "opId": "number_const", "name": "number_const", "position": { "x": 640, "y": -300 }, "params": { "value": 1, "min": 0, "max": 10, "precision": 0 } },
+    { "id": "ps-zadd", "opId": "basic_math_op", "name": "basic_math_op", "position": { "x": 860, "y": -260 }, "params": { "op": "+" } },
+    { "id": "ps-zr", "opId": "range_list", "name": "range_list", "position": { "x": 1000, "y": -220 }, "params": {} },
+    { "id": "ps-bat", "opId": "poi_scatter", "name": "poi_scatter", "position": { "x": 860, "y": 0 }, "params": {} },
+    { "id": "ps-txd", "opId": "text_panel", "name": "text_panel", "position": { "x": 860, "y": 200 }, "params": { "text": "poi" } },
+    { "id": "ps-g2d", "opId": "grid2node", "name": "grid2node", "position": { "x": 1100, "y": 60 }, "params": {} },
+    { "id": "group_ps_objasset", "opId": "__group__", "name": "ObjectAssetName", "position": { "x": 1340, "y": 60 }, "params": { "groupId": "group_ps_objasset" } },
+    { "id": "ps-ac1", "opId": "add_child", "name": "add_child", "position": { "x": 1560, "y": 60 }, "params": {} },
+    { "id": "ps-sub", "opId": "alg_region_subtract", "name": "alg_region_subtract", "position": { "x": 1100, "y": 320 }, "params": {} },
+    { "id": "ps-txr", "opId": "text_panel", "name": "text_panel", "position": { "x": 1100, "y": 480 }, "params": { "text": "rest" } },
+    { "id": "ps-g2r", "opId": "grid2node", "name": "grid2node", "position": { "x": 1340, "y": 340 }, "params": {} },
+    { "id": "ps-ac2", "opId": "add_child", "name": "add_child", "position": { "x": 1780, "y": 180 }, "params": {} },
+    { "id": "ps-fpd", "opId": "scene_focus_path", "name": "scene_focus_path", "position": { "x": 2020, "y": 60 }, "params": {} },
+    { "id": "ps-fpr", "opId": "scene_focus_path", "name": "scene_focus_path", "position": { "x": 2020, "y": 320 }, "params": {} },
+    { "id": "ps-tsd", "opId": "type_string", "name": "type_string", "position": { "x": 2260, "y": 160 }, "params": {} },
+    { "id": "ps-tsr", "opId": "type_string", "name": "type_string", "position": { "x": 2260, "y": 420 }, "params": {} }
+  ],
+  "edges": [
+    { "id": "ps-e1", "source": { "nodeId": "ps-pt", "port": "scene" }, "target": { "nodeId": "ps-ex", "port": "scene" } },
+    { "id": "ps-e2", "source": { "nodeId": "ps-ex", "port": "width" }, "target": { "nodeId": "ps-rg", "port": "width" } },
+    { "id": "ps-e3", "source": { "nodeId": "ps-ex", "port": "height" }, "target": { "nodeId": "ps-rg", "port": "height" } },
+    { "id": "ps-e4", "source": { "nodeId": "ps-ex", "port": "voxels" }, "target": { "nodeId": "ps-vs", "port": "voxels" } },
+    { "id": "ps-e5", "source": { "nodeId": "ps-rg", "port": "grid" }, "target": { "nodeId": "ps-vs", "port": "grid" } },
+    { "id": "ps-e6", "source": { "nodeId": "ps-vs", "port": "slice" }, "target": { "nodeId": "ps-bat", "port": "inputGrid" } },
+    { "id": "ps-e7", "source": { "nodeId": "ps-bat", "port": "outputGrid" }, "target": { "nodeId": "ps-g2d", "port": "grid" } },
+    { "id": "ps-e8", "source": { "nodeId": "ps-txd", "port": "output" }, "target": { "nodeId": "ps-g2d", "port": "name" } },
+    { "id": "ps-e9", "source": { "nodeId": "ps-g2d", "port": "scene" }, "target": { "nodeId": "group_ps_objasset", "port": "in_0" } },
+    { "id": "ps-e9a", "source": { "nodeId": "ps-bat", "port": "outputAssetNames" }, "target": { "nodeId": "group_ps_objasset", "port": "in_1" } },
+    { "id": "ps-e10", "source": { "nodeId": "group_ps_objasset", "port": "out_0" }, "target": { "nodeId": "ps-ac1", "port": "nodes" } },
+    { "id": "ps-e11", "source": { "nodeId": "ps-pt", "port": "scene" }, "target": { "nodeId": "ps-ac1", "port": "scene" } },
+    { "id": "ps-e12", "source": { "nodeId": "ps-vs", "port": "slice" }, "target": { "nodeId": "ps-sub", "port": "a" } },
+    { "id": "ps-e13", "source": { "nodeId": "ps-bat", "port": "outputGrid" }, "target": { "nodeId": "ps-sub", "port": "b" } },
+    { "id": "ps-e14", "source": { "nodeId": "ps-sub", "port": "region" }, "target": { "nodeId": "ps-g2r", "port": "grid" } },
+    { "id": "ps-e15", "source": { "nodeId": "ps-txr", "port": "output" }, "target": { "nodeId": "ps-g2r", "port": "name" } },
+    { "id": "ps-e16", "source": { "nodeId": "ps-g2r", "port": "scene" }, "target": { "nodeId": "ps-ac2", "port": "nodes" } },
+    { "id": "ps-e17", "source": { "nodeId": "ps-ac1", "port": "scene" }, "target": { "nodeId": "ps-ac2", "port": "scene" } },
+    { "id": "ps-e18", "source": { "nodeId": "ps-ac2", "port": "scene" }, "target": { "nodeId": "ps-fpd", "port": "scene" } },
+    { "id": "ps-e19", "source": { "nodeId": "ps-ac1", "port": "childPaths" }, "target": { "nodeId": "ps-fpd", "port": "path" } },
+    { "id": "ps-e20", "source": { "nodeId": "ps-ac2", "port": "scene" }, "target": { "nodeId": "ps-fpr", "port": "scene" } },
+    { "id": "ps-e21", "source": { "nodeId": "ps-ac2", "port": "childPaths" }, "target": { "nodeId": "ps-fpr", "port": "path" } },
+    { "id": "ps-e22", "source": { "nodeId": "ps-ac1", "port": "childPaths" }, "target": { "nodeId": "ps-tsd", "port": "value" } },
+    { "id": "ps-e23", "source": { "nodeId": "ps-ac2", "port": "childPaths" }, "target": { "nodeId": "ps-tsr", "port": "value" } },
+    { "id": "ps-ez1", "source": { "nodeId": "ps-vs", "port": "z" }, "target": { "nodeId": "ps-zadd", "port": "a" } },
+    { "id": "ps-ez2", "source": { "nodeId": "ps-zone", "port": "value" }, "target": { "nodeId": "ps-zadd", "port": "b" } },
+    { "id": "ps-ez3", "source": { "nodeId": "ps-zadd", "port": "result" }, "target": { "nodeId": "ps-zr", "port": "start" } },
+    { "id": "ps-ez4", "source": { "nodeId": "ps-zadd", "port": "result" }, "target": { "nodeId": "ps-zr", "port": "end" } },
+    { "id": "ps-ez5", "source": { "nodeId": "ps-zr", "port": "list" }, "target": { "nodeId": "ps-g2d", "port": "zRange" } }
+  ],
+  "position": { "x": 0, "y": 0 },
+  "exposedInputs": [
+    { "portName": "in_0", "portType": "scene", "access": "tree", "sourceNodeId": "ps-pt", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "in_1", "portType": "string", "access": "item", "sourceNodeId": "ps-bat", "sourcePortName": "assetNames", "order": 1, "customLabelEn": "AssetName" },
+    { "portName": "in_2", "portType": "string", "sourceNodeId": "ps-bat", "sourcePortName": "poiRules", "order": 2, "customLabelEn": "PoiRules" },
+    { "portName": "in_3", "portType": "number", "access": "item", "sourceNodeId": "ps-bat", "sourcePortName": "seed", "order": 3, "customLabelEn": "Seed" }
+  ],
+  "exposedOutputs": [
+    { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "ps-ac2", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "out_1", "portType": "scene", "access": "item", "sourceNodeId": "ps-fpd", "sourcePortName": "scene", "order": 1, "customLabelEn": "Poi" },
+    { "portName": "out_2", "portType": "scene", "access": "item", "sourceNodeId": "ps-fpr", "sourcePortName": "scene", "order": 2, "customLabelEn": "Rest" },
+    { "portName": "out_3", "portType": "string", "access": "tree", "sourceNodeId": "ps-tsd", "sourcePortName": "value", "order": 3, "customLabelEn": "PoiPath" },
+    { "portName": "out_4", "portType": "string", "access": "tree", "sourceNodeId": "ps-tsr", "sourcePortName": "value", "order": 4, "customLabelEn": "RestPath" }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_ps_objasset",
+      "name": "ObjectAssetName",
+      "nameEn": "ObjectAssetName",
+      "nodes": [
+        { "id": "ps-an-name", "opId": "text_panel", "name": "text_panel", "position": { "x": 0, "y": 0 }, "params": { "text": "asset_name" } },
+        { "id": "ps-an-type", "opId": "text_panel", "name": "text_panel", "position": { "x": 0, "y": 120 }, "params": { "text": "asset_type" } },
+        { "id": "ps-an-obj", "opId": "text_panel", "name": "text_panel", "position": { "x": 0, "y": 240 }, "params": { "text": "object" } },
+        { "id": "ps-an-set1", "opId": "scene_set_attribute", "name": "scene_set_attribute", "position": { "x": 240, "y": 0 }, "params": {} },
+        { "id": "ps-an-set2", "opId": "scene_set_attribute", "name": "scene_set_attribute", "position": { "x": 480, "y": 60 }, "params": {} },
+        { "id": "ps-an-str", "opId": "type_string", "name": "type_string", "position": { "x": 0, "y": 360 }, "params": {} }
+      ],
+      "edges": [
+        { "id": "ps-ane1", "source": { "nodeId": "ps-an-name", "port": "output" }, "target": { "nodeId": "ps-an-set1", "port": "key" } },
+        { "id": "ps-ane2", "source": { "nodeId": "ps-an-set1", "port": "scene" }, "target": { "nodeId": "ps-an-set2", "port": "scene" } },
+        { "id": "ps-ane3", "source": { "nodeId": "ps-an-type", "port": "output" }, "target": { "nodeId": "ps-an-set2", "port": "key" } },
+        { "id": "ps-ane4", "source": { "nodeId": "ps-an-obj", "port": "output" }, "target": { "nodeId": "ps-an-set2", "port": "value" } },
+        { "id": "ps-ane5", "source": { "nodeId": "ps-an-str", "port": "value" }, "target": { "nodeId": "ps-an-set1", "port": "value" } }
+      ],
+      "position": { "x": 1340, "y": 60 },
+      "exposedInputs": [
+        { "portName": "in_0", "portType": "scene", "access": "item", "sourceNodeId": "ps-an-set1", "sourcePortName": "scene" },
+        { "portName": "in_1", "portType": "string", "access": "tree", "sourceNodeId": "ps-an-str", "sourcePortName": "value" }
+      ],
+      "exposedOutputs": [
+        { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "ps-an-set2", "sourcePortName": "scene" }
+      ]
+    }
+  ]
+}

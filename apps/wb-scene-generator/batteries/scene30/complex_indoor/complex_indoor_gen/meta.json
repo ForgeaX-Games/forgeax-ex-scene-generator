@@ -1,0 +1,147 @@
+{
+  "id": "complex_indoor_gen",
+  "label": "复杂室内布局",
+  "description": "通过迭代增长机制（走廊连接/直接拼接）生成复杂多房间室内平面布局，带外轮廓复杂度控制与连通性校验",
+  "description-en": "Generates complex multi-room indoor layouts via iterative growth (corridor link / direct attach) with contour complexity control and connectivity validation.",
+  "icon": "俯视室内平面图，多个白色矩形房间通过窄走廊相互连接呈树状蔓延布局，深灰背景白色填充。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["indoor", "complex", "procedural", "room-growth", "layout"],
+  "tag_labels": ["室内", "复杂布局", "程序化", "房间增长", "平面布局"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "description": "输出网格总宽度（格数）",
+      "description-en": "Total grid width in cells.",
+      "default": 200
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "description": "输出网格总高度（格数）",
+      "description-en": "Total grid height in cells.",
+      "default": 150
+    },
+    {
+      "name": "targetRoomCount",
+      "type": "number",
+      "label": "目标房间数",
+      "description": "目标生成的房间数量（不含走廊），实际数量受空间限制可能偏少",
+      "description-en": "Target number of rooms excluding corridors; actual count may be lower due to space constraints.",
+      "default": 25
+    },
+    {
+      "name": "initRoomMinSize",
+      "type": "number",
+      "label": "初始房间最小尺寸",
+      "description": "初始方形房间的最小边长（格数）",
+      "description-en": "Minimum dimension of the initial room in cells.",
+      "default": 10
+    },
+    {
+      "name": "initRoomMaxSize",
+      "type": "number",
+      "label": "初始房间最大尺寸",
+      "description": "初始方形房间的最大边长（格数）",
+      "description-en": "Maximum dimension of the initial room in cells.",
+      "default": 18
+    },
+    {
+      "name": "corridorProb",
+      "type": "number",
+      "label": "走廊概率",
+      "description": "每次增长使用走廊连接的概率（0~1），其余为直接拼接",
+      "description-en": "Probability of using corridor link per growth step (0 to 1); remainder uses direct attach.",
+      "default": 0.4
+    },
+    {
+      "name": "corridorWidthMin",
+      "type": "number",
+      "label": "走廊最小宽度",
+      "description": "走廊最小宽度（格数），不小于2",
+      "description-en": "Minimum corridor width in cells (at least 2).",
+      "default": 2
+    },
+    {
+      "name": "corridorWidthMax",
+      "type": "number",
+      "label": "走廊最大宽度",
+      "description": "走廊最大宽度（格数），不超过边长",
+      "description-en": "Maximum corridor width in cells; clamped to edge length.",
+      "default": 6
+    },
+    {
+      "name": "corridorLenMin",
+      "type": "number",
+      "label": "走廊最小长度",
+      "description": "走廊最小长度（格数）",
+      "description-en": "Minimum corridor length in cells.",
+      "default": 3
+    },
+    {
+      "name": "corridorLenMax",
+      "type": "number",
+      "label": "走廊最大长度",
+      "description": "走廊最大长度（格数）",
+      "description-en": "Maximum corridor length in cells.",
+      "default": 12
+    },
+    {
+      "name": "doorWidthMin",
+      "type": "number",
+      "label": "最小门宽",
+      "description": "房间间门洞的最小宽度（格数），不小于2",
+      "description-en": "Minimum door width in cells (at least 2).",
+      "default": 2
+    },
+    {
+      "name": "roomMinDim",
+      "type": "number",
+      "label": "房间最小尺寸",
+      "description": "生成房间的最小边长（格数）",
+      "description-en": "Minimum room dimension in cells.",
+      "default": 4
+    },
+    {
+      "name": "silhouetteRMax",
+      "type": "number",
+      "label": "轮廓复杂度上限",
+      "description": "外轮廓角数/房间数的上限比值，越大允许越复杂的外形（推荐4~8）",
+      "description-en": "Maximum ratio of silhouette corners to room count; higher values allow more complex outlines (recommended 4 to 8).",
+      "default": 6.0
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "布局网格",
+      "description": "输出网格：0=墙壁, 1=房间, 2=走廊, 3=门",
+      "description-en": "Output grid: 0=wall, 1=room, 2=corridor, 3=door."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "网格值与名称的映射列表 [{id, name}]",
+      "description-en": "Mapping of grid values to display names [{id, name}]."
+    },
+    {
+      "name": "roomList",
+      "type": "array",
+      "label": "房间列表",
+      "description": "所有房间和走廊的详细信息 [{id, x, y, w, h, area, isCorridor, parentId}]",
+      "description-en": "Detailed info for all rooms and corridors [{id, x, y, w, h, area, isCorridor, parentId}]."
+    }
+  ]
+}

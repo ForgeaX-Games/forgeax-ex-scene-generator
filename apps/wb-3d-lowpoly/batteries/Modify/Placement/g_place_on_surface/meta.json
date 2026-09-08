@@ -1,0 +1,43 @@
+{
+  "id": "g_place_on_surface",
+  "label": "表面贴合摆放",
+  "name-en": "GPlaceOnSurface",
+  "description": "按 parent 的实际局部表面法线放置 child：box/cylinder/sphere 使用解析表面，复杂 shape 回退到 AABB。会改写 child part 的 origin/rpy，并输出 joint 可复用的 ox/oy/oz/rr/rp/ry。",
+  "description-en": "Place a child on a parent's local surface normal. Uses analytic surfaces for box/cylinder/sphere and falls back to AABB for complex shapes. Rewrites child part origin/rpy and outputs ox/oy/oz/rr/rp/ry for joints.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["geometry", "placement", "surface", "mount"],
+  "tag_labels": ["几何", "放置", "表面", "装配"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": true, "label": "几何", "description": "上游 Geometry", "description-en": "Upstream Geometry." },
+    { "name": "parent_id", "type": "string", "required": true, "label": "父部件 id", "description": "父 part id；也支持可自动包裹的 shape id", "description-en": "Parent part id; auto-wrappable shape id is also accepted." },
+    { "name": "child_id", "type": "string", "required": true, "label": "子部件 id", "description": "子 part id；其 origin/rpy 会被改写", "description-en": "Child part id; its origin/rpy will be rewritten." },
+    { "name": "mode", "type": "string", "label": "查询模式", "default": "direction", "description": "direction 或 point。direction 用 dx/dy/dz 从外侧投向表面；point 用 px/py/pz 找最近表面。", "description-en": "direction or point. direction casts from dx/dy/dz; point uses nearest surface to px/py/pz." },
+    { "name": "dx", "type": "number", "label": "方向 X", "default": 0, "description": "direction 模式的外向方向 X", "description-en": "Direction X." },
+    { "name": "dy", "type": "number", "label": "方向 Y", "default": 0, "description": "direction 模式的外向方向 Y", "description-en": "Direction Y." },
+    { "name": "dz", "type": "number", "label": "方向 Z", "default": 1, "description": "direction 模式的外向方向 Z", "description-en": "Direction Z." },
+    { "name": "px", "type": "number", "label": "点 X", "default": 0, "description": "point 模式查询点 X", "description-en": "Point hint X." },
+    { "name": "py", "type": "number", "label": "点 Y", "default": 0, "description": "point 模式查询点 Y", "description-en": "Point hint Y." },
+    { "name": "pz", "type": "number", "label": "点 Z", "default": 0, "description": "point 模式查询点 Z", "description-en": "Point hint Z." },
+    { "name": "child_axis", "type": "string", "label": "子轴", "default": "+z", "description": "child 的哪个局部轴贴向表面法线：+x/-x/+y/-y/+z/-z", "description-en": "Child local axis mounted to the surface normal." },
+    { "name": "clearance", "type": "number", "label": "间隙", "default": 0, "description": "沿表面法线额外留出的间隙，单位米", "description-en": "Extra clearance along the surface normal in meters." },
+    { "name": "spin", "type": "number", "label": "面内旋转", "default": 0, "description": "绕表面法线的额外旋转（弧度）", "description-en": "Extra spin around the surface normal in radians." },
+    { "name": "upx", "type": "number", "label": "上方向 X", "default": 0, "description": "构造表面切线的 up hint X", "description-en": "Up hint X." },
+    { "name": "upy", "type": "number", "label": "上方向 Y", "default": 0, "description": "构造表面切线的 up hint Y", "description-en": "Up hint Y." },
+    { "name": "upz", "type": "number", "label": "上方向 Z", "default": 1, "description": "构造表面切线的 up hint Z", "description-en": "Up hint Z." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "改写 child.origin/rpy 后的新 Geometry", "description-en": "Geometry with child origin/rpy rewritten." },
+    { "name": "ox", "type": "number", "label": "原点 X", "description": "建议 origin X", "description-en": "Suggested origin X." },
+    { "name": "oy", "type": "number", "label": "原点 Y", "description": "建议 origin Y", "description-en": "Suggested origin Y." },
+    { "name": "oz", "type": "number", "label": "原点 Z", "description": "建议 origin Z", "description-en": "Suggested origin Z." },
+    { "name": "rr", "type": "number", "label": "roll", "description": "建议 roll", "description-en": "Suggested roll." },
+    { "name": "rp", "type": "number", "label": "pitch", "description": "建议 pitch", "description-en": "Suggested pitch." },
+    { "name": "ry", "type": "number", "label": "yaw", "description": "建议 yaw", "description-en": "Suggested yaw." },
+    { "name": "nx", "type": "number", "label": "法线 X", "description": "表面法线 X", "description-en": "Surface normal X." },
+    { "name": "ny", "type": "number", "label": "法线 Y", "description": "表面法线 Y", "description-en": "Surface normal Y." },
+    { "name": "nz", "type": "number", "label": "法线 Z", "description": "表面法线 Z", "description-en": "Surface normal Z." },
+    { "name": "source", "type": "string", "label": "来源", "description": "analytic 或 aabb", "description-en": "analytic or aabb." }
+  ],
+  "projectTypes": ["asset3d"]
+}

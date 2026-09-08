@@ -1,0 +1,39 @@
+{
+  "id": "mask_outline",
+  "label": "掩码轮廓提取",
+  "name-en": "Outline",
+  "description": "基于8邻域边界的真正形态学轮廓提取。thickness>0：在掩码内部沿边界生成宽度为 thickness 的内轮廓；thickness<0：在掩码外部生成宽度为 |thickness| 的外环带（不含原掩码内部）；thickness=0：返回全零网格。输出为二值（1/0），原掩码数值会被丢弃。与「掩码边缘提取」(mask_edge) 的轴向极值边缘不同，本算子可正确勾勒凹陷与内部孔洞。",
+  "description-en": "True morphological contour extraction based on the 8-neighborhood boundary. thickness>0: an inward outline of width `thickness` along the boundary inside the mask; thickness<0: an outward band of width `|thickness|` outside the mask (does NOT include the original mask interior); thickness=0: returns an all-zero grid. Output is binary (1/0) and the original mask values are dropped. Unlike the axis-extremal edge of Edge (mask_edge), this operator correctly outlines concave regions and interior holes.",
+  "icon": "扁平插画风格的小图标。画面是一个简洁的矩形轮廓框，外部黑色背景，轮廓线为明亮的橙黄色，内部填充深灰色，中间空心。风格干净，主色橙黄与深灰，突出「边缘/轮廓」的视觉概念。",
+  "version": "2.0.0",
+  "tags": ["mask", "outline", "contour", "erode", "dilate"],
+  "tag_labels": ["掩码", "轮廓", "边缘", "腐蚀", "膨胀"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "源网格，所有非零值视为掩码区域",
+      "description-en": "Source grid; all non-zero values are treated as the mask region."
+    },
+    {
+      "name": "thickness",
+      "type": "number",
+      "label": "轮廓厚度",
+      "description": "正数=在掩码内部生成宽度为该值的内轮廓；负数=在掩码外部生成宽度为其绝对值的外环带（不含原掩码内部）；0=返回全零网格。输出为二值（1/0）。",
+      "description-en": "Positive = an inward outline of that width inside the mask; negative = an outward band of width equal to its absolute value outside the mask (excluding the original mask interior); 0 = an all-zero grid. Output is binary (1/0).",
+      "default": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "轮廓网格",
+      "description": "与输入等尺寸，轮廓区域=1，其余=0",
+      "description-en": "Same size as input; outline area=1, elsewhere=0."
+    }
+  ]
+}

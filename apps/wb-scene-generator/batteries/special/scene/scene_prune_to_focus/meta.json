@@ -1,0 +1,33 @@
+{
+  "id": "scene_prune_to_focus",
+  "label": "裁剪到聚焦子树",
+  "name-en": "PruneToFocus",
+  "description": "把 graph 物理裁剪到只含当前 focus 节点+其后代，祖先与旁支节点从内存里释放（不再是引用，可被 GC）。裁剪后 focus 成为新图的本地根，原绝对路径记为 focusOrigin（仅供展示，不可再解析）。裁剪后不能再把 focus 移回原图里的祖先/旁支——需要这种能力就别在这里裁剪，或裁剪前先分好独立分支。",
+  "description-en": "Physically prune the graph down to the current focus node plus its descendants — ancestors and siblings are dropped (no longer referenced, eligible for GC). After pruning, focus becomes the new graph's local root; the original absolute path is recorded as focusOrigin (display/audit only, not resolvable). Once pruned, focus can no longer move back to an ancestor/sibling from the original graph — branch before pruning if that's still needed downstream.",
+  "icon": "一把剪刀正在裁掉树状结构里聚焦节点之外的枝干，扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": ["scene", "focus", "memory", "prune"],
+  "tag_labels": ["场景", "聚焦", "内存", "裁剪"],
+  "projectTypes": ["both"],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "required": true,
+      "label": "scene",
+      "description": "输入 scene（graph 会被裁剪到 focus 子树）",
+      "description-en": "Input scene (graph will be pruned down to the focus subtree)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "scene",
+      "description": "graph 已裁剪为 focus 子树的 scene；focusOrigin 记录裁剪前的绝对路径",
+      "description-en": "Scene whose graph has been pruned to the focus subtree; focusOrigin records the pre-prune absolute path."
+    }
+  ]
+}

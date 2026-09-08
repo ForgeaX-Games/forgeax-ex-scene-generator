@@ -1,0 +1,85 @@
+{
+  "id": "cosmos_object_placer",
+  "label": "宇宙对象布置",
+  "description": "根据地形和区域网格生成装饰物、资源节点、建筑结构、敌人的放置数据",
+  "description-en": "Generates decoration, resource, structure, and enemy placement data based on terrain and zone grids.",
+  "icon": "地图图标上点缀树木、矿石、建筑和敌人剪影，分散排列，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.1.0",
+  "tags": ["cosmos", "objects", "decoration", "enemy", "procedural"],
+  "tag_labels": ["宇宙", "对象放置", "装饰物", "敌人", "程序化"],
+  "inputs": [
+    {
+      "name": "terrainGrid",
+      "type": "array",
+      "label": "地形网格列表",
+      "description": "地形网格列表（接 cosmos_terrain_variation.variedGridList），多张单值网格，内部自动合并为单张地形网格",
+      "description-en": "Terrain grid list (from cosmos_terrain_variation.variedGridList); multiple single-value grids, merged internally into one terrain grid.",
+      "default": []
+    },
+    {
+      "name": "zoneGrid",
+      "type": "array",
+      "label": "区域网格列表（可选）",
+      "description": "区域网格列表（接 cosmos_zone_marker.zoneGridList，可选），值100/200/300分别对应结构/水晶/远古区域，内部取第一个非零值",
+      "description-en": "Zone grid list (from cosmos_zone_marker.zoneGridList, optional); values 100/200/300 = structure/crystal/ancient zones; merged internally.",
+      "default": []
+    },
+    {
+      "name": "planetType",
+      "type": "string",
+      "label": "星球类型",
+      "description": "决定装饰物、资源、敌人的类型池",
+      "description-en": "Determines decoration, resource, and enemy type pools.",
+      "default": "lush",
+      "options": ["lush", "desert", "frozen", "volcanic", "toxic", "barren"]
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    },
+    {
+      "name": "decorDensity",
+      "type": "number",
+      "label": "装饰密度",
+      "description": "装饰物密度倍率，1.0为标准密度",
+      "description-en": "Decoration density multiplier.",
+      "default": 0.15
+    },
+    {
+      "name": "resourceMultiplier",
+      "type": "number",
+      "label": "资源倍率",
+      "description": "资源节点生成概率倍率",
+      "description-en": "Resource node spawn probability multiplier.",
+      "default": 0.34
+    },
+    {
+      "name": "enemyDensity",
+      "type": "number",
+      "label": "敌人密度",
+      "description": "每区块敌人数量倍率",
+      "description-en": "Enemy count multiplier per chunk.",
+      "default": 1.0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "objectNameList",
+      "type": "array",
+      "label": "对象名称清单",
+      "description": "标准名称清单，每条对应一种对象类型 {id, name, type:\"asset\", height}；与 objectGridList 一一对应",
+      "description-en": "Standard name list, one entry per object type {id, name, type:\"asset\", height}; aligned 1-to-1 with objectGridList."
+    },
+    {
+      "name": "objectGridList",
+      "type": "array",
+      "label": "对象网格列表",
+      "description": "与 objectNameList 一一对应的单值网格列表，每张网格中 1=该位置有此对象，0=无",
+      "description-en": "Per-type single-value grid list aligned with objectNameList; 1=object present at cell, 0=absent."
+    }
+  ]
+}

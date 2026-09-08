@@ -1,0 +1,98 @@
+{
+  "nodes": [
+    {
+      "name": "幻想大陆",
+      "parent": null,
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "一片神秘的大陆，包含多个独特的区域",
+        "art_style_description": "奇幻风格，色彩丰富",
+        "semantics_description": "充满魔法和冒险的世界"
+      }
+    },
+    {
+      "name": "精灵森林",
+      "parent": "幻想大陆",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "大陆西部的茂密森林",
+        "art_style_description": "翠绿色为主调，阳光斑驳",
+        "semantics_description": "精灵族的家园，神秘而美丽"
+      }
+    },
+    {
+      "name": "矮人城堡",
+      "parent": "幻想大陆",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "大陆东部的矮人城堡",
+        "art_style_description": "矮人城堡的外观为石头建筑，城堡的内部为石头建筑，是个不规则的石头建筑",
+        "semantics_description": "矮人工匠的领地"
+      }
+    },
+    {
+      "name": "城堡大厅",
+      "parent": "矮人城堡",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "矮人城堡中心的宏伟厅堂",
+        "art_style_description": "粗犷的石柱，巨大的熔炉壁炉",
+        "semantics_description": "社交与议事的公共区域",
+        "room_type": "开放"
+      }
+    },
+    {
+      "name": "皇家锻造间",
+      "parent": "矮人城堡",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "城堡深处的精密工坊",
+        "art_style_description": "排满工具的墙壁，赤红的铁砧",
+        "semantics_description": "核心生产区域，矮人精湛技艺的缩影",
+        "room_type": "半开放"
+      }
+    },
+    {
+      "name": "领主私室",
+      "parent": "矮人城堡",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "城堡上层的私人空间",
+        "art_style_description": "厚重的石床，精美的金属装饰",
+        "semantics_description": "休息与私密交谈的区域",
+        "room_type": "私密"
+      }
+    },
+    {
+      "name": "中央平原",
+      "parent": "幻想大陆",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "大陆中心的广阔平原",
+        "art_style_description": "金黄色麦田与青绿草地交织",
+        "semantics_description": "人类王国的核心区域"
+      }
+    },
+    {
+      "name": "道路",
+      "parent": "幻想大陆",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "连接各个区域的交通要道",
+        "art_style_description": "道路的宽度为2米，道路的材质为石板路",
+        "semantics_description": "连接各个区域的交通要道"
+      }
+    },
+    {
+      "name": "河流",
+      "parent": "幻想大陆",
+      "labels": ["narrative"],
+      "description": {
+        "location_description": "随处可见的河流",
+        "art_style_description": "河流的宽度为2米，河流的材质为水流",
+        "semantics_description": "随处可见的河流"
+      }
+    }
+  ]
+}
+

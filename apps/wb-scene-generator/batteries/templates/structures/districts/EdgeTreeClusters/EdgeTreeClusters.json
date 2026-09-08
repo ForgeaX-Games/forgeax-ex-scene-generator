@@ -1,0 +1,430 @@
+{
+  "id": "group_edge_tree_clusters",
+  "name": "EdgeTreeClusters",
+  "nameEn": "EdgeTreeClusters",
+  "author": "zyw",
+  "nodes": [
+    {
+      "id": "eg_in",
+      "opId": "scene_passthrough",
+      "name": "eg_in",
+      "position": { "x": 0, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "eg_explode",
+      "opId": "node_explode",
+      "name": "eg_explode",
+      "position": { "x": 280, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "eg_rgrid",
+      "opId": "rect_grid",
+      "name": "eg_rgrid",
+      "position": { "x": 560, "y": -120 },
+      "params": {}
+    },
+    {
+      "id": "eg_slice",
+      "opId": "voxel_slice",
+      "name": "eg_slice",
+      "position": { "x": 840, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "eg_clusters",
+      "opId": "edge_green_cluster",
+      "name": "eg_clusters",
+      "position": { "x": 1120, "y": 0 },
+      "params": { "count": 17, "clusterSize": 267 }
+    },
+    {
+      "id": "eg_name",
+      "opId": "type_string",
+      "name": "eg_name",
+      "position": { "x": 1120, "y": 260 },
+      "params": {}
+    },
+    {
+      "id": "eg_g2n",
+      "opId": "grid2node",
+      "name": "eg_g2n",
+      "position": { "x": 1400, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "eg_tile",
+      "opId": "__group__",
+      "name": "TileAssetName",
+      "position": { "x": 1680, "y": -40 },
+      "params": { "groupId": "group_tilezone_egc" }
+    },
+    {
+      "id": "eg_add",
+      "opId": "add_child",
+      "name": "eg_add",
+      "position": { "x": 1980, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "eg_subtract",
+      "opId": "alg_region_subtract",
+      "name": "eg_subtract",
+      "position": { "x": 1400, "y": 320 },
+      "params": {}
+    },
+    {
+      "id": "eg_rname",
+      "opId": "text_panel",
+      "name": "eg_rname",
+      "position": { "x": 1400, "y": 500 },
+      "params": { "text": "rest", "_nodeWidth": 172, "_nodeHeight": 69 }
+    },
+    {
+      "id": "eg_g2n_rest",
+      "opId": "grid2node",
+      "name": "eg_g2n_rest",
+      "position": { "x": 1680, "y": 320 },
+      "params": {}
+    },
+    {
+      "id": "eg_add_rest",
+      "opId": "add_child",
+      "name": "eg_add_rest",
+      "position": { "x": 2260, "y": 160 },
+      "params": {}
+    },
+    {
+      "id": "eg_merge",
+      "opId": "scene_merge_subtrees",
+      "name": "eg_merge",
+      "position": { "x": 2540, "y": 80 },
+      "params": {}
+    },
+    {
+      "id": "eg_focus",
+      "opId": "scene_focus_path",
+      "name": "eg_focus",
+      "position": { "x": 2820, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "eg_focus_rest",
+      "opId": "scene_focus_path",
+      "name": "eg_focus_rest",
+      "position": { "x": 2820, "y": 240 },
+      "params": {}
+    },
+    {
+      "id": "eg_out_main",
+      "opId": "scene_passthrough",
+      "name": "eg_out_main",
+      "position": { "x": 3100, "y": 80 },
+      "params": {}
+    },
+    {
+      "id": "eg_out_clusters",
+      "opId": "scene_passthrough",
+      "name": "eg_out_clusters",
+      "position": { "x": 3100, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "eg_out_rest",
+      "opId": "scene_passthrough",
+      "name": "eg_out_rest",
+      "position": { "x": 3100, "y": 240 },
+      "params": {}
+    },
+    {
+      "id": "eg_path",
+      "opId": "type_string",
+      "name": "eg_path",
+      "position": { "x": 2260, "y": -120 },
+      "params": {}
+    },
+    {
+      "id": "eg_rpath",
+      "opId": "type_string",
+      "name": "eg_rpath",
+      "position": { "x": 2540, "y": 420 },
+      "params": {}
+    }
+  ],
+  "edges": [
+    { "id": "eg_e1", "source": { "nodeId": "eg_in", "port": "scene" }, "target": { "nodeId": "eg_explode", "port": "scene" } },
+    { "id": "eg_e2", "source": { "nodeId": "eg_explode", "port": "width" }, "target": { "nodeId": "eg_rgrid", "port": "width" } },
+    { "id": "eg_e3", "source": { "nodeId": "eg_explode", "port": "height" }, "target": { "nodeId": "eg_rgrid", "port": "height" } },
+    { "id": "eg_e4", "source": { "nodeId": "eg_explode", "port": "voxels" }, "target": { "nodeId": "eg_slice", "port": "voxels" } },
+    { "id": "eg_e5", "source": { "nodeId": "eg_rgrid", "port": "grid" }, "target": { "nodeId": "eg_slice", "port": "grid" } },
+    { "id": "eg_e7", "source": { "nodeId": "eg_slice", "port": "slice" }, "target": { "nodeId": "eg_clusters", "port": "inputGrid" } },
+    { "id": "eg_e9", "source": { "nodeId": "eg_clusters", "port": "outputGrid" }, "target": { "nodeId": "eg_g2n", "port": "grid" } },
+    { "id": "eg_e10", "source": { "nodeId": "eg_name", "port": "value" }, "target": { "nodeId": "eg_g2n", "port": "name" } },
+    { "id": "eg_e11", "source": { "nodeId": "eg_g2n", "port": "scene" }, "target": { "nodeId": "eg_tile", "port": "in_0" } },
+    { "id": "eg_e12", "source": { "nodeId": "eg_name", "port": "value" }, "target": { "nodeId": "eg_tile", "port": "in_1" } },
+    { "id": "eg_e13", "source": { "nodeId": "eg_tile", "port": "out_0" }, "target": { "nodeId": "eg_add", "port": "nodes" } },
+    { "id": "eg_e14", "source": { "nodeId": "eg_in", "port": "scene" }, "target": { "nodeId": "eg_add", "port": "scene" } },
+    { "id": "eg_e15", "source": { "nodeId": "eg_slice", "port": "slice" }, "target": { "nodeId": "eg_subtract", "port": "a" } },
+    { "id": "eg_e16", "source": { "nodeId": "eg_clusters", "port": "outputGrid" }, "target": { "nodeId": "eg_subtract", "port": "b" } },
+    { "id": "eg_e17", "source": { "nodeId": "eg_subtract", "port": "region" }, "target": { "nodeId": "eg_g2n_rest", "port": "grid" } },
+    { "id": "eg_e18", "source": { "nodeId": "eg_rname", "port": "output" }, "target": { "nodeId": "eg_g2n_rest", "port": "name" } },
+    { "id": "eg_e19", "source": { "nodeId": "eg_add", "port": "scene" }, "target": { "nodeId": "eg_add_rest", "port": "scene" } },
+    { "id": "eg_e20", "source": { "nodeId": "eg_g2n_rest", "port": "scene" }, "target": { "nodeId": "eg_add_rest", "port": "nodes" } },
+    { "id": "eg_e21", "source": { "nodeId": "eg_add_rest", "port": "scene" }, "target": { "nodeId": "eg_merge", "port": "scenes" } },
+    { "id": "eg_e22", "source": { "nodeId": "eg_merge", "port": "scene" }, "target": { "nodeId": "eg_focus", "port": "scene" } },
+    { "id": "eg_e23", "source": { "nodeId": "eg_add", "port": "childPaths" }, "target": { "nodeId": "eg_focus", "port": "path" } },
+    { "id": "eg_e24", "source": { "nodeId": "eg_merge", "port": "scene" }, "target": { "nodeId": "eg_focus_rest", "port": "scene" } },
+    { "id": "eg_e25", "source": { "nodeId": "eg_add_rest", "port": "childPaths" }, "target": { "nodeId": "eg_focus_rest", "port": "path" } },
+    { "id": "eg_e26", "source": { "nodeId": "eg_merge", "port": "scene" }, "target": { "nodeId": "eg_out_main", "port": "scene" } },
+    { "id": "eg_e27", "source": { "nodeId": "eg_focus", "port": "scene" }, "target": { "nodeId": "eg_out_clusters", "port": "scene" } },
+    { "id": "eg_e28", "source": { "nodeId": "eg_focus_rest", "port": "scene" }, "target": { "nodeId": "eg_out_rest", "port": "scene" } },
+    { "id": "eg_e29", "source": { "nodeId": "eg_add", "port": "childPaths" }, "target": { "nodeId": "eg_path", "port": "value" } },
+    { "id": "eg_e30", "source": { "nodeId": "eg_add_rest", "port": "childPaths" }, "target": { "nodeId": "eg_rpath", "port": "value" } }
+  ],
+  "position": { "x": 0, "y": 0 },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "eg_in",
+      "sourcePortName": "scene"
+    },
+    {
+      "portName": "in_1",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "eg_name",
+      "sourcePortName": "value",
+      "customLabelEn": "DistrictAsset"
+    },
+    {
+      "portName": "in_2",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "seed",
+      "customLabelEn": "Seed"
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "count",
+      "customLabelEn": "Count"
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "clusterSize",
+      "customLabelEn": "ClusterSize"
+    },
+    {
+      "portName": "in_5",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "irregularity",
+      "customLabelEn": "Irregularity"
+    },
+    {
+      "portName": "in_6",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "sizeVariance",
+      "hidden": true
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "targetValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_8",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_clusters",
+      "sourcePortName": "outputValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_rgrid",
+      "sourcePortName": "fillValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "eg_slice",
+      "sourcePortName": "z",
+      "hidden": true
+    },
+    {
+      "portName": "in_11",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "eg_g2n",
+      "sourcePortName": "schema",
+      "hidden": true
+    },
+    {
+      "portName": "in_12",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "eg_g2n",
+      "sourcePortName": "token",
+      "hidden": true
+    },
+    {
+      "portName": "in_13",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "eg_g2n",
+      "sourcePortName": "zRange",
+      "hidden": true
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "eg_out_main",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "out_1",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "eg_out_rest",
+      "sourcePortName": "scene",
+      "order": 1,
+      "customLabelEn": "Rest"
+    },
+    {
+      "portName": "out_2",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "eg_out_clusters",
+      "sourcePortName": "scene",
+      "order": 2,
+      "customLabelEn": "Clusters"
+    },
+    {
+      "portName": "out_3",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "eg_path",
+      "sourcePortName": "value",
+      "order": 3,
+      "customLabelEn": "ClustersPath"
+    },
+    {
+      "portName": "out_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "eg_rpath",
+      "sourcePortName": "value",
+      "order": 4,
+      "customLabelEn": "RestPath"
+    }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_tilezone_egc",
+      "name": "TileAssetName",
+      "nameEn": "TileAssetName",
+      "nodes": [
+        {
+          "id": "egtz_tp_name",
+          "opId": "text_panel",
+          "name": "asset_name",
+          "position": { "x": 0, "y": 160 },
+          "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 }
+        },
+        {
+          "id": "egtz_tp_type",
+          "opId": "text_panel",
+          "name": "asset_type",
+          "position": { "x": 280, "y": 160 },
+          "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "egtz_tp_tile",
+          "opId": "text_panel",
+          "name": "tile",
+          "position": { "x": 280, "y": 320 },
+          "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "egtz_set1",
+          "opId": "scene_set_attribute",
+          "name": "egtz_set1",
+          "position": { "x": 200, "y": 0 },
+          "params": {}
+        },
+        {
+          "id": "egtz_set2",
+          "opId": "scene_set_attribute",
+          "name": "egtz_set2",
+          "position": { "x": 470, "y": 0 },
+          "params": {}
+        },
+        {
+          "id": "egtz_str",
+          "opId": "type_string",
+          "name": "egtz_str",
+          "position": { "x": 0, "y": 40 },
+          "params": {}
+        }
+      ],
+      "edges": [
+        { "id": "egtz_e1", "source": { "nodeId": "egtz_tp_name", "port": "output" }, "target": { "nodeId": "egtz_set1", "port": "key" } },
+        { "id": "egtz_e2", "source": { "nodeId": "egtz_set1", "port": "scene" }, "target": { "nodeId": "egtz_set2", "port": "scene" } },
+        { "id": "egtz_e3", "source": { "nodeId": "egtz_tp_type", "port": "output" }, "target": { "nodeId": "egtz_set2", "port": "key" } },
+        { "id": "egtz_e4", "source": { "nodeId": "egtz_tp_tile", "port": "output" }, "target": { "nodeId": "egtz_set2", "port": "value" } },
+        { "id": "egtz_e5", "source": { "nodeId": "egtz_str", "port": "value" }, "target": { "nodeId": "egtz_set1", "port": "value" } }
+      ],
+      "position": { "x": 1680, "y": -40 },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "egtz_set1",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "egtz_str",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "egtz_set2",
+          "sourcePortName": "scene"
+        }
+      ]
+    }
+  ]
+}

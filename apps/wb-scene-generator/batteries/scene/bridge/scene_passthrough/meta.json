@@ -1,0 +1,43 @@
+{
+  "id": "scene_passthrough",
+  "label": "场景",
+  "name-en": "Scene",
+  "description": "原样透传 scene：输入的整棵 DataTree 不做任何变换直接输出，branches/paths/focus/version 全部保持不变。用于连线、分流或作为管线占位/中转节点。",
+  "description-en": "Pass a scene through unchanged: the entire input DataTree is emitted as-is with no transform; branches/paths/focus/version are all preserved. Useful for wiring, fan-out, or as a pipeline placeholder/junction.",
+  "version": "1.0.0",
+  "tags": [
+    "scene",
+    "bridge",
+    "passthrough",
+    "identity",
+    "relay"
+  ],
+  "tag_labels": [
+    "场景",
+    "桥接",
+    "透传",
+    "原样",
+    "中继"
+  ],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "tree",
+      "required": true,
+      "label": "scene",
+      "description": "输入 scene；整棵 DataTree 将被原样透传，不做任何修改",
+      "description-en": "Input scene; the entire DataTree is passed through unchanged."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "tree",
+      "label": "scene",
+      "description": "与输入完全一致的 scene（同一棵 DataTree，结构零变换）",
+      "description-en": "The same scene as the input (identical DataTree, zero transform)."
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "id": "fermat_spiral_sampling",
+  "label": "费马螺旋采样",
+  "description": "基于黄金角的费马螺旋采样，在圆形区域内生成均匀无聚集的点分布，支持可选抖动",
+  "description-en": "Fermat spiral sampling based on the golden angle, generating uniform, cluster-free point distributions within a circular area, with optional jitter.",
+  "icon": "从圆心向外扩散的螺旋点阵，点沿黄金角旋转排列形成向日葵般的均匀图案，扁平几何风格，主色金黄深绿两色",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "sampling",
+    "spiral",
+    "golden_angle",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "采样",
+    "螺旋",
+    "黄金角",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "default": 64,
+      "min": 4,
+      "max": 512,
+      "description": "输出网格的宽度（列数）",
+      "description-en": "Width (columns) of the output grid."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "default": 64,
+      "min": 4,
+      "max": 512,
+      "description": "输出网格的高度（行数）",
+      "description-en": "Height (rows) of the output grid."
+    },
+    {
+      "name": "numPoints",
+      "type": "number",
+      "label": "采样点数",
+      "default": 200,
+      "min": 1,
+      "max": 10000,
+      "description": "要生成的采样点数量",
+      "description-en": "Number of sample points to generate."
+    },
+    {
+      "name": "jitter",
+      "type": "number",
+      "label": "抖动量",
+      "default": 0,
+      "description": "随机抖动幅度（像素），0=完美螺旋无抖动，值越大越接近随机分布（0~10）",
+      "description-en": "Random jitter amount in pixels; 0=perfect spiral, higher values add randomness (0~10)."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "抖动的随机种子，0 使用默认种子（jitter=0 时无效）",
+      "description-en": "Random seed for jitter; 0 uses default seed (ignored when jitter=0)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "采样网格",
+      "description": "输出网格，采样点位置值为 1，其余为 0",
+      "description-en": "Output grid; sample point cells = 1, all others = 0."
+    },
+    {
+      "name": "points",
+      "type": "number",
+      "label": "坐标列表",
+      "description": "所有采样点的坐标数组 [[x, y], ...]，x 为列号，y 为行号（外层 rank=2：N 个点 × [x,y]）",
+      "description-en": "Array of sample point coordinates [[x, y], ...]; x=column, y=row (rank=2: N points × [x,y])."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "实际点数",
+      "description": "落在网格范围内的实际采样点数",
+      "description-en": "Actual number of sample points within grid bounds."
+    }
+  ],
+  "alg_tag": [
+    "基于费马螺旋的点采样",
+    "圆形区域内生成均匀点分布"
+  ]
+}

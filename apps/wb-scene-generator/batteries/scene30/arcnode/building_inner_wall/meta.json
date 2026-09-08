@@ -1,0 +1,44 @@
+{
+  "id": "building_inner_wall",
+  "label": "建筑内墙生成",
+  "description": "使用BSP（二叉空间分割）算法在建筑占地掩码内递归分割房间并绘制内墙，内墙宽度恒为1格，最小房间长宽均不小于2格。",
+  "description-en": "Uses BSP (Binary Space Partitioning) to recursively split a building footprint into rooms and draw interior walls of exactly 1-cell width; minimum room size is 2×2.",
+  "icon": "扁平插画风格小图标。建筑俯视平面图，深棕色矩形区域内有若干白色横竖线段将内部递归分割成大小不一的房间，形成BSP树状格局。配色深棕底色配白色线条，简洁现代，主色2种。",
+  "version": "2.0.0",
+  "tags": ["building", "interior", "wall", "room", "bsp", "structure"],
+  "tag_labels": ["建筑", "内部", "墙体", "房间", "BSP", "结构"],
+  "inputs": [
+    {
+      "name": "gridList",
+      "type": "array",
+      "label": "建筑占地列表",
+      "description": "建筑占地掩码列表，每个网格的非零值视为建筑内部区域",
+      "description-en": "List of building footprint masks; non-zero values in each grid are treated as interior area."
+    },
+    {
+      "name": "density",
+      "type": "number",
+      "label": "分割密度",
+      "description": "BSP递归深度控制，范围 0~1，值越大房间越多、内墙越密",
+      "description-en": "BSP recursion depth control, range 0~1; higher values produce more rooms and denser walls.",
+      "default": 0.4
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间戳",
+      "description-en": "Random seed; 0 uses the current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "内墙掩码列表",
+      "description": "与输入列表一一对应，每个网格中内墙像素=1，其余=0，内墙宽度恒为1格",
+      "description-en": "List of grids corresponding to input; interior wall pixels=1, elsewhere=0; wall width is always 1 cell."
+    }
+  ]
+}

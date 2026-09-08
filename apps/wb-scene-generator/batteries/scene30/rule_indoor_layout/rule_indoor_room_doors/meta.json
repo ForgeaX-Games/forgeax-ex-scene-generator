@@ -1,0 +1,68 @@
+{
+  "id": "rule_indoor_room_doors",
+  "label": "房间门洞",
+  "description": "在每个房间与走廊接壤的墙壁上开门洞，保证所有房间的连通性",
+  "description-en": "Opens door gaps on walls between rooms and corridors, ensuring all rooms are connected.",
+  "icon": "矩形房间边界上有一个缺口与外侧走廊相连，深色墙体配亮色门洞开口，扁平插画风格简洁小图标主色2种",
+  "version": "1.2.0",
+  "tags": ["rule_indoor", "room", "door", "connectivity"],
+  "tag_labels": ["规则室内", "房间", "门洞", "连通"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "0=墙, 1=走廊, 10+=房间ID",
+      "description-en": "Grid: 0=wall, 1=corridor, 10+=room IDs."
+    },
+    {
+      "name": "doorWidth",
+      "type": "number",
+      "label": "门洞宽度",
+      "description": "门洞宽度（2-4格）",
+      "description-en": "Door opening width in cells (2-4).",
+      "default": 3
+    },
+    {
+      "name": "maxDoorsPerRoom",
+      "type": "number",
+      "label": "每房间最多门数",
+      "description": "每个房间最多开几个门（超出部分由概率决定是否开）",
+      "description-en": "Maximum number of doors per room (extras are probability-gated).",
+      "default": 4
+    },
+    {
+      "name": "doorProbability",
+      "type": "number",
+      "label": "开门概率",
+      "description": "第一扇门必开；此概率控制额外门的开启概率（0=只开一门，1=开满maxDoorsPerRoom）",
+      "description-en": "First door is always opened; this probability controls extra doors (0=one door only, 1=open all up to max).",
+      "default": 0.5
+    },
+    {
+      "name": "doorValue",
+      "type": "number",
+      "label": "门洞标记值",
+      "description": "门洞格子填写的值，必须不同于走廊(1)，默认2",
+      "description-en": "Cell value written into door openings; must differ from corridor (1). Default 2.",
+      "default": 2
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "开门后的网格；走廊=1，门洞=doorValue(默认2)，墙=0，房间>=10",
+      "description-en": "Grid with door openings; corridor=1, door=doorValue(default 2), wall=0, rooms>=10."
+    }
+  ]
+}

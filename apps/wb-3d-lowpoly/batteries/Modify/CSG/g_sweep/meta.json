@@ -1,0 +1,31 @@
+{
+  "id": "g_sweep",
+  "label": "Sweep 扫掠",
+  "name-en": "GSweep",
+  "description": "将 profile 沿 3D 路径扫掠。默认兼容旧行为；align=true 或 spline 会让截面沿路径切向旋转。何时用：把一个截面沿曲线扫出实体（线缆/把手/弯管的外形/型材），primitive 拼不出沿曲线变化的体。⚠️ align/spline 模式产出三角网格(mesh)，不能作为布尔运算(g_union/g_difference/g_intersection)的输入——布尔仅支持实体(solid) shape。",
+  "description-en": "Sweep a profile along a 3D path. Defaults to legacy XY sections; align/spline enables tangent-oriented mesh sweep. Use when: sweeping a section along a curve (cable/handle/bent-tube body/extruded profile) — primitives cannot follow a curve. WARNING: the align/spline mesh output CANNOT be fed into boolean ops (g_union/g_difference/g_intersection), which only accept solid shapes.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "profile", "sweep", "cad"],
+  "tag_labels": ["几何", "Profile", "Sweep", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（必须含 profile_id 所指 profile）", "description-en": "Upstream Geometry; must contain the profile referenced by profile_id." },
+    { "name": "profile_id", "type": "string", "label": "Profile id", "default": "", "description": "要扫掠的截面 profile id；从上游 Profile 节点的 id 输出连入", "description-en": "Id of the section profile to sweep. Feed from an upstream Profile node's `id` output." },
+    { "name": "path", "type": "array", "label": "路径点", "default": [0, 0, 0, 0, 0, 1], "description": "扁平 3D 点列 [x1,y1,z1,x2,y2,z2,...]，至少两点", "description-en": "Flat 3D point list [x1,y1,z1,x2,y2,z2,...], at least two points." },
+    { "name": "ruled", "type": "boolean", "label": "直纹", "default": false, "description": "true = 段间直纹（不光滑）", "description-en": "true = ruled (non-smooth) between segments." },
+    { "name": "spline", "type": "string", "label": "样条", "default": "polyline", "options": ["polyline", "catmull_rom", "bezier"], "description": "polyline、catmull_rom 或 bezier", "description-en": "polyline, catmull_rom, or bezier path interpolation." },
+    { "name": "samples_per_segment", "type": "number", "label": "每段采样", "default": 12, "description": "样条每段的采样数（越大越光滑）", "description-en": "Samples per spline segment (higher = smoother)." },
+    { "name": "align", "type": "boolean", "label": "沿路径切向旋转", "default": false, "description": "true = 截面随路径切向旋转（mesh 扫掠）", "description-en": "true = rotate the section along the path tangent (mesh sweep)." },
+    { "name": "closed", "type": "boolean", "label": "闭合路径", "default": false, "description": "true = 路径首尾相接", "description-en": "true = close the path into a loop." },
+    { "name": "cap", "type": "boolean", "label": "封端", "default": true, "description": "true = 两端封口成实体", "description-en": "true = cap the ends into a solid." },
+    { "name": "up_hint", "type": "array", "label": "上方向提示", "default": [0, 0, 1], "description": "构造扫掠截面朝向的 3D 向量 [x,y,z]", "description-en": "3D up vector [x,y,z] used to orient the swept section." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 sweep{n}", "description-en": "Custom id; empty = auto sweep{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加扫掠实体后的 Geometry", "description-en": "Geometry after appending the swept solid." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id（供下游引用）；引用/路径错误时为空串", "description-en": "Id of the new shape (for downstream refs). Empty string when the ref or path was invalid." },
+    { "name": "error", "type": "string", "label": "错误", "description": "profile_id 缺失/找不到或 path 不合法时的原因；非空表示未追加任何几何，批次仍可能报 ok，务必读取", "description-en": "Reason when profile_id is missing/not found or path is invalid. Non-empty means nothing was appended even though the batch may report ok — always read it." }
+  ],
+  "projectTypes": ["asset3d"]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "random_walk",
+  "label": "随机行走",
+  "description": "在网格掩码内生成随机行走路径，支持可变路径宽度、多种宽度衰减模式和可控行走速度",
+  "description-en": "Generates a random walk path within a grid mask, supporting variable path width, multiple width decay modes, and configurable walk speed.",
+  "icon": "一条蜿蜒曲折的路径在网格上随机行走，路径线条粗细不一，像足迹或蛇行轨迹，简洁线条风格",
+  "version": "1.2.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "random_walk",
+    "path",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "随机行走",
+    "路径",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "输入网格掩码，行走仅在非零区域内进行",
+      "description-en": "Input grid mask; the walker moves only within non-zero cells."
+    },
+    {
+      "name": "steps",
+      "type": "number",
+      "label": "步数",
+      "default": 500,
+      "min": 1,
+      "max": 20000,
+      "description": "行走总步数，值越大路径覆盖越广",
+      "description-en": "Total number of walk steps; larger values cover more area."
+    },
+    {
+      "name": "startX",
+      "type": "number",
+      "label": "起始X",
+      "default": -1,
+      "description": "起始点X坐标，-1 表示在掩码内随机选择",
+      "description-en": "Start X coordinate; -1 = random position within the mask."
+    },
+    {
+      "name": "startY",
+      "type": "number",
+      "label": "起始Y",
+      "default": -1,
+      "description": "起始点Y坐标，-1 表示在掩码内随机选择",
+      "description-en": "Start Y coordinate; -1 = random position within the mask."
+    },
+    {
+      "name": "pathWidth",
+      "type": "number",
+      "label": "路径宽度",
+      "default": 2,
+      "min": 1,
+      "max": 30,
+      "description": "路径直径（像素），最小为 1",
+      "description-en": "Path diameter in pixels; minimum 1."
+    },
+    {
+      "name": "widthDecay",
+      "type": "string",
+      "label": "宽度衰减",
+      "default": "none",
+      "description": "宽度衰减模式：none=不衰减, linear=线性衰减, exponential=指数衰减, sine=正弦波动（±50%）, random=随机浮动（±50%）",
+      "description-en": "Width decay mode: none, linear, exponential, sine (±50% oscillation), or random (±50% random).",
+      "options": [
+        "none",
+        "linear",
+        "exponential",
+        "sine",
+        "random"
+      ]
+    },
+    {
+      "name": "speed",
+      "type": "number",
+      "label": "行走速度",
+      "default": 2,
+      "min": 1,
+      "max": 20,
+      "description": "每步移动的格数，值越大路径越舒展",
+      "description-en": "Number of cells moved per step; larger values produce more spread-out paths."
+    },
+    {
+      "name": "stopAtBoundary",
+      "type": "boolean",
+      "label": "触边停止",
+      "default": true,
+      "description": "触碰到掩码边界或网格边缘时是否立即终止行走；关闭则遇边界换向继续",
+      "description-en": "Stop walking immediately when hitting mask boundary or grid edge; if false, change direction and continue."
+    },
+    {
+      "name": "dirBias",
+      "type": "string",
+      "label": "方向偏好",
+      "default": "1,1,1,1,1,1,1,1",
+      "description": "8个方向的行走概率权重（E,NE,N,NW,W,SW,S,SE），逗号分隔，每个值0~1，内部自动归一化",
+      "description-en": "Walk probability weights for 8 directions (E,NE,N,NW,W,SW,S,SE), comma-separated, 0~1 each, auto-normalized internally."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 表示使用默认种子",
+      "description-en": "Random seed; 0 uses the default seed."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "路径网格",
+      "description": "输出网格，路径区域值为 1，其余为 0",
+      "description-en": "Output grid with path cells set to 1 and all others 0."
+    }
+  ],
+  "alg_tag": [
+    "随机路径生成",
+    "河流、洞穴等自然地形生成"
+  ]
+}

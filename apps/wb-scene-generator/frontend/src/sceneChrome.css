@@ -1,0 +1,10 @@
+:root {
+  --scene-titlebar-height: 30px;
+  --scene-titlebar-title-size: 14px;
+  --scene-titlebar-title-weight: 700;
+  --scene-titlebar-padding-inline: 12px;
+  --scene-titlebar-color: var(--color-accent, #d4ff48);
+  --scene-titlebar-border: rgba(var(--color-accent-rgb, 212, 255, 72), 0.2);
+  --scene-motion-duration: 220ms;
+  --scene-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

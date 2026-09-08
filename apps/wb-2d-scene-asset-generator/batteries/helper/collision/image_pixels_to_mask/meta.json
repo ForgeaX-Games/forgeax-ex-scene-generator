@@ -1,0 +1,77 @@
+{
+  "id": "image_pixels_to_mask",
+  "label": "像素图转掩码",
+  "name-en": "PixelsToMask",
+  "description": "将像素图转化为掩码网格：输入位图，自动计算其尺寸（每个图像像素 = 一个逻辑格点，网格尺寸 = 图像宽×高），不同颜色用不同的掩码整数值代替。出现最多的颜色视为背景记为 0，其余颜色按从上到下、从左到右首次出现顺序递增分配 1、2、3…，输出 number[][] 掩码网格。",
+  "description-en": "Convert a pixel image into a mask grid: input a bitmap, auto-compute its size (each image pixel = one logical cell, grid size = image width×height), and replace different colors with different mask integer values. The most frequent color is treated as background (0); other colors are assigned increasing values 1,2,3... by first-seen order (top-to-bottom, left-to-right). Output is a number[][] mask grid.",
+  "icon": "深色画布上一格 4x4 的彩色像素方块，右侧用箭头指向一格相同布局但填入数字 0/1/2 的网格，扁平插画风格，主色青绿与深灰。",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "pixel art",
+    "mask",
+    "grid",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "像素图",
+    "掩码",
+    "网格",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "像素图",
+      "description": "待转换的位图 alias（PNG/JPEG，支持 RGB/RGBA）。",
+      "description-en": "Bitmap alias to convert (PNG/JPEG, RGB/RGBA)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "label": "掩码网格",
+      "description": "number[][] 掩码矩阵；背景=0，其余颜色按首次出现顺序为 1、2、3…",
+      "description-en": "number[][] mask matrix; background=0, other colors get 1,2,3... by first-seen order."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "自动计算的网格宽度（= 图像宽，像素）。",
+      "description-en": "Auto-computed grid width (= image width, pixels)."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "自动计算的网格高度（= 图像高，像素）。",
+      "description-en": "Auto-computed grid height (= image height, pixels)."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串。",
+      "description-en": "Error message on failure; empty string on success."
+    }
+  ],
+  "alg_tag": [
+    "像素图转掩码",
+    "颜色量化",
+    "背景色判定",
+    "首次出现顺序分配"
+  ]
+}

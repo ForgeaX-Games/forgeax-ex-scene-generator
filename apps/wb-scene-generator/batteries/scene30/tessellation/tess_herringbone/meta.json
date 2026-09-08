@@ -1,0 +1,45 @@
+{
+  "id": "tess_herringbone",
+  "label": "人字形砖块",
+  "description": "将平面分割为人字形排列的 2:1 矩形砖块，所有砖块形状完全相同，水平砖和垂直砖轮流以 V 形排布。",
+  "description-en": "Divides the plane into herringbone-arranged 2:1 rectangular bricks. All bricks are identical in shape, alternating between horizontal and vertical orientations in a chevron (V-shape) pattern.",
+  "icon": "俯视视角的人字形砖块铺装图案，矩形砖块交替水平和垂直排列形成经典人字纹，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["tessellation", "herringbone", "brick", "tile", "pattern", "pcg"],
+  "tag_labels": ["镶嵌", "人字形", "砖块", "铺装", "图案", "PCG"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "description": "输出网格宽度（格），默认 80",
+      "description-en": "Output grid width in cells. Default 80.",
+      "default": 80
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "description": "输出网格高度（格），默认 80",
+      "description-en": "Output grid height in cells. Default 80.",
+      "default": 80
+    },
+    {
+      "name": "brickSize",
+      "type": "number",
+      "label": "砖块短边长",
+      "description": "砖块短边的像素数（格），长边 = 2×短边，控制砖块大小，默认 6",
+      "description-en": "Short side length of each brick in cells. Long side = 2 × short side. Default 6.",
+      "default": 6
+    }
+  ],
+  "outputs": [
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "砖块 ID 网格",
+      "description": "每格存储所属砖块的 1-based ID，所有砖块形状完全相同（2:1 矩形）",
+      "description-en": "Each cell stores the 1-based ID of its brick. All bricks are identical 2:1 rectangles."
+    }
+  ]
+}

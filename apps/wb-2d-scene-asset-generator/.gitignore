@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+.npm
+.eslintcache
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+*.tsbuildinfo
+
+# Test artifacts
+coverage/
+.nyc_output/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+Thumbs.db
+
+# Runtime
+logs/
+*.log
+.forgeax-runtime/
+
+# Vendored compile output
+vendor/dist/
+decoration_house_generation/
+pcg_generation
+UI_items_generation

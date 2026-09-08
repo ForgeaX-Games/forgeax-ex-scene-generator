@@ -1,0 +1,23 @@
+{
+  "id": "g_to_rig",
+  "label": "生成 RigSpec",
+  "name-en": "GToRig",
+  "description": "角色路终端编译器：把含 bone/skeleton/skin/animation 的 Geometry 编译成 RigSpec JSON（角色 IR，类比 URDF）——骨架 + 可蒙皮网格引用 + skin 参数 + 骨骼动画 clip，不含权重（权重由前端测地体素绑定按需求解）。可蒙皮网格来自 skin.mesh 显式引用，或 g_bake_object 合并所有 part 的 <sha>.glb（mesh_filename 输入端口）。",
+  "description-en": "Character terminal compiler: Geometry(bone/skeleton/skin/animation) → RigSpec JSON (character IR, URDF analogue) — skeleton + skinnable-mesh ref + skin params + bone clips, weights excluded (solved on the frontend). Skinnable mesh from an explicit skin.mesh ref or the g_bake_object merged <sha>.glb (mesh_filename port).",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["rig", "character", "export", "io"],
+  "tag_labels": ["骨架", "角色", "导出", "IO"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": true, "label": "几何", "description": "含 bone/skeleton/skin 的角色几何", "description-en": "Character geometry with bone/skeleton/skin." },
+    { "name": "mesh_filename", "type": "string", "required": false, "default": "", "label": "网格文件名", "description": "可蒙皮网格 <sha>.glb（通常接 g_bake_object.filename）", "description-en": "Skinnable mesh <sha>.glb (usually wired from g_bake_object.filename)." }
+  ],
+  "outputs": [
+    { "name": "rigSpec", "type": "object", "label": "RigSpec", "description": "角色 IR 对象（骨架+网格引用+skin参数+clips）", "description-en": "Character IR object (skeleton + mesh ref + skin params + clips)." },
+    { "name": "rig_json", "type": "string", "label": "RigSpec JSON", "description": "RigSpec 的 JSON 字符串", "description-en": "RigSpec as a JSON string." },
+    { "name": "report", "type": "object", "label": "报告", "description": "fingerprint / boneCount / clipCount / meshFilename", "description-en": "fingerprint / boneCount / clipCount / meshFilename." },
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "透传输入几何", "description-en": "Pass-through geometry." },
+    { "name": "error", "type": "string", "label": "错误", "description": "编译失败信息", "description-en": "Compile error message." }
+  ],
+  "projectTypes": ["asset3d"]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "building_carve",
+  "label": "建筑雕刻",
+  "description": "对输入网格非零区域的包围盒执行两层分段退线，再将退线结果以中心点为基准等比放大，使最终形状的包围盒与原始包围盒完全一致。",
+  "description-en": "Applies two-layer segmented setback on the bounding box of non-zero input cells, then scales the result up from its center so the final shape's bounding box matches the original.",
+  "icon": "俯视建筑平面图，扁平插画风格。主体是一个不规则多边形（类似矩形但四条边有不同程度的内缩和分段凹凸），深棕色填充，浅米黄色边线，背景简洁白色。风格类似像素游戏建筑俯视图，整洁现代，1-2种主色。",
+  "version": "1.0.0",
+  "tags": [
+    "building",
+    "setback",
+    "carve",
+    "footprint",
+    "procedural",
+    "structure"
+  ],
+  "tag_labels": [
+    "建筑",
+    "退线",
+    "雕刻",
+    "占地",
+    "程序化",
+    "结构"
+  ],
+  "inputs": [
+    {
+      "name": "gridList",
+      "type": "array",
+      "label": "输入网格列表",
+      "description": "源网格列表，每个网格非零像素的包围盒将作为建筑矩形区域",
+      "description-en": "List of source grids; the bounding box of non-zero pixels in each grid is used as the building rectangle."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间戳",
+      "description-en": "Random seed; 0 uses the current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "建筑占地列表",
+      "description": "与输入列表一一对应，每个网格中建筑区域=1，其余=0；形状包围盒与输入包围盒完全一致",
+      "description-en": "List of grids corresponding to input; building area=1, elsewhere=0; the bounding box matches the input exactly."
+    }
+  ],
+  "alg_tag": []
+}

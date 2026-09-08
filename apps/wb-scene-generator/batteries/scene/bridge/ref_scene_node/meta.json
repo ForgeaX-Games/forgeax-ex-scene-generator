@@ -1,0 +1,19 @@
+{
+  "id": "ref_scene_node",
+  "label": "场景引用节点",
+  "name-en": "RefSceneNode",
+  "description": "把另一个 .scene.ts 挂成 Ref Prim。mesh 可缺，缺几何时保留引用、不报错。",
+  "description-en": "Hang another .scene.ts as a Ref prim. Mesh is optional; missing geometry keeps the Ref.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "ref", "node"],
+  "inputs": [
+    { "name": "name", "type": "string", "access": "item", "required": true, "mode": "parameter", "label": "节点名" },
+    { "name": "module", "type": "string", "access": "item", "required": true, "mode": "parameter", "label": "模块路径" },
+    { "name": "exportName", "type": "string", "access": "item", "mode": "parameter", "label": "导出名" },
+    { "name": "mesh", "type": "mesh", "access": "item", "label": "mesh" }
+  ],
+  "outputs": [
+    { "name": "scene", "type": "scene", "access": "item", "label": "scene" },
+    { "name": "triangleCount", "type": "number", "access": "item", "label": "三角数" }
+  ]
+}

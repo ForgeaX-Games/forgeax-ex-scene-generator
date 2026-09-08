@@ -1,0 +1,56 @@
+{
+  "id": "heightfield_mesh",
+  "label": "高度场→网格",
+  "name-en": "HeightfieldMesh",
+  "description": "地形表面：把高度 Grid 挤成连续 mesh。格值是高程。接到 meshSceneNode。不要用 gridSceneNode 体素替代。",
+  "description-en": "Terrain surface: extrude a height Grid into a continuous mesh. Cell value is elevation. Wire to meshSceneNode. Do not substitute gridSceneNode voxels.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "mesh", "terrain", "heightfield"],
+  "tag_labels": ["场景", "桥接", "网格", "地形", "高度场"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "高度 grid",
+      "description": "高度场（grid[y][x] = 层高）。非零格成为地形。",
+      "description-en": "Height field (grid[y][x] = elevation). Non-zero cells become terrain."
+    },
+    {
+      "name": "mask",
+      "type": "grid",
+      "access": "item",
+      "label": "掩码",
+      "description": "可选。非零格保留；未接线时用 grid 自身非零作掩码。",
+      "description-en": "Optional occupancy mask. Non-zero keeps the cell; unwired uses non-zero heights."
+    },
+    {
+      "name": "cellSize",
+      "type": "number",
+      "access": "item",
+      "label": "格尺寸",
+      "description": "每格世界尺寸（米）。默认 1，与 Default 体素对齐。",
+      "description-en": "World size of one cell in metres. Default 1, matching Default voxels.",
+      "default": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mesh",
+      "type": "mesh",
+      "access": "item",
+      "label": "mesh",
+      "description": "连续地形三角网（positions/indices）。接到 mesh_to_node 或 Default Terrain。",
+      "description-en": "Continuous terrain triangles (positions/indices). Wire to mesh_to_node or Default Terrain."
+    },
+    {
+      "name": "triangleCount",
+      "type": "number",
+      "access": "item",
+      "label": "三角形数",
+      "description": "生成的三角形数量",
+      "description-en": "Number of triangles in the mesh."
+    }
+  ]
+}

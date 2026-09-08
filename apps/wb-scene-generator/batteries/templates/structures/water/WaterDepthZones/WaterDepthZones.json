@@ -1,0 +1,227 @@
+{
+  "id": "group_1786500000000_wdzone",
+  "name": "WaterDepthZones",
+  "nameEn": "WaterDepthZones",
+  "nodes": [
+    { "id": "node-wdz-pass-in", "opId": "scene_passthrough", "name": "SceneIn", "position": { "x": -1600, "y": 0 }, "params": {} },
+    { "id": "node-wdz-explode", "opId": "node_explode", "name": "Explode", "position": { "x": -1350, "y": -40 }, "params": {} },
+    { "id": "node-wdz-rect", "opId": "rect_grid", "name": "RectGrid", "position": { "x": -1100, "y": -40 }, "params": {} },
+    { "id": "node-wdz-slice", "opId": "voxel_slice", "name": "VoxelSlice", "position": { "x": -850, "y": 0 }, "params": {} },
+    { "id": "node-wdz-borderrect", "opId": "alg_region_border_is_rect", "name": "BorderIsRect", "position": { "x": -850, "y": 260 }, "params": {} },
+    { "id": "node-wdz-notrect", "opId": "not", "name": "OuterIsCoast", "position": { "x": -600, "y": 260 }, "params": {} },
+    { "id": "node-wdz-field", "opId": "alg_field_inner_distance", "name": "InnerDistance", "position": { "x": -580, "y": 60 }, "params": {} },
+    { "id": "node-wdz-warp1", "opId": "alg_field_fbm_warp", "name": "WarpShallow", "position": { "x": -580, "y": -220 }, "params": { "amplitude": 3, "featureScale": 0.07, "seed": 1337 } },
+    { "id": "node-wdz-warp2", "opId": "alg_field_fbm_warp", "name": "WarpMid", "position": { "x": -320, "y": -420 }, "params": { "amplitude": 2, "featureScale": 0.1, "seed": 4211 } },
+    { "id": "node-wdz-thr1", "opId": "alg_field_threshold", "name": "ThresholdShallow", "position": { "x": -320, "y": 40 }, "params": {} },
+    { "id": "node-wdz-thr2", "opId": "alg_field_threshold", "name": "ThresholdMid", "position": { "x": -60, "y": 260 }, "params": {} },
+
+    { "id": "node-wdz-g2n-shallow", "opId": "grid2node", "name": "ShallowNode", "position": { "x": 200, "y": -220 }, "params": { "name": "Shallow" } },
+    { "id": "group_1786500000000_tashallow", "opId": "__group__", "name": "ShallowAssetName", "position": { "x": 460, "y": -240 }, "params": { "groupId": "group_1786500000000_tashallow" } },
+    { "id": "node-wdz-add-shallow", "opId": "add_child", "name": "AddShallow", "position": { "x": 720, "y": -180 }, "params": {} },
+
+    { "id": "node-wdz-g2n-mid", "opId": "grid2node", "name": "MidNode", "position": { "x": 200, "y": 100 }, "params": { "name": "Mid" } },
+    { "id": "group_1786500000000_tamid", "opId": "__group__", "name": "MidAssetName", "position": { "x": 460, "y": 80 }, "params": { "groupId": "group_1786500000000_tamid" } },
+    { "id": "node-wdz-add-mid", "opId": "add_child", "name": "AddMid", "position": { "x": 980, "y": -80 }, "params": {} },
+
+    { "id": "node-wdz-g2n-deep", "opId": "grid2node", "name": "DeepNode", "position": { "x": 200, "y": 420 }, "params": { "name": "Deep" } },
+    { "id": "group_1786500000000_tadeep", "opId": "__group__", "name": "DeepAssetName", "position": { "x": 460, "y": 400 }, "params": { "groupId": "group_1786500000000_tadeep" } },
+    { "id": "node-wdz-add-deep", "opId": "add_child", "name": "AddDeep", "position": { "x": 1240, "y": 20 }, "params": {} },
+
+    { "id": "node-wdz-merge", "opId": "scene_merge_subtrees", "name": "Merge", "position": { "x": 1500, "y": 20 }, "params": {} },
+
+    { "id": "node-wdz-focus-shallow", "opId": "scene_focus_path", "name": "FocusShallow", "position": { "x": 1760, "y": -240 }, "params": {} },
+    { "id": "node-wdz-focus-mid", "opId": "scene_focus_path", "name": "FocusMid", "position": { "x": 1760, "y": 20 }, "params": {} },
+    { "id": "node-wdz-focus-deep", "opId": "scene_focus_path", "name": "FocusDeep", "position": { "x": 1760, "y": 280 }, "params": {} },
+
+    { "id": "node-wdz-pass-shallow", "opId": "scene_passthrough", "name": "ShallowOut", "position": { "x": 2020, "y": -240 }, "params": {} },
+    { "id": "node-wdz-pass-mid", "opId": "scene_passthrough", "name": "MidOut", "position": { "x": 2020, "y": 20 }, "params": {} },
+    { "id": "node-wdz-pass-deep", "opId": "scene_passthrough", "name": "DeepOut", "position": { "x": 2020, "y": 280 }, "params": {} },
+    { "id": "node-wdz-pass-scene", "opId": "scene_passthrough", "name": "SceneOut", "position": { "x": 2020, "y": 140 }, "params": {} },
+
+    { "id": "node-wdz-type-shallowpath", "opId": "type_string", "name": "ShallowPath", "position": { "x": 2020, "y": -340 }, "params": {} },
+    { "id": "node-wdz-type-midpath", "opId": "type_string", "name": "MidPath", "position": { "x": 2020, "y": 440 }, "params": {} },
+    { "id": "node-wdz-type-deeppath", "opId": "type_string", "name": "DeepPath", "position": { "x": 2020, "y": 540 }, "params": {} }
+  ],
+  "edges": [
+    { "id": "e-wdz-passin-explode", "source": { "nodeId": "node-wdz-pass-in", "port": "scene" }, "target": { "nodeId": "node-wdz-explode", "port": "scene" } },
+    { "id": "e-wdz-explode-rect-w", "source": { "nodeId": "node-wdz-explode", "port": "width" }, "target": { "nodeId": "node-wdz-rect", "port": "width" } },
+    { "id": "e-wdz-explode-rect-h", "source": { "nodeId": "node-wdz-explode", "port": "height" }, "target": { "nodeId": "node-wdz-rect", "port": "height" } },
+    { "id": "e-wdz-explode-slice-vox", "source": { "nodeId": "node-wdz-explode", "port": "voxels" }, "target": { "nodeId": "node-wdz-slice", "port": "voxels" } },
+    { "id": "e-wdz-rect-slice-grid", "source": { "nodeId": "node-wdz-rect", "port": "grid" }, "target": { "nodeId": "node-wdz-slice", "port": "grid" } },
+
+    { "id": "e-wdz-slice-borderrect", "source": { "nodeId": "node-wdz-slice", "port": "slice" }, "target": { "nodeId": "node-wdz-borderrect", "port": "region" } },
+    { "id": "e-wdz-borderrect-notrect", "source": { "nodeId": "node-wdz-borderrect", "port": "isRect" }, "target": { "nodeId": "node-wdz-notrect", "port": "value" } },
+    { "id": "e-wdz-notrect-field", "source": { "nodeId": "node-wdz-notrect", "port": "result" }, "target": { "nodeId": "node-wdz-field", "port": "includeOuterBoundary" } },
+
+    { "id": "e-wdz-slice-field-region", "source": { "nodeId": "node-wdz-slice", "port": "slice" }, "target": { "nodeId": "node-wdz-field", "port": "region" } },
+    { "id": "e-wdz-slice-thr1-region", "source": { "nodeId": "node-wdz-slice", "port": "slice" }, "target": { "nodeId": "node-wdz-thr1", "port": "region" } },
+
+    { "id": "e-wdz-field-warp1-field", "source": { "nodeId": "node-wdz-field", "port": "field" }, "target": { "nodeId": "node-wdz-warp1", "port": "field" } },
+    { "id": "e-wdz-slice-warp1-region", "source": { "nodeId": "node-wdz-slice", "port": "slice" }, "target": { "nodeId": "node-wdz-warp1", "port": "region" } },
+    { "id": "e-wdz-warp1-thr1-field", "source": { "nodeId": "node-wdz-warp1", "port": "field" }, "target": { "nodeId": "node-wdz-thr1", "port": "field" } },
+
+    { "id": "e-wdz-warp1-warp2-field", "source": { "nodeId": "node-wdz-warp1", "port": "field" }, "target": { "nodeId": "node-wdz-warp2", "port": "field" } },
+    { "id": "e-wdz-slice-warp2-region", "source": { "nodeId": "node-wdz-slice", "port": "slice" }, "target": { "nodeId": "node-wdz-warp2", "port": "region" } },
+
+    { "id": "e-wdz-thr1far-thr2-region", "source": { "nodeId": "node-wdz-thr1", "port": "far" }, "target": { "nodeId": "node-wdz-thr2", "port": "region" } },
+    { "id": "e-wdz-warp2-thr2-field", "source": { "nodeId": "node-wdz-warp2", "port": "field" }, "target": { "nodeId": "node-wdz-thr2", "port": "field" } },
+
+    { "id": "e-wdz-thr1-g2nshallow", "source": { "nodeId": "node-wdz-thr1", "port": "near" }, "target": { "nodeId": "node-wdz-g2n-shallow", "port": "grid" } },
+    { "id": "e-wdz-thr2-g2nmid", "source": { "nodeId": "node-wdz-thr2", "port": "near" }, "target": { "nodeId": "node-wdz-g2n-mid", "port": "grid" } },
+    { "id": "e-wdz-thr2-g2ndeep", "source": { "nodeId": "node-wdz-thr2", "port": "far" }, "target": { "nodeId": "node-wdz-g2n-deep", "port": "grid" } },
+
+    { "id": "e-wdz-g2nshallow-asset", "source": { "nodeId": "node-wdz-g2n-shallow", "port": "scene" }, "target": { "nodeId": "group_1786500000000_tashallow", "port": "in_0" } },
+    { "id": "e-wdz-asset-addshallow", "source": { "nodeId": "group_1786500000000_tashallow", "port": "out_0" }, "target": { "nodeId": "node-wdz-add-shallow", "port": "nodes" } },
+    { "id": "e-wdz-passin-addshallow", "source": { "nodeId": "node-wdz-pass-in", "port": "scene" }, "target": { "nodeId": "node-wdz-add-shallow", "port": "scene" } },
+
+    { "id": "e-wdz-g2nmid-asset", "source": { "nodeId": "node-wdz-g2n-mid", "port": "scene" }, "target": { "nodeId": "group_1786500000000_tamid", "port": "in_0" } },
+    { "id": "e-wdz-asset-addmid", "source": { "nodeId": "group_1786500000000_tamid", "port": "out_0" }, "target": { "nodeId": "node-wdz-add-mid", "port": "nodes" } },
+    { "id": "e-wdz-addshallow-addmid", "source": { "nodeId": "node-wdz-add-shallow", "port": "scene" }, "target": { "nodeId": "node-wdz-add-mid", "port": "scene" } },
+
+    { "id": "e-wdz-g2ndeep-asset", "source": { "nodeId": "node-wdz-g2n-deep", "port": "scene" }, "target": { "nodeId": "group_1786500000000_tadeep", "port": "in_0" } },
+    { "id": "e-wdz-asset-adddeep", "source": { "nodeId": "group_1786500000000_tadeep", "port": "out_0" }, "target": { "nodeId": "node-wdz-add-deep", "port": "nodes" } },
+    { "id": "e-wdz-addmid-adddeep", "source": { "nodeId": "node-wdz-add-mid", "port": "scene" }, "target": { "nodeId": "node-wdz-add-deep", "port": "scene" } },
+
+    { "id": "e-wdz-adddeep-merge", "source": { "nodeId": "node-wdz-add-deep", "port": "scene" }, "target": { "nodeId": "node-wdz-merge", "port": "scenes" } },
+
+    { "id": "e-wdz-merge-focusshallow", "source": { "nodeId": "node-wdz-merge", "port": "scene" }, "target": { "nodeId": "node-wdz-focus-shallow", "port": "scene" } },
+    { "id": "e-wdz-addshallow-focusshallow", "source": { "nodeId": "node-wdz-add-shallow", "port": "childPaths" }, "target": { "nodeId": "node-wdz-focus-shallow", "port": "path" } },
+    { "id": "e-wdz-focusshallow-passshallow", "source": { "nodeId": "node-wdz-focus-shallow", "port": "scene" }, "target": { "nodeId": "node-wdz-pass-shallow", "port": "scene" } },
+
+    { "id": "e-wdz-merge-focusmid", "source": { "nodeId": "node-wdz-merge", "port": "scene" }, "target": { "nodeId": "node-wdz-focus-mid", "port": "scene" } },
+    { "id": "e-wdz-addmid-focusmid", "source": { "nodeId": "node-wdz-add-mid", "port": "childPaths" }, "target": { "nodeId": "node-wdz-focus-mid", "port": "path" } },
+    { "id": "e-wdz-focusmid-passmid", "source": { "nodeId": "node-wdz-focus-mid", "port": "scene" }, "target": { "nodeId": "node-wdz-pass-mid", "port": "scene" } },
+
+    { "id": "e-wdz-merge-focusdeep", "source": { "nodeId": "node-wdz-merge", "port": "scene" }, "target": { "nodeId": "node-wdz-focus-deep", "port": "scene" } },
+    { "id": "e-wdz-adddeep-focusdeep", "source": { "nodeId": "node-wdz-add-deep", "port": "childPaths" }, "target": { "nodeId": "node-wdz-focus-deep", "port": "path" } },
+    { "id": "e-wdz-focusdeep-passdeep", "source": { "nodeId": "node-wdz-focus-deep", "port": "scene" }, "target": { "nodeId": "node-wdz-pass-deep", "port": "scene" } },
+
+    { "id": "e-wdz-merge-passscene", "source": { "nodeId": "node-wdz-merge", "port": "scene" }, "target": { "nodeId": "node-wdz-pass-scene", "port": "scene" } },
+
+    { "id": "e-wdz-addshallow-shallowpath", "source": { "nodeId": "node-wdz-add-shallow", "port": "childPaths" }, "target": { "nodeId": "node-wdz-type-shallowpath", "port": "value" } },
+    { "id": "e-wdz-addmid-midpath", "source": { "nodeId": "node-wdz-add-mid", "port": "childPaths" }, "target": { "nodeId": "node-wdz-type-midpath", "port": "value" } },
+    { "id": "e-wdz-adddeep-deeppath", "source": { "nodeId": "node-wdz-add-deep", "port": "childPaths" }, "target": { "nodeId": "node-wdz-type-deeppath", "port": "value" } }
+  ],
+  "position": { "x": -700, "y": 2900 },
+  "exposedInputs": [
+    { "portName": "in_0", "portType": "scene", "access": "tree", "sourceNodeId": "node-wdz-pass-in", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "in_1", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-thr1", "sourcePortName": "threshold", "order": 1, "customLabelEn": "ShallowThreshold" },
+    { "portName": "in_2", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-thr2", "sourcePortName": "threshold", "order": 2, "customLabelEn": "MidThreshold" },
+    { "portName": "in_3", "portType": "string", "access": "tree", "sourceNodeId": "group_1786500000000_tashallow", "sourcePortName": "in_1", "order": 3, "customLabelEn": "ShallowAsset" },
+    { "portName": "in_4", "portType": "string", "access": "tree", "sourceNodeId": "group_1786500000000_tamid", "sourcePortName": "in_1", "order": 4, "customLabelEn": "MidAsset" },
+    { "portName": "in_5", "portType": "string", "access": "tree", "sourceNodeId": "group_1786500000000_tadeep", "sourcePortName": "in_1", "order": 5, "customLabelEn": "DeepAsset" },
+    { "portName": "in_6", "portType": "string", "access": "item", "sourceNodeId": "node-wdz-g2n-shallow", "sourcePortName": "name", "order": 6, "customLabelEn": "ShallowName" },
+    { "portName": "in_7", "portType": "string", "access": "item", "sourceNodeId": "node-wdz-g2n-mid", "sourcePortName": "name", "order": 7, "customLabelEn": "MidName" },
+    { "portName": "in_8", "portType": "string", "access": "item", "sourceNodeId": "node-wdz-g2n-deep", "sourcePortName": "name", "order": 8, "customLabelEn": "DeepName" },
+    { "portName": "in_9", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-field", "sourcePortName": "connectivity", "hidden": true, "order": 9 },
+    { "portName": "in_10", "portType": "bool", "access": "item", "sourceNodeId": "node-wdz-field", "sourcePortName": "normalize", "hidden": true, "order": 10 },
+    { "portName": "in_11", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-slice", "sourcePortName": "z", "hidden": true, "order": 11 },
+    { "portName": "in_12", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-rect", "sourcePortName": "fillValue", "hidden": true, "order": 12 },
+    { "portName": "in_13", "portType": "string", "access": "item", "sourceNodeId": "node-wdz-g2n-shallow", "sourcePortName": "schema", "hidden": true, "order": 13 },
+    { "portName": "in_14", "portType": "string", "access": "item", "sourceNodeId": "node-wdz-g2n-shallow", "sourcePortName": "token", "hidden": true, "order": 14 },
+    { "portName": "in_15", "portType": "number", "access": "list", "sourceNodeId": "node-wdz-g2n-shallow", "sourcePortName": "zRange", "hidden": true, "order": 15 },
+    { "portName": "in_16", "portType": "number", "access": "list", "sourceNodeId": "node-wdz-g2n-mid", "sourcePortName": "zRange", "hidden": true, "order": 16 },
+    { "portName": "in_17", "portType": "number", "access": "list", "sourceNodeId": "node-wdz-g2n-deep", "sourcePortName": "zRange", "hidden": true, "order": 17 },
+    { "portName": "in_18", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-warp1", "sourcePortName": "amplitude", "order": 18, "customLabelEn": "ShallowWaviness" },
+    { "portName": "in_19", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-warp2", "sourcePortName": "amplitude", "order": 19, "customLabelEn": "MidWaviness" },
+    { "portName": "in_20", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-warp1", "sourcePortName": "featureScale", "order": 20, "customLabelEn": "FeatureScale" },
+    { "portName": "in_21", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-warp1", "sourcePortName": "seed", "order": 21, "customLabelEn": "Seed" },
+    { "portName": "in_22", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-warp2", "sourcePortName": "featureScale", "hidden": true, "order": 22 },
+    { "portName": "in_23", "portType": "number", "access": "item", "sourceNodeId": "node-wdz-warp2", "sourcePortName": "seed", "hidden": true, "order": 23 }
+  ],
+  "exposedOutputs": [
+    { "portName": "out_0", "portType": "scene", "access": "tree", "sourceNodeId": "node-wdz-pass-scene", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "out_1", "portType": "scene", "access": "tree", "sourceNodeId": "node-wdz-pass-shallow", "sourcePortName": "scene", "order": 1, "customLabelEn": "Shallow" },
+    { "portName": "out_2", "portType": "scene", "access": "tree", "sourceNodeId": "node-wdz-pass-mid", "sourcePortName": "scene", "order": 2, "customLabelEn": "Mid" },
+    { "portName": "out_3", "portType": "scene", "access": "tree", "sourceNodeId": "node-wdz-pass-deep", "sourcePortName": "scene", "order": 3, "customLabelEn": "Deep" },
+    { "portName": "out_4", "portType": "string", "access": "tree", "sourceNodeId": "node-wdz-type-shallowpath", "sourcePortName": "value", "order": 4, "customLabelEn": "ShallowPath" },
+    { "portName": "out_5", "portType": "string", "access": "tree", "sourceNodeId": "node-wdz-type-midpath", "sourcePortName": "value", "order": 5, "customLabelEn": "MidPath" },
+    { "portName": "out_6", "portType": "string", "access": "tree", "sourceNodeId": "node-wdz-type-deeppath", "sourcePortName": "value", "order": 6, "customLabelEn": "DeepPath" }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_1786500000000_tashallow",
+      "name": "ShallowAssetName",
+      "nameEn": "ShallowAssetName",
+      "nodes": [
+        { "id": "node-wdz-shallow-name", "opId": "text_panel", "name": "asset_name_key", "position": { "x": 1823, "y": -400 }, "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 } },
+        { "id": "node-wdz-shallow-type", "opId": "text_panel", "name": "asset_type_key", "position": { "x": 2103, "y": -403 }, "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "node-wdz-shallow-tile", "opId": "text_panel", "name": "tile_value", "position": { "x": 2103, "y": -234 }, "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "node-wdz-shallow-set1", "opId": "scene_set_attribute", "name": "set_asset_name", "position": { "x": 2005, "y": -561 }, "params": {} },
+        { "id": "node-wdz-shallow-set2", "opId": "scene_set_attribute", "name": "set_asset_type", "position": { "x": 2275, "y": -553 }, "params": {} },
+        { "id": "node-wdz-shallow-str", "opId": "type_string", "name": "asset_name_value", "position": { "x": 1797, "y": -501 }, "params": { "value": "浅水" } }
+      ],
+      "edges": [
+        { "id": "e-wdz-shallow-name-set1", "source": { "nodeId": "node-wdz-shallow-name", "port": "output" }, "target": { "nodeId": "node-wdz-shallow-set1", "port": "key" } },
+        { "id": "e-wdz-shallow-set1-set2", "source": { "nodeId": "node-wdz-shallow-set1", "port": "scene" }, "target": { "nodeId": "node-wdz-shallow-set2", "port": "scene" } },
+        { "id": "e-wdz-shallow-type-set2", "source": { "nodeId": "node-wdz-shallow-type", "port": "output" }, "target": { "nodeId": "node-wdz-shallow-set2", "port": "key" } },
+        { "id": "e-wdz-shallow-tile-set2", "source": { "nodeId": "node-wdz-shallow-tile", "port": "output" }, "target": { "nodeId": "node-wdz-shallow-set2", "port": "value" } },
+        { "id": "e-wdz-shallow-str-set1", "source": { "nodeId": "node-wdz-shallow-str", "port": "value" }, "target": { "nodeId": "node-wdz-shallow-set1", "port": "value" } }
+      ],
+      "position": { "x": 1823, "y": -400 },
+      "exposedInputs": [
+        { "portName": "in_0", "portType": "scene", "access": "item", "sourceNodeId": "node-wdz-shallow-set1", "sourcePortName": "scene" },
+        { "portName": "in_1", "portType": "string", "access": "tree", "sourceNodeId": "node-wdz-shallow-str", "sourcePortName": "value" }
+      ],
+      "exposedOutputs": [
+        { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "node-wdz-shallow-set2", "sourcePortName": "scene" }
+      ]
+    },
+    {
+      "id": "group_1786500000000_tamid",
+      "name": "MidAssetName",
+      "nameEn": "MidAssetName",
+      "nodes": [
+        { "id": "node-wdz-mid-name", "opId": "text_panel", "name": "asset_name_key", "position": { "x": 1823, "y": 100 }, "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 } },
+        { "id": "node-wdz-mid-type", "opId": "text_panel", "name": "asset_type_key", "position": { "x": 2103, "y": 97 }, "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "node-wdz-mid-tile", "opId": "text_panel", "name": "tile_value", "position": { "x": 2103, "y": 266 }, "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "node-wdz-mid-set1", "opId": "scene_set_attribute", "name": "set_asset_name", "position": { "x": 2005, "y": -61 }, "params": {} },
+        { "id": "node-wdz-mid-set2", "opId": "scene_set_attribute", "name": "set_asset_type", "position": { "x": 2275, "y": -53 }, "params": {} },
+        { "id": "node-wdz-mid-str", "opId": "type_string", "name": "asset_name_value", "position": { "x": 1797, "y": -1 }, "params": { "value": "中水" } }
+      ],
+      "edges": [
+        { "id": "e-wdz-mid-name-set1", "source": { "nodeId": "node-wdz-mid-name", "port": "output" }, "target": { "nodeId": "node-wdz-mid-set1", "port": "key" } },
+        { "id": "e-wdz-mid-set1-set2", "source": { "nodeId": "node-wdz-mid-set1", "port": "scene" }, "target": { "nodeId": "node-wdz-mid-set2", "port": "scene" } },
+        { "id": "e-wdz-mid-type-set2", "source": { "nodeId": "node-wdz-mid-type", "port": "output" }, "target": { "nodeId": "node-wdz-mid-set2", "port": "key" } },
+        { "id": "e-wdz-mid-tile-set2", "source": { "nodeId": "node-wdz-mid-tile", "port": "output" }, "target": { "nodeId": "node-wdz-mid-set2", "port": "value" } },
+        { "id": "e-wdz-mid-str-set1", "source": { "nodeId": "node-wdz-mid-str", "port": "value" }, "target": { "nodeId": "node-wdz-mid-set1", "port": "value" } }
+      ],
+      "position": { "x": 1823, "y": 100 },
+      "exposedInputs": [
+        { "portName": "in_0", "portType": "scene", "access": "item", "sourceNodeId": "node-wdz-mid-set1", "sourcePortName": "scene" },
+        { "portName": "in_1", "portType": "string", "access": "tree", "sourceNodeId": "node-wdz-mid-str", "sourcePortName": "value" }
+      ],
+      "exposedOutputs": [
+        { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "node-wdz-mid-set2", "sourcePortName": "scene" }
+      ]
+    },
+    {
+      "id": "group_1786500000000_tadeep",
+      "name": "DeepAssetName",
+      "nameEn": "DeepAssetName",
+      "nodes": [
+        { "id": "node-wdz-deep-name", "opId": "text_panel", "name": "asset_name_key", "position": { "x": 1823, "y": 600 }, "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 } },
+        { "id": "node-wdz-deep-type", "opId": "text_panel", "name": "asset_type_key", "position": { "x": 2103, "y": 597 }, "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "node-wdz-deep-tile", "opId": "text_panel", "name": "tile_value", "position": { "x": 2103, "y": 766 }, "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "node-wdz-deep-set1", "opId": "scene_set_attribute", "name": "set_asset_name", "position": { "x": 2005, "y": 439 }, "params": {} },
+        { "id": "node-wdz-deep-set2", "opId": "scene_set_attribute", "name": "set_asset_type", "position": { "x": 2275, "y": 447 }, "params": {} },
+        { "id": "node-wdz-deep-str", "opId": "type_string", "name": "asset_name_value", "position": { "x": 1797, "y": 499 }, "params": { "value": "深水" } }
+      ],
+      "edges": [
+        { "id": "e-wdz-deep-name-set1", "source": { "nodeId": "node-wdz-deep-name", "port": "output" }, "target": { "nodeId": "node-wdz-deep-set1", "port": "key" } },
+        { "id": "e-wdz-deep-set1-set2", "source": { "nodeId": "node-wdz-deep-set1", "port": "scene" }, "target": { "nodeId": "node-wdz-deep-set2", "port": "scene" } },
+        { "id": "e-wdz-deep-type-set2", "source": { "nodeId": "node-wdz-deep-type", "port": "output" }, "target": { "nodeId": "node-wdz-deep-set2", "port": "key" } },
+        { "id": "e-wdz-deep-tile-set2", "source": { "nodeId": "node-wdz-deep-tile", "port": "output" }, "target": { "nodeId": "node-wdz-deep-set2", "port": "value" } },
+        { "id": "e-wdz-deep-str-set1", "source": { "nodeId": "node-wdz-deep-str", "port": "value" }, "target": { "nodeId": "node-wdz-deep-set1", "port": "value" } }
+      ],
+      "position": { "x": 1823, "y": 600 },
+      "exposedInputs": [
+        { "portName": "in_0", "portType": "scene", "access": "item", "sourceNodeId": "node-wdz-deep-set1", "sourcePortName": "scene" },
+        { "portName": "in_1", "portType": "string", "access": "tree", "sourceNodeId": "node-wdz-deep-str", "sourcePortName": "value" }
+      ],
+      "exposedOutputs": [
+        { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "node-wdz-deep-set2", "sourcePortName": "scene" }
+      ]
+    }
+  ]
+}

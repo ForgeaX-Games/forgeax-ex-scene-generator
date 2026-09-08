@@ -1,0 +1,76 @@
+{
+  "id": "grid_crop",
+  "label": "网格裁剪",
+  "description": "从二维网格中裁剪指定区域（起始行列 + 宽高）",
+  "description-en": "Crop a rectangular region from a 2D grid by start row/col and width/height.",
+  "icon": "一个大方格网格中间有一个虚线矩形选区高亮标记裁剪区域，扁平插画风格，简洁小图标，主色2种",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "basic",
+    "grid",
+    "crop",
+    "slice",
+    "transform"
+  ],
+  "tag_labels": [
+    "基础",
+    "网格",
+    "裁剪",
+    "切片",
+    "变换"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "待裁剪的二维网格",
+      "description-en": "Input 2D grid to crop."
+    },
+    {
+      "name": "startRow",
+      "type": "number",
+      "label": "起始行",
+      "default": 0,
+      "description": "裁剪区域左上角的行索引（从 0 开始）",
+      "description-en": "Top-left row index of the crop region (0-based)."
+    },
+    {
+      "name": "startCol",
+      "type": "number",
+      "label": "起始列",
+      "default": 0,
+      "description": "裁剪区域左上角的列索引（从 0 开始）",
+      "description-en": "Top-left column index of the crop region (0-based)."
+    },
+    {
+      "name": "cropWidth",
+      "type": "number",
+      "label": "裁剪宽度",
+      "default": 0,
+      "description": "裁剪区域的列数，0 表示裁到最右列",
+      "description-en": "Number of columns to crop; 0 means crop to the right edge."
+    },
+    {
+      "name": "cropHeight",
+      "type": "number",
+      "label": "裁剪高度",
+      "default": 0,
+      "description": "裁剪区域的行数，0 表示裁到最底行",
+      "description-en": "Number of rows to crop; 0 means crop to the bottom edge."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "裁剪网格",
+      "description": "裁剪后的二维网格",
+      "description-en": "Cropped 2D grid."
+    }
+  ],
+  "alg_tag": [
+    "裁剪指定网格"
+  ]
+}

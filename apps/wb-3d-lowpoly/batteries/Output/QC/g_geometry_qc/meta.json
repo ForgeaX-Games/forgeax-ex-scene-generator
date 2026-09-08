@@ -1,0 +1,151 @@
+{
+  "id": "g_geometry_qc",
+  "label": "几何 QC（连通/孤岛/AABB）",
+  "name-en": "GGeometryQC",
+  "description": "对 Geometry 做静态质量与语义校验（已吸收并删除原 g_validate）：⓪ SSA/类型校验（id 唯一、ref 存在/类型匹配）+ URDF 语义（至少一个 part、joint.type 合法、joint parent/child 必须是 part、joint 不能成环）；① part-joint 连通分量，孤岛 part（有 joint 时才 fail valid）；② 每个 part 的 shape 是否能解析出 AABB；③ joint origin 距 parent / child AABB 中心是否合理；④ 兄弟 part AABB 两两重叠（rest pose，note/warning 信息信号，不 fail valid）；⑤ 几何丰富度信号（仅裸 primitive 时提示）；⑥ 悬空件（无关节路径到根，fatal error）；⑦ 孤立 profile（未被 extrude/loft/revolve/part 消费）；⑧ revolve 误喂 XY profile；⑨ mesh-backed 布尔误用（pipe/sweep/section_loft 进布尔）。输出结构化 signals 供修复循环读取；valid/report/count 是唯一权威校验出口。只读分析，不改 Geometry。",
+  "description-en": "Static quality + semantic checks on a Geometry (absorbed the now-deleted g_validate): (0) SSA/type validation (unique ids, ref existence/type match) plus URDF semantics (at least one part, valid joint.type, joint parent/child must be a part, no joint cycles); (1) connected components from joints (fatal only when joints exist); (2) parts whose shape cannot reduce to an AABB; (3) joint origins far from parent/child AABB centers; (4) sibling AABB overlaps in rest pose (informational note/warning, never fails valid); (5) primitive-only richness hint; (6) floating links with no joint path to root (fatal); (7) orphan profiles not consumed by extrude/loft/revolve/part; (8) revolve fed an XY-centered profile; (9) mesh-backed boolean misuse (pipe/sweep/section_loft into a boolean). Emits a structured signals array for fix loops; valid/report/count is the single authoritative validation surface. Read-only.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "qc",
+    "validate"
+  ],
+  "tag_labels": [
+    "几何",
+    "质量",
+    "校验"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry",
+      "description-en": "Upstream Geometry."
+    },
+    {
+      "name": "joint_origin_tol",
+      "type": "number",
+      "label": "joint origin 容差 (m)",
+      "default": 0.05,
+      "description": "joint origin 距 parent / child AABB 任一面距离超出该值 → 报告。默认给一个略宽松的 0.05。",
+      "description-en": "Joint origin tolerance from parent/child AABB face. Defaults to 0.05m."
+    },
+    {
+      "name": "overlap_tol",
+      "type": "number",
+      "label": "AABB 重叠容差 (m)",
+      "default": 0.001,
+      "description": "兄弟 part 之间 AABB 三轴最小重叠深度都超过该值才算重叠（≤ 0 = 仅接触不算干涉）。",
+      "description-en": "Minimum overlap depth on every axis to flag interpenetration."
+    },
+    {
+      "name": "check_overlaps",
+      "type": "bool",
+      "label": "检查兄弟 part 重叠",
+      "default": true,
+      "description": "rest pose 下兄弟 part AABB 两两干涉检测；关闭后只跑连通 / shape / joint origin 三项。",
+      "description-en": "Toggle pairwise sibling AABB overlap check."
+    },
+    {
+      "name": "allow_pairs",
+      "type": "array",
+      "required": false,
+      "label": "允许重叠 pair",
+      "description": "允许的 part pair 字符串数组，格式为 partA:partB 或 partA,partB。",
+      "description-en": "Allowed overlapping part pairs, as partA:partB or partA,partB strings."
+    },
+    {
+      "name": "allow_joints",
+      "type": "array",
+      "required": false,
+      "label": "允许 joint origin",
+      "description": "允许跳过 joint-origin 距离检查的 joint id 数组。",
+      "description-en": "Joint ids allowed to skip joint-origin distance findings."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "原样透传，便于继续接下游",
+      "description-en": "Passthrough geometry for downstream piping."
+    },
+    {
+      "name": "valid",
+      "type": "bool",
+      "label": "通过",
+      "description": "无任何 issue 时为 true",
+      "description-en": "True when no issues are found."
+    },
+    {
+      "name": "report",
+      "type": "string",
+      "label": "报告",
+      "description": "多行人类可读报告（每行一个 issue）；valid 时通常为空，但仍可能含非致命的 primitive_only 提示行",
+      "description-en": "Multiline human-readable report (one issue per line); usually empty when valid, but may still carry the non-fatal primitive_only hint line."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "issue 数",
+      "description": "issue 总数",
+      "description-en": "Total issue count."
+    },
+    {
+      "name": "islands",
+      "type": "number",
+      "label": "连通分量数",
+      "description": "part 通过 joint 形成的连通分量数；> 1 表示有孤岛",
+      "description-en": "Number of connected components among parts via joints."
+    },
+    {
+      "name": "missing_aabb",
+      "type": "number",
+      "label": "AABB 缺失 part 数",
+      "description": "shape 无法解析出 AABB 的 part 数",
+      "description-en": "Parts whose shape cannot be reduced to an AABB."
+    },
+    {
+      "name": "overlaps",
+      "type": "number",
+      "label": "AABB 重叠对数",
+      "description": "rest pose 下相互重叠的兄弟 part 对数（note/warning 信息信号，不 fail valid）",
+      "description-en": "Number of sibling part AABB overlap pairs (informational note/warning, does not fail valid)."
+    },
+    {
+      "name": "primitive_only",
+      "type": "bool",
+      "label": "仅裸 primitive",
+      "description": "true = 模型里所有 shape 都是裸 primitive（box/cylinder/...），完全没有富几何——没有 CSG 实体、没有 Parts（含齿轮）/Architecture、也没有烘焙 mesh。**与是否用 part/joint 组装无关**：把一堆 box 包成 part 再连 joint 仍是堆方块。建议重新拆解（非致命，不影响 valid）",
+      "description-en": "true = every shape in the model is a bare primitive (box/cylinder/...) with no rich geometry at all — no CSG solid, no Parts (incl. gears)/Architecture, no baked mesh. Independent of whether parts/joints are used: boxes wrapped in parts and joints are still stacked boxes. Reconsider the decomposition. Non-fatal; does not affect valid."
+    },
+    {
+      "name": "floating_links",
+      "type": "number",
+      "label": "悬空件数",
+      "description": "有 joint 时，无关节路径到根树的 part 数（fatal error — 运行时会被 URDF 丢弃）",
+      "description-en": "Parts with no joint path to the root tree (fatal error — dropped at runtime by URDF)."
+    },
+    {
+      "name": "orphan_profiles",
+      "type": "number",
+      "label": "孤立 profile 数",
+      "description": "未被 extrude/loft/revolve/part 消费的 profile 数（会烘成 ~2mm 预览薄板）",
+      "description-en": "Profiles not consumed by extrude/loft/revolve/part (bake to a ~2mm preview slab)."
+    },
+    {
+      "name": "signals",
+      "type": "object",
+      "label": "结构化信号",
+      "description": "结构化 signals 数组：{code, severity(error/warning/note), message, ids?}。涵盖 ssa_error/no_part/joint_invalid_type/joint_endpoint_not_part/joint_cycle/islands/aabb_missing/joint_origin/aabb_overlap/primitive_only/floating_link/orphan_profile/revolve_xy_profile/mesh_boolean_misuse，供修复循环按 code 读取。",
+      "description-en": "Structured signals array {code, severity, message, ids?} covering ssa_error/no_part/joint_invalid_type/joint_endpoint_not_part/joint_cycle/islands/aabb_missing/joint_origin/aabb_overlap/primitive_only/floating_link/orphan_profile/revolve_xy_profile/mesh_boolean_misuse for fix loops."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

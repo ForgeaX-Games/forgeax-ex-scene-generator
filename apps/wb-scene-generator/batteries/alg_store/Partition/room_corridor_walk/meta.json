@@ -1,0 +1,154 @@
+{
+  "id": "room_corridor_walk",
+  "label": "房间走廊漫步",
+  "description": "从中心出发交替放置矩形房间和走廊，走廊随机四方向延伸，支持分支生成，类似泰拉瑞亚地牢风格",
+  "description-en": "Generates rooms and corridors by alternating placement from a starting point; corridors extend in random cardinal directions with optional branching, similar to Terraria-style dungeons.",
+  "icon": "俯视图中几个矩形房间被弯折的走廊连接，走廊从中心向外分叉蔓延，扁平几何风格，主色橙蓝两色",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "dungeon",
+    "room",
+    "corridor",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "地牢",
+    "房间",
+    "走廊",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "default": 50,
+      "min": 32,
+      "max": 512,
+      "description": "输出网格的宽度",
+      "description-en": "Width of the output grid."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "default": 50,
+      "min": 32,
+      "max": 512,
+      "description": "输出网格的高度",
+      "description-en": "Height of the output grid."
+    },
+    {
+      "name": "maxRooms",
+      "type": "number",
+      "label": "最大房间数",
+      "default": 6,
+      "min": 1,
+      "max": 100,
+      "description": "生成的最大房间数量",
+      "description-en": "Maximum number of rooms to generate."
+    },
+    {
+      "name": "minRoomSize",
+      "type": "number",
+      "label": "最小房间尺寸",
+      "default": 4,
+      "min": 3,
+      "max": 30,
+      "description": "房间最小边长",
+      "description-en": "Minimum room side length."
+    },
+    {
+      "name": "maxRoomSize",
+      "type": "number",
+      "label": "最大房间尺寸",
+      "default": 8,
+      "min": 3,
+      "max": 50,
+      "description": "房间最大边长",
+      "description-en": "Maximum room side length."
+    },
+    {
+      "name": "minCorridorLen",
+      "type": "number",
+      "label": "最短走廊",
+      "default": 2,
+      "min": 1,
+      "max": 20,
+      "description": "走廊最小长度",
+      "description-en": "Minimum corridor length."
+    },
+    {
+      "name": "maxCorridorLen",
+      "type": "number",
+      "label": "最长走廊",
+      "default": 5,
+      "min": 1,
+      "max": 40,
+      "description": "走廊最大长度",
+      "description-en": "Maximum corridor length."
+    },
+    {
+      "name": "corridorWidth",
+      "type": "number",
+      "label": "走廊宽度",
+      "default": 2,
+      "min": 1,
+      "max": 5,
+      "description": "走廊宽度（像素）",
+      "description-en": "Corridor width in pixels."
+    },
+    {
+      "name": "branchProb",
+      "type": "number",
+      "label": "分支概率",
+      "default": 0.3,
+      "description": "每次放置房间后产生分支的概率（0~1），值越大分支越多",
+      "description-en": "Probability of creating a branch after placing a room (0~1); higher values create more branches."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 使用默认种子",
+      "description-en": "Random seed; 0 uses default seed."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "房间网格",
+      "description": "房间网格：0=空白，正整数=房间ID（1, 2, 3...）",
+      "description-en": "Room grid: 0=empty, positive integers=room IDs (1, 2, 3...)."
+    },
+    {
+      "name": "corridorGrid",
+      "type": "grid",
+      "label": "走廊网格",
+      "description": "走廊网格：0=空白，1=走廊",
+      "description-en": "Corridor grid: 0=empty, 1=corridor."
+    },
+    {
+      "name": "rooms",
+      "type": "dict",
+      "label": "房间列表",
+      "description": "房间信息数组 [{id, x, y, w, h, centerX, centerY}]（外层 rank=1：N 个 dict）",
+      "description-en": "Array of room info: [{id, x, y, w, h, centerX, centerY}] (rank=1)."
+    },
+    {
+      "name": "numRooms",
+      "type": "number",
+      "label": "房间数量",
+      "description": "实际生成的房间总数",
+      "description-en": "Total number of rooms actually generated."
+    }
+  ],
+  "alg_tag": [
+    "房间-走廊交替放置生成地牢"
+  ]
+}

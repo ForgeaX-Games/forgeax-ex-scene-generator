@@ -1,0 +1,22 @@
+{
+  "id": "g_profile_regular_polygon",
+  "label": "正多边形 Profile",
+  "name-en": "GProfileRegularPolygon",
+  "description": "创建位于 XY 平面的正多边形 profile。",
+  "description-en": "Create a regular polygon profile in the XY plane.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "profile", "csg", "cad"],
+  "tag_labels": ["几何", "Profile", "CSG", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "radius", "type": "number", "label": "半径", "default": 0.5 },
+    { "name": "sides", "type": "number", "label": "边数", "default": 6 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

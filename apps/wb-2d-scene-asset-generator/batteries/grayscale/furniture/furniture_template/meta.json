@@ -1,0 +1,97 @@
+{
+  "id": "furniture_template",
+  "label": "家具模板",
+  "name-en": "FurnitureTemplate",
+  "description": "按「家具类型 + 朝向」程序化绘制可识别的室内家具 2.5D 剪影，渲染成灰度图（与房屋模板同角色：作形状底图喂给生图节点）。视角为 2.5D 斜投影（深度朝右上后退、能看到一部分顶面），而非纯水平立面。支持桌子/椅子/衣柜/床；朝向 下=正面 / 上=背面 / 左 / 右——并非每种家具都区分所有朝向（椅子四向皆有、床左右为侧影、衣柜正面有双门、桌子基本无朝向）。采用扁平灰度 + 外轮廓描边，使家具轮廓与部件接缝清晰可辨。输出灰度图（同时归档到顶层 .forgeax/grayscale/）。",
+  "description-en": "Procedurally draw a recognizable 2.5D indoor-furniture silhouette from a furniture 'kind' + 'orientation', rendered as a grayscale map (same role as the house template: a shape base fed to the image-gen node). Uses a 2.5D cavalier-oblique view (depth receding to the upper-right so part of the top face is visible) rather than a flat elevation. Supports table/chair/wardrobe/bed; orientation down=front / up=back / left / right — not every kind distinguishes all orientations (chair has all four, bed shows a side profile for left/right, wardrobe has doors on the front, table is essentially orientation-agnostic). Flat grayscale + outline keeps the silhouette and part seams crisp. Output grayscale image(s); also archived under the top-level .forgeax/grayscale/.",
+  "icon": "深色画布上叠一把简化椅子的灰度立面剪影（座面+靠背+椅腿），扁平插画风格，主色青绿与深灰两种，小尺寸可辨。",
+  "version": "1.0.0",
+  "tags": [
+    "furniture",
+    "template",
+    "grayscale",
+    "indoor",
+    "render",
+    "decoration"
+  ],
+  "tag_labels": [
+    "家具",
+    "模板",
+    "灰度图",
+    "室内",
+    "渲染",
+    "装饰"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "kind",
+      "type": "string",
+      "access": "item",
+      "required": false,
+      "default": "chair",
+      "options": ["table", "chair", "wardrobe", "bed"],
+      "label": "家具类型",
+      "description": "要绘制的家具：table=桌子 / chair=椅子 / wardrobe=衣柜 / bed=床。",
+      "description-en": "Furniture to draw: table / chair / wardrobe / bed."
+    },
+    {
+      "name": "orientation",
+      "type": "string",
+      "access": "item",
+      "required": false,
+      "default": "down",
+      "options": ["down", "up", "left", "right"],
+      "label": "朝向",
+      "description": "朝向：down=正面 / up=背面 / left=左 / right=右。并非每种家具都区分所有朝向——椅子四向皆有意义，床左右为侧影、下=床尾、上=床头，衣柜正面有双门、其余为素柜面，桌子各向同形。",
+      "description-en": "Facing: down=front / up=back / left / right. Not every kind distinguishes all orientations — chair uses all four; bed shows a side profile for left/right, foot view for down, head view for up; wardrobe has doors on the front and plain faces otherwise; table looks the same in every direction."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "list",
+      "label": "灰度图",
+      "description": "渲染出的家具灰度图引用（资产库 alias）；同时归档到顶层 .forgeax/grayscale/。",
+      "description-en": "Rendered furniture grayscale image ref (asset-library alias); also archived under the top-level .forgeax/grayscale/."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串。",
+      "description-en": "Error message on failure; empty string on success."
+    }
+  ],
+  "params": [
+    {
+      "name": "imageSize",
+      "type": "number",
+      "default": 300,
+      "label": "图像尺寸",
+      "description": "输出灰度图的边长（像素，正方形）。",
+      "description-en": "Output grayscale square edge length (pixels).",
+      "min": 16,
+      "max": 1024
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "绘制随机变体（如桌腿数）的种子；0 = 使用非确定性随机。",
+      "description-en": "RNG seed for drawing variants (e.g. table leg count); 0 = non-deterministic random."
+    }
+  ],
+  "alg_tag": [
+    "家具灰度图",
+    "2.5D斜投影",
+    "扁平纯色着色",
+    "外轮廓描边",
+    "室内装饰"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "black_collision_silhouette",
+  "name": "generate_black_collision",
+  "tag": "scene_asset",
+  "template": "生成一张黑白染色剪影图像，白色背景，把图中物体看成一个 3D 立体物体 [item_name]，将物体内的和地面实际接触的底面实心碰撞区域范围绘制为实心纯黑色 (#000000)，其余部分保留透明和极细线条边框。\n\n约束：\n- 不包含杂色\n- 不包含文字\n- 不包含阴影\n- 不超出物体实际图像范围\n- 不改变物体姿态\n- 黑色图层置于最高层级",
+  "vars": ["item_name"],
+  "createdAt": 1750210000000
+}

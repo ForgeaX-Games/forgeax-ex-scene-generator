@@ -1,0 +1,99 @@
+{
+  "id": "bsp_rect_gen",
+  "label": "BSP矩形生成",
+  "description": "以九宫格指定的中心点为圆心，在单张网格区域内向外播撒一片紧凑的BSP矩形地块，可控制数量、最小/最大宽高；输出为一张多值网格，每个地块一个递增 id。",
+  "description-en": "Scatter compact BSP rectangles around a center point (specified by 3x3 grid position) within a single grid region. Each parcel gets an increasing id in one multi-value grid.",
+  "icon": "俯视矩形分割平面图，深色区域中央有若干大小不一的白色矩形由中心向外紧密排布，扁平插画风格，简洁小图标，主色2种。",
+  "version": "3.1.0",
+  "tags": ["bsp", "rect", "rectangle", "zone", "partition", "procedural", "layout", "parcel", "scatter", "point", "datatree"],
+  "tag_labels": ["BSP", "矩形", "分区", "地块", "程序生成", "布局", "播撒", "点", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "单张源掩码网格（number[][]），所有非零单元格均视为可放置矩形的合法区域；网格列表由 DataTree 引擎自动逐张处理",
+      "description-en": "Single source mask grid (number[][]); any non-zero cell is treated as the valid region. Grid lists are handled per-item by the DataTree engine."
+    },
+    {
+      "name": "centerPoint",
+      "type": "point2d",
+      "access": "item",
+      "label": "中心点",
+      "description": "播撒中心的精确采样点 point2d（x→列, y→行）；连线时优先生效并覆盖 centerPosition，超出区域会裁剪到边界内；未连线时回退九宫格 centerPosition",
+      "description-en": "Exact scatter-center point2d (x→column, y→row); when connected it overrides centerPosition (clamped into the region). Falls back to centerPosition when not connected."
+    },
+    {
+      "name": "centerPosition",
+      "type": "number",
+      "access": "item",
+      "label": "中心点位置",
+      "description": "1-9 对应九宫格九个位置（1=左上 2=上中 3=右上 4=左中 5=中央 6=右中 7=左下 8=下中 9=右下）；centerPoint 未连线时生效，未连线时每次随机生成",
+      "description-en": "1-9 maps to 3x3 grid positions (1=top-left...9=bottom-right); used when centerPoint is not connected, random each run when neither is set."
+    },
+    {
+      "name": "targetCount",
+      "type": "number",
+      "access": "item",
+      "label": "目标矩形数",
+      "description": "期望生成的矩形数量，算法从中心点向外依次放置，直到达到数量或区域用尽，默认 10",
+      "description-en": "Target number of rectangles placed from center outward. Default 10.",
+      "default": 10
+    },
+    {
+      "name": "minSize",
+      "type": "number",
+      "access": "item",
+      "label": "最小宽高",
+      "description": "每个矩形的最小边长（宽和高均不小于此值，单元格数），默认 2",
+      "description-en": "Minimum side length (both width and height) of each rectangle in grid cells. Default 2.",
+      "default": 4
+    },
+    {
+      "name": "maxSize",
+      "type": "number",
+      "access": "item",
+      "label": "最大宽高",
+      "description": "每个矩形的最大边长（宽和高均不超过此值，单元格数），默认 12，0=不限制",
+      "description-en": "Maximum side length of each rectangle in grid cells. Default 12; 0 = no limit.",
+      "default": 12
+    },
+    {
+      "name": "splitRatio",
+      "type": "number",
+      "access": "item",
+      "label": "分割随机度",
+      "description": "BSP分割位置的随机范围（0.1–0.49），越小分割越均匀，默认 0.35",
+      "description-en": "BSP split position range (0.1–0.49); smaller = more uniform splits. Default 0.35.",
+      "default": 0.35
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 表示使用当前时间（每次结果不同）",
+      "description-en": "Random seed; 0 uses current timestamp for a different result each run.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "地块网格",
+      "description": "单张多值网格：每个地块一个递增 id，空白处为 0；可接 grid_split_by_value 拆分为独立地块",
+      "description-en": "Single multi-value grid: each parcel gets an increasing id, 0 elsewhere; pipe to grid_split_by_value to separate parcels."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "地块名称清单，格式 [{id, name:'地块 N', type:'tile'}]，与网格中的 id 一一对应",
+      "description-en": "Parcel name list [{id, name:'地块 N', type:'tile'}] aligned with the ids in the grid."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "str_to_list_branches",
+  "label": "字符串列表转分支",
+  "name-en": "ListToBranches",
+  "description": "把形如 [a,b,c] 的列表字符串解析后，每个元素炸成一个独立子分支（DataTree），可直接喂给 item 端口逐个 fanout。容错：元素可不加引号（如 [test2,test3]）。",
+  "description-en": "Parse a list string like [a,b,c] and explode each element into its own DataTree child branch (access:list), ready to fan out into item ports. Tolerant: elements may be unquoted (e.g. [test2,test3]).",
+  "icon": "一个橙色列表方块右侧分裂成多条独立的绿色分支线，每条末端一个圆点，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["string", "list", "array", "datatree", "branches", "spread", "transform"],
+  "tag_labels": ["字符串", "列表", "数组", "数据树", "分支", "展开", "转换"],
+  "inputs": [
+    {
+      "name": "str",
+      "type": "string",
+      "label": "输入字符串",
+      "description": "形如 [...] 的列表字符串；每个元素会成为一个独立子分支。元素可加引号或不加引号。",
+      "description-en": "A list string like [...]; each element becomes its own child branch. Elements may be quoted or unquoted."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "items",
+      "type": "any",
+      "access": "list",
+      "label": "分支列表",
+      "description": "解析后的元素列表，每个元素作为一个独立子分支输出（与 grid_split_by_value 的 grids 同形态）。",
+      "description-en": "Parsed elements, each emitted as its own child branch (same shape as grid_split_by_value's grids)."
+    }
+  ]
+}

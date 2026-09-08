@@ -1,0 +1,41 @@
+{
+  "id": "any_to_list",
+  "label": "任意值转列表",
+  "description": "将多个任意类型的输入值按顺序收集为一个列表，支持动态多端口",
+  "description-en": "Collect multiple any-type inputs into a list in order, with dynamic port support.",
+  "icon": "多条不同颜色的箭头从左侧汇入一个橙色方括号列表符号，表示多值收集，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["any", "list", "array", "collect", "transform", "pack"],
+  "tag_labels": ["任意", "列表", "数组", "收集", "转换", "打包"],
+  "inputs": [
+    {
+      "name": "item_0",
+      "type": "any",
+      "label": "值0",
+      "description": "第0个输入值",
+      "description-en": "First input value."
+    },
+    {
+      "name": "item_1",
+      "type": "any",
+      "label": "值1",
+      "description": "第1个输入值；连接后自动追加新槽位",
+      "description-en": "Second input value; connecting it appends a new slot."
+    }
+  ],
+  "dynamicInputs": {
+    "prefix": "item_",
+    "labelTemplate": "值$i",
+    "minCount": 2,
+    "type": "any"
+  },
+  "outputs": [
+    {
+      "name": "list",
+      "type": "array",
+      "label": "列表",
+      "description": "由所有已连接输入值按顺序组成的列表",
+      "description-en": "List of all connected input values in order."
+    }
+  ]
+}

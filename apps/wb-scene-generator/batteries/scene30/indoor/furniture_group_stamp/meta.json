@@ -1,0 +1,107 @@
+{
+  "id": "furniture_group_stamp",
+  "label": "家具组坐标放置器",
+  "description": "将家具组 mask 按坐标盖印到室内空间中，mask 非零值直接对应组内子组件编号，输出编号 = 旧列表最大值 + 组内相对编号。",
+  "description-en": "Stamps a furniture group mask at given coordinates; each non-zero mask value maps to a group sub-component, output rank = max old rank + relative rank.",
+  "icon": "扁平插画风格图标，主视觉为一个浅色网格平面上有多个不同颜色的小方块组成一个家具组轮廓从上方落下，右下角有坐标十字标记，主色蓝紫、橙色和浅灰，整体简洁现代。",
+  "version": "1.0.0",
+  "tags": ["furniture", "group", "stamp", "placement", "grid", "indoor"],
+  "tag_labels": ["家具", "组合", "盖印", "放置", "网格", "室内"],
+  "inputs": [
+    {
+      "name": "furnitureMask",
+      "type": "grid",
+      "label": "家具组 mask",
+      "description": "家具组形状网格，非零值=组内子组件编号（与 groupIndex 的 rank 对应），0=过道/边界",
+      "description-en": "Furniture group mask; non-zero value = sub-component relative rank (matching groupIndex), 0=aisle/border."
+    },
+    {
+      "name": "groupIndex",
+      "type": "array",
+      "label": "家具组编号列表",
+      "description": "家具组内各子组件的编号列表，每项含 rank（组内相对编号）、name、isGroup，rank 与 mask 非零值对应",
+      "description-en": "Index of sub-components in the furniture group; each has rank (relative, matching mask value), name, isGroup."
+    },
+    {
+      "name": "x",
+      "type": "number",
+      "label": "X 坐标（列偏移）",
+      "description": "家具有效区左上角相对室内可用区左上角的列偏移（向右为正）",
+      "description-en": "Column offset of furniture non-zero top-left from the room usable top-left (positive = right).",
+      "default": 0
+    },
+    {
+      "name": "y",
+      "type": "number",
+      "label": "Y 坐标（行偏移）",
+      "description": "家具有效区左上角相对室内可用区左上角的行偏移（向下为正）",
+      "description-en": "Row offset of furniture non-zero top-left from the room usable top-left (positive = down).",
+      "default": 0
+    },
+    {
+      "name": "roomGrid",
+      "type": "grid",
+      "label": "室内空间网格",
+      "description": "室内空间网格，1=可用格，0=墙/出界",
+      "description-en": "Room layout grid; 1=usable cell, 0=wall/out-of-bounds."
+    },
+    {
+      "name": "maskA",
+      "type": "grid",
+      "label": "家具实体网格",
+      "description": "家具实体占用网格，0=空，非零=已有家具编号",
+      "description-en": "Furniture body occupancy grid; 0=empty, non-zero=existing furniture rank."
+    },
+    {
+      "name": "maskB",
+      "type": "grid",
+      "label": "过道预留网格",
+      "description": "过道预留网格，0=空，1=过道已占用",
+      "description-en": "Aisle reservation grid; 0=empty, 1=occupied."
+    },
+    {
+      "name": "oldFurnitureIndex",
+      "type": "array",
+      "label": "旧家具编号列表",
+      "description": "旧家具编号列表，无旧家具时传 []，新组件编号 = 旧列表最大 rank + 组内相对 rank",
+      "description-en": "Existing furniture index; pass [] if none. New rank = max old rank + relative rank."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "newMaskA",
+      "type": "grid",
+      "label": "新家具实体网格",
+      "description": "写入家具组后的家具实体占用网格",
+      "description-en": "Updated furniture body occupancy grid after stamping the group."
+    },
+    {
+      "name": "newMaskB",
+      "type": "grid",
+      "label": "新过道预留网格",
+      "description": "写入过道后的过道预留网格",
+      "description-en": "Updated aisle reservation grid after stamping."
+    },
+    {
+      "name": "furnitureIndex",
+      "type": "array",
+      "label": "新家具编号列表",
+      "description": "所有家具编号列表（旧+新），新条目 rank = 旧列表最大值 + 组内相对 rank，严格对应 maskA",
+      "description-en": "All furniture index entries (old + new); new rank = max old rank + relative rank, matching maskA exactly."
+    },
+    {
+      "name": "placementFailed",
+      "type": "bool",
+      "label": "放置失败",
+      "description": "碰撞检测不通过时为 true，此时输出原始网格和原始编号列表",
+      "description-en": "True if collision check failed; outputs are unchanged in that case."
+    },
+    {
+      "name": "failReason",
+      "type": "string",
+      "label": "失败原因",
+      "description": "碰撞检测失败的具体原因，放置成功时为空字符串",
+      "description-en": "Description of why placement failed; empty string on success."
+    }
+  ]
+}

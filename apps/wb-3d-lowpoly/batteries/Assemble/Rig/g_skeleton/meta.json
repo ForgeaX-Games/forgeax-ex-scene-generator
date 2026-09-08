@@ -1,0 +1,22 @@
+{
+  "id": "g_skeleton",
+  "label": "骨架",
+  "name-en": "GSkeleton",
+  "description": "在 Geometry DSL 末尾追加 skeleton(root=<bone>) 一行，声明角色骨架的根骨；其余骨骼通过 bone(parent=...) 链隐式挂到 root。出现 skeleton/skin 即触发角色路编译（g_skin_qc → g_bake_object → g_to_rig → rig_preview）。",
+  "description-en": "Append a `skeleton(root=<bone>)` line declaring the character skeleton's root bone; other bones attach implicitly via bone(parent=...). Presence of skeleton/skin routes the DSL down the character path.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["rig", "skeleton", "character"],
+  "tag_labels": ["骨架", "角色", "蒙皮"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry", "description-en": "Upstream Geometry." },
+    { "name": "root_id", "type": "string", "required": true, "default": "", "label": "根骨 id", "description": "根 bone 的 id", "description-en": "Root bone id." },
+    { "name": "id", "type": "string", "required": false, "default": "", "label": "id", "description": "自定义 id；空=自动 skel{n}", "description-en": "Custom id; empty=auto skel{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 skeleton 行后的 Geometry", "description-en": "Geometry after appending the skeleton line." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 skeleton 的 id", "description-en": "Id of the new skeleton line." },
+    { "name": "error", "type": "string", "label": "错误", "description": "非致命错误信息", "description-en": "Non-fatal error string." }
+  ],
+  "projectTypes": ["asset3d"]
+}

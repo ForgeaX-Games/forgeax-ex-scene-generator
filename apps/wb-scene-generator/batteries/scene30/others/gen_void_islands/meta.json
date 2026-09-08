@@ -1,0 +1,76 @@
+{
+  "id": "gen_void_islands",
+  "label": "虚空岛屿生成",
+  "description": "Prim最小生成树算法连接圆形岛屿，生成漂浮在虚空中的平台群地图。出生点、传送门、装饰物均以掩码形式写入网格。",
+  "description-en": "Prim's MST island connector generating floating circular platforms in void space with bridges and edge glow rings. Spawn, portal and decors are encoded as mask IDs in the grid.",
+  "icon": "扁平插画风格小图标。深紫色虚空背景，圆形浅紫平台岛屿散布其中，细线桥梁连接各岛，岛屿边缘有发光光晕，主色2种。",
+  "version": "2.0.0",
+  "tags": ["chaos", "void", "islands", "mst", "procedural"],
+  "tag_labels": ["混沌", "虚空", "岛屿", "最小生成树", "程序生成"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "description": "网格列数，最小40",
+      "description-en": "Grid column count, minimum 40.",
+      "default": 68
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "description": "网格行数，最小40",
+      "description-en": "Grid row count, minimum 40.",
+      "default": 68
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    },
+    {
+      "name": "islandCount",
+      "type": "number",
+      "label": "岛屿数量",
+      "description": "生成的岛屿数量，3-20",
+      "description-en": "Number of islands to generate, 3-20.",
+      "default": 10
+    },
+    {
+      "name": "islandMinR",
+      "type": "number",
+      "label": "岛屿最小半径",
+      "description": "岛屿圆形半径最小值（格数）",
+      "description-en": "Minimum island circle radius in tiles.",
+      "default": 4
+    },
+    {
+      "name": "islandMaxR",
+      "type": "number",
+      "label": "岛屿最大半径",
+      "description": "岛屿圆形半径最大值（格数）",
+      "description-en": "Maximum island circle radius in tiles.",
+      "default": 8
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "虚空岛屿网格：1=虚空,2=平台,3=桥梁,4=记忆碎片,5=边缘光晕,6=传送门,7=出生点,8=虚空方尖碑,9=虚空晶体",
+      "description-en": "Void islands grid: 1=void, 2=platform, 3=bridge, 4=memory fragment, 5=edge glow, 6=portal, 7=spawn, 8=obelisk, 9=crystal."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "各掩码ID与中文名称的映射列表（仅含网格中实际出现的ID）",
+      "description-en": "Mask ID to Chinese name mapping list (only IDs that appear in the grid)."
+    }
+  ]
+}

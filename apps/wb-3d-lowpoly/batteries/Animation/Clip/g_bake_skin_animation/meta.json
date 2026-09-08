@@ -1,0 +1,157 @@
+{
+  "id": "g_bake_skin_animation",
+  "label": "烘焙骨骼动画 clip",
+  "name-en": "GBakeSkinAnimation",
+  "description": "角色路动画烘焙：校验骨骼旋转 q(t)，并可用 root_motion=[{\"t\":秒,\"x\":米,\"y\":米,\"z\":米},...] 添加模型根帧（Z 向上、X 向前）中相对根骨 bind position 的位移。旋转与根位移共用 fps、duration、linear/step 采样规则；支持仅根运动或与骨骼旋转组合。输出自包含 q_json，根位移逐帧存为 rootTranslation。",
+  "description-en": "Character animation bake: validate bone rotation q(t) and optionally sample root_motion=[{\"t\":sec,\"x\":m,\"y\":m,\"z\":m},...] as bind-relative displacement in the model root frame (Z up, X forward). Rotation and root motion share fps, duration and linear/step sampling. Root-only and combined clips are supported; self-contained q_json stores rootTranslation per frame.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "animation",
+    "clip",
+    "bone",
+    "skin",
+    "character",
+    "glb"
+  ],
+  "tag_labels": [
+    "动画",
+    "clip",
+    "骨骼",
+    "蒙皮",
+    "角色",
+    "GLB"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry（提供 bone 以校验通道键）",
+      "description-en": "Upstream Geometry (supplies bones to validate channel keys against)."
+    },
+    {
+      "name": "motion",
+      "type": "motion",
+      "required": false,
+      "label": "运动 q(t)",
+      "description": "q(t) 端口：clip 对象或 JSON 字符串（优先级最高）",
+      "description-en": "q(t) port: a clip object or JSON string (highest priority)."
+    },
+    {
+      "name": "q_json",
+      "type": "string",
+      "required": false,
+      "label": "q(t) 完整 JSON",
+      "default": "",
+      "description": "完整逐帧 q(t) JSON：{ \"channels\": { 骨骼名: number[] }, \"rootTranslation\"?: [[x,y,z],...], \"fps\"?, \"frameCount\"?, \"loop\"? }。逐帧数组长度须等于 frameCount",
+      "description-en": "Full per-frame q(t) JSON: { \"channels\": { boneName: number[] }, \"rootTranslation\"?: [[x,y,z],...], \"fps\"?, \"frameCount\"?, \"loop\"? }. Per-frame arrays must match frameCount."
+    },
+    {
+      "name": "keyframes",
+      "type": "string",
+      "required": false,
+      "label": "稀疏关键帧",
+      "default": "",
+      "description": "稀疏关键帧 JSON：{ 骨骼名: [{\"t\":秒,\"q\":弯曲弧度}, ...], ... }。按 fps/duration 均匀采样、关键帧间按 interpolation 插值；每骨的点自动按 t 排序。仅当 motion 与 q_json 都为空时使用——agent 对话描述动作首选。",
+      "description-en": "Sparse keyframes JSON: { boneName: [{\"t\":sec,\"q\":bendRadians}, ...], ... }. Sampled uniformly by fps/duration, interpolated between keyframes per `interpolation`; each bone's points are sorted by t. Used only when both `motion` and `q_json` are empty — the preferred input when authoring from a chat."
+    },
+    {
+      "name": "root_motion",
+      "type": "string",
+      "required": false,
+      "label": "根位移关键帧",
+      "default": "",
+      "description": "稀疏根位移 JSON：[{\"t\":秒,\"x\":米,\"y\":米,\"z\":米}, ...]。模型根帧 Z 向上、X 向前，值相对 skeleton root 的 bind position；与骨骼关键帧共用采样设置。",
+      "description-en": "Sparse root translation JSON: [{\"t\":sec,\"x\":m,\"y\":m,\"z\":m}, ...]. Model-root frame is Z-up/X-forward and values are relative to the skeleton root bind position; sampling settings are shared with bone keyframes."
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "required": false,
+      "label": "时长（秒）",
+      "default": 0,
+      "description": "仅 keyframes 生效：clip 总时长（秒）；0 或省略 = 自动取所有关键帧里最大的 t",
+      "description-en": "Only applies to `keyframes`: total clip duration in seconds; 0 or omitted = auto (max `t`)."
+    },
+    {
+      "name": "interpolation",
+      "type": "string",
+      "required": false,
+      "label": "插值方式",
+      "default": "linear",
+      "description": "仅 keyframes 生效：\"linear\"（默认）或 \"step\"（阶梯保持）",
+      "description-en": "Only applies to `keyframes`: \"linear\" (default) or \"step\" (hold previous keyframe)."
+    },
+    {
+      "name": "q_path",
+      "type": "string",
+      "required": false,
+      "label": "q(t) 文件路径",
+      "default": "",
+      "description": "项目相对（或绝对）路径的 q(t) JSON 文件；仅当 motion、q_json、keyframes 都为空时读取",
+      "description-en": "Project-relative (or absolute) path to a q(t) JSON file; read only when the others are empty."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "label": "clip 名",
+      "default": "",
+      "description": "覆盖 clip 名；空 = 用 q(t) 里的 name",
+      "description-en": "Override the clip name; empty = keep the q(t)'s name."
+    },
+    {
+      "name": "fps",
+      "type": "number",
+      "required": false,
+      "label": "帧率",
+      "default": 30,
+      "description": "采样帧率（帧/秒）",
+      "description-en": "Sample rate (frames/second)."
+    },
+    {
+      "name": "loop",
+      "type": "bool",
+      "required": false,
+      "label": "循环",
+      "default": false,
+      "description": "是否循环播放（写入 clip.loop）",
+      "description-en": "Whether the clip loops (written to clip.loop)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加 animation 语句后的 Geometry（校验失败时原样透传）",
+      "description-en": "Geometry after appending the animation statement (passthrough on failure)."
+    },
+    {
+      "name": "animation",
+      "type": "object",
+      "label": "动画 clip",
+      "description": "已解析 clip（{ name, fps, frameCount, loop?, channels, rootTranslation? }）",
+      "description-en": "Parsed clip ({ name, fps, frameCount, loop?, channels, rootTranslation? })."
+    },
+    {
+      "name": "report",
+      "type": "object",
+      "label": "报告",
+      "description": "fps / frameCount / durationSec / channelCount / boneChannels / skeletonRoot / rootMotion",
+      "description-en": "fps / frameCount / durationSec / channelCount / boneChannels / skeletonRoot / rootMotion."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "非致命错误信息（校验失败时返回，几何原样透传）",
+      "description-en": "Non-fatal error string (returned on failure; geometry passes through)."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

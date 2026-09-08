@@ -1,0 +1,142 @@
+{
+  "id": "dla_aggregation",
+  "label": "扩散限制聚集",
+  "description": "模拟扩散限制聚集（DLA）过程：粒子随机游走并在接触现有结构时粘附，生成珊瑚、闪电、矿脉、霜花等分形分支图案",
+  "description-en": "Simulates Diffusion-Limited Aggregation: particles random-walk and stick on contact with existing structure, producing fractal branching patterns like coral, lightning, mineral veins, and frost crystals.",
+  "icon": "从中心向外辐射的不规则分支结构，枝条越远越细，形如珊瑚或闪电，有分形感，扁平插画风格，简洁小图标，主色2种",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "dla",
+    "fractal",
+    "aggregation",
+    "branching",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "DLA",
+    "分形",
+    "聚集",
+    "分支",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "输入掩码网格，非零区域为有效仿真域，粒子仅在此区域内行走和聚集",
+      "description-en": "Input mask grid; non-zero cells define the simulation domain where particles walk and aggregate."
+    },
+    {
+      "name": "particleCount",
+      "type": "number",
+      "label": "粒子数量",
+      "default": 300,
+      "min": 10,
+      "max": 5000,
+      "description": "要聚集的粒子总数，决定最终结构的大小和复杂度",
+      "description-en": "Total number of particles to aggregate; controls final structure size and complexity."
+    },
+    {
+      "name": "seedMode",
+      "type": "string",
+      "label": "种子模式",
+      "default": "center",
+      "options": [
+        "center",
+        "random",
+        "bottom",
+        "edges",
+        "scatter"
+      ],
+      "description": "初始种子放置方式：center=掩码中心, random=随机位置, bottom=底边, edges=掩码边缘, scatter=均匀散布（最远点采样）",
+      "description-en": "Seed placement: center=mask center, random=random positions, bottom=bottom edge, edges=mask boundary, scatter=evenly spread (farthest-point sampling)."
+    },
+    {
+      "name": "seedCount",
+      "type": "number",
+      "label": "种子数量",
+      "default": 1,
+      "min": 1,
+      "max": 20,
+      "description": "初始种子格子数量。1=经典单点DLA（从中心生长），多个种子会产生多个聚集中心最终合并",
+      "description-en": "Number of initial seed cells. 1=classic single-point DLA; multiple seeds create multiple growth centers that eventually merge."
+    },
+    {
+      "name": "stickiness",
+      "type": "number",
+      "label": "粘附概率",
+      "default": 1.0,
+      "min": 0.01,
+      "max": 1.0,
+      "description": "粒子接触结构时的粘附概率。1.0=立即粘附（稀疏树枝状）, 0.3~0.5=中等密度, 0.01~0.1=非常密实紧凑。低粘附率使粒子在表面反复弹跳后再粘附，填充间隙产生更密实的结构",
+      "description-en": "Probability of sticking on contact. 1.0=instant stick (sparse dendrites), 0.3-0.5=moderate density, 0.01-0.1=very dense/compact. Low values let particles bounce and explore the surface before sticking."
+    },
+    {
+      "name": "neighborMode",
+      "type": "string",
+      "label": "邻接模式",
+      "default": "8",
+      "options": [
+        "4",
+        "8"
+      ],
+      "description": "邻接检测模式：4=上下左右（更锐利的分支），8=含对角线（更粗壮圆润的分支）",
+      "description-en": "Adjacency mode: 4=cardinal only (sharper branches), 8=includes diagonals (thicker, rounder branches)."
+    },
+    {
+      "name": "biasAngle",
+      "type": "number",
+      "label": "偏向角度",
+      "default": 0,
+      "min": 0,
+      "max": 360,
+      "description": "结构偏向生长的方向（度）：0=向上生长, 90=向右生长, 180=向下生长, 270=向左生长。仅在偏向强度>0时生效",
+      "description-en": "Preferred growth direction (degrees): 0=grow upward, 90=grow rightward, 180=grow downward, 270=grow leftward. Only effective when biasStrength > 0."
+    },
+    {
+      "name": "biasStrength",
+      "type": "number",
+      "label": "偏向强度",
+      "default": 0,
+      "min": 0,
+      "max": 0.5,
+      "description": "生长偏向的强度（0~0.5）。0=各向同性（均匀径向生长），>0=偏向 biasAngle 方向生长。0.1=轻微偏向, 0.3=明显偏向, 0.5=强偏向",
+      "description-en": "Growth bias strength (0-0.5). 0=isotropic growth, >0=preferential growth toward biasAngle. 0.1=slight, 0.3=noticeable, 0.5=strong."
+    },
+    {
+      "name": "maxStepsPerParticle",
+      "type": "number",
+      "label": "最大步数",
+      "default": 5000,
+      "min": 100,
+      "max": 50000,
+      "description": "每个粒子的最大随机行走步数，超过后放弃该粒子。通常无需调整；仅在网格非常大时可能需要增加",
+      "description-en": "Max random-walk steps per particle before abandonment. Usually no need to adjust; increase only for very large grids."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0=使用当前时间戳自动生成。不同种子产生不同的分支形态",
+      "description-en": "Random seed; 0 uses the current timestamp. Different seeds produce different branching patterns."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "聚集网格",
+      "description": "输出网格：聚集结构区域值为 1，其余为 0",
+      "description-en": "Output grid: aggregated cluster cells = 1, all others = 0."
+    }
+  ],
+  "alg_tag": [
+    "粒子随机游走粘附生成分形分支结构",
+    "可用于生成珊瑚、闪电、矿脉、洞穴裂纹等有机纹理"
+  ]
+}

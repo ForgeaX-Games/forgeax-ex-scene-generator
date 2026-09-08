@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Capsule primitive battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <rect x="8" y="5" width="8" height="14" rx="4" fill="#b7ff5a" fill-opacity=".18" stroke="#e7f5ee" stroke-width="1.5"/>
+  <ellipse cx="12" cy="8.6" rx="4" ry="1.5" fill="none" stroke="#e7f5ee" stroke-width="1.3"/>
+</svg>

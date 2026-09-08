@@ -1,0 +1,30 @@
+{
+  "id": "gta_zones",
+  "label": "GTA 城市规划区",
+  "description": "基于 gta_heightmap 的地形分层（沙滩/平原/丘陵/山地）生成 GTA 风格区域划分：平原细分为商业核心、住宅、工业港、中央公园；丘陵转为大面积山地绿化；山地保留自然；海岸保留沙滩。",
+  "description-en": "Generates GTA-style zoning from gta_heightmap terrain layers (beach/plains/hills/mountain): subdivides plains into CBD, residential, industrial harbor and central parks; turns hills into large greening areas; keeps mountains natural and coast as beach.",
+  "icon": "海岛地图按地形划分：平原城市街区、丘陵绿化、山地自然、海岸沙滩。",
+  "version": "3.0.0",
+  "tags": ["gta", "zone", "district", "urban", "planning", "terrain"],
+  "tag_labels": ["GTA", "功能区", "街区", "城市规划", "地形"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid",    "type": "grid",   "label": "陆地掩码" },
+    { "name": "plainsGrid",   "type": "grid",   "label": "平原掩码",  "description": "gta_heightmap 的平原层；城市开发区在此生成。" },
+    { "name": "beachGrid",    "type": "grid",   "label": "沙滩掩码",  "description": "gta_heightmap 的沙滩层；保留为沙滩区。" },
+    { "name": "hillsGrid",    "type": "grid",   "label": "丘陵掩码",  "description": "gta_heightmap 的丘陵层；转为山地绿化。" },
+    { "name": "mountainGrid", "type": "grid",   "label": "山地掩码",  "description": "gta_heightmap 的山地层；保留为自然山地。" },
+    { "name": "heightMap",    "type": "grid",   "label": "高度图（可选）", "description": "用于坡度评分；地形掩码缺失时按阈值回退派生。" },
+    { "name": "seed",         "type": "number", "label": "随机种子",   "default": 20260602 },
+    { "name": "coastInset",   "type": "number", "label": "海岸退让",   "default": 6,  "min": 0,   "max": 60,
+      "description": "商业核心距海岸的最小退让；工业港带紧贴此距离。" },
+    { "name": "parkDensity",  "type": "number", "label": "公园密度",   "default": 1,  "min": 0,   "max": 4,
+      "description": "中央公园数量倍率，0 表示不生成公园。" }
+  ],
+  "outputs": [
+    { "name": "zoneGrid",       "type": "grid",  "label": "功能区网格" },
+    { "name": "buildableMask",  "type": "grid",  "label": "可建设掩码" },
+    { "name": "outputGrid",     "type": "grid",  "label": "功能区预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

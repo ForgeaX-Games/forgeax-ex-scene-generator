@@ -1,0 +1,26 @@
+{
+  "id": "gta_city_arterials",
+  "label": "GTA 城市主干路",
+  "description": "基于城市功能片区生成环路、放射路和跨区主干路，形成开放世界城市交通骨架。",
+  "description-en": "Generates ring roads, radial roads, and cross-district arterials for a GTA-style city skeleton.",
+  "icon": "城市中心向外放射并带环线的主干路。",
+  "version": "1.0.0",
+  "tags": ["gta", "city", "arterial", "ring", "road"],
+  "tag_labels": ["GTA", "城市", "主干路", "环路"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "districtGrid", "type": "grid", "label": "功能片区" },
+    { "name": "buildableMask", "type": "grid", "label": "可建设掩码" },
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 20260612 },
+    { "name": "roadWidth", "type": "number", "label": "主路宽度", "default": 2, "min": 0, "max": 8 },
+    { "name": "ringCount", "type": "number", "label": "环路数量", "default": 2, "min": 0, "max": 4 },
+    { "name": "radialCount", "type": "number", "label": "放射路数量", "default": 7, "min": 3, "max": 16 }
+  ],
+  "outputs": [
+    { "name": "arterialGrid", "type": "grid", "label": "主干路" },
+    { "name": "roadGrid", "type": "grid", "label": "道路网格" },
+    { "name": "outputGrid", "type": "grid", "label": "主路预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

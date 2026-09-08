@@ -1,0 +1,26 @@
+{
+  "id": "pine_forest_scatter",
+  "label": "松林植被群",
+  "name-en": "PineForestScatter",
+  "description": "程序化在山谷边缘山坡与林带掩码内散布白模低多边形松树植被群。",
+  "description-en": "Procedurally scatter low-poly white-box pine trees across forest zones and hillside slopes.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "vegetation", "forest", "nature"],
+  "inputs": [
+    { "name": "heightGrid", "type": "grid", "access": "item", "required": true, "label": "高度场" },
+    { "name": "forestMask", "type": "grid", "access": "item", "label": "森林掩码" },
+    { "name": "count", "type": "number", "access": "item", "defaultValue": 24, "mode": "parameter", "control": true, "label": "树木数量" },
+    { "name": "seed", "type": "number", "access": "item", "defaultValue": 42, "mode": "parameter", "control": true, "label": "随机种子" },
+    { "name": "minHeight", "type": "number", "access": "item", "defaultValue": 3.5, "mode": "parameter", "label": "最小树高" },
+    { "name": "maxHeight", "type": "number", "access": "item", "defaultValue": 6.5, "mode": "parameter", "label": "最大树高" },
+    { "name": "avoidPoints", "type": "point2d", "access": "list", "label": "避让点" },
+    { "name": "avoidRadius", "type": "number", "access": "item", "defaultValue": 3.6, "mode": "parameter", "label": "避让半径" },
+    { "name": "plazaCenter", "type": "point2d", "access": "item", "label": "广场中心" },
+    { "name": "plazaRadius", "type": "number", "access": "item", "defaultValue": 7.4, "mode": "parameter", "label": "广场半径" }
+  ],
+  "outputs": [
+    { "name": "mesh", "type": "mesh", "access": "item", "label": "植被Mesh" },
+    { "name": "points", "type": "point2d", "access": "list", "label": "植被点位" },
+    { "name": "triangleCount", "type": "number", "access": "item", "label": "三角面数" }
+  ]
+}

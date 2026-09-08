@@ -1,0 +1,26 @@
+{
+  "id": "gta_city_districts",
+  "label": "GTA 城市功能片区",
+  "description": "从陆地和高度图生成城市级功能片区：商业核心、连续住宅、工业港区、公园缓冲和郊区。",
+  "description-en": "Generates city-scale GTA districts: CBD, residential fabric, industrial harbor, parks, and suburbs.",
+  "icon": "地形上规划出完整城市功能片区。",
+  "version": "1.0.0",
+  "tags": ["gta", "city", "district", "planning", "urban"],
+  "tag_labels": ["GTA", "城市", "功能区", "规划"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "heightMap", "type": "grid", "label": "高度图" },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 20260611 },
+    { "name": "coastInset", "type": "number", "label": "海岸退让", "default": 6, "min": 0, "max": 80 },
+    { "name": "urbanCoverage", "type": "number", "label": "城区覆盖率", "default": 0.78, "min": 0.15, "max": 1 },
+    { "name": "centerBias", "type": "number", "label": "中心聚集度", "default": 0.62, "min": 0, "max": 1 }
+  ],
+  "outputs": [
+    { "name": "districtGrid", "type": "grid", "label": "功能片区" },
+    { "name": "buildableMask", "type": "grid", "label": "可建设掩码" },
+    { "name": "centerGrid", "type": "grid", "label": "城市中心点" },
+    { "name": "outputGrid", "type": "grid", "label": "片区预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

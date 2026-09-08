@@ -1,0 +1,88 @@
+{
+  "id": "house_footprint",
+  "label": "房屋底面",
+  "name-en": "HouseFootprint",
+  "description": "与「房屋模板(HouseTemplate)」严格对应的底面黑白图。输入同一份只表达房顶的二维数组字符串 [[1,1,0],[1,1,1],...]（1=房顶，0=空）与「高度」，输出一张黑白图：黑色 = 房屋接触地面的底面（footprint），白色 = 背景。复用 HouseTemplate 完全相同的扩展(ExpandMask)与等比缩放居中(ResizeMask)几何，因此底面在画面中的尺寸、位置与 HouseTemplate 渲染图逐像素对应，可作为掩码/对齐参考。也兼容三维数组 [[[...]],[[...]]] 批量产出多张。",
+  "description-en": "Black-and-white footprint map that strictly corresponds to HouseTemplate. Takes the same roof-only 2D array string [[1,1,0],[1,1,1],...] (1=roof, 0=empty) plus 'height', and outputs a B/W image: black = the house's ground-contact footprint, white = background. It reuses HouseTemplate's exact ExpandMask + center-fit ResizeMask geometry, so the footprint's size and position match the HouseTemplate render pixel-for-pixel and can be used as a mask/alignment reference. A 3D array [[[...]],[[...]]] is also accepted for batch output.",
+  "icon": "深色画布上一个纯黑的房屋底面剪影（俯视占位形状，如 T 形），白色背景，左侧一个 JSON 花括号图标用箭头指向黑色形状，扁平插画风格，黑白两色为主，小尺寸可辨。",
+  "version": "1.0.0",
+  "tags": [
+    "house",
+    "footprint",
+    "mask",
+    "bw",
+    "ground",
+    "align"
+  ],
+  "tag_labels": [
+    "房屋",
+    "底面",
+    "掩码",
+    "黑白图",
+    "地面",
+    "对齐"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "spec",
+      "type": "string",
+      "access": "item",
+      "required": true,
+      "label": "房顶掩码",
+      "description": "只表达房顶的二维数组字符串，形如 [[1,1,0],[1,1,1],[1,1,1]]（1=房顶，0=空）。与 HouseTemplate 用同一份输入即可得到对齐的底面。也兼容三维数组 [[[...]],[[...]]] 批量产出多张。",
+      "description-en": "Roof-only 2D array string, e.g. [[1,1,0],[1,1,1],[1,1,1]] (1=roof, 0=empty). Feed the same input as HouseTemplate to get an aligned footprint. A 3D array [[[...]],[[...]]] is also accepted to emit multiple images."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "required": false,
+      "default": 1,
+      "min": 0,
+      "max": 64,
+      "label": "高度",
+      "description": "房屋高度（立面向上投影的行数）。必须与对应的 HouseTemplate「高度」一致，底面才能在画面中严格对齐。",
+      "description-en": "House height (number of rows the facade is projected upward). Must match the corresponding HouseTemplate 'height' for the footprint to align exactly."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "list",
+      "label": "底面黑白图",
+      "description": "黑白底面图引用（资产库 alias），黑=底面、白=背景，每个 entry 一张；同时归档到顶层 .forgeax/grayscale/。",
+      "description-en": "Black-and-white footprint image refs (asset-library alias); black = footprint, white = background; one per entry; also archived under the top-level .forgeax/grayscale/."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串。",
+      "description-en": "Error message on failure; empty string on success."
+    }
+  ],
+  "params": [
+    {
+      "name": "imageSize",
+      "type": "number",
+      "default": 300,
+      "label": "图像尺寸",
+      "description": "输出黑白图的边长（像素，正方形）。须与 HouseTemplate 的 imageSize 一致以保证逐像素对应。",
+      "description-en": "Output B/W square edge length (pixels). Must match HouseTemplate's imageSize for pixel-for-pixel correspondence.",
+      "min": 16,
+      "max": 1024
+    }
+  ],
+  "alg_tag": [
+    "房屋底面",
+    "footprint掩码",
+    "高度投影对齐",
+    "黑白二值图",
+    "二维数组转图像"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@wb-scene-generator/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build:vendor": "node ../scripts/build-vendor.mjs",
+    "prebuild": "node ../scripts/build-vendor.mjs",
+    "build": "tsc -b",
+    "postbuild": "node -e \"const{cpSync,existsSync}=require('node:fs');const s='src/scene-export/assets';const d='dist/scene-export/assets';if(existsSync(s))cpSync(s,d,{recursive:true})\"",
+    "predev": "node -e \"const{existsSync}=require('node:fs');const m=existsSync('../vendor/dist/shared/types')&&existsSync('../vendor/dist/renderer-resolve');if(!m){require('node:child_process').execFileSync(process.execPath,['../scripts/build-vendor.mjs'],{stdio:'inherit'})}\"",
+    "postinstall": "node ../scripts/ensure-better-sqlite3.mjs",
+    "dev": "tsx --watch src/main.ts",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@forgeax/node-runtime": "workspace:*",
+    "@forgeax/scene-authoring": "workspace:*",
+    "@forgeax/project-generator": "workspace:*",
+    "@forgeax/batteries-common": "workspace:*",
+    "@forgeax/editor-host": "workspace:*",
+    "better-sqlite3": "^12.8.0",
+    "fastify": "^5.0.0",
+    "@fastify/websocket": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/ws": "^8.5.0",
+    "tsx": "^4.0.0",
+    "vitest": "^3.0.0",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "alg_field_distance",
+  "label": "距离场",
+  "name-en": "FieldDistance",
+  "description": "多源 BFS 距离变换：对输入区域的有效格（非零格），计算每格到「源」的最短网格距离场（field/标量场，每格一个距离标量，区别于 0/1 掩码 region），BFS 只在 region 有效格内传播、不穿越无效格。若接了 source：以 source 的非零格（且落在有效格内）为多源源点，输出每格到这些源的距离；若没接 source：默认以区域的边界有效格为源，即输出到区域边界的距离。源格距离 0，逐层 +1。connectivity=4 为上下左右，8 含对角。normalize=true 时把可达距离线性归一化到 [0,1]。region 外的无效格输出 0；region 内但 BFS 不可达的有效格输出 -1（用以区分无效格与可达的源格）。",
+  "description-en": "Multi-source BFS distance transform: for the valid (non-zero) cells of the input region, computes each cell's shortest grid distance to a set of sources (a field/scalar field — one distance scalar per cell, as opposed to a 0/1 mask region). BFS propagates only within valid cells and never crosses invalid cells. If source is connected: use source's non-zero cells (that fall on valid cells) as multi-source seeds, outputting each cell's distance to them; if source is not connected: default to using the region's boundary valid cells as sources, i.e. distance to the region boundary. Source cells get distance 0, incrementing by 1 per ring. connectivity=4 is orthogonal, 8 includes diagonals. normalize=true linearly normalizes reachable distances to [0,1]. Invalid cells outside the region output 0; valid cells inside the region that BFS cannot reach output -1 (to distinguish invalid cells from reachable source cells).",
+  "icon": "深色背景上从一个中心点向外扩散的同心等距波纹环，体现到源的距离逐层递增的距离场，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["field", "scalar", "distance", "bfs", "transform", "grid", "scenealg"],
+  "tag_labels": ["场", "标量", "距离", "BFS", "变换", "网格", "场景算法"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1（或多值）约束区网格；非零格为有效格，BFS 只在有效格内传播。",
+      "description-en": "0/1 (or multi-valued) constraint region grid; non-zero cells are valid, BFS propagates only within valid cells.",
+      "access": "item"
+    },
+    {
+      "name": "source",
+      "type": "grid",
+      "required": false,
+      "label": "源网格",
+      "description": "可选的源格掩码。接了：以其非零格（落在有效格内）为 BFS 多源源点；没接：默认以区域边界有效格为源（到边界的距离）。",
+      "description-en": "Optional source mask. If connected: use its non-zero cells (within valid cells) as multi-source seeds; if not: default to the region's boundary valid cells as sources (distance to boundary).",
+      "access": "item"
+    },
+    {
+      "name": "connectivity",
+      "type": "number",
+      "default": 4,
+      "label": "邻接方式",
+      "description": "4=上下左右，8=含对角。默认 4。影响距离传播的邻接关系。",
+      "description-en": "4 = orthogonal, 8 = with diagonals. Default 4. Controls the neighbor relation for distance propagation."
+    },
+    {
+      "name": "normalize",
+      "type": "bool",
+      "default": false,
+      "label": "归一化",
+      "description": "true 时把可达有效格的距离线性归一化到 [0,1]（除以最大距离）。无效格仍为 0，不可达仍为 -1。",
+      "description-en": "When true, linearly normalize reachable valid cells' distances to [0,1] (divide by max distance). Invalid cells stay 0, unreachable stay -1."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "field",
+      "type": "grid",
+      "access": "item",
+      "label": "距离场",
+      "description": "与输入同形状的距离场（number[][]）：源格=0，逐层 +1；region 外无效格=0；region 内 BFS 不可达的有效格=-1。normalize=true 时可达距离归一化到 [0,1]。这是连续标量场而非 0/1 掩码。",
+      "description-en": "A distance field (number[][]) matching the input shape: source cells = 0, +1 per ring; invalid cells outside the region = 0; valid cells inside the region unreachable by BFS = -1. With normalize=true, reachable distances are normalized to [0,1]. This is a continuous scalar field, not a 0/1 mask."
+    }
+  ]
+}

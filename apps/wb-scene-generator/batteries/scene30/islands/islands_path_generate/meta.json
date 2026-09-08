@@ -1,0 +1,67 @@
+{
+  "id": "islands_path_generate",
+  "label": "岛屿路径生成",
+  "description": "在可步行区域内生成随机漫步土路，串起岛屿探索动线。",
+  "description-en": "Generates random-walk dirt paths over walkable areas to shape island exploration routes.",
+  "icon": "岛屿草地上出现蜿蜒土路连线，沙棕与草绿配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["islands", "path", "road", "exploration", "terrain"],
+  "tag_labels": ["岛屿", "路径", "道路", "探索", "地形"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入地形",
+      "description": "细化后的岛屿地形。",
+      "description-en": "Refined island terrain."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，控制路径走向。",
+      "description-en": "Random seed controlling path routing.",
+      "default": 0
+    },
+    {
+      "name": "pathCount",
+      "type": "number",
+      "label": "路径数量",
+      "description": "要尝试生成的独立土路条数。",
+      "description-en": "Number of independent dirt paths to attempt.",
+      "default": 6
+    },
+    {
+      "name": "stepMin",
+      "type": "number",
+      "label": "最短步数",
+      "description": "单条路径最短随机步数。",
+      "description-en": "Minimum random-walk steps per path.",
+      "default": 20
+    },
+    {
+      "name": "stepMax",
+      "type": "number",
+      "label": "最长步数",
+      "description": "单条路径最长随机步数。",
+      "description-en": "Maximum random-walk steps per path.",
+      "default": 60
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "带路径地形",
+      "description": "追加土路后的岛屿地形。",
+      "description-en": "Island terrain after dirt paths are added."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "带路径地形对应的名称清单。",
+      "description-en": "Name list for the path-enriched terrain."
+    }
+  ]
+}

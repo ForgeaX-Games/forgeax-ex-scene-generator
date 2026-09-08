@@ -1,0 +1,26 @@
+{
+  "id": "sidescroller_edge_blend",
+  "label": "横版边缘混合",
+  "name-en": "SidescrollerEdgeBlend",
+  "description": "用余弦渐变把右边缘混合到左边缘，使横版背景左右可连续拼接。",
+  "description-en": "Cosine-blend the right edge toward the left edge so a side-scroller background can tile horizontally.",
+  "version": "1.0.0",
+  "tags": ["image", "sidescroller", "seamless", "blend"],
+  "tag_labels": ["图像", "横版", "无缝", "混合"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "image", "type": "image", "access": "item", "required": true, "label": "图像" },
+    { "name": "overlap", "type": "number", "access": "item", "label": "混合宽度", "default": 32, "min": 1, "max": 1024 }
+  ],
+  "outputs": [
+    { "name": "image", "type": "image", "access": "item", "label": "混合后图像" },
+    { "name": "width", "type": "number", "access": "item", "label": "宽度" },
+    { "name": "height", "type": "number", "access": "item", "label": "高度" },
+    { "name": "overlap", "type": "number", "access": "item", "label": "实际混合宽度" },
+    { "name": "error", "type": "string", "access": "item", "label": "错误信息" }
+  ],
+  "params": [
+    { "name": "suffix", "type": "string", "default": "_hseam", "label": "alias 后缀" }
+  ],
+  "alg_tag": ["横版背景", "左右无缝"]
+}

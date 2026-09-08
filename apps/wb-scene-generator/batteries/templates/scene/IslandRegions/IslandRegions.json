@@ -1,0 +1,541 @@
+{
+  "id": "group_1783100010000_isld1",
+  "name": "IslandRegions",
+  "nameEn": "IslandRegions",
+  "nodes": [
+    {
+      "id": "node-island-pass-in",
+      "opId": "scene_passthrough",
+      "name": "SceneIn",
+      "position": { "x": -1100, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "node-island-explode",
+      "opId": "node_explode",
+      "name": "Explode",
+      "position": { "x": -850, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-island-rect",
+      "opId": "rect_grid",
+      "name": "RectGrid",
+      "position": { "x": -600, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-island-slice",
+      "opId": "voxel_slice",
+      "name": "VoxelSlice",
+      "position": { "x": -350, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "node-island-gen",
+      "opId": "new_island_region_gen",
+      "name": "IslandGen",
+      "position": { "x": -80, "y": 40 },
+      "params": {}
+    },
+    {
+      "id": "node-island-g2n-main",
+      "opId": "grid2node",
+      "name": "IslandNode",
+      "position": { "x": 200, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "group_1783100010000_taisl",
+      "opId": "__group__",
+      "name": "TileAssetName",
+      "position": { "x": 460, "y": -60 },
+      "params": { "groupId": "group_1783100010000_taisl" }
+    },
+    {
+      "id": "node-island-addchild-main",
+      "opId": "add_child",
+      "name": "AddIsland",
+      "position": { "x": 720, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "node-island-text-rest",
+      "opId": "text_panel",
+      "name": "node-rest-name",
+      "position": { "x": 200, "y": 220 },
+      "params": { "text": "rest", "_nodeWidth": 180, "_nodeHeight": 60 }
+    },
+    {
+      "id": "node-island-subtract",
+      "opId": "alg_region_subtract",
+      "name": "RestSubtract",
+      "position": { "x": 200, "y": 120 },
+      "params": {}
+    },
+    {
+      "id": "node-island-g2n-rest",
+      "opId": "grid2node",
+      "name": "RestNode",
+      "position": { "x": 460, "y": 160 },
+      "params": {}
+    },
+    {
+      "id": "node-island-addchild-rest",
+      "opId": "add_child",
+      "name": "AddRest",
+      "position": { "x": 720, "y": 180 },
+      "params": {}
+    },
+    {
+      "id": "node-island-merge",
+      "opId": "scene_merge_subtrees",
+      "name": "Merge",
+      "position": { "x": 980, "y": 60 },
+      "params": {}
+    },
+    {
+      "id": "node-island-focus-main",
+      "opId": "scene_focus_path",
+      "name": "FocusIsland",
+      "position": { "x": 1240, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-island-focus-rest",
+      "opId": "scene_focus_path",
+      "name": "FocusRest",
+      "position": { "x": 1240, "y": 160 },
+      "params": {}
+    },
+    {
+      "id": "node-island-pass-island",
+      "opId": "scene_passthrough",
+      "name": "IslandOut",
+      "position": { "x": 1500, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-island-pass-rest",
+      "opId": "scene_passthrough",
+      "name": "RestOut",
+      "position": { "x": 1500, "y": 160 },
+      "params": {}
+    },
+    {
+      "id": "node-island-pass-scene",
+      "opId": "scene_passthrough",
+      "name": "SceneOut",
+      "position": { "x": 1500, "y": 60 },
+      "params": {}
+    },
+    {
+      "id": "node-island-type-islandpath",
+      "opId": "type_string",
+      "name": "IslandPath",
+      "position": { "x": 1500, "y": -140 },
+      "params": {}
+    },
+    {
+      "id": "node-island-type-restpath",
+      "opId": "type_string",
+      "name": "RestPath",
+      "position": { "x": 1500, "y": 260 },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-isl-passin-explode",
+      "source": { "nodeId": "node-island-pass-in", "port": "scene" },
+      "target": { "nodeId": "node-island-explode", "port": "scene" }
+    },
+    {
+      "id": "e-isl-explode-rect-w",
+      "source": { "nodeId": "node-island-explode", "port": "width" },
+      "target": { "nodeId": "node-island-rect", "port": "width" }
+    },
+    {
+      "id": "e-isl-explode-rect-h",
+      "source": { "nodeId": "node-island-explode", "port": "height" },
+      "target": { "nodeId": "node-island-rect", "port": "height" }
+    },
+    {
+      "id": "e-isl-explode-slice-vox",
+      "source": { "nodeId": "node-island-explode", "port": "voxels" },
+      "target": { "nodeId": "node-island-slice", "port": "voxels" }
+    },
+    {
+      "id": "e-isl-rect-slice-grid",
+      "source": { "nodeId": "node-island-rect", "port": "grid" },
+      "target": { "nodeId": "node-island-slice", "port": "grid" }
+    },
+    {
+      "id": "e-isl-slice-gen-grid",
+      "source": { "nodeId": "node-island-slice", "port": "slice" },
+      "target": { "nodeId": "node-island-gen", "port": "grid" }
+    },
+    {
+      "id": "e-isl-slice-sub-a",
+      "source": { "nodeId": "node-island-slice", "port": "slice" },
+      "target": { "nodeId": "node-island-subtract", "port": "a" }
+    },
+    {
+      "id": "e-isl-gen-g2nmain",
+      "source": { "nodeId": "node-island-gen", "port": "islandGrid" },
+      "target": { "nodeId": "node-island-g2n-main", "port": "grid" }
+    },
+    {
+      "id": "e-isl-gen-sub-b",
+      "source": { "nodeId": "node-island-gen", "port": "islandGrid" },
+      "target": { "nodeId": "node-island-subtract", "port": "b" }
+    },
+    {
+      "id": "e-isl-sub-g2nrest",
+      "source": { "nodeId": "node-island-subtract", "port": "region" },
+      "target": { "nodeId": "node-island-g2n-rest", "port": "grid" }
+    },
+    {
+      "id": "e-isl-g2nmain-asset",
+      "source": { "nodeId": "node-island-g2n-main", "port": "scene" },
+      "target": { "nodeId": "group_1783100010000_taisl", "port": "in_0" }
+    },
+    {
+      "id": "e-isl-asset-addmain",
+      "source": { "nodeId": "group_1783100010000_taisl", "port": "out_0" },
+      "target": { "nodeId": "node-island-addchild-main", "port": "nodes" }
+    },
+    {
+      "id": "e-isl-passin-addmain",
+      "source": { "nodeId": "node-island-pass-in", "port": "scene" },
+      "target": { "nodeId": "node-island-addchild-main", "port": "scene" }
+    },
+    {
+      "id": "e-isl-textrest-g2nrest",
+      "source": { "nodeId": "node-island-text-rest", "port": "output" },
+      "target": { "nodeId": "node-island-g2n-rest", "port": "name" }
+    },
+    {
+      "id": "e-isl-addmain-addrest",
+      "source": { "nodeId": "node-island-addchild-main", "port": "scene" },
+      "target": { "nodeId": "node-island-addchild-rest", "port": "scene" }
+    },
+    {
+      "id": "e-isl-g2nrest-addrest",
+      "source": { "nodeId": "node-island-g2n-rest", "port": "scene" },
+      "target": { "nodeId": "node-island-addchild-rest", "port": "nodes" }
+    },
+    {
+      "id": "e-isl-addrest-merge",
+      "source": { "nodeId": "node-island-addchild-rest", "port": "scene" },
+      "target": { "nodeId": "node-island-merge", "port": "scenes" }
+    },
+    {
+      "id": "e-isl-merge-focusmain",
+      "source": { "nodeId": "node-island-merge", "port": "scene" },
+      "target": { "nodeId": "node-island-focus-main", "port": "scene" }
+    },
+    {
+      "id": "e-isl-addmain-focusmain",
+      "source": { "nodeId": "node-island-addchild-main", "port": "childPaths" },
+      "target": { "nodeId": "node-island-focus-main", "port": "path" }
+    },
+    {
+      "id": "e-isl-focusmain-passisland",
+      "source": { "nodeId": "node-island-focus-main", "port": "scene" },
+      "target": { "nodeId": "node-island-pass-island", "port": "scene" }
+    },
+    {
+      "id": "e-isl-merge-focusrest",
+      "source": { "nodeId": "node-island-merge", "port": "scene" },
+      "target": { "nodeId": "node-island-focus-rest", "port": "scene" }
+    },
+    {
+      "id": "e-isl-addrest-focusrest",
+      "source": { "nodeId": "node-island-addchild-rest", "port": "childPaths" },
+      "target": { "nodeId": "node-island-focus-rest", "port": "path" }
+    },
+    {
+      "id": "e-isl-focusrest-passrest",
+      "source": { "nodeId": "node-island-focus-rest", "port": "scene" },
+      "target": { "nodeId": "node-island-pass-rest", "port": "scene" }
+    },
+    {
+      "id": "e-isl-merge-passscene",
+      "source": { "nodeId": "node-island-merge", "port": "scene" },
+      "target": { "nodeId": "node-island-pass-scene", "port": "scene" }
+    },
+    {
+      "id": "e-isl-addmain-islandpath",
+      "source": { "nodeId": "node-island-addchild-main", "port": "childPaths" },
+      "target": { "nodeId": "node-island-type-islandpath", "port": "value" }
+    },
+    {
+      "id": "e-isl-addrest-restpath",
+      "source": { "nodeId": "node-island-addchild-rest", "port": "childPaths" },
+      "target": { "nodeId": "node-island-type-restpath", "port": "value" }
+    }
+  ],
+  "position": { "x": -700, "y": 1800 },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-island-pass-in",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "in_1",
+      "portType": "point2d",
+      "access": "list",
+      "sourceNodeId": "node-island-gen",
+      "sourcePortName": "points",
+      "order": 1,
+      "customLabelEn": "Points"
+    },
+    {
+      "portName": "in_2",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "node-island-gen",
+      "sourcePortName": "islandSizes",
+      "order": 2,
+      "customLabelEn": "IslandSizes"
+    },
+    {
+      "portName": "in_3",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-island-g2n-main",
+      "sourcePortName": "name",
+      "order": 3,
+      "customLabelEn": "IslandName"
+    },
+    {
+      "portName": "in_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "group_1783100010000_taisl",
+      "sourcePortName": "in_1",
+      "order": 4,
+      "customLabelEn": "IslandAsset"
+    },
+    {
+      "portName": "in_5",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-island-gen",
+      "sourcePortName": "seed",
+      "order": 5,
+      "customLabelEn": "Seed"
+    },
+    {
+      "portName": "in_6",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-island-gen",
+      "sourcePortName": "radiusVar",
+      "hidden": true,
+      "order": 6
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-island-slice",
+      "sourcePortName": "z",
+      "hidden": true,
+      "order": 7
+    },
+    {
+      "portName": "in_8",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-island-rect",
+      "sourcePortName": "fillValue",
+      "hidden": true,
+      "order": 8
+    },
+    {
+      "portName": "in_9",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-island-g2n-main",
+      "sourcePortName": "schema",
+      "hidden": true,
+      "order": 9
+    },
+    {
+      "portName": "in_10",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-island-g2n-main",
+      "sourcePortName": "token",
+      "hidden": true,
+      "order": 10
+    },
+    {
+      "portName": "in_11",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "node-island-g2n-main",
+      "sourcePortName": "zRange",
+      "hidden": true,
+      "order": 11
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-island-pass-scene",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "out_1",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-island-pass-island",
+      "sourcePortName": "scene",
+      "order": 1,
+      "customLabelEn": "Island"
+    },
+    {
+      "portName": "out_2",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-island-pass-rest",
+      "sourcePortName": "scene",
+      "order": 2,
+      "customLabelEn": "Rest"
+    },
+    {
+      "portName": "out_3",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-island-type-islandpath",
+      "sourcePortName": "value",
+      "order": 3,
+      "customLabelEn": "IslandPath"
+    },
+    {
+      "portName": "out_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-island-type-restpath",
+      "sourcePortName": "value",
+      "order": 4,
+      "customLabelEn": "RestPath"
+    }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_1783100010000_taisl",
+      "name": "TileAssetName",
+      "nameEn": "TileAssetName",
+      "nodes": [
+        {
+          "id": "node-island-ta-name",
+          "opId": "text_panel",
+          "name": "asset_name_key",
+          "position": { "x": 1823, "y": 320 },
+          "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 }
+        },
+        {
+          "id": "node-island-ta-type",
+          "opId": "text_panel",
+          "name": "asset_type_key",
+          "position": { "x": 2101, "y": 317 },
+          "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "node-island-ta-tile",
+          "opId": "text_panel",
+          "name": "tile_value",
+          "position": { "x": 2101, "y": 486 },
+          "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "node-island-ta-set1",
+          "opId": "scene_set_attribute",
+          "name": "set_asset_name",
+          "position": { "x": 2003, "y": 159 },
+          "params": {}
+        },
+        {
+          "id": "node-island-ta-set2",
+          "opId": "scene_set_attribute",
+          "name": "set_asset_type",
+          "position": { "x": 2273, "y": 167 },
+          "params": {}
+        },
+        {
+          "id": "node-island-ta-str",
+          "opId": "type_string",
+          "name": "asset_name_value",
+          "position": { "x": 1795, "y": 219 },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "e-isl-ta-name-set1",
+          "source": { "nodeId": "node-island-ta-name", "port": "output" },
+          "target": { "nodeId": "node-island-ta-set1", "port": "key" }
+        },
+        {
+          "id": "e-isl-ta-set1-set2",
+          "source": { "nodeId": "node-island-ta-set1", "port": "scene" },
+          "target": { "nodeId": "node-island-ta-set2", "port": "scene" }
+        },
+        {
+          "id": "e-isl-ta-type-set2",
+          "source": { "nodeId": "node-island-ta-type", "port": "output" },
+          "target": { "nodeId": "node-island-ta-set2", "port": "key" }
+        },
+        {
+          "id": "e-isl-ta-tile-set2",
+          "source": { "nodeId": "node-island-ta-tile", "port": "output" },
+          "target": { "nodeId": "node-island-ta-set2", "port": "value" }
+        },
+        {
+          "id": "e-isl-ta-str-set1",
+          "source": { "nodeId": "node-island-ta-str", "port": "value" },
+          "target": { "nodeId": "node-island-ta-set1", "port": "value" }
+        }
+      ],
+      "position": { "x": 460, "y": -60 },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-island-ta-set1",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-island-ta-str",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-island-ta-set2",
+          "sourcePortName": "scene"
+        }
+      ]
+    }
+  ]
+}

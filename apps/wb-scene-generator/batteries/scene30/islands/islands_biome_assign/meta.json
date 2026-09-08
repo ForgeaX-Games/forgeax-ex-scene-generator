@@ -1,0 +1,56 @@
+{
+  "id": "islands_biome_assign",
+  "label": "岛屿群系分配",
+  "description": "把高度图和湿度图转换为原始岛屿生物群系网格。",
+  "description-en": "Converts height and moisture maps into a raw island biome grid.",
+  "icon": "高度图叠加湿度色带并映射成岛屿地形块，蓝绿棕配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["islands", "biome", "terrain", "classification", "grid"],
+  "tag_labels": ["岛屿", "群系", "地形", "分类", "网格"],
+  "inputs": [
+    {
+      "name": "heightMap",
+      "type": "grid",
+      "label": "高度图",
+      "description": "输入的 0~1 浮点高度图。",
+      "description-en": "Input floating-point height map in the 0-1 range."
+    },
+    {
+      "name": "moistureMap",
+      "type": "grid",
+      "label": "湿度图",
+      "description": "输入的 0~1 浮点湿度图。",
+      "description-en": "Input floating-point moisture map in the 0-1 range."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "群系网格",
+      "description": "映射后的岛屿地形网格。",
+      "description-en": "Mapped island terrain grid."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "群系网格对应的名称清单。",
+      "description-en": "Name list for the biome grid."
+    },
+    {
+      "name": "heightMap",
+      "type": "grid",
+      "label": "透传高度图",
+      "description": "透传输入高度图，便于下游复用。",
+      "description-en": "Pass-through height map for downstream reuse."
+    },
+    {
+      "name": "moistureMap",
+      "type": "grid",
+      "label": "透传湿度图",
+      "description": "透传输入湿度图，便于下游复用。",
+      "description-en": "Pass-through moisture map for downstream reuse."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "g_intersection",
+  "label": "布尔交集",
+  "name-en": "GIntersection",
+  "description": "取两个 shape 的布尔交集，追加 intersection(a,b) 到 Geometry DSL。何时用：只保留两个形体的公共体积（例如用一个包络体去裁出形状）。",
+  "description-en": "Boolean intersection of two shapes, appending `intersection(a,b)` to the Geometry DSL. Use when: keeping only the common volume of two bodies (e.g. trimming a shape with an envelope solid).",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "csg", "boolean", "cad"],
+  "tag_labels": ["几何", "CSG", "布尔", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（必须同时含 a_id 与 b_id 两个形状）", "description-en": "Upstream Geometry; must already contain both the a_id and b_id shapes." },
+    { "name": "a_id", "type": "string", "label": "形状 A id", "default": "", "description": "第一个形状 id；从上游 shape 的 id 输出端口连入，或填其 id 参数", "description-en": "Id of the first shape. Feed from an upstream shape's `id` output, or set/pass the shape's `id`." },
+    { "name": "b_id", "type": "string", "label": "形状 B id", "default": "", "description": "第二个形状 id；同样来自上游某个 shape 的 id 输出", "description-en": "Id of the second shape. Also from an upstream shape's `id` output." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 isect{n}", "description-en": "Custom id for this result; empty = auto isect{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 intersection 后的 Geometry", "description-en": "Geometry after appending the intersection." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行结果的 id（供下游引用）；引用失败时为空串", "description-en": "Id of the result line (for downstream refs). Empty string when refs failed." },
+    { "name": "error", "type": "string", "label": "错误", "description": "引用错误时的原因（a_id/b_id 缺失或找不到）；非空表示未追加任何几何，批次仍可能报 ok，务必读取", "description-en": "Reason when a ref is bad (a_id/b_id missing or not found). Non-empty means nothing was appended even though the batch may report ok — always read it." }
+  ],
+  "projectTypes": ["asset3d"]
+}

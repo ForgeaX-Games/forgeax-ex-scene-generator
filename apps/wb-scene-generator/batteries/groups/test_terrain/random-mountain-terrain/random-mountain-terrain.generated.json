@@ -1,0 +1,983 @@
+{
+  "id": "template_random_mountain_terrain",
+  "name": "随机山脉地形生成",
+  "nodes": [
+    {
+      "id": "node-1774868656832",
+      "name": "输入信息传递",
+      "position": {
+        "x": -7904.473751447195,
+        "y": -1511.0392261553736
+      },
+      "params": {},
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "name_list_pass"
+    },
+    {
+      "id": "node-1774868662581",
+      "name": "标准化输出",
+      "position": {
+        "x": -6027.407990523959,
+        "y": -1812.576932006009
+      },
+      "params": {
+        "portCount": 3
+      },
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "fill_sort"
+    },
+    {
+      "id": "node-1774868668188",
+      "name": "填充值过滤",
+      "position": {
+        "x": -7573.154015321561,
+        "y": -1586.640647031711
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "simple_sort"
+    },
+    {
+      "id": "node-1774868686820",
+      "name": "名称清单拍平",
+      "position": {
+        "x": -7342.927282638284,
+        "y": -1503.0387608618064
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "name_list_flatten"
+    },
+    {
+      "id": "node-1774868695510",
+      "name": "合并",
+      "position": {
+        "x": -7099.838721313485,
+        "y": -1585.3544641675587
+      },
+      "params": {
+        "portCount": 3
+      },
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "merge"
+    },
+    {
+      "id": "node-1774868705310",
+      "name": "文本面板",
+      "position": {
+        "x": -6533.595824501481,
+        "y": -1869.8787637950672
+      },
+      "params": {
+        "text": "生成随机山脉，输入网格和层数，输出对应层数的山脉地形"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774868716092",
+      "name": "列表单次取值",
+      "position": {
+        "x": -7613.025684110285,
+        "y": -1354.4846400522063
+      },
+      "params": {},
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "list_get_single"
+    },
+    {
+      "id": "node-1774868721885",
+      "name": "数值",
+      "position": {
+        "x": -7865.760616916228,
+        "y": -1313.9698798314062
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "number_const"
+    },
+    {
+      "id": "node-1774868759042",
+      "name": "网格尺寸",
+      "position": {
+        "x": -7364.838950827651,
+        "y": -1292.8373826020893
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "grid_size"
+    },
+    {
+      "id": "node-1774870121368",
+      "name": "菱形方块地形",
+      "position": {
+        "x": -6047.6458068680595,
+        "y": -1387.7933326701045
+      },
+      "params": {},
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "diamond_square"
+    },
+    {
+      "id": "node-1774870126282",
+      "name": "随机种子",
+      "position": {
+        "x": -7865.760616916228,
+        "y": -1088.5911913048126
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "seed_control"
+    },
+    {
+      "id": "node-1774870321906",
+      "name": "进阶运算",
+      "position": {
+        "x": -7085.446762229436,
+        "y": -1316.0815176435947
+      },
+      "params": {
+        "op": "max"
+      },
+      "status": "idle",
+      "opId": "advanced_math_op"
+    },
+    {
+      "id": "node-1774870326447",
+      "name": "文本面板",
+      "position": {
+        "x": -7389.447313554921,
+        "y": -1194.866133824774
+      },
+      "params": {
+        "text": "max"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774870345730",
+      "name": "进阶运算",
+      "position": {
+        "x": -6760.21999274859,
+        "y": -1227.6389675131559
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "advanced_math_op"
+    },
+    {
+      "id": "node-1774870350072",
+      "name": "文本面板",
+      "position": {
+        "x": -7078.743368551523,
+        "y": -1128.6450928067109
+      },
+      "params": {
+        "text": "log"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774870371562",
+      "name": "数值",
+      "position": {
+        "x": -7085.446762229436,
+        "y": -1185.3663528219531
+      },
+      "params": {
+        "value": 2
+      },
+      "status": "idle",
+      "opId": "number_const"
+    },
+    {
+      "id": "node-1774870385534",
+      "name": "进阶运算",
+      "position": {
+        "x": -6286.426294165424,
+        "y": -1237.5110661090011
+      },
+      "params": {
+        "op": "ceil"
+      },
+      "status": "idle",
+      "opId": "advanced_math_op"
+    },
+    {
+      "id": "node-1774870390376",
+      "name": "文本面板",
+      "position": {
+        "x": -6584.27233958858,
+        "y": -1111.3577416367034
+      },
+      "params": {
+        "text": "ceil"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774870400576",
+      "name": "数值",
+      "position": {
+        "x": -6584.27233958858,
+        "y": -1164.5345421591683
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "number_const"
+    },
+    {
+      "id": "node-1774870937224",
+      "name": "多值网格打标签",
+      "position": {
+        "x": -4980.818557443359,
+        "y": -1432.7896438464543
+      },
+      "params": {},
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "grid_label_multi"
+    },
+    {
+      "id": "node-1774870946040",
+      "name": "文本面板",
+      "position": {
+        "x": -5414.006214880639,
+        "y": -1233.5025156022184
+      },
+      "params": {
+        "text": "[\"一层\",\"二层\",\"三层\",\"四层\",\"五层\"]"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774870976547",
+      "name": "字符串转列表",
+      "position": {
+        "x": -5194.722636826264,
+        "y": -1215.5967525947588
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "str_to_list"
+    },
+    {
+      "id": "node-1774871022576",
+      "name": "渲染图层整理",
+      "position": {
+        "x": -4895.924931566748,
+        "y": -1247.9622912585874
+      },
+      "params": {},
+      "status": "idle",
+      "opId": "layer_type_tag"
+    },
+    {
+      "id": "node-1774871029046",
+      "name": "文本面板",
+      "position": {
+        "x": -5124.927533309716,
+        "y": -1140.109453018351
+      },
+      "params": {
+        "text": "tile"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774871038837",
+      "name": "合并",
+      "position": {
+        "x": -4723.555131449004,
+        "y": -1391.475608236194
+      },
+      "params": {
+        "portCount": 3
+      },
+      "status": "idle",
+      "opId": "merge"
+    },
+    {
+      "id": "node-1774871131629",
+      "name": "网格缩放",
+      "position": {
+        "x": -5783.302947911539,
+        "y": -1387.9044275739461
+      },
+      "params": {},
+      "status": "idle",
+      "previewEnabled": false,
+      "opId": "grid_resize"
+    },
+    {
+      "id": "node-1774871143299",
+      "name": "文本面板",
+      "position": {
+        "x": -5660.477170790455,
+        "y": -1598.0435522426087
+      },
+      "params": {
+        "text": "bilinear"
+      },
+      "status": "idle",
+      "opId": "text_panel"
+    },
+    {
+      "id": "node-1774876398354",
+      "name": "网格分层",
+      "position": {
+        "x": -5506.395207595749,
+        "y": -1386.4953711224832
+      },
+      "params": {},
+      "previewEnabled": false,
+      "opId": "grid_classify"
+    },
+    {
+      "id": "node-1774876403290",
+      "name": "数值",
+      "position": {
+        "x": -5985.046464742287,
+        "y": -1575.8219674533686
+      },
+      "params": {
+        "min": 0,
+        "max": 1,
+        "value": 0,
+        "precision": 2
+      },
+      "opId": "number_const"
+    },
+    {
+      "id": "node-1774876412651-scr2i",
+      "name": "数值",
+      "position": {
+        "x": -5985.046464742287,
+        "y": -1512.5004050313605
+      },
+      "params": {
+        "min": 0,
+        "max": 1,
+        "value": 1,
+        "precision": 2
+      },
+      "opId": "number_const"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-node-1774868656832-gridList-node-1774868668188-gridList",
+      "source": {
+        "nodeId": "node-1774868656832",
+        "port": "gridList"
+      },
+      "target": {
+        "nodeId": "node-1774868668188",
+        "port": "gridList"
+      }
+    },
+    {
+      "id": "e-node-1774868656832-list-node-1774868668188-nameListList",
+      "source": {
+        "nodeId": "node-1774868656832",
+        "port": "list"
+      },
+      "target": {
+        "nodeId": "node-1774868668188",
+        "port": "nameListList"
+      }
+    },
+    {
+      "id": "e-node-1774868668188-nameListList-node-1774868686820-nameListList",
+      "source": {
+        "nodeId": "node-1774868668188",
+        "port": "nameListList"
+      },
+      "target": {
+        "nodeId": "node-1774868686820",
+        "port": "nameListList"
+      }
+    },
+    {
+      "id": "e-node-1774868668188-gridList-node-1774868695510-item_0",
+      "source": {
+        "nodeId": "node-1774868668188",
+        "port": "gridList"
+      },
+      "target": {
+        "nodeId": "node-1774868695510",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "e-node-1774868686820-outputNameList-node-1774868695510-item_1",
+      "source": {
+        "nodeId": "node-1774868686820",
+        "port": "outputNameList"
+      },
+      "target": {
+        "nodeId": "node-1774868695510",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "e-node-1774868695510-list-node-1774868662581-item_0",
+      "source": {
+        "nodeId": "node-1774868695510",
+        "port": "list"
+      },
+      "target": {
+        "nodeId": "node-1774868662581",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "e-node-1774868656832-gridList-node-1774868716092-list",
+      "source": {
+        "nodeId": "node-1774868656832",
+        "port": "gridList"
+      },
+      "target": {
+        "nodeId": "node-1774868716092",
+        "port": "list"
+      }
+    },
+    {
+      "id": "e-node-1774868721885-value-node-1774868716092-index",
+      "source": {
+        "nodeId": "node-1774868721885",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1774868716092",
+        "port": "index"
+      }
+    },
+    {
+      "id": "e-node-1774868716092-item-node-1774868759042-grid",
+      "source": {
+        "nodeId": "node-1774868716092",
+        "port": "item"
+      },
+      "target": {
+        "nodeId": "node-1774868759042",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "e-node-1774870126282-seed-node-1774870121368-seed",
+      "source": {
+        "nodeId": "node-1774870126282",
+        "port": "seed"
+      },
+      "target": {
+        "nodeId": "node-1774870121368",
+        "port": "seed"
+      }
+    },
+    {
+      "id": "e-node-1774870326447-output-node-1774870321906-op",
+      "source": {
+        "nodeId": "node-1774870326447",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774870321906",
+        "port": "op"
+      }
+    },
+    {
+      "id": "e-node-1774868759042-width-node-1774870321906-a",
+      "source": {
+        "nodeId": "node-1774868759042",
+        "port": "width"
+      },
+      "target": {
+        "nodeId": "node-1774870321906",
+        "port": "a"
+      }
+    },
+    {
+      "id": "e-node-1774868759042-height-node-1774870321906-b",
+      "source": {
+        "nodeId": "node-1774868759042",
+        "port": "height"
+      },
+      "target": {
+        "nodeId": "node-1774870321906",
+        "port": "b"
+      }
+    },
+    {
+      "id": "e-node-1774870350072-output-node-1774870345730-op",
+      "source": {
+        "nodeId": "node-1774870350072",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774870345730",
+        "port": "op"
+      }
+    },
+    {
+      "id": "e-node-1774870321906-result-node-1774870345730-a",
+      "source": {
+        "nodeId": "node-1774870321906",
+        "port": "result"
+      },
+      "target": {
+        "nodeId": "node-1774870345730",
+        "port": "a"
+      }
+    },
+    {
+      "id": "e-node-1774870371562-value-node-1774870345730-b",
+      "source": {
+        "nodeId": "node-1774870371562",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1774870345730",
+        "port": "b"
+      }
+    },
+    {
+      "id": "e-node-1774870390376-output-node-1774870385534-op",
+      "source": {
+        "nodeId": "node-1774870390376",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774870385534",
+        "port": "op"
+      }
+    },
+    {
+      "id": "e-node-1774870345730-result-node-1774870385534-a",
+      "source": {
+        "nodeId": "node-1774870345730",
+        "port": "result"
+      },
+      "target": {
+        "nodeId": "node-1774870385534",
+        "port": "a"
+      }
+    },
+    {
+      "id": "e-node-1774870400576-value-node-1774870385534-b",
+      "source": {
+        "nodeId": "node-1774870400576",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1774870385534",
+        "port": "b"
+      }
+    },
+    {
+      "id": "e-node-1774870385534-result-node-1774870121368-power",
+      "source": {
+        "nodeId": "node-1774870385534",
+        "port": "result"
+      },
+      "target": {
+        "nodeId": "node-1774870121368",
+        "port": "power"
+      }
+    },
+    {
+      "id": "e-node-1774870946040-output-node-1774870976547-str",
+      "source": {
+        "nodeId": "node-1774870946040",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774870976547",
+        "port": "str"
+      }
+    },
+    {
+      "id": "e-node-1774870976547-list-node-1774870937224-names",
+      "source": {
+        "nodeId": "node-1774870976547",
+        "port": "list"
+      },
+      "target": {
+        "nodeId": "node-1774870937224",
+        "port": "names"
+      }
+    },
+    {
+      "id": "e-node-1774871029046-output-node-1774871022576-layerType",
+      "source": {
+        "nodeId": "node-1774871029046",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774871022576",
+        "port": "layerType"
+      }
+    },
+    {
+      "id": "e-node-1774870937224-nameList-node-1774871022576-nameList",
+      "source": {
+        "nodeId": "node-1774870937224",
+        "port": "nameList"
+      },
+      "target": {
+        "nodeId": "node-1774871022576",
+        "port": "nameList"
+      }
+    },
+    {
+      "id": "e-node-1774870937224-outputGrid-node-1774871038837-item_0",
+      "source": {
+        "nodeId": "node-1774870937224",
+        "port": "outputGrid"
+      },
+      "target": {
+        "nodeId": "node-1774871038837",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "e-node-1774871022576-outputNameList-node-1774871038837-item_1",
+      "source": {
+        "nodeId": "node-1774871022576",
+        "port": "outputNameList"
+      },
+      "target": {
+        "nodeId": "node-1774871038837",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "e-node-1774871038837-list-node-1774868662581-item_1",
+      "source": {
+        "nodeId": "node-1774871038837",
+        "port": "list"
+      },
+      "target": {
+        "nodeId": "node-1774868662581",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "e-node-1774868705310-output-node-1774868662581-description",
+      "source": {
+        "nodeId": "node-1774868705310",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774868662581",
+        "port": "description"
+      }
+    },
+    {
+      "id": "e-node-1774871143299-output-node-1774871131629-method",
+      "source": {
+        "nodeId": "node-1774871143299",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1774871131629",
+        "port": "method"
+      }
+    },
+    {
+      "id": "e-node-1774868759042-width-node-1774871131629-width",
+      "source": {
+        "nodeId": "node-1774868759042",
+        "port": "width"
+      },
+      "target": {
+        "nodeId": "node-1774871131629",
+        "port": "width"
+      }
+    },
+    {
+      "id": "e-node-1774868759042-height-node-1774871131629-height",
+      "source": {
+        "nodeId": "node-1774868759042",
+        "port": "height"
+      },
+      "target": {
+        "nodeId": "node-1774871131629",
+        "port": "height"
+      }
+    },
+    {
+      "id": "e-node-1774876403290-value-node-1774876398354-min",
+      "source": {
+        "nodeId": "node-1774876403290",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1774876398354",
+        "port": "min"
+      }
+    },
+    {
+      "id": "e-node-1774876412651-scr2i-value-node-1774876398354-max",
+      "source": {
+        "nodeId": "node-1774876412651-scr2i",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1774876398354",
+        "port": "max"
+      }
+    },
+    {
+      "id": "e-node-1774870121368-grid-node-1774871131629-grid",
+      "source": {
+        "nodeId": "node-1774870121368",
+        "port": "grid"
+      },
+      "target": {
+        "nodeId": "node-1774871131629",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "e-node-1774871131629-grid-node-1774876398354-grid",
+      "source": {
+        "nodeId": "node-1774871131629",
+        "port": "grid"
+      },
+      "target": {
+        "nodeId": "node-1774876398354",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "e-node-1774876398354-grid-node-1774870937224-inputGrid",
+      "source": {
+        "nodeId": "node-1774876398354",
+        "port": "grid"
+      },
+      "target": {
+        "nodeId": "node-1774870937224",
+        "port": "inputGrid"
+      }
+    }
+  ],
+  "position": {
+    "x": -6445.14476470151,
+    "y": -1366.4802874324512
+  },
+  "exposedInputs": [
+    {
+      "portName": "in__6832__list",
+      "portType": "array",
+      "portLabel": "名称清单",
+      "sourceNodeId": "node-1774868656832",
+      "sourcePortName": "list"
+    },
+    {
+      "portName": "in__6832__gridList",
+      "portType": "array",
+      "portLabel": "网格列表",
+      "sourceNodeId": "node-1774868656832",
+      "sourcePortName": "gridList"
+    },
+    {
+      "portName": "in__1368__roughness",
+      "portType": "number",
+      "portLabel": "粗糙度",
+      "sourceNodeId": "node-1774870121368",
+      "sourcePortName": "roughness"
+    },
+    {
+      "portName": "in__1368__initHeight",
+      "portType": "number",
+      "portLabel": "初始高度",
+      "sourceNodeId": "node-1774870121368",
+      "sourcePortName": "initHeight"
+    },
+    {
+      "portName": "in__1368__spread",
+      "portType": "number",
+      "portLabel": "扰动幅度",
+      "sourceNodeId": "node-1774870121368",
+      "sourcePortName": "spread"
+    },
+    {
+      "portName": "in__8354__layers",
+      "portType": "number",
+      "portLabel": "层数",
+      "sourceNodeId": "node-1774876398354",
+      "sourcePortName": "layers"
+    },
+    {
+      "portName": "in__6282__seed",
+      "portType": "number",
+      "portLabel": "随机种子",
+      "sourceNodeId": "node-1774870126282",
+      "sourcePortName": "seed"
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out__2581__description",
+      "portType": "string",
+      "portLabel": "说明信息",
+      "sourceNodeId": "node-1774868662581",
+      "sourcePortName": "description"
+    },
+    {
+      "portName": "out__2581__outputGrids",
+      "portType": "array",
+      "portLabel": "输出网格列表",
+      "sourceNodeId": "node-1774868662581",
+      "sourcePortName": "outputGrids"
+    },
+    {
+      "portName": "out__2581__outputNameList",
+      "portType": "array",
+      "portLabel": "名称清单",
+      "sourceNodeId": "node-1774868662581",
+      "sourcePortName": "outputNameList"
+    },
+    {
+      "portName": "out__2581__errorMessage",
+      "portType": "string",
+      "portLabel": "错误信息",
+      "sourceNodeId": "node-1774868662581",
+      "sourcePortName": "errorMessage"
+    }
+  ],
+  "innerLayout": {
+    "node-1774868656832": {
+      "x": -7904.473751447195,
+      "y": -1511.0392261553736
+    },
+    "node-1774868662581": {
+      "x": -6027.407990523959,
+      "y": -1812.576932006009
+    },
+    "node-1774868668188": {
+      "x": -7573.154015321561,
+      "y": -1586.640647031711
+    },
+    "node-1774868686820": {
+      "x": -7342.927282638284,
+      "y": -1503.0387608618064
+    },
+    "node-1774868695510": {
+      "x": -7099.838721313485,
+      "y": -1585.3544641675587
+    },
+    "node-1774868705310": {
+      "x": -6533.595824501481,
+      "y": -1869.8787637950672
+    },
+    "node-1774868716092": {
+      "x": -7613.025684110285,
+      "y": -1354.4846400522063
+    },
+    "node-1774868721885": {
+      "x": -7865.760616916228,
+      "y": -1313.9698798314062
+    },
+    "node-1774868759042": {
+      "x": -7364.838950827651,
+      "y": -1292.8373826020893
+    },
+    "node-1774870121368": {
+      "x": -6047.6458068680595,
+      "y": -1387.7933326701045
+    },
+    "node-1774870126282": {
+      "x": -7865.760616916228,
+      "y": -1088.5911913048126
+    },
+    "node-1774870321906": {
+      "x": -7085.446762229436,
+      "y": -1316.0815176435947
+    },
+    "node-1774870326447": {
+      "x": -7389.447313554921,
+      "y": -1194.866133824774
+    },
+    "node-1774870345730": {
+      "x": -6760.21999274859,
+      "y": -1227.6389675131559
+    },
+    "node-1774870350072": {
+      "x": -7078.743368551523,
+      "y": -1128.6450928067109
+    },
+    "node-1774870371562": {
+      "x": -7085.446762229436,
+      "y": -1185.3663528219531
+    },
+    "node-1774870385534": {
+      "x": -6286.426294165424,
+      "y": -1237.5110661090011
+    },
+    "node-1774870390376": {
+      "x": -6584.27233958858,
+      "y": -1111.3577416367034
+    },
+    "node-1774870400576": {
+      "x": -6584.27233958858,
+      "y": -1164.5345421591683
+    },
+    "node-1774870937224": {
+      "x": -4980.818557443359,
+      "y": -1432.7896438464543
+    },
+    "node-1774870946040": {
+      "x": -5414.006214880639,
+      "y": -1233.5025156022184
+    },
+    "node-1774870976547": {
+      "x": -5194.722636826264,
+      "y": -1215.5967525947588
+    },
+    "node-1774871022576": {
+      "x": -4895.924931566748,
+      "y": -1247.9622912585874
+    },
+    "node-1774871029046": {
+      "x": -5124.927533309716,
+      "y": -1140.109453018351
+    },
+    "node-1774871038837": {
+      "x": -4723.555131449004,
+      "y": -1391.475608236194
+    },
+    "node-1774871131629": {
+      "x": -5790.718193657907,
+      "y": -1387.9044275739461
+    },
+    "node-1774871143299": {
+      "x": -5660.477170790455,
+      "y": -1598.0435522426087
+    },
+    "node-1774876398354": {
+      "x": -5506.395207595749,
+      "y": -1386.4953711224832
+    },
+    "node-1774876403290": {
+      "x": -5985.046464742287,
+      "y": -1575.8219674533686
+    },
+    "node-1774876412651-scr2i": {
+      "x": -5985.046464742287,
+      "y": -1512.5004050313605
+    }
+  },
+  "nameEn": "Random Mountain Terrain"
+}

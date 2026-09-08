@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_mst_road_network" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#3fb36a"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_mst_road_network)"/>
+
+  <path fill="#fff" d="M12,3 L12,7"/>
+  <path fill="#fff" d="M12,17 L12,21"/>
+  <path fill="#fff" d="M3,12 L7,12"/>
+  <path fill="#fff" d="M17,12 L21,12"/>
+  <path fill="#fff" d="M12,7 L7,12"/>
+  <path fill="#fff" d="M12,7 L17,12"/>
+  <path fill="#fff" d="M12,17 L7,12"/>
+  <path fill="#fff" d="M12,17 L17,12"/>
+  <circle cx="12" cy="12" r="2" fill="#000"/>
+
+</svg>

@@ -1,0 +1,18 @@
+/* mode-topBillboard:plugin 自管的主 canvas */
+.mode-top-billboard-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  /* 鼠标事件交给 host 容器处理(pan/orbit/wheel/click 全在 RenderCanvas 内) */
+  pointer-events: none;
+}
+
+/* Edit-mode overlay: translucent brush ghost + box-select rubber-band, painted
+   above the master each frame. Never intercepts pointer events. */
+.mode-top-billboard-overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}

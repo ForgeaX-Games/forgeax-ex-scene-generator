@@ -1,0 +1,101 @@
+{
+  "id": "dock_platform_layout",
+  "label": "码头平台",
+  "name-en": "DockPlatformLayout",
+  "description": "在单张区域掩码上按 point 生成码头平台。Point 吸附最近边界并推导局部外法线；引桥固定向岸内压入 4 格，避免与有机岸线断开，length 仍只表示向水面伸出的长度。尽头接大甲板。电池直接输出专用 tagGrid：岸内端与甲板外侧长边为开口，甲板两个短边不打标、保留栏杆。输出单张合并多值网格（1=甲板，2=引桥）。",
+  "description-en": "Generate a point-positioned dock platform. The point snaps to the nearest boundary and determines a local outward normal. The approach overlaps four cells inland to prevent shore gaps, while length still measures only the outward run. A dedicated tagGrid marks the inland end and deck's outer long edge as openings; both short deck edges remain rails.",
+  "icon": "俯视码头木质平台，一条细长引桥从左侧陆地伸向水面，尽头是一块浅棕色矩形大甲板，扁平插画风格，主色2种。",
+  "version": "4.1.0",
+  "tags": ["dock", "pier", "wharf", "platform", "autotile", "procedural", "datatree"],
+  "tag_labels": ["码头", "栈桥", "平台", "自动贴图", "程序化", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "区域掩码",
+      "description": "单张可用区域掩码网格（每非零单元格视为陆地）；只用来找岸接线，结构可以长到掩码外。网格列表由引擎逐张 fanout。",
+      "description-en": "Single region mask grid (non-zero cells treated as land); used only to locate the shoreline — the structure may grow outside it. The engine fans out a grid list one-by-one."
+    },
+    {
+      "name": "point",
+      "type": "point2d",
+      "access": "item",
+      "required": true,
+      "label": "接岸位置",
+      "description": "期望的接岸 point2d（x→列、y→行）。不在区域边缘时吸附到欧氏距离最近的 4 邻域边界格；伸出方向按吸附点附近的局部岸线自动推导。",
+      "description-en": "Desired shore anchor point2d (x→column, y→row). If it is not on the region edge, it snaps to the nearest 4-neighbour boundary cell by Euclidean distance; the outward direction is inferred from the local shoreline."
+    },
+    {
+      "name": "deckWidth",
+      "type": "number",
+      "access": "item",
+      "label": "甲板宽度",
+      "description": "尽头甲板垂直于伸出方向的宽度（格数），与引桥共用同一中轴。",
+      "description-en": "Width in cells of the far-end deck, perpendicular to the growth direction, sharing the walkway's mid axis.",
+      "default": 9
+    },
+    {
+      "name": "deckDepth",
+      "type": "number",
+      "access": "item",
+      "label": "甲板进深",
+      "description": "尽头甲板沿伸出方向的进深（格数），从引桥末端继续往外铺。建议大于引桥宽度：进深小于等于桥宽时甲板会被端头判定当成一段横桥，两头补上收口块。",
+      "description-en": "Depth in cells of the far-end deck along the growth direction, continuing outward from the walkway's tip. Keep it larger than the walkway width: at or below it, end-cap detection reads the deck as another bridge strip and caps its two ends.",
+      "default": 5
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "引桥宽度",
+      "description": "引桥垂直于伸出方向的宽度（格数），居中放置。同时作为 thickness 输出喂给 bridge_entry_tag。",
+      "description-en": "Approach walkway width in cells, perpendicular to the growth direction, centered. Also emitted as `thickness` for bridge_entry_tag.",
+      "default": 3
+    },
+    {
+      "name": "length",
+      "type": "number",
+      "access": "item",
+      "label": "引桥长度",
+      "description": "引桥从岸接线沿伸出方向的长度（格数）；0=甲板直接贴岸。只被画布边界裁剪，不被岸线裁剪。",
+      "description-en": "Approach walkway length in cells from the shoreline along the growth direction; 0 = deck sits directly against the shore. Clipped only by the canvas, never by the shoreline.",
+      "default": 6
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "码头平台掩码",
+      "description": "单张多值网格：1=甲板，2=引桥。已是合并后的整片掩码——直接接一个 grid2node.grid 建成单个节点。⚠️ 不要接 grid_split_by_value 拆成多个节点：preview 的 autotile 邻接判断只看本节点自己那一层，拆开会在甲板与引桥交界处长出一圈假扶手。",
+      "description-en": "Single multi-value grid: 1=deck, 2=approach. Already the merged mask — wire it into one grid2node.grid to build a single node. ⚠️ Do not split it with grid_split_by_value: the preview's autotile neighbour probe only sees the cell's own layer, so splitting grows a ring of phantom rails where the deck meets the walkway."
+    },
+    {
+      "name": "tagGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "开口标签网格",
+      "description": "与 outputGrid 同尺寸；岸内端和甲板外侧长边标为端头开口，甲板两个短边保持 0 以使用栏杆贴片。接 grid2node.stateGrid。",
+      "description-en": "Same size as outputGrid; marks the inland end and deck's outer long edge as openings while leaving both short deck edges untagged for rail tiles. Wire to grid2node.stateGrid."
+    },
+    {
+      "name": "stateValues",
+      "type": "string",
+      "access": "list",
+      "label": "开口标签值",
+      "description": "[\"\", \"entry_h\", \"entry_v\"]，接 grid2node.stateValues。",
+      "description-en": "[\"\", \"entry_h\", \"entry_v\"] for grid2node.stateValues."
+    },
+    {
+      "name": "thickness",
+      "type": "number",
+      "access": "item",
+      "label": "桥宽（给端头判定）",
+      "description": "等于 width，接 bridge_entry_tag.thickness。由电池自己输出是因为端头判定必须知道桥宽，而下游拿不到 width；接死一个常数会在改宽度时失效。",
+      "description-en": "Equals `width`; wire into bridge_entry_tag.thickness. Emitted by the battery because end-cap detection needs the bridge width and downstream cannot see `width`; hard-coding a constant silently breaks when the width changes."
+    }
+  ]
+}

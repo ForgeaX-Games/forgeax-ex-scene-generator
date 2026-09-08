@@ -1,0 +1,34 @@
+{
+  "id": "g_railing",
+  "label": "栏杆",
+  "name-en": "GRailing",
+  "description": "追加 railing(...)：栏杆/护栏，两端方立柱 + 顶扶手 + 均布竖向栏杆条（length / height / baluster_count）。当 prompt 提到 栏杆 / 护栏 / 扶手 / 围栏 / railing / balustrade / handrail 时使用。",
+  "description-en": "Append `railing(...)` — a balustrade with end posts, a top handrail and evenly spaced balusters. Use for railing, guardrail, handrail, balustrade, fence.",
+  "version": "1.1.0",
+  "autoIterate": true,
+  "tags": ["geometry", "architecture", "railing", "cad"],
+  "tag_labels": ["几何", "建筑", "栏杆", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry；缺省视为空", "description-en": "Upstream Geometry; empty when absent." },
+    { "name": "length", "type": "number", "label": "长度", "default": 3, "description": "总长（X，米）", "description-en": "Total length along X (meters)." },
+    { "name": "height", "type": "number", "label": "高度", "default": 1.0, "description": "总高（Z，米）", "description-en": "Total height along Z (meters)." },
+    { "name": "thickness", "type": "number", "required": false, "label": "栏杆条粗细", "default": 0.04, "description": "竖向栏杆条截面边长", "description-en": "Baluster cross-section size." },
+    { "name": "post_size", "type": "number", "required": false, "label": "立柱边长", "default": 0, "description": "端立柱方截面边长（0=自动）", "description-en": "End-post square section (0 = auto)." },
+    { "name": "post_shape", "type": "string", "required": false, "label": "立柱截面", "default": "square", "description": "square 方柱 / round 圆柱", "description-en": "square / round end posts." },
+    { "name": "post_radius", "type": "number", "required": false, "label": "圆柱半径", "default": 0, "description": "round 立柱半径（米）；0=按 post_size 自动", "description-en": "Round post radius; 0 = auto from post_size." },
+    { "name": "rail_height", "type": "number", "required": false, "label": "扶手高", "default": 0, "description": "顶扶手厚度（0=自动）", "description-en": "Top handrail height (0 = auto)." },
+    { "name": "top_rail_width", "type": "number", "required": false, "label": "扶手宽", "default": 0, "description": "顶扶手截面宽度（Y，米）；0=自动", "description-en": "Top handrail section width (Y); 0 = auto." },
+    { "name": "baluster_count", "type": "number", "required": false, "label": "栏杆条数", "default": -1, "description": "竖向栏杆条数量（<0=按长度自动）", "description-en": "Number of balusters (<0 = auto by length)." },
+    { "name": "post_spacing", "type": "number", "required": false, "label": "栏杆间距", "default": 0, "description": "按间距推算栏杆条数量（米，优先于条数）", "description-en": "Derive baluster count from this spacing (overrides count)." },
+    { "name": "bottom_rail", "type": "bool", "required": false, "label": "底横杆", "default": false, "description": "加底横杆", "description-en": "Add a bottom rail." },
+    { "name": "mid_rail", "type": "bool", "required": false, "label": "中横杆", "default": false, "description": "加中横杆", "description-en": "Add a mid rail." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "自定义 id；空 = 自动 rail{n}", "description-en": "Custom id; empty = auto rail{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 railing 行后的 Geometry", "description-en": "Geometry after appending the railing." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id", "description-en": "Id of the new shape." },
+    { "name": "error", "type": "string", "label": "错误", "description": "非致命错误信息", "description-en": "Non-fatal error string." }
+  ],
+  "projectTypes": ["asset3d"]
+}

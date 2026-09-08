@@ -1,0 +1,25 @@
+{
+  "id": "g_array_linear",
+  "label": "线性阵列",
+  "name-en": "GArrayLinear",
+  "description": "沿 step 向量复制 shape 并合成一个 compound。",
+  "description-en": "Copy a shape along a step vector into a compound.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "csg", "array", "cad"],
+  "tag_labels": ["几何", "CSG", "阵列", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "shape_id", "type": "string", "label": "Shape id", "default": "" },
+    { "name": "count", "type": "number", "label": "数量", "default": 3 },
+    { "name": "dx", "type": "number", "label": "步长 X", "default": 1 },
+    { "name": "dy", "type": "number", "label": "步长 Y", "default": 0 },
+    { "name": "dz", "type": "number", "label": "步长 Z", "default": 0 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

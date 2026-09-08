@@ -1,0 +1,29 @@
+{
+  "id": "grid_union_merge",
+  "label": "归一合并",
+  "name-en": "Union",
+  "description": "检测多个相同大小网格中的非零值，任意输入网格在某位置非零则输出为1，全部为零则输出为0。每个输入端口接受网格列表或单个网格。",
+  "description-en": "Merges multiple same-size grids: any non-zero cell across all inputs becomes 1 in the output, otherwise 0. Each input port accepts a grid list or a single grid.",
+  "icon": "多个半透明紫色矩形网格从左向右叠合，最终合并成一个白色高亮网格，表示多层归一化合并。扁平插画风格，紫色和白色为主色，背景简洁浅灰。",
+  "version": "2.0.0",
+  "tags": ["grid", "merge", "union", "normalize", "binary"],
+  "tag_labels": ["网格", "合并", "并集", "归一化", "二值"],
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "归一合并结果：任意输入网格中非零的位置为1，全部为零的位置为0。",
+      "description-en": "Union result: 1 where any input grid is non-zero, 0 where all inputs are zero."
+    }
+  ],
+  "dynamicInputs": {
+    "prefix": "gridList_",
+    "labelTemplate": "网格列表$i",
+    "minCount": 2,
+    "type": "grid",
+    "access": "list"
+  }
+}

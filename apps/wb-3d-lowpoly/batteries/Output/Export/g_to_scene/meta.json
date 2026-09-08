@@ -1,0 +1,23 @@
+{
+  "id": "g_to_scene",
+  "label": "生成 SceneSpec",
+  "name-en": "GToScene",
+  "description": "静态路终端编译器：把纯静态 Geometry（part/mesh/material，无 joint/skin）编译成 SceneSpec JSON（静态 IR，类比 URDF/RigSpec）——一组已置位、已上色的网格引用。单物体（真形状 part）由上游 g_bake_object 合并成单个多材质 GLB（object_filename 端口）；场景组装（mesh(filename=<sha>.obj) 引用 part）逐 part 列出 mesh + origin/rpy + 颜色。前端 live-sync 拉取后加载并组合，导出合并成单个 .glb。",
+  "description-en": "Static terminal compiler: pure-static Geometry (part/mesh/material, no joint/skin) → SceneSpec JSON (static IR, URDF/RigSpec analogue) — a list of placed, colored mesh refs. A single object (real-shape parts) is merged into one multi-material GLB by upstream g_bake_object (object_filename port); a scene (mesh(filename=<sha>.obj) ref parts) lists each mesh + origin/rpy + color. The frontend live-sync loads and composes them; export merges to one .glb.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["scene", "static", "export", "io"],
+  "tag_labels": ["场景", "静态", "导出", "IO"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": true, "label": "几何", "description": "纯静态几何（part + mesh/真形状 + material）", "description-en": "Pure-static geometry (part + mesh/real-shape + material)." },
+    { "name": "object_filename", "type": "string", "required": false, "default": "", "label": "物体网格文件名", "description": "单物体合并 GLB <sha>.glb（通常接 g_bake_object.filename）", "description-en": "Merged single-object GLB <sha>.glb (usually wired from g_bake_object.filename)." }
+  ],
+  "outputs": [
+    { "name": "sceneSpec", "type": "object", "label": "SceneSpec", "description": "静态 IR 对象（已置位、已上色的网格引用列表）", "description-en": "Static IR object (list of placed, colored mesh refs)." },
+    { "name": "scene_json", "type": "string", "label": "SceneSpec JSON", "description": "SceneSpec 的 JSON 字符串", "description-en": "SceneSpec as a JSON string." },
+    { "name": "report", "type": "object", "label": "报告", "description": "fingerprint / itemCount", "description-en": "fingerprint / itemCount." },
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "透传输入几何", "description-en": "Pass-through geometry." },
+    { "name": "error", "type": "string", "label": "错误", "description": "编译失败信息", "description-en": "Compile error message." }
+  ],
+  "projectTypes": ["asset3d"]
+}

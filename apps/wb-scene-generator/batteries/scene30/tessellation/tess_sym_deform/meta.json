@@ -1,0 +1,44 @@
+{
+  "id": "tess_sym_deform",
+  "label": "对称边替换变形",
+  "description": "对镶嵌格施加严格对称的边替换变形（Symmetric Edge Substitution）：每条共享边用同一条 sin(2πt) 曲线定义，相邻格子自动精确咬合，每块形状仍然全等，实现艾舍尔风有机镶嵌效果。",
+  "description-en": "Applies mathematically correct symmetric edge substitution to any tessellation region grid. Each shared edge is replaced by the same sin(2πt) curve from both sides, guaranteeing exact interlocking and preserved congruence across all tiles.",
+  "icon": "一张六边形格网的边界被有机弯曲，相邻格子边界像拼图齿口精确咬合，左规则右变形，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["tessellation", "symmetric", "edge", "substitution", "escher", "deform", "congruent", "pcg"],
+  "tag_labels": ["镶嵌", "对称", "边替换", "艾舍尔", "变形", "全等", "PCG"],
+  "inputs": [
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "镶嵌格 ID 网格",
+      "description": "来自任意镶嵌格电池的 regionGrid（hex/tri/rhombus/herringbone/cairo 均可）",
+      "description-en": "Region ID grid from any tessellation generator (hex, tri, rhombus, herringbone, or cairo)."
+    },
+    {
+      "name": "amplitude",
+      "type": "number",
+      "label": "变形幅度",
+      "description": "边界曲线的最大偏移像素数。建议不超过 edgeLen 的 30%，否则格子形状会扭曲过度。默认 3",
+      "description-en": "Maximum pixel offset of the edge curve. Recommended < 30% of edgeLen to avoid excessive distortion. Default 3.",
+      "default": 3
+    },
+    {
+      "name": "edgeLen",
+      "type": "number",
+      "label": "边长（0=自动）",
+      "description": "格子边长的像素估计值，用于归一化 t 参数。0=自动从 regionGrid 估算（推荐），与 cellSize 相近即可。默认 0",
+      "description-en": "Pixel edge length estimate for t normalization. 0=auto-detect from regionGrid (recommended). Default 0.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "warpedGrid",
+      "type": "grid",
+      "label": "对称变形 ID 网格",
+      "description": "边界经过对称边替换曲线变形后的 ID 网格，每块形状仍然全等，相邻边精确咬合",
+      "description-en": "Region ID grid with symmetrically deformed tile boundaries. All tiles remain congruent and edges interlock exactly."
+    }
+  ]
+}

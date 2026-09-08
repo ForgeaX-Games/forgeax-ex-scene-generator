@@ -1,0 +1,60 @@
+{
+  "id": "rule_indoor_corridor_connect",
+  "label": "走廊内→外连通",
+  "description": "从内圈走廊随机选点向外延伸，穿过所有环直达外墙轮廓，每条宽度随机2-6",
+  "description-en": "Extends connectors from inner rings outward through all rings to the outer wall, each with random width 2-6.",
+  "icon": "两个嵌套矩形环之间有几条不等宽短线段从内向外连接，深灰底配白色线条，扁平插画风格简洁小图标主色2种",
+  "version": "1.3.0",
+  "tags": ["rule_indoor", "corridor", "connect", "bridge"],
+  "tag_labels": ["规则室内", "走廊", "连通", "桥接"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "0=外墙, 1=走廊环, 2=房间区",
+      "description-en": "Grid: 0=wall, 1=corridor ring, 2=room zone."
+    },
+    {
+      "name": "minWidth",
+      "type": "number",
+      "label": "最小连接宽度",
+      "description": "连接走廊最小宽度",
+      "description-en": "Minimum connector corridor width.",
+      "default": 2
+    },
+    {
+      "name": "maxWidth",
+      "type": "number",
+      "label": "最大连接宽度",
+      "description": "连接走廊最大宽度",
+      "description-en": "Maximum connector corridor width.",
+      "default": 6
+    },
+    {
+      "name": "connectorCount",
+      "type": "number",
+      "label": "连接数量",
+      "description": "连接走廊总数",
+      "description-en": "Total number of connector corridors.",
+      "default": 16
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "走廊环连通后的网格",
+      "description-en": "Grid with corridor rings connected to outer wall."
+    }
+  ]
+}

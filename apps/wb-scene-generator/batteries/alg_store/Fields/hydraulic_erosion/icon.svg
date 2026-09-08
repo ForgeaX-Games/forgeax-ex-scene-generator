@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_hydraulic_erosion" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#3a8e88"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_hydraulic_erosion)"/>
+
+  <path fill="#fff" d="M2 18l4-6 4 6 4-6 4 6v2H2v-2z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M6 12l4 6 4-6 4 6v2h-2v-1.5l-3-4.5-3 4.5V20H6v-2z"/>
+  <path fill="#fff" d="M2 6l4-4 4 4 4-4 4 4v2H2V6z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M6 2l4 4 4-4 4 4v2h-2V3.5l-3 4.5-3-4.5V8H6V6z"/>
+
+</svg>

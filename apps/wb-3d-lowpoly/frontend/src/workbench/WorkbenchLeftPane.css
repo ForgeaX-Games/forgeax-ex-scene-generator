@@ -1,0 +1,185 @@
+.lowpoly-left-pane {
+  /* The host mounts this pane inside #root, which design-tokens.css (shared
+     global stylesheet, see main.tsx) pins to height:100% + overflow:hidden.
+     A min-height:100vh here would grow the aside past the clipped root (no
+     scrollbar), so use height:100% and let the pane own its own vertical
+     scroll. Fallback values below match design-tokens.css exactly (same
+     palette as the viewer3d preview — see theme.ts) so this pane still reads
+     correctly even if that stylesheet somehow fails to load. */
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-md, 12px);
+  overflow-y: auto;
+  color: var(--color-text-primary, #f3f7ee);
+  background:
+    radial-gradient(circle at top left, var(--color-accent-hover, rgba(212, 255, 72, 0.14)), transparent 34%),
+    var(--color-bg-primary, #070b08);
+  font-family: var(--font-family, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+
+.lowpoly-left-pane__hero {
+  padding: var(--spacing-md, 12px);
+  border: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.28);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lowpoly-left-pane__eyebrow {
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent, #d4ff48);
+}
+
+.lowpoly-left-pane h1,
+.lowpoly-left-pane h2,
+.lowpoly-left-pane p {
+  margin: 0;
+}
+
+.lowpoly-left-pane h1 {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.lowpoly-left-pane__hero p,
+.lowpoly-left-pane__empty,
+.lowpoly-left-pane__tips p {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #9aa894);
+}
+
+.lowpoly-left-pane__notice {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(240, 78, 82, 0.35);
+  border-radius: 10px;
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.22);
+  font-size: 12px;
+}
+
+.lowpoly-left-pane__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.lowpoly-left-pane__card,
+.lowpoly-left-pane__section {
+  border: 1px solid var(--color-border, #263326);
+  border-radius: var(--radius-md, 12px);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.lowpoly-left-pane__card {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+}
+
+.lowpoly-left-pane__card span,
+.lowpoly-left-pane__pane-row em,
+.lowpoly-left-pane__projects em {
+  font-size: 11px;
+  color: var(--color-text-secondary, #9aa894);
+}
+
+.lowpoly-left-pane__card strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lowpoly-left-pane__section {
+  margin-top: 10px;
+  padding: 12px;
+}
+
+.lowpoly-left-pane h2 {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.lowpoly-left-pane__steps,
+.lowpoly-left-pane__projects {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lowpoly-left-pane__steps {
+  display: grid;
+  gap: 8px;
+  counter-reset: lowpoly-step;
+}
+
+.lowpoly-left-pane__steps li {
+  position: relative;
+  min-height: 20px;
+  padding-left: 28px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-text-secondary, #9aa894);
+  counter-increment: lowpoly-step;
+}
+
+.lowpoly-left-pane__steps li::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 999px;
+  color: #0a1004;
+  background: var(--color-accent, #d4ff48);
+  content: counter(lowpoly-step);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.lowpoly-left-pane__pane-row,
+.lowpoly-left-pane__projects li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.lowpoly-left-pane__pane-row:first-of-type,
+.lowpoly-left-pane__projects li:first-child {
+  border-top: 0;
+}
+
+.lowpoly-left-pane__pane-row span,
+.lowpoly-left-pane__projects span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.lowpoly-left-pane__projects li.is-active span {
+  color: var(--color-accent, #d4ff48);
+}
+
+/* Relocated embed/window toggle button (URDF), rendered in the kernel
+   <EditorControlsPanel> Windows slot. Active = lowpoly accent. */
+.lowpoly-left-pane .editor-controls__btn.is-on {
+  border-color: rgba(var(--color-accent-rgb, 212, 255, 72), 0.55);
+  background: var(--color-accent-hover, rgba(212, 255, 72, 0.14));
+  color: var(--color-accent, #d4ff48);
+}

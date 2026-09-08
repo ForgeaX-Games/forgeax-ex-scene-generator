@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_cave_connect" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a16207"/>
+      <stop offset="100%" stop-color="#b17e33"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_cave_connect)"/>
+
+  <path fill="#fff" d="M3 3h5v5H3V3zM3 10h5v5H3v-5zM3 17h5v4H3v-4zM16 3h5v5h-5V3zM10 3h5v5h-5V3zM10 10h11v11h-3v-4h-4v4h-4v-7h3v-4h-3V10z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M8 3H9V8H8zM8 10H9v5H8zM8 17H9v4H8zM15 3h1v5h-1z"/>
+
+</svg>

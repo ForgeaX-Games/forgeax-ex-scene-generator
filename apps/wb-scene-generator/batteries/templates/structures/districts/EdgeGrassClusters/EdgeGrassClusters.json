@@ -1,0 +1,455 @@
+{
+  "id": "group_riverbank_district",
+  "name": "EdgeGrassClusters",
+  "nameEn": "EdgeGrassClusters",
+  "author": "zyw",
+  "nodes": [
+    {
+      "id": "rb_in",
+      "opId": "scene_passthrough",
+      "name": "rb_in",
+      "position": { "x": 0, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "rb_explode",
+      "opId": "node_explode",
+      "name": "rb_explode",
+      "position": { "x": 280, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "rb_rgrid",
+      "opId": "rect_grid",
+      "name": "rb_rgrid",
+      "position": { "x": 560, "y": -120 },
+      "params": {}
+    },
+    {
+      "id": "rb_slice",
+      "opId": "voxel_slice",
+      "name": "rb_slice",
+      "position": { "x": 840, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "rb_seed",
+      "opId": "multi_seed",
+      "name": "rb_seed",
+      "position": { "x": 840, "y": 220 },
+      "params": {}
+    },
+    {
+      "id": "rb_zone",
+      "opId": "zone_nesting_riverbank",
+      "name": "rb_zone",
+      "position": { "x": 1120, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "rb_name",
+      "opId": "type_string",
+      "name": "rb_name",
+      "position": { "x": 1120, "y": 260 },
+      "params": {}
+    },
+    {
+      "id": "rb_g2n_zone",
+      "opId": "grid2node",
+      "name": "rb_g2n_zone",
+      "position": { "x": 1400, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "rb_tilezone",
+      "opId": "__group__",
+      "name": "TileAssetName",
+      "position": { "x": 1680, "y": -40 },
+      "params": { "groupId": "group_tilezone_rbdst" }
+    },
+    {
+      "id": "rb_add_zone",
+      "opId": "add_child",
+      "name": "rb_add_zone",
+      "position": { "x": 1980, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "rb_subtract",
+      "opId": "alg_region_subtract",
+      "name": "rb_subtract",
+      "position": { "x": 1400, "y": 320 },
+      "params": {}
+    },
+    {
+      "id": "rb_rname",
+      "opId": "text_panel",
+      "name": "rb_rname",
+      "position": { "x": 1400, "y": 500 },
+      "params": { "text": "rest", "_nodeWidth": 172, "_nodeHeight": 69 }
+    },
+    {
+      "id": "rb_g2n_rest",
+      "opId": "grid2node",
+      "name": "rb_g2n_rest",
+      "position": { "x": 1680, "y": 320 },
+      "params": {}
+    },
+    {
+      "id": "rb_add_rest",
+      "opId": "add_child",
+      "name": "rb_add_rest",
+      "position": { "x": 2260, "y": 160 },
+      "params": {}
+    },
+    {
+      "id": "rb_merge",
+      "opId": "scene_merge_subtrees",
+      "name": "rb_merge",
+      "position": { "x": 2540, "y": 80 },
+      "params": {}
+    },
+    {
+      "id": "rb_focus_zone",
+      "opId": "scene_focus_path",
+      "name": "rb_focus_zone",
+      "position": { "x": 2820, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "rb_focus_rest",
+      "opId": "scene_focus_path",
+      "name": "rb_focus_rest",
+      "position": { "x": 2820, "y": 240 },
+      "params": {}
+    },
+    {
+      "id": "rb_out_main",
+      "opId": "scene_passthrough",
+      "name": "rb_out_main",
+      "position": { "x": 3100, "y": 80 },
+      "params": {}
+    },
+    {
+      "id": "rb_out_zone",
+      "opId": "scene_passthrough",
+      "name": "rb_out_zone",
+      "position": { "x": 3100, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "rb_out_rest",
+      "opId": "scene_passthrough",
+      "name": "rb_out_rest",
+      "position": { "x": 3100, "y": 240 },
+      "params": {}
+    },
+    {
+      "id": "rb_zpath",
+      "opId": "type_string",
+      "name": "rb_zpath",
+      "position": { "x": 2260, "y": -120 },
+      "params": {}
+    },
+    {
+      "id": "rb_rpath",
+      "opId": "type_string",
+      "name": "rb_rpath",
+      "position": { "x": 2540, "y": 420 },
+      "params": {}
+    }
+  ],
+  "edges": [
+    { "id": "rb_e1", "source": { "nodeId": "rb_in", "port": "scene" }, "target": { "nodeId": "rb_explode", "port": "scene" } },
+    { "id": "rb_e2", "source": { "nodeId": "rb_explode", "port": "width" }, "target": { "nodeId": "rb_rgrid", "port": "width" } },
+    { "id": "rb_e3", "source": { "nodeId": "rb_explode", "port": "height" }, "target": { "nodeId": "rb_rgrid", "port": "height" } },
+    { "id": "rb_e4", "source": { "nodeId": "rb_explode", "port": "voxels" }, "target": { "nodeId": "rb_slice", "port": "voxels" } },
+    { "id": "rb_e5", "source": { "nodeId": "rb_rgrid", "port": "grid" }, "target": { "nodeId": "rb_slice", "port": "grid" } },
+    { "id": "rb_e6", "source": { "nodeId": "rb_slice", "port": "slice" }, "target": { "nodeId": "rb_seed", "port": "shape" } },
+    { "id": "rb_e7", "source": { "nodeId": "rb_slice", "port": "slice" }, "target": { "nodeId": "rb_zone", "port": "inputGrid" } },
+    { "id": "rb_e8", "source": { "nodeId": "rb_seed", "port": "seed" }, "target": { "nodeId": "rb_zone", "port": "seed" } },
+    { "id": "rb_e9", "source": { "nodeId": "rb_zone", "port": "outputGrid" }, "target": { "nodeId": "rb_g2n_zone", "port": "grid" } },
+    { "id": "rb_e10", "source": { "nodeId": "rb_name", "port": "value" }, "target": { "nodeId": "rb_g2n_zone", "port": "name" } },
+    { "id": "rb_e11", "source": { "nodeId": "rb_g2n_zone", "port": "scene" }, "target": { "nodeId": "rb_tilezone", "port": "in_0" } },
+    { "id": "rb_e12", "source": { "nodeId": "rb_name", "port": "value" }, "target": { "nodeId": "rb_tilezone", "port": "in_1" } },
+    { "id": "rb_e13", "source": { "nodeId": "rb_tilezone", "port": "out_0" }, "target": { "nodeId": "rb_add_zone", "port": "nodes" } },
+    { "id": "rb_e14", "source": { "nodeId": "rb_in", "port": "scene" }, "target": { "nodeId": "rb_add_zone", "port": "scene" } },
+    { "id": "rb_e15", "source": { "nodeId": "rb_slice", "port": "slice" }, "target": { "nodeId": "rb_subtract", "port": "a" } },
+    { "id": "rb_e16", "source": { "nodeId": "rb_zone", "port": "outputGrid" }, "target": { "nodeId": "rb_subtract", "port": "b" } },
+    { "id": "rb_e17", "source": { "nodeId": "rb_subtract", "port": "region" }, "target": { "nodeId": "rb_g2n_rest", "port": "grid" } },
+    { "id": "rb_e18", "source": { "nodeId": "rb_rname", "port": "output" }, "target": { "nodeId": "rb_g2n_rest", "port": "name" } },
+    { "id": "rb_e19", "source": { "nodeId": "rb_add_zone", "port": "scene" }, "target": { "nodeId": "rb_add_rest", "port": "scene" } },
+    { "id": "rb_e20", "source": { "nodeId": "rb_g2n_rest", "port": "scene" }, "target": { "nodeId": "rb_add_rest", "port": "nodes" } },
+    { "id": "rb_e21", "source": { "nodeId": "rb_add_rest", "port": "scene" }, "target": { "nodeId": "rb_merge", "port": "scenes" } },
+    { "id": "rb_e22", "source": { "nodeId": "rb_merge", "port": "scene" }, "target": { "nodeId": "rb_focus_zone", "port": "scene" } },
+    { "id": "rb_e23", "source": { "nodeId": "rb_add_zone", "port": "childPaths" }, "target": { "nodeId": "rb_focus_zone", "port": "path" } },
+    { "id": "rb_e24", "source": { "nodeId": "rb_merge", "port": "scene" }, "target": { "nodeId": "rb_focus_rest", "port": "scene" } },
+    { "id": "rb_e25", "source": { "nodeId": "rb_add_rest", "port": "childPaths" }, "target": { "nodeId": "rb_focus_rest", "port": "path" } },
+    { "id": "rb_e26", "source": { "nodeId": "rb_merge", "port": "scene" }, "target": { "nodeId": "rb_out_main", "port": "scene" } },
+    { "id": "rb_e27", "source": { "nodeId": "rb_focus_zone", "port": "scene" }, "target": { "nodeId": "rb_out_zone", "port": "scene" } },
+    { "id": "rb_e28", "source": { "nodeId": "rb_focus_rest", "port": "scene" }, "target": { "nodeId": "rb_out_rest", "port": "scene" } },
+    { "id": "rb_e29", "source": { "nodeId": "rb_add_zone", "port": "childPaths" }, "target": { "nodeId": "rb_zpath", "port": "value" } },
+    { "id": "rb_e30", "source": { "nodeId": "rb_add_rest", "port": "childPaths" }, "target": { "nodeId": "rb_rpath", "port": "value" } }
+  ],
+  "position": { "x": 0, "y": 0 },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "rb_in",
+      "sourcePortName": "scene"
+    },
+    {
+      "portName": "in_1",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "rb_name",
+      "sourcePortName": "value",
+      "customLabelEn": "DistrictAsset"
+    },
+    {
+      "portName": "in_2",
+      "portType": "number",
+      "access": "tree",
+      "sourceNodeId": "rb_seed",
+      "sourcePortName": "seed",
+      "customLabelEn": "Seed"
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "erosionStrength",
+      "customLabelEn": "ErosionStrength"
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "waviness",
+      "customLabelEn": "Waviness"
+    },
+    {
+      "portName": "in_5",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "maxDepth",
+      "customLabelEn": "MaxDepth"
+    },
+    {
+      "portName": "in_6",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "featureScale",
+      "hidden": true
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "targetValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_8",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "splineAlgorithm",
+      "hidden": true
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "splineSmoothness",
+      "hidden": true
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_zone",
+      "sourcePortName": "splineSeed",
+      "hidden": true
+    },
+    {
+      "portName": "in_11",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_rgrid",
+      "sourcePortName": "fillValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_12",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "rb_slice",
+      "sourcePortName": "z",
+      "hidden": true
+    },
+    {
+      "portName": "in_13",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "rb_g2n_zone",
+      "sourcePortName": "schema",
+      "hidden": true
+    },
+    {
+      "portName": "in_14",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "rb_g2n_zone",
+      "sourcePortName": "token",
+      "hidden": true
+    },
+    {
+      "portName": "in_15",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "rb_g2n_zone",
+      "sourcePortName": "zRange",
+      "hidden": true
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "rb_out_main",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "out_1",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "rb_out_zone",
+      "sourcePortName": "scene",
+      "order": 1,
+      "customLabelEn": "Rest"
+    },
+    {
+      "portName": "out_2",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "rb_out_rest",
+      "sourcePortName": "scene",
+      "order": 2,
+      "customLabelEn": "District"
+    },
+    {
+      "portName": "out_3",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "rb_zpath",
+      "sourcePortName": "value",
+      "order": 3,
+      "customLabelEn": "DistrictPath"
+    },
+    {
+      "portName": "out_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "rb_rpath",
+      "sourcePortName": "value",
+      "order": 4,
+      "customLabelEn": "RestPath"
+    }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_tilezone_rbdst",
+      "name": "TileAssetName",
+      "nameEn": "TileAssetName",
+      "nodes": [
+        {
+          "id": "rbtz_tp_name",
+          "opId": "text_panel",
+          "name": "asset_name",
+          "position": { "x": 0, "y": 160 },
+          "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 }
+        },
+        {
+          "id": "rbtz_tp_type",
+          "opId": "text_panel",
+          "name": "asset_type",
+          "position": { "x": 280, "y": 160 },
+          "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "rbtz_tp_tile",
+          "opId": "text_panel",
+          "name": "tile",
+          "position": { "x": 280, "y": 320 },
+          "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "rbtz_set1",
+          "opId": "scene_set_attribute",
+          "name": "rbtz_set1",
+          "position": { "x": 200, "y": 0 },
+          "params": {}
+        },
+        {
+          "id": "rbtz_set2",
+          "opId": "scene_set_attribute",
+          "name": "rbtz_set2",
+          "position": { "x": 470, "y": 0 },
+          "params": {}
+        },
+        {
+          "id": "rbtz_str",
+          "opId": "type_string",
+          "name": "rbtz_str",
+          "position": { "x": 0, "y": 40 },
+          "params": {}
+        }
+      ],
+      "edges": [
+        { "id": "rbtz_e1", "source": { "nodeId": "rbtz_tp_name", "port": "output" }, "target": { "nodeId": "rbtz_set1", "port": "key" } },
+        { "id": "rbtz_e2", "source": { "nodeId": "rbtz_set1", "port": "scene" }, "target": { "nodeId": "rbtz_set2", "port": "scene" } },
+        { "id": "rbtz_e3", "source": { "nodeId": "rbtz_tp_type", "port": "output" }, "target": { "nodeId": "rbtz_set2", "port": "key" } },
+        { "id": "rbtz_e4", "source": { "nodeId": "rbtz_tp_tile", "port": "output" }, "target": { "nodeId": "rbtz_set2", "port": "value" } },
+        { "id": "rbtz_e5", "source": { "nodeId": "rbtz_str", "port": "value" }, "target": { "nodeId": "rbtz_set1", "port": "value" } }
+      ],
+      "position": { "x": 1680, "y": -40 },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "rbtz_set1",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "rbtz_str",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "rbtz_set2",
+          "sourcePortName": "scene"
+        }
+      ]
+    }
+  ]
+}

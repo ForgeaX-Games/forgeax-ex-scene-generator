@@ -1,0 +1,134 @@
+{
+  "id": "g_to_urdf",
+  "label": "导出 URDF",
+  "name-en": "GToUrdf",
+  "description": "把 Geometry DSL 翻译成 URDF XML 字符串。默认保留宽松预览；strict=true 时会把 bake fallback、隐式 orphan link、自动 root stitch 作为 diagnostics/error 暴露。",
+  "description-en": "Compile a Geometry DSL into a URDF XML string. Defaults to lenient preview; strict=true exposes bake fallback, implicit orphan links, and root auto-stitching as diagnostics/errors.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "urdf",
+    "export",
+    "io"
+  ],
+  "tag_labels": [
+    "几何",
+    "URDF",
+    "导出",
+    "IO"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": false,
+      "label": "几何",
+      "description": "上游 Geometry",
+      "description-en": "Upstream Geometry."
+    },
+    {
+      "name": "source",
+      "type": "string",
+      "required": false,
+      "label": "DSL 源码",
+      "default": "",
+      "description": "可选：直接给一段 DSL 文本（geometry 缺省时使用）",
+      "description-en": "Optional inline DSL source."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "label": "名称",
+      "default": "",
+      "description": "URDF <robot name=\"...\"> 字段；留空 = 自动取上游 part/形状 id，再回退到 untitled",
+      "description-en": "URDF robot name. Empty = auto-derive from upstream part/shape id, fallback to 'untitled'."
+    },
+    {
+      "name": "strict",
+      "type": "boolean",
+      "label": "严格模式",
+      "default": false,
+      "description": "严格交付模式；默认 false 以保留旧的宽松预览行为。",
+      "description-en": "Strict delivery mode. Defaults to false to preserve lenient preview behavior."
+    },
+    {
+      "name": "asset_kind",
+      "type": "string",
+      "label": "资产类型",
+      "default": "",
+      "description": "可选：static / assembly / mechanism。static 允许单个 terminal shape 直接预览；assembly/mechanism 要求显式 g_part 树。",
+      "description-en": "Optional: static / assembly / mechanism. static permits one terminal shape preview; assembly/mechanism require an explicit g_part tree."
+    },
+    {
+      "name": "allow_bake_fallback",
+      "type": "boolean",
+      "label": "允许烘焙 fallback",
+      "default": false,
+      "description": "是否允许 composite shape 在无 bake asset 时退化为 AABB box；默认 false（不跟随 strict）——烘焙失败/缺失会直接报错而不是悄悄换成一个看起来正常的盒子。要保留旧的宽松预览行为需显式设为 true。",
+      "description-en": "Allow composite shapes to fall back to AABB boxes when no bake asset exists. Defaults to false (independent of strict) — a missing/failed bake is now a hard error instead of a silently-substituted box. Set true explicitly to keep the old lenient preview behavior."
+    },
+    {
+      "name": "allow_auto_wrap_orphans",
+      "type": "boolean",
+      "label": "允许自动包裹孤儿形状",
+      "description": "是否允许未被 g_part 包裹的 terminal shape 自动生成隐式 link；未设置时跟随 !strict。",
+      "description-en": "Allow terminal shapes that are not wrapped by g_part to become implicit links. Defaults to !strict."
+    },
+    {
+      "name": "allow_auto_stitch_roots",
+      "type": "boolean",
+      "label": "允许自动连接多 root",
+      "description": "是否允许多个 root part 自动添加 fixed joint 串联；未设置时跟随 !strict。",
+      "description-en": "Allow multiple root parts to be auto-stitched with fixed joints. Defaults to !strict."
+    },
+    {
+      "name": "collision_proxy",
+      "type": "boolean",
+      "label": "碰撞用粗代理",
+      "default": true,
+      "description": "没有显式 g_collision_* 时，composite/烘焙网格的默认碰撞用 AABB 盒代理（更省、物理更稳），而非复制完整可视网格。原生 box/cylinder/sphere 已足够粗，仍按本体使用。设 false 可回到 visual=collision 旧行为。",
+      "description-en": "When no explicit g_collision_* is given, use an AABB box proxy for composite/baked-mesh collisions instead of copying the full visual mesh (cheaper, more stable physics). Native box/cylinder/sphere stay as-is. Set false to restore the legacy visual=collision behavior."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "urdf",
+      "type": "string",
+      "label": "URDF",
+      "description": "URDF XML 字符串",
+      "description-en": "URDF XML string."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "label": "名称",
+      "description": "robot name",
+      "description-en": "Robot name."
+    },
+    {
+      "name": "diagnostics",
+      "type": "object",
+      "label": "诊断",
+      "description": "结构化 diagnostics 数组：severity/code/message 以及可选 shapeId/partId。",
+      "description-en": "Structured diagnostics array with severity/code/message and optional shapeId/partId."
+    },
+    {
+      "name": "stats",
+      "type": "object",
+      "label": "统计",
+      "description": "结构化统计：explicitLinks/implicitLinks/explicitJoints/autoJoints/bakeFallbacks，以及 stats.meshProvenance[]（每条 visual/collision 的 kind/linkId/shapeId/op/source/error）。",
+      "description-en": "Structured stats: explicitLinks/implicitLinks/explicitJoints/autoJoints/bakeFallbacks plus stats.meshProvenance[] for each visual/collision (kind/linkId/shapeId/op/source/error)."
+    },
+    {
+      "name": "report",
+      "type": "object",
+      "label": "编译报告",
+      "description": "compile report：meshFileCount/meshTotalBytes/totalVertices/totalTriangles/bakeMs/cacheHits/bakeFallbacks/fingerprint，以及 signalBundle（errors/warnings/notes/codes）。供 agent 修复循环判定产物变化与告警计数。",
+      "description-en": "Compile report: meshFileCount/meshTotalBytes/totalVertices/totalTriangles/bakeMs/cacheHits/bakeFallbacks/fingerprint plus signalBundle (errors/warnings/notes/codes) for agent fix loops."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

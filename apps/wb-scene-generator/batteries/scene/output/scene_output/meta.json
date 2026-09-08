@@ -1,0 +1,48 @@
+{
+  "id": "scene_output",
+  "label": "场景输出",
+  "name-en": "SceneOutput",
+  "description": "把 scene 同步到渲染器：把 focus 子树展平为 voxel 图层列表（每个带 cells 的节点对应一条图层）。sink 形态——UI 上不展示输出 handle，但 NODE_OUTPUT 仍正常发射，下游通过渲染器图层桶消费。",
+  "description-en": "Sync a scene to the renderer: flatten the focus subtree into a list of voxel layers (one layer per node with cells). Sink form — output handles hidden in UI, but NODE_OUTPUT still emits and the renderer's voxel-layer bucket consumes it.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["scene", "output", "render", "preview", "voxel"],
+  "tag_labels": ["场景", "输出", "渲染", "预览", "体素"],
+  "frontend": {
+    "nodeType": "scene_sink",
+    "hideOutputs": true
+  },
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "required": true,
+      "label": "scene",
+      "description": "要同步到渲染器的 scene；focus 子树内每个带 cells 的节点产生一个 voxel 图层",
+      "description-en": "Scene to sync to the renderer; each cell-bearing node under focus becomes one voxel layer."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "layers",
+      "type": "voxel_layers",
+      "label": "layers",
+      "description": "voxel 图层列表（DFS 展平 focus 子树）；UI 隐藏，但通过 NODE_OUTPUT 进入渲染器 layers 桶",
+      "description-en": "List of voxel layers (DFS-flattened focus subtree); UI-hidden, but flows via NODE_OUTPUT into the renderer's layers bucket."
+    },
+    {
+      "name": "names",
+      "type": "name_list",
+      "label": "names",
+      "description": "与 layers 对齐的名称清单（id/name/type；name 优先 attributes.asset_name，type 优先 attributes.asset_type）",
+      "description-en": "Name list aligned with layers (id/name/type; name prefers attributes.asset_name, type prefers attributes.asset_type)."
+    },
+    {
+      "name": "scene",
+      "type": "scene",
+      "label": "scene",
+      "description": "输出完整的场景图端口值（带 graph 与 focus）。",
+      "description-en": "Scene port value carrying graph and focus."
+    }
+  ]
+}

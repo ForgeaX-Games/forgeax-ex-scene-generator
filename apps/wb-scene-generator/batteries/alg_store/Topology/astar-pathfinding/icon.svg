@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_astar_pathfinding" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c2410c"/>
+      <stop offset="100%" stop-color="#cc6337"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_astar_pathfinding)"/>
+
+  <path fill="rgba(0,0,0,0.55)" d="M2 2h20v20h-20z" opacity="0.1"/>
+  <circle cx="4" cy="4" r="1.5" fill="#fff"/>
+  <circle cx="20" cy="20" r="1.5" fill="#fff"/>
+  <rect x="8" y="6" width="3" height="3" fill="rgba(0,0,0,0.55)"/>
+  <rect x="14" y="12" width="3" height="3" fill="rgba(0,0,0,0.55)"/>
+  <path d="M4.5 4.5 L8 9 L11 9 L14 15 L17 15 L20 19.5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>

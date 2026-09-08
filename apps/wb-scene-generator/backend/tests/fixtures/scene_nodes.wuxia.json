@@ -1,0 +1,25 @@
+{
+  "sceneName": "云隐山庄",
+  "locations": [
+    {
+      "name": "云隐山庄",
+      "parent": null,
+      "kind": "region"
+    },
+    {
+      "name": "山门",
+      "parent": "云隐山庄",
+      "kind": "entrance"
+    },
+    {
+      "name": "演武场",
+      "parent": "云隐山庄",
+      "kind": "courtyard"
+    },
+    {
+      "name": "藏经阁",
+      "parent": "演武场",
+      "kind": "building"
+    }
+  ]
+}

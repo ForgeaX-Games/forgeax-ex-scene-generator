@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_rts_quad_symmetry" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#935df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_rts_quad_symmetry)"/>
+
+  <path fill="#fff" d="M2 2v20h20V2H2zm1.5 1.5h17v17h-17V3.5z"/>
+  <path fill="#fff" d="M5 5h3v3H5z"/>
+  <path fill="#fff" d="M16 5h3v3h-3z"/>
+  <path fill="#fff" d="M5 16h3v3H5z"/>
+  <path fill="#fff" d="M16 16h3v3h-3z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M5.5 5.5h2v2h-2z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M16.5 5.5h2v2h-2z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M5.5 16.5h2v2h-2z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M16.5 16.5h2v2h-2z"/>
+
+</svg>

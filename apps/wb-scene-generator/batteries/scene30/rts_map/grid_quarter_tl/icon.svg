@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_grid_quarter_tl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#935df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_grid_quarter_tl)"/>
+
+  <path fill="#fff" d="M3 3h8v8H3z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/>
+  <path fill="#fff" fill-opacity="0.35" d="M11 11h2v2h-2zM11 1h2v2h-2zM1 11h2v2h-2z"/>
+
+</svg>

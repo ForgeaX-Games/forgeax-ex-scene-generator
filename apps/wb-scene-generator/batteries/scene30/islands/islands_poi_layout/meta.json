@@ -1,0 +1,73 @@
+{
+  "id": "islands_poi_layout",
+  "label": "岛屿兴趣点布局",
+  "description": "在岛屿地形上布置洞穴、遗迹、营火等兴趣点，并写回地形足迹。",
+  "description-en": "Places points of interest such as caves, ruins, and campfires, then writes their footprints back to terrain.",
+  "icon": "岛屿地图上分布多个地标标记与足迹块，蓝绿棕配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["islands", "poi", "landmark", "layout", "terrain"],
+  "tag_labels": ["岛屿", "兴趣点", "地标", "布局", "地形"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入地形",
+      "description": "带路径的岛屿地形。",
+      "description-en": "Island terrain with paths."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，控制 POI 摆放。",
+      "description-en": "Random seed controlling POI placement.",
+      "default": 0
+    },
+    {
+      "name": "poiDensityScale",
+      "type": "number",
+      "label": "POI 密度倍率",
+      "description": "兴趣点数量倍率。",
+      "description-en": "Multiplier for POI count.",
+      "default": 1
+    },
+    {
+      "name": "minDistance",
+      "type": "number",
+      "label": "最小间距",
+      "description": "兴趣点之间的最小格距。",
+      "description-en": "Minimum cell distance between POIs.",
+      "default": 12
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "POI 地形",
+      "description": "写入 POI 足迹后的岛屿地形。",
+      "description-en": "Island terrain after POI footprints are applied."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "POI 地形对应的名称清单。",
+      "description-en": "Name list for the POI terrain."
+    },
+    {
+      "name": "poiGrid",
+      "type": "grid",
+      "label": "POI 网格",
+      "description": "仅标记兴趣点中心点位的 POI 网格。",
+      "description-en": "POI grid that marks only the center point of each placed landmark."
+    },
+    {
+      "name": "poiNameList",
+      "type": "array",
+      "label": "POI 名称清单",
+      "description": "POI 网格对应的名称清单。",
+      "description-en": "Name list corresponding to the POI grid."
+    }
+  ]
+}

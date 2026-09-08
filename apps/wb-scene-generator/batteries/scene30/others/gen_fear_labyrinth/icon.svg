@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_gen_fear_labyrinth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#ed7637"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_gen_fear_labyrinth)"/>
+
+  <path fill="#fff" d="M3 3h18v18H3z" />
+  <path fill="rgba(0,0,0,0.55)" d="M5 5h2v2H5zM10 5h2v2h-2zM15 5h2v2h-2zM5 10h2v2H5zM15 10h2v2h-2zM5 15h2v2H5zM10 15h2v2h-2zM15 15h2v2h-2z" />
+  <circle cx="12" cy="12" r="1" fill="#fff" />
+  <circle cx="7" cy="7" r="0.75" fill="rgba(255,255,255,0.35)" />
+  <circle cx="17" cy="7" r="0.75" fill="rgba(255,255,255,0.35)" />
+  <circle cx="7" cy="17" r="0.75" fill="rgba(255,255,255,0.35)" />
+  <circle cx="17" cy="17" r="0.75" fill="rgba(255,255,255,0.35)" />
+
+</svg>

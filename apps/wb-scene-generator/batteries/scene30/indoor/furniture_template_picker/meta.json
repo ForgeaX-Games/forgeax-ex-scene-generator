@@ -1,0 +1,46 @@
+{
+  "id": "furniture_template_picker",
+  "label": "家具模板选择器",
+  "description": "按编号（1-15）选取预生成的通用游戏空间家具模板，输出可直接接家具推理流程的 JSON 数据",
+  "description-en": "Picks a pre-generated furniture template (1-15 room types) and outputs JSON compatible with furniture_list_split.",
+  "icon": "左侧1到15数字列表，右侧输出房间名称和家具清单图标，中间箭头指向，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["furniture", "template", "picker", "indoor", "room"],
+  "tag_labels": ["家具", "模板", "选择器", "室内", "房间"],
+  "inputs": [
+    {
+      "name": "index",
+      "type": "number",
+      "label": "房间编号",
+      "description": "选择房间类型：1卧室 2书房 3厨房 4餐厅 5酒馆大厅 6守卫室 7宝库 8铁匠铺 9牢房 10祭坛室 11炼金室 12商店 13武器库 14议事厅 15储藏室",
+      "description-en": "Room index 1-15: 1bedroom 2study 3kitchen 4dining 5tavern 6guard 7treasury 8forge 9prison 10altar 11alchemy 12shop 13armory 14hall 15storage",
+      "default": 1,
+      "min": 1,
+      "max": 15,
+      "precision": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "string",
+      "label": "推理结果 JSON",
+      "description": "完整家具模板 JSON 字符串，格式与 AI 文本推理输出一致，可直接接 furniture_list_split",
+      "description-en": "Full furniture template as JSON string, compatible with furniture_list_split input."
+    },
+    {
+      "name": "room",
+      "type": "string",
+      "label": "房间名称",
+      "description": "房间中文名称，可接提示词模板填充的占位变量",
+      "description-en": "Room name in Chinese."
+    },
+    {
+      "name": "room_size",
+      "type": "string",
+      "label": "房间尺寸",
+      "description": "房间尺寸字符串，如 10x10，可接提示词模板填充",
+      "description-en": "Room size string, e.g. 10x10."
+    }
+  ]
+}

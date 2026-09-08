@@ -1,0 +1,22 @@
+{
+  "id": "g_profile_circle",
+  "label": "圆形 Profile",
+  "name-en": "GProfileCircle",
+  "description": "创建位于 XY 平面的圆形 profile，内部按 segments 离散。",
+  "description-en": "Create a circular profile in the XY plane, discretized by segments.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "profile", "csg", "cad"],
+  "tag_labels": ["几何", "Profile", "CSG", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "radius", "type": "number", "label": "半径", "default": 0.5 },
+    { "name": "segments", "type": "number", "label": "段数", "default": 48 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "shrine_layout",
+  "label": "祭坛",
+  "description": "在单张区域掩码上生成神殿/空地/竞技场布局，支持三种模式；祭坛方向每张随机朝向上/右/下/左四方向之一，可通过 seed 固定结果。输出单张多值网格。网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Generate a shrine, clearing, or arena layout from a single region mask. Altar direction is randomly chosen from the four cardinal directions per grid; use seed to fix results. Outputs one multi-value grid. Grid lists are handled per-item by the DataTree engine.",
+  "icon": "俯视古典神殿平面图，圆形石铺地面、中央营火焦点、顶部矩形祭坛、四周均匀分布列柱，扁平插画风格，适合做小尺寸电池图标，主色2种，背景简洁。",
+  "version": "2.0.0",
+  "tags": ["shrine", "layout", "arena", "clearing", "cruciform", "procedural", "datatree"],
+  "tag_labels": ["神殿", "布局", "竞技场", "空地", "十字厅", "程序化", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "区域掩码",
+      "description": "单张区域掩码网格（每非零单元格为有效区域）；网格列表由引擎逐张 fanout。",
+      "description-en": "Single region mask grid (non-zero cells treated as valid area). The engine fans out a grid list one-by-one."
+    },
+    {
+      "name": "algorithm",
+      "type": "string",
+      "access": "item",
+      "label": "布局类型",
+      "default": "clearing",
+      "description": "布局算法：clearing=林间空地(圆形石地+营火+神像)，cruciform=十字厅(矩形室+祭台)，arena=圆形竞技场(厚墙+列柱+神坛)",
+      "description-en": "Layout algorithm: clearing=forest clearing with campfire, cruciform=rectangular ritual hall with altar, arena=circular arena with thick walls and columns.",
+      "options": ["clearing", "cruciform", "arena"]
+    },
+    {
+      "name": "decorCount",
+      "type": "number",
+      "access": "item",
+      "label": "装饰点数量",
+      "default": 8,
+      "description": "装饰位的数量（柱子/火把/石块），用于 clearing 和 arena 模式，范围 3–12",
+      "description-en": "Number of decoration positions (columns, torches, stones). Used in clearing and arena modes. Range: 3–12."
+    },
+    {
+      "name": "pathWidth",
+      "type": "number",
+      "access": "item",
+      "label": "墙体厚度",
+      "default": 2,
+      "description": "用于 cruciform 模式的围墙厚度（格数），最小为 1",
+      "description-en": "Wall thickness in cells for cruciform mode. Minimum: 1."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，控制祭坛朝向；0 = 每次运行随机，非 0 = 固定结果",
+      "description-en": "Random seed for altar direction. 0 = random each run, non-zero = fixed result."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "布局网格",
+      "description": "单张多值网格：1=外围墙，2=地板，3=中心焦点区，4=神坛祭台，5=装饰位；可接 grid_split_by_value 按语义拆分。",
+      "description-en": "Single multi-value grid: 1=wall, 2=floor, 3=center, 4=altar, 5=deco; pipe to grid_split_by_value to separate semantics."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "神殿名称清单",
+      "description": "名称清单，仅含网格中实际出现的 id，格式 [{id, name, type}]；神坛祭台和装饰 type=\"asset\"，其余 type=\"tile\"（装饰名随算法：clearing=营火，cruciform=火把，arena=列柱）",
+      "description-en": "Name list with only ids actually present, format [{id, name, type}]; altar and decoration entries type=\"asset\", others type=\"tile\" (deco name varies by algorithm)."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "alg_region_blocky_carve",
+  "label": "区域块切",
+  "name-en": "RegionBlockyCarve",
+  "description": "对输入区域的外接矩形做两层随机退缩雕刻，得到不规则但贴合 bbox 的 blocky 子区域：第一层加权采样四向退缩量得到内框，第二层在内框边缘按段做 inward/outward 偏移制造起伏，最后等比缩回原 bbox。可用于建筑占地、街区轮廓、地块切片等任意需要「方块感的不规则形状」场景。",
+  "description-en": "Carves a bounding-box-fitting blocky sub-region from the input region in two layers: layer 1 samples per-side setbacks to define an inner rectangle; layer 2 perturbs each side segment-by-segment with inward/outward offsets; the result is then proportionally rescaled to the original bbox. Useful for building footprints, block outlines, and any irregular shape with a blocky feel.",
+  "icon": "深色背景上一个圆角矩形被两层退缩雕刻成不规则形状，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "carve", "shape", "pcg", "subdivide"],
+  "tag_labels": ["区域", "雕刻", "形状", "PCG", "子分"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1 网格；雕刻基于其外接矩形。",
+      "description-en": "0/1 grid; carving operates on its bounding box."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "label": "雕刻区域",
+      "description": "雕刻后的 0/1 区域网格，与输入同形状。",
+      "description-en": "Carved 0/1 region grid; same shape as the input."
+    }
+  ]
+}

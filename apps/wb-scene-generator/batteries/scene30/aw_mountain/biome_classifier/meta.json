@@ -1,0 +1,57 @@
+{
+  "id": "biome_classifier",
+  "label": "地块分类器",
+  "description": "接受三个独立数值场，按阈值规则将每个格子分类为 7 种地块类型，输出整数地块网格。",
+  "description-en": "Classifies each cell into one of 7 terrain types using three input fields and configurable thresholds.",
+  "icon": "俯视地形分区色块图，由深蓝到橙红的七色渐变区域拼接而成，边界有有机曲线过渡，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["terrain", "biome", "classification", "mountain", "pcg"],
+  "tag_labels": ["地形", "地块", "分类", "山地", "PCG"],
+  "inputs": [
+    {
+      "name": "field1",
+      "type": "grid",
+      "label": "主场",
+      "description": "主驱动场（0–1 或 0–100 均可），决定地块的海拔分层（沙滩 → 低地 → 山脚 → 山坡 → 山顶）",
+      "description-en": "Primary driving field (0–1 or 0–100); determines the elevation band of each cell."
+    },
+    {
+      "name": "field2",
+      "type": "grid",
+      "label": "次场（预留）",
+      "description": "次驱动场，当前版本暂未用于分类，保留为未来扩展端口",
+      "description-en": "Secondary field; reserved for future use, not currently used in classification."
+    },
+    {
+      "name": "field3",
+      "type": "grid",
+      "label": "植被场",
+      "description": "植被/湿度场，决定低地区是草地还是森林山脚，山顶区是山顶还是森林山顶",
+      "description-en": "Vegetation/humidity field; determines forest vs. non-forest within lowland and peak zones."
+    },
+    {
+      "name": "thresholds",
+      "type": "string",
+      "label": "分类阈值（JSON）",
+      "description": "可选 JSON 字符串覆盖默认阈值：{ beachMax, lowlandMax, footMax, slopeMax, forestMin }",
+      "description-en": "Optional JSON string to override default thresholds: { beachMax, lowlandMax, footMax, slopeMax, forestMin }.",
+      "default": ""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "terrainGrid",
+      "type": "grid",
+      "label": "地块网格",
+      "description": "每格为地块 ID（1–7）：1=森林山顶(红) 2=森林山脚(深橙) 3=草地(橙) 4=沙滩(黄) 5=山脚(绿) 6=山坡(翠绿) 7=山顶(青蓝)",
+      "description-en": "Terrain grid where each cell is a biome ID 1–7: 1=forest peak, 2=forest foot, 3=grassland, 4=beach, 5=mountain foot, 6=slope, 7=summit."
+    },
+    {
+      "name": "terrainNameList",
+      "type": "array",
+      "label": "地形名称清单",
+      "description": "实际出现的地形类型清单，格式 [{id, name}]，id 与地块网格中的值对应，按 id 升序排列",
+      "description-en": "Name list of terrain types actually present in the grid: [{id, name}], ordered by id ascending."
+    }
+  ]
+}

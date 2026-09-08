@@ -1,0 +1,70 @@
+{
+  "id": "fill_sort",
+  "label": "标准化输出",
+  "description": "将多个 [网格/网格列表, 名称清单/名称清单列表] 包预处理对齐后统一重编号：①过滤清单中网格不含的幽灵条目；②补全网格有值但清单缺失的条目；③按列表顺序一一对应（gridList[i] ↔ nameListList[i]）；④所有槽位合并后从1起全局重编号。",
+  "description-en": "Pre-processes and aligns each [grid/gridList, nameList/nameListList] bundle, then re-numbers all values globally from 1: ① removes ghost entries not present in the grid; ② fills missing entries for values in the grid; ③ matches gridList[i] to nameListList[i] by index; ④ merges all slots and assigns globally unique IDs starting from 1.",
+  "icon": "多个叠加的网格层向下合并为一个网格，每层用不同颜色标注，底部输出整齐排列的编号标签，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["grid", "merge", "sort", "remap", "nameList", "district"],
+  "tag_labels": ["网格", "合并", "排序", "重编号", "名称清单", "地块"],
+  "inputs": [
+    {
+      "name": "description",
+      "type": "string",
+      "label": "说明信息",
+      "default": "",
+      "description": "任意说明文字，原封不动传至同名输出端口",
+      "description-en": "Arbitrary description text; passed through unchanged to the output port."
+    },
+    {
+      "name": "item_0",
+      "type": "any",
+      "label": "层0",
+      "description": "[网格或网格列表, 名称清单] 两元素列表；网格槽位为网格列表时自动拆层",
+      "description-en": "Two-element list [grid or gridList, nameList]; if grid slot is a grid list, each sub-grid is processed independently."
+    },
+    {
+      "name": "item_1",
+      "type": "any",
+      "label": "层1",
+      "description": "[网格或网格列表, 名称清单] 两元素列表；连接后自动追加新槽位",
+      "description-en": "Two-element list [grid or gridList, nameList]; connecting it appends a new slot."
+    }
+  ],
+  "dynamicInputs": {
+    "prefix": "item_",
+    "labelTemplate": "层$i",
+    "minCount": 2,
+    "type": "any"
+  },
+  "outputs": [
+    {
+      "name": "description",
+      "type": "string",
+      "label": "说明信息",
+      "description": "与输入端口「说明信息」相同的字符串，原封不动透传",
+      "description-en": "Same string as the input 'description' port, passed through unchanged."
+    },
+    {
+      "name": "outputGrids",
+      "type": "array",
+      "label": "输出网格列表",
+      "description": "重编号后的网格列表，顺序与输入一致，各层独立不合并；同一列表内所有网格的值均全局唯一",
+      "description-en": "List of remapped grids in input order; each layer remains separate. All values across the list are globally unique."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "统一名称清单，经预处理对齐后全局重编号，{id, name, type?} 条目 ID 与所有输出网格中的值一一对应",
+      "description-en": "Unified name list after pre-processing alignment and global re-numbering; {id, name, type?} entry IDs match the values across all output grids."
+    },
+    {
+      "name": "errorMessage",
+      "type": "string",
+      "label": "错误信息",
+      "description": "检测两类问题：①名称重复（同名条目出现多次）；②缺少 type 字段（条目未携带 tile/asset 等类型标记）。有问题时输出提示文字，无问题时输出空字符串",
+      "description-en": "Detects two issues: ① duplicate names; ② missing type field (entry has no tile/asset type marker). Outputs an error message if issues exist, empty string otherwise."
+    }
+  ]
+}

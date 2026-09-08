@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_region_boundary_smooth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#935df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_region_boundary_smooth)"/>
+
+  <path fill="#fff" d="M12 3c-4.97 0-9 3.58-9 8 0 3.41 2.03 6.32 5 7.62V21h8v-2.38c2.97-1.3 5-4.21 5-7.62 0-4.42-4.03-8-9-8z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M12 5c3.87 0 7 3.13 7 7 0 3.07-1.63 5.77-4 7.4V19h-6v-1.6c-2.37-1.63-4-4.33-4-7.4 0-3.87 3.13-7 7-7z"/>
+  <path fill="rgba(255,255,255,0.35)" d="M7 11c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5-5-2.24-5-5z"/>
+
+</svg>

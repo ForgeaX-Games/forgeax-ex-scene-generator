@@ -1,0 +1,110 @@
+{
+  "id": "river_lake_gen",
+  "label": "河流湖泊生成",
+  "description": "在单张输入网格上生成河流和湖泊系统，自动划分河岸/浅水/中水/深水四层深度，并可放置水中物品。网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Generates rivers and lakes on a single input grid, automatically assigns shore/shallow/medium/deep depth zones, and optionally places water items. Grid lists are handled per-item by the DataTree engine.",
+  "icon": "俯视2D地图，蜿蜒蓝色河流从边缘穿越网格，河道分为深蓝/中蓝/浅蓝/绿岸四层色阶，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["river", "lake", "water", "generation", "depth", "meandering", "spline", "grid", "datatree"],
+  "tag_labels": ["河流", "湖泊", "水域", "生成", "深度", "蜿蜒", "样条", "网格", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "单张基准二维整数网格，河流和湖泊将叠加写入其上；网格列表由引擎逐张 fanout。",
+      "description-en": "Single base 2D integer grid; rivers and lakes are overlaid. The engine fans out a grid list one-by-one."
+    },
+    {
+      "name": "inputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "输入名称清单",
+      "description": "输入网格的名称清单，格式为 [{id, name}]，会与水域名称合并后输出",
+      "description-en": "Name list for the input grid [{id, name}], merged with water zone names in output.",
+      "default": []
+    },
+    {
+      "name": "riverCount",
+      "type": "number",
+      "access": "item",
+      "label": "河流数量",
+      "description": "生成的河流条数",
+      "description-en": "Number of rivers to generate.",
+      "default": 2
+    },
+    {
+      "name": "algorithm",
+      "type": "string",
+      "access": "item",
+      "label": "生成算法",
+      "description": "河流路径算法：straight(直线)、meandering(蜿蜒)、branching(分支)、random(随机漫步)",
+      "description-en": "River path algorithm: straight, meandering, branching, or random.",
+      "default": "meandering",
+      "options": ["straight", "meandering", "branching", "random"]
+    },
+    {
+      "name": "minWidth",
+      "type": "number",
+      "access": "item",
+      "label": "最小河宽",
+      "description": "河流最小宽度（格）",
+      "description-en": "Minimum river width in grid cells.",
+      "default": 2
+    },
+    {
+      "name": "maxWidth",
+      "type": "number",
+      "access": "item",
+      "label": "最大河宽",
+      "description": "河流最大宽度（格），沿河道中段最宽",
+      "description-en": "Maximum river width in grid cells; widest at the middle of the river.",
+      "default": 6
+    },
+    {
+      "name": "lakeCount",
+      "type": "number",
+      "access": "item",
+      "label": "湖泊数量",
+      "description": "生成的湖泊数量，0 表示不生成",
+      "description-en": "Number of lakes to generate; 0 means none.",
+      "default": 0
+    },
+    {
+      "name": "waterItems",
+      "type": "array",
+      "label": "水中物品清单",
+      "description": "水域中随机散布的物品名称列表，如 [\"荷叶\",\"浮萍\"]，各物品获得独立掩码ID",
+      "description-en": "Names of items to scatter in water zones (e.g. [\"lily\",\"reed\"]); each gets a unique mask ID.",
+      "default": []
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 表示每次使用不同种子",
+      "description-en": "Random seed; 0 uses a different seed each run.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "waterGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "水域网格",
+      "description": "叠加水域掩码后的单张多值网格，各区域有唯一ID（河岸/浅水/中水/深水及水中物品）",
+      "description-en": "Single multi-value grid with water mask overlaid; each zone has a unique ID (shore/shallow/medium/deep and water items)."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "各水域ID对应的名称列表，格式为 [{id, name}]，输入清单在前，水域名称在后",
+      "description-en": "Name list [{id, name}] for all zones; input names come first, water names follow."
+    }
+  ]
+}

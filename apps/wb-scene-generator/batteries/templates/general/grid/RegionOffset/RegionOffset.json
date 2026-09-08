@@ -1,0 +1,105 @@
+{
+  "id": "group_1784000010000_roff1",
+  "name": "RegionOffset",
+  "nameEn": "RegionOffset",
+  "author": "wwz",
+  "nodes": [
+    { "id": "ro-pt", "opId": "scene_passthrough", "name": "SceneIn", "position": { "x": 0, "y": 0 }, "params": {} },
+    { "id": "ro-ex", "opId": "node_explode", "name": "Explode", "position": { "x": 280, "y": 0 }, "params": {} },
+    { "id": "ro-rg", "opId": "rect_grid", "name": "RectGrid", "position": { "x": 560, "y": -120 }, "params": {} },
+    { "id": "ro-vs", "opId": "voxel_slice", "name": "VoxelSlice", "position": { "x": 840, "y": 0 }, "params": {} },
+    { "id": "ro-bat", "opId": "alg_region_offset", "name": "RegionOffset", "position": { "x": 1120, "y": 0 }, "params": {} },
+    { "id": "ro-name", "opId": "type_string", "name": "OffsetName", "position": { "x": 1120, "y": 260 }, "params": {} },
+    { "id": "ro-g2o", "opId": "grid2node", "name": "OffsetNode", "position": { "x": 1400, "y": -40 }, "params": {} },
+    { "id": "group_1784000010000_rotile", "opId": "__group__", "name": "TileAssetName", "position": { "x": 1680, "y": -40 }, "params": { "groupId": "group_1784000010000_rotile" } },
+    { "id": "ro-ac1", "opId": "add_child", "name": "AddOffset", "position": { "x": 1980, "y": 0 }, "params": {} },
+    { "id": "ro-txr", "opId": "text_panel", "name": "RestName", "position": { "x": 1400, "y": 320 }, "params": { "text": "rest" } },
+    { "id": "ro-g2r", "opId": "grid2node", "name": "RestNode", "position": { "x": 1680, "y": 280 }, "params": {} },
+    { "id": "ro-ac2", "opId": "add_child", "name": "AddRest", "position": { "x": 2260, "y": 160 }, "params": {} },
+    { "id": "ro-merge", "opId": "scene_merge_subtrees", "name": "Merge", "position": { "x": 2540, "y": 80 }, "params": {} },
+    { "id": "ro-fpo", "opId": "scene_focus_path", "name": "FocusOffset", "position": { "x": 2820, "y": -40 }, "params": {} },
+    { "id": "ro-fpr", "opId": "scene_focus_path", "name": "FocusRest", "position": { "x": 2820, "y": 240 }, "params": {} },
+    { "id": "ro-out-scene", "opId": "scene_passthrough", "name": "SceneOut", "position": { "x": 3100, "y": 80 }, "params": {} },
+    { "id": "ro-out-offset", "opId": "scene_passthrough", "name": "OffsetOut", "position": { "x": 3100, "y": -40 }, "params": {} },
+    { "id": "ro-out-rest", "opId": "scene_passthrough", "name": "RestOut", "position": { "x": 3100, "y": 240 }, "params": {} },
+    { "id": "ro-tso", "opId": "type_string", "name": "OffsetPath", "position": { "x": 2260, "y": -120 }, "params": {} },
+    { "id": "ro-tsr", "opId": "type_string", "name": "RestPath", "position": { "x": 2540, "y": 420 }, "params": {} }
+  ],
+  "edges": [
+    { "id": "ro-e1", "source": { "nodeId": "ro-pt", "port": "scene" }, "target": { "nodeId": "ro-ex", "port": "scene" } },
+    { "id": "ro-e2", "source": { "nodeId": "ro-ex", "port": "width" }, "target": { "nodeId": "ro-rg", "port": "width" } },
+    { "id": "ro-e3", "source": { "nodeId": "ro-ex", "port": "height" }, "target": { "nodeId": "ro-rg", "port": "height" } },
+    { "id": "ro-e4", "source": { "nodeId": "ro-ex", "port": "voxels" }, "target": { "nodeId": "ro-vs", "port": "voxels" } },
+    { "id": "ro-e5", "source": { "nodeId": "ro-rg", "port": "grid" }, "target": { "nodeId": "ro-vs", "port": "grid" } },
+    { "id": "ro-e6", "source": { "nodeId": "ro-vs", "port": "slice" }, "target": { "nodeId": "ro-bat", "port": "region" } },
+    { "id": "ro-e7", "source": { "nodeId": "ro-bat", "port": "region" }, "target": { "nodeId": "ro-g2o", "port": "grid" } },
+    { "id": "ro-e8", "source": { "nodeId": "ro-name", "port": "value" }, "target": { "nodeId": "ro-g2o", "port": "name" } },
+    { "id": "ro-e9", "source": { "nodeId": "ro-g2o", "port": "scene" }, "target": { "nodeId": "group_1784000010000_rotile", "port": "in_0" } },
+    { "id": "ro-e10", "source": { "nodeId": "ro-name", "port": "value" }, "target": { "nodeId": "group_1784000010000_rotile", "port": "in_1" } },
+    { "id": "ro-e11", "source": { "nodeId": "group_1784000010000_rotile", "port": "out_0" }, "target": { "nodeId": "ro-ac1", "port": "nodes" } },
+    { "id": "ro-e12", "source": { "nodeId": "ro-pt", "port": "scene" }, "target": { "nodeId": "ro-ac1", "port": "scene" } },
+    { "id": "ro-e13", "source": { "nodeId": "ro-bat", "port": "ring" }, "target": { "nodeId": "ro-g2r", "port": "grid" } },
+    { "id": "ro-e14", "source": { "nodeId": "ro-txr", "port": "output" }, "target": { "nodeId": "ro-g2r", "port": "name" } },
+    { "id": "ro-e15", "source": { "nodeId": "ro-ac1", "port": "scene" }, "target": { "nodeId": "ro-ac2", "port": "scene" } },
+    { "id": "ro-e16", "source": { "nodeId": "ro-g2r", "port": "scene" }, "target": { "nodeId": "ro-ac2", "port": "nodes" } },
+    { "id": "ro-e17", "source": { "nodeId": "ro-ac2", "port": "scene" }, "target": { "nodeId": "ro-merge", "port": "scenes" } },
+    { "id": "ro-e18", "source": { "nodeId": "ro-merge", "port": "scene" }, "target": { "nodeId": "ro-fpo", "port": "scene" } },
+    { "id": "ro-e19", "source": { "nodeId": "ro-ac1", "port": "childPaths" }, "target": { "nodeId": "ro-fpo", "port": "path" } },
+    { "id": "ro-e20", "source": { "nodeId": "ro-merge", "port": "scene" }, "target": { "nodeId": "ro-fpr", "port": "scene" } },
+    { "id": "ro-e21", "source": { "nodeId": "ro-ac2", "port": "childPaths" }, "target": { "nodeId": "ro-fpr", "port": "path" } },
+    { "id": "ro-e22", "source": { "nodeId": "ro-merge", "port": "scene" }, "target": { "nodeId": "ro-out-scene", "port": "scene" } },
+    { "id": "ro-e23", "source": { "nodeId": "ro-fpo", "port": "scene" }, "target": { "nodeId": "ro-out-offset", "port": "scene" } },
+    { "id": "ro-e24", "source": { "nodeId": "ro-fpr", "port": "scene" }, "target": { "nodeId": "ro-out-rest", "port": "scene" } },
+    { "id": "ro-e25", "source": { "nodeId": "ro-ac1", "port": "childPaths" }, "target": { "nodeId": "ro-tso", "port": "value" } },
+    { "id": "ro-e26", "source": { "nodeId": "ro-ac2", "port": "childPaths" }, "target": { "nodeId": "ro-tsr", "port": "value" } }
+  ],
+  "position": { "x": 0, "y": 0 },
+  "exposedInputs": [
+    { "portName": "in_0", "portType": "scene", "access": "tree", "sourceNodeId": "ro-pt", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "in_1", "portType": "number", "access": "item", "sourceNodeId": "ro-bat", "sourcePortName": "offset", "order": 1, "customLabelEn": "Offset" },
+    { "portName": "in_2", "portType": "string", "access": "tree", "sourceNodeId": "ro-name", "sourcePortName": "value", "order": 2, "customLabelEn": "OffsetName" },
+    { "portName": "in_3", "portType": "number", "access": "item", "sourceNodeId": "ro-bat", "sourcePortName": "connectivity", "order": 3, "hidden": true, "customLabelEn": "Connectivity" },
+    { "portName": "in_4", "portType": "number", "access": "item", "sourceNodeId": "ro-vs", "sourcePortName": "z", "order": 4, "hidden": true },
+    { "portName": "in_5", "portType": "number", "access": "item", "sourceNodeId": "ro-rg", "sourcePortName": "fillValue", "order": 5, "hidden": true },
+    { "portName": "in_6", "portType": "string", "access": "item", "sourceNodeId": "ro-g2o", "sourcePortName": "schema", "order": 6, "hidden": true },
+    { "portName": "in_7", "portType": "string", "access": "item", "sourceNodeId": "ro-g2o", "sourcePortName": "token", "order": 7, "hidden": true },
+    { "portName": "in_8", "portType": "number", "access": "list", "sourceNodeId": "ro-g2o", "sourcePortName": "zRange", "order": 8, "hidden": true }
+  ],
+  "exposedOutputs": [
+    { "portName": "out_0", "portType": "scene", "access": "tree", "sourceNodeId": "ro-out-scene", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "out_1", "portType": "scene", "access": "tree", "sourceNodeId": "ro-out-offset", "sourcePortName": "scene", "order": 1, "customLabelEn": "Offset" },
+    { "portName": "out_2", "portType": "scene", "access": "tree", "sourceNodeId": "ro-out-rest", "sourcePortName": "scene", "order": 2, "customLabelEn": "Rest" },
+    { "portName": "out_3", "portType": "string", "access": "tree", "sourceNodeId": "ro-tso", "sourcePortName": "value", "order": 3, "customLabelEn": "OffsetPath" },
+    { "portName": "out_4", "portType": "string", "access": "tree", "sourceNodeId": "ro-tsr", "sourcePortName": "value", "order": 4, "customLabelEn": "RestPath" }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_1784000010000_rotile",
+      "name": "TileAssetName",
+      "nameEn": "TileAssetName",
+      "nodes": [
+        { "id": "ro-an-name", "opId": "text_panel", "name": "asset_name_key", "position": { "x": 0, "y": 0 }, "params": { "text": "asset_name" } },
+        { "id": "ro-an-type", "opId": "text_panel", "name": "asset_type_key", "position": { "x": 0, "y": 120 }, "params": { "text": "asset_type" } },
+        { "id": "ro-an-tile", "opId": "text_panel", "name": "tile_value", "position": { "x": 0, "y": 240 }, "params": { "text": "tile" } },
+        { "id": "ro-an-set1", "opId": "scene_set_attribute", "name": "set_asset_name", "position": { "x": 240, "y": 0 }, "params": {} },
+        { "id": "ro-an-set2", "opId": "scene_set_attribute", "name": "set_asset_type", "position": { "x": 480, "y": 60 }, "params": {} },
+        { "id": "ro-an-str", "opId": "type_string", "name": "asset_name_value", "position": { "x": 0, "y": 360 }, "params": {} }
+      ],
+      "edges": [
+        { "id": "ro-ane1", "source": { "nodeId": "ro-an-name", "port": "output" }, "target": { "nodeId": "ro-an-set1", "port": "key" } },
+        { "id": "ro-ane2", "source": { "nodeId": "ro-an-set1", "port": "scene" }, "target": { "nodeId": "ro-an-set2", "port": "scene" } },
+        { "id": "ro-ane3", "source": { "nodeId": "ro-an-type", "port": "output" }, "target": { "nodeId": "ro-an-set2", "port": "key" } },
+        { "id": "ro-ane4", "source": { "nodeId": "ro-an-tile", "port": "output" }, "target": { "nodeId": "ro-an-set2", "port": "value" } },
+        { "id": "ro-ane5", "source": { "nodeId": "ro-an-str", "port": "value" }, "target": { "nodeId": "ro-an-set1", "port": "value" } }
+      ],
+      "position": { "x": 1680, "y": -40 },
+      "exposedInputs": [
+        { "portName": "in_0", "portType": "scene", "access": "item", "sourceNodeId": "ro-an-set1", "sourcePortName": "scene" },
+        { "portName": "in_1", "portType": "string", "access": "tree", "sourceNodeId": "ro-an-str", "sourcePortName": "value" }
+      ],
+      "exposedOutputs": [
+        { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "ro-an-set2", "sourcePortName": "scene" }
+      ]
+    }
+  ]
+}

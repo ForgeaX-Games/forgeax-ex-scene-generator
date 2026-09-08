@@ -1,0 +1,85 @@
+{
+  "id": "furniture_placer",
+  "label": "单一家具放置器",
+  "description": "根据室内空间网格、已有掩码和主家具清单，将家具按优先级放置到房间中，输出更新后的家具实体掩码、过道掩码和家具编号列表。",
+  "description-en": "Places furniture into a room grid based on the room layout, existing masks, and a prioritized furniture list; outputs updated body mask, aisle mask, and furniture index.",
+  "icon": "扁平插画风格图标。画面为俯视房间平面图，房间内有几件不同颜色的小方块家具整齐排列靠近墙边，中央有一件独立家具，橙色小箭头从家具清单指向房间内对应位置，主色调蓝色和橙色，背景白色，线条简洁。",
+  "version": "1.0.0",
+  "tags": ["scene", "furniture", "placement", "indoor", "mask", "grid"],
+  "tag_labels": ["场景", "家具", "放置", "室内", "掩码", "网格"],
+  "inputs": [
+    {
+      "name": "roomGrid",
+      "type": "grid",
+      "label": "室内空间网格",
+      "description": "房间可用区域网格，1=可放置格，0=墙或外部",
+      "description-en": "Room interior grid: 1 = walkable cell, 0 = wall or outside."
+    },
+    {
+      "name": "maskA",
+      "type": "grid",
+      "label": "家具实体网格 (maskA)",
+      "description": "家具实体占用网格，无旧家具时传全零网格（来自 room_mask_init）",
+      "description-en": "Furniture body occupancy grid; pass all-zero grid when there is no existing furniture."
+    },
+    {
+      "name": "maskB",
+      "type": "grid",
+      "label": "过道预留网格 (maskB)",
+      "description": "过道预留网格，无旧家具时传全零网格（来自 room_mask_init）",
+      "description-en": "Aisle reservation grid; pass all-zero grid when there is no existing furniture."
+    },
+    {
+      "name": "oldFurnitureIndex",
+      "type": "array",
+      "label": "旧家具编号列表",
+      "description": "已放置家具的编号列表，每项含 rank/name/isGroup；无旧家具时传 []",
+      "description-en": "Index of already-placed furniture items (rank/name/isGroup); pass empty array if none."
+    },
+    {
+      "name": "furnitureList",
+      "type": "array",
+      "label": "主家具清单",
+      "description": "待放置的主家具列表（来自 furniture_rank_split 的 main_list），每项含 rank/name/furniture_id/type/placement",
+      "description-en": "Main furniture list to place (from furniture_rank_split main_list output), each item with rank/name/furniture_id/type/placement."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "控制家具位置随机性的种子值，相同种子产生相同布局，默认 42",
+      "description-en": "Random seed for placement; same seed produces the same layout. Default: 42.",
+      "default": 42
+    }
+  ],
+  "outputs": [
+    {
+      "name": "newMaskA",
+      "type": "grid",
+      "label": "新家具实体网格",
+      "description": "放置完毕后的家具实体占用网格，非零值为家具的 rank 编号（旧家具保留，新家具编号 = 旧最大 rank + 新 rank）",
+      "description-en": "Updated furniture body mask after placement; non-zero values are effective rank numbers."
+    },
+    {
+      "name": "newMaskB",
+      "type": "grid",
+      "label": "新过道预留网格",
+      "description": "放置完毕后的过道预留网格，1=已预留过道",
+      "description-en": "Updated aisle reservation mask after placement; 1 = reserved aisle cell."
+    },
+    {
+      "name": "furnitureIndex",
+      "type": "array",
+      "label": "家具编号列表",
+      "description": "所有家具（旧+新）的编号列表，每项含 rank（网格中存储的编号）、name、isGroup",
+      "description-en": "Complete furniture index (old + new), each item containing rank (grid value), name, and isGroup flag."
+    },
+    {
+      "name": "diagnostics",
+      "type": "array",
+      "label": "诊断日志",
+      "description": "放置过程的诊断信息，含每件家具的放置结果或跳过原因",
+      "description-en": "Diagnostic log of the placement process, including result or skip reason for each furniture item."
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": "siheyuan_cluster",
+  "label": "四合院组群",
+  "name-en": "SiheyuanCluster",
+  "description": "生成传统四合院院落布局：外围一圈贴齐区域外边界的围墙，沿进深叠 N 个院落（进数），每个院落由横向房屋带（正房/厅堂/倒座房，贯穿院落宽度）+ 左右纵向厢房 + 环绕中庭的围廊连接而成。房屋数量=3×进数+1，进数=1 即标准四合院（4 座房屋）。输出合并多值网格、房屋网格列表、围墙网格、围廊网格与名称清单。坐标约定：x→列、y→行。",
+  "description-en": "Generates a traditional Siheyuan courtyard layout: an outer wall flush with the region's outer boundary, with N courtyards (进) stacked along the depth. Each courtyard is formed by horizontal house bands (main hall / halls / reverse house, spanning the courtyard width) + left/right vertical wing rooms + a corridor ring around the open courtyard connecting them. House count = 3 x courtyards + 1; courtyards=1 is the standard Siheyuan (4 houses). Outputs a merged multi-value grid, a list of house grids, the wall grid, the corridor grid, and a name list. Coordinates: x->column, y->row.",
+  "icon": "俯视四合院平面：深色底外围一圈白色方框围墙，内部上下两条横向矩形房屋、左右两条纵向矩形房屋围出中央庭院，庭院四周一圈细线围廊，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "projectTypes": ["scene", "both"],
+  "tags": ["siheyuan", "courtyard", "building", "cluster", "house", "wall", "corridor", "layout", "scene"],
+  "tag_labels": ["四合院", "院落", "建筑", "组群", "房屋", "围墙", "围廊", "布局"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "输入区域",
+      "description": "区域网格；围墙贴齐其非零包围盒的外边界（全空则用整张网格），院落布局填充其中。",
+      "description-en": "Region grid; the wall is flush with the outer boundary of its non-zero bounding box (full grid if empty). The courtyard layout fills inside."
+    },
+    {
+      "name": "courtyards",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 1,
+      "label": "进数(院落数)",
+      "description": "沿进深方向的院落数量。房屋数量=3×进数+1（进数=1 即标准四合院 4 座房屋）。",
+      "description-en": "Number of courtyards along the depth. House count = 3 x courtyards + 1 (courtyards=1 is the standard 4-house Siheyuan)."
+    },
+    {
+      "name": "wallThk",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 1,
+      "label": "围墙厚度",
+      "description": "围墙线宽（格数），默认 1。",
+      "description-en": "Wall thickness in cells. Default 1."
+    },
+    {
+      "name": "hallDepth",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 4,
+      "label": "房屋进深",
+      "description": "横向房屋带的进深（行数），默认 4；放不下时自动缩小。",
+      "description-en": "Depth (rows) of the horizontal house bands. Default 4; auto-shrinks if it does not fit."
+    },
+    {
+      "name": "wingWidth",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 4,
+      "label": "厢房宽度",
+      "description": "纵向厢房的宽度（列数），默认 4；过宽时自动收窄以保留中庭。",
+      "description-en": "Width (columns) of the vertical wing rooms. Default 4; auto-narrows to keep an open courtyard."
+    },
+    {
+      "name": "corridorThk",
+      "type": "number",
+      "access": "item",
+      "min": 0,
+      "precision": 0,
+      "default": 1,
+      "label": "围廊宽度",
+      "description": "环绕中庭的围廊宽度（格数），0=不生成围廊，默认 1。",
+      "description-en": "Width of the corridor ring around the open courtyard; 0 = no corridor. Default 1."
+    },
+    {
+      "name": "gateWidth",
+      "type": "number",
+      "access": "item",
+      "min": 0,
+      "precision": 0,
+      "default": 2,
+      "label": "院门宽度",
+      "description": "底墙院门开口宽度（格数），0=完全封闭，默认 2。",
+      "description-en": "Gate opening width in the bottom wall; 0 = fully enclosed. Default 2."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "合并网格",
+      "description": "合并多值网格：每座房屋一个递增 id，围廊、围墙各一个独立值；可接 grid_split_by_value 拆分。",
+      "description-en": "Merged multi-value grid: each house an increasing id, plus one value each for corridor and wall; pipe to grid_split_by_value."
+    },
+    {
+      "name": "houses",
+      "type": "grid",
+      "access": "list",
+      "label": "房屋列表",
+      "description": "每座房屋一张与 region 同形状的 0/1 网格，顺序：正房→厅堂…→倒座房→各院落 西厢房/东厢房。",
+      "description-en": "One 0/1 grid (same shape as region) per house, ordered main hall -> halls -> reverse house -> each courtyard's west/east wings."
+    },
+    {
+      "name": "wall",
+      "type": "grid",
+      "access": "item",
+      "label": "围墙网格",
+      "description": "围墙 0/1 网格，贴齐外边界（含可选院门开口）。",
+      "description-en": "Wall 0/1 grid, flush with the outer boundary (with the optional gate opening)."
+    },
+    {
+      "name": "corridor",
+      "type": "grid",
+      "access": "item",
+      "label": "围廊网格",
+      "description": "围廊 0/1 网格，环绕每个院落中庭一圈连接四面房屋。",
+      "description-en": "Corridor 0/1 grid, ringing each courtyard to connect the surrounding houses."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "名称清单 [{id,name,type}]，房屋为 type:'tile'，另含围廊/围墙条目。",
+      "description-en": "Name list [{id,name,type}]; houses are type:'tile', plus corridor/wall entries."
+    }
+  ]
+}

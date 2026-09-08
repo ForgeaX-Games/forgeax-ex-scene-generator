@@ -1,0 +1,128 @@
+{
+  "id": "image_remove_bg",
+  "label": "图像抠图",
+  "name-en": "RemoveBG",
+  "description": "本地纯算法背景移除（无需外部 API）。基于 Lab 色彩空间从图像四角采样背景色，用严格/宽松双层泛洪填充分离背景，可选形态学闭合修复、自动裁剪到内容区。",
+  "description-en": "Local background removal without any external API. Samples background from corners in Lab color space, uses strict+loose dual-pass flood-fill, optional morphological closing and content-crop.",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "remove background",
+    "cutout",
+    "alpha",
+    "matting",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "抠图",
+    "背景移除",
+    "透明",
+    "遮罩",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "图像",
+      "description": "待抠图的图像 alias（PNG 格式，支持 RGB/RGBA）"
+    },
+    {
+      "name": "lab_tolerance",
+      "type": "number",
+      "access": "item",
+      "label": "Lab 容差",
+      "description": "背景颜色相似度阈值（Lab ΔE）；越大去除越激进，越小越保守",
+      "default": 13,
+      "min": 5,
+      "max": 150
+    },
+    {
+      "name": "bg_grow_tolerance",
+      "type": "number",
+      "access": "item",
+      "label": "背景扩展容差",
+      "description": "从严格边界向外扩展时的额外 Lab 容差，用于填充背景色过渡区",
+      "default": 14,
+      "min": 0,
+      "max": 60
+    },
+    {
+      "name": "sample_points",
+      "type": "number",
+      "access": "item",
+      "label": "采样角数",
+      "description": "从几个角落采样背景色：1=左上，2=左上+右上，3=三角，4=四角",
+      "default": 4,
+      "min": 1,
+      "max": 4
+    },
+    {
+      "name": "crop",
+      "type": "boolean",
+      "access": "item",
+      "label": "自动裁剪",
+      "description": "裁剪到前景内容的最小边界框（含 2px 边距），去除多余空白",
+      "default": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "结果图像",
+      "description": "抠图后（背景透明）写入 staging 区的 alias"
+    },
+    {
+      "name": "mask",
+      "type": "image",
+      "access": "item",
+      "label": "抠图区域 mask",
+      "description": "抠图区域的灰度 mask（白=保留的前景区域，黑=背景），尺寸与结果图一致。可接入 CutByMask 电池，把任意其他图对齐到相同的抠图区域与图像尺寸。",
+      "description-en": "Grayscale mask of the cutout region (white = kept foreground, black = background), same size as the result image. Feed it into the CutByMask battery to align any other image to the same cutout region and size."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "输出图像宽度（crop 后）"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "输出图像高度（crop 后）"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串"
+    }
+  ],
+  "params": [
+    {
+      "name": "suffix",
+      "type": "string",
+      "default": "_nobg",
+      "label": "alias 后缀",
+      "description": "输出 alias = 原名 + 后缀；留空则自动生成"
+    }
+  ],
+  "alg_tag": [
+    "背景移除",
+    "Lab色彩空间抠图",
+    "泛洪填充",
+    "形态学"
+  ]
+}

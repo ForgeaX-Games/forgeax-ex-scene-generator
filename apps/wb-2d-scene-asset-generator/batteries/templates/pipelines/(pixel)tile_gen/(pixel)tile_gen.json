@@ -1,0 +1,791 @@
+{
+  "id": "group_1781803774865_ooa8l",
+  "name": "(pixel)tile_gen",
+  "nameEn": "(pixel)tile_gen",
+  "author": "zyw",
+  "nodes": [
+    {
+      "id": "node-1781799975981-7y5ft",
+      "opId": "image_output",
+      "name": "node-1781681076482",
+      "position": {
+        "x": -587.9255830599052,
+        "y": 148.7089723850388
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781799975981-3hoju",
+      "opId": "image_gen",
+      "name": "node-1781768776812",
+      "position": {
+        "x": -2119.56311449698,
+        "y": 2.005619608605798
+      },
+      "params": {
+        "_gen_image": "{\"alias\":\"preview.png\",\"blobId\":\"edbcc23c84952649a0964d91476a8f8c2144789e5b43f29d632a14602ad20173\"}",
+        "_gen_error": ""
+      }
+    },
+    {
+      "id": "node-1781800363011",
+      "opId": "cliff_atlas_extract",
+      "name": "node-1781800363011",
+      "position": {
+        "x": -1166.1698264259537,
+        "y": 304.77551667842476
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781800365505",
+      "opId": "image_atlas_compose",
+      "name": "node-1781800365505",
+      "position": {
+        "x": -1166.1698264259537,
+        "y": -19.07576786394634
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781800366456",
+      "opId": "image_terrain_extract",
+      "name": "node-1781800366456",
+      "position": {
+        "x": -1812.1022786354563,
+        "y": -10.793924295780869
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781800367806",
+      "opId": "make_seamless_moisan",
+      "name": "node-1781800367806",
+      "position": {
+        "x": -1521.4109771592666,
+        "y": -7.786286091801173
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781800962403-t1okw",
+      "opId": "passthrough",
+      "name": "node-1781800962403-t1okw",
+      "position": {
+        "x": -2725.7180004735933,
+        "y": 12.480702654554307
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781801933679",
+      "opId": "text_panel",
+      "name": "node-1781801933679",
+      "position": {
+        "x": -2479.7040820559027,
+        "y": 259.3522759244927
+      },
+      "params": {
+        "text": "[{tilemap:0},{floor:1},{forest:2},{cliff:3},{slope:4},{flower_bed:5}]"
+      }
+    },
+    {
+      "id": "node-1781801959373",
+      "opId": "tile_type",
+      "name": "node-1781801959373",
+      "position": {
+        "x": -2479.7040820559027,
+        "y": 423.7729908725747
+      },
+      "params": {
+        "tile": "flower_bed"
+      }
+    },
+    {
+      "id": "node-1781802036569",
+      "opId": "prompt_template",
+      "name": "node-1781802036569",
+      "position": {
+        "x": -2479.7040820559027,
+        "y": 115.43213246907101
+      },
+      "params": {
+        "template": "## 任务\n生成一张**细密、自然**的**像素风格大面积地块纹理**（地面铺装贴图），用于游戏场景中**大面积平铺**的地形底图（如草地、水域、石板地等）。\n\n## 地块信息\n- **名称 (name)**: [name]\n- **描述 (description)**: [description]\n\n## 纹理要求\n- **严格遵守描述**：按 [description] 表现该地块的材质、配色、地表细节与点缀元素（如草丛、碎石、苔藓、树桩、水波纹等）。\n- **细密饱满**：地表细节**均匀分布、密度细腻**，避免大面积纯色或空洞，呈现丰富的像素颗粒质感。\n- **大面积铺装感**：整张图作为一块完整的地面纹理，**适合在场景中大面积平铺/拼接**，不出现明显的主体物或前景遮挡物。\n- **点缀适度**：装饰性元素（树桩、石头、花草等）自然散布且不抢占主体，保持地表的整体一致性。\n\n## 风格要求\n- **像素艺术风格**：使用一致的像素块尺寸绘制，避免抗锯齿造成的模糊边缘。\n- **配色**：使用契合 [description] 的有限调色板，统一全图的明度与饱和度基调。\n- **光照**：采用统一的平铺顶光，无强烈方向性投影，避免平铺时产生明显的明暗接缝。\n- **视角**：统一的俯视视角，符合俯视游戏场景的地面表现。\n\n## 输出要求\n生成一张像素风格的大面积地块纹理 **「[name]」**，材质与细节严格符合 [description]。\n\n**核心特征必须保持一致**：\n- 材质/细节严格符合 [description] ✓\n- 细密饱满、均匀分布的像素地表质感 ✓\n- 适合大面积平铺、无主体遮挡 ✓\n- 像素风格、统一像素颗粒度 ✓\n- 统一平铺顶光、俯视视角 ✓",
+        "_promptName": "ground_texture_pixel",
+        "_promptVars": [
+          "name",
+          "description"
+        ]
+      }
+    },
+    {
+      "id": "node-1781802266475",
+      "opId": "image_source",
+      "name": "node-1781802266475",
+      "position": {
+        "x": -2479.7040820559027,
+        "y": 713.5585831056488
+      },
+      "params": {
+        "image": "{\"alias\":\"preset:tiles/[客厅-卧室-书房-餐厅]_[室内]__[住宅]_[客厅]_[木地板]_[无]_[现代日常]_[正常]_[瓦片]_[16]__[静态]_[]_[7_0].png\",\"blobId\":\"7083185a42505f6b25275c7c4ac3ef40fa7334c9845d6300371d1a8b45ae8e6d\"}",
+        "alias": "preset:tiles/[客厅-卧室-书房-餐厅]_[室内]__[住宅]_[客厅]_[木地板]_[无]_[现代日常]_[正常]_[瓦片]_[16]__[静态]_[]_[7_0].png"
+      }
+    },
+    {
+      "id": "node-1781802267370",
+      "opId": "image_source",
+      "name": "node-1781802267370",
+      "position": {
+        "x": -2259.3253236699893,
+        "y": 925.9223658867652
+      },
+      "params": {
+        "image": "{\"alias\":\"preset:tiles/[平原-森林-花园-庭院-村庄]_[室外]__[平原]_[草地]_[花丛]_[无]_[西式奇幻]_[正常]_[瓦片组]_[16]__[静态]_[]_[1].png\",\"blobId\":\"198c05f944cf73e6530ddb52b0685e9236b60af62c5577fcdee967fee7e20456\"}",
+        "alias": "preset:tiles/[平原-森林-花园-庭院-村庄]_[室外]__[平原]_[草地]_[花丛]_[无]_[西式奇幻]_[正常]_[瓦片组]_[16]__[静态]_[]_[1].png"
+      }
+    },
+    {
+      "id": "node-1781802268242",
+      "opId": "image_source",
+      "name": "node-1781802268242",
+      "position": {
+        "x": -2479.7040820559027,
+        "y": 924.1727967092013
+      },
+      "params": {
+        "image": "{\"alias\":\"preset:tiles/[荒漠-戈壁-荒野-高原]_[室外]__[荒漠]_[高地区域]_[高地]_[无]_[西式奇幻]_[正常]_[瓦片组]_[16]__[静态]_[]_[2].png\",\"blobId\":\"69a4144960c3d2b8a802521dd2dacefee7e6db01cc401b47e2173c8bb4194dbe\"}",
+        "alias": "preset:tiles/[荒漠-戈壁-荒野-高原]_[室外]__[荒漠]_[高地区域]_[高地]_[无]_[西式奇幻]_[正常]_[瓦片组]_[16]__[静态]_[]_[2].png"
+      }
+    },
+    {
+      "id": "node-1781802269137",
+      "opId": "image_source",
+      "name": "node-1781802269137",
+      "position": {
+        "x": -2259.3253236699893,
+        "y": 712.7830595160964
+      },
+      "params": {
+        "image": "{\"alias\":\"preset:tiles/ai-_-__-_-_-_-_-_-_-_-32-__-_-_-0-node-mq97bix0.png\",\"blobId\":\"65f9447e83927df25248430c6368f7a99692a85b15e1d06c758f515ad80fd4ca\"}",
+        "alias": "preset:tiles/ai-_-__-_-_-_-_-_-_-_-32-__-_-_-0-node-mq97bix0.png"
+      }
+    },
+    {
+      "id": "node-1781802270136",
+      "opId": "image_source",
+      "name": "node-1781802270136",
+      "position": {
+        "x": -2055.764733573305,
+        "y": 719.0324252105617
+      },
+      "params": {
+        "image": "{\"alias\":\"preset:tiles/ai-2-node-mq83cf40.png\",\"blobId\":\"50476d56b7c9cae00e9b6e298c7d373011540fdd511deff4beb7f5d02be6a75d\"}",
+        "alias": "preset:tiles/ai-2-node-mq83cf40.png"
+      }
+    },
+    {
+      "id": "node-1781802270944",
+      "opId": "image_source",
+      "name": "node-1781802270944",
+      "position": {
+        "x": -2479.7040820559027,
+        "y": 522.3696168906918
+      },
+      "params": {
+        "image": "{\"alias\":\"preset:tiles/tile模板.png\",\"blobId\":\"e8b15a1bfcc18b1b386b625bdb8510b625a06d37a7bd7f9d1e9d8174beeed23c\"}",
+        "alias": "preset:tiles/tile模板.png"
+      }
+    },
+    {
+      "id": "node-1781803052421",
+      "opId": "port_router",
+      "name": "node-1781803052421",
+      "position": {
+        "x": -2119.56311449698,
+        "y": 377.1905480464193
+      },
+      "params": {
+        "portCount": 7
+      }
+    },
+    {
+      "id": "node-1781803534907-2r7re",
+      "opId": "text_panel",
+      "name": "node-1781803534907-2r7re",
+      "position": {
+        "x": -1893.9713603399018,
+        "y": 292.8757847427961
+      },
+      "params": {
+        "text": "cliff",
+        "_nodeWidth": 158,
+        "_nodeHeight": 65
+      }
+    },
+    {
+      "id": "node-1781803562416",
+      "opId": "equals",
+      "name": "node-1781803562416",
+      "position": {
+        "x": -1722.275059215769,
+        "y": 434.0094073709889
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781803601886",
+      "opId": "not",
+      "name": "node-1781803601886",
+      "position": {
+        "x": -1521.4109771592666,
+        "y": 270.83158808108186
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781803645979",
+      "opId": "tree_merge",
+      "name": "node-1781803645979",
+      "position": {
+        "x": -849.7774520893372,
+        "y": 229.22732456381783
+      },
+      "params": {
+        "inferredAccess": "item",
+        "inferredType": "image",
+        "portCount": 3
+      }
+    },
+    {
+      "id": "node-1781803682437",
+      "opId": "tree_merge",
+      "name": "node-1781803682437",
+      "position": {
+        "x": -849.7774520893372,
+        "y": 381.8323321167985
+      },
+      "params": {
+        "portCount": 5,
+        "inferredAccess": "item",
+        "inferredType": "string"
+      }
+    },
+    {
+      "id": "node-1781803705409",
+      "opId": "passthrough",
+      "name": "node-1781803705409",
+      "position": {
+        "x": -587.9255830599052,
+        "y": 19.39436237108498
+      },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-node-1781800366456-image-node-1781800367806-image",
+      "source": {
+        "nodeId": "node-1781800366456",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781800367806",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781800367806-image-node-1781800365505-terrain",
+      "source": {
+        "nodeId": "node-1781800367806",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781800365505",
+        "port": "terrain"
+      }
+    },
+    {
+      "id": "e-node-1781799975981-3hoju-image-node-1781800366456-image",
+      "source": {
+        "nodeId": "node-1781799975981-3hoju",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781800366456",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781800962403-t1okw-value-node-1781802036569-name",
+      "source": {
+        "nodeId": "node-1781800962403-t1okw",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781802036569",
+        "port": "name"
+      }
+    },
+    {
+      "id": "e-node-1781802036569-prompt-node-1781799975981-3hoju-prompt",
+      "source": {
+        "nodeId": "node-1781802036569",
+        "port": "prompt"
+      },
+      "target": {
+        "nodeId": "node-1781799975981-3hoju",
+        "port": "prompt"
+      }
+    },
+    {
+      "id": "e-node-1781800962403-t1okw-value-node-1781799975981-7y5ft-name",
+      "source": {
+        "nodeId": "node-1781800962403-t1okw",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781799975981-7y5ft",
+        "port": "name"
+      }
+    },
+    {
+      "id": "e-node-1781801933679-output-node-1781803052421-rules",
+      "source": {
+        "nodeId": "node-1781801933679",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "rules"
+      }
+    },
+    {
+      "id": "e-node-1781801959373-value-node-1781803052421-params",
+      "source": {
+        "nodeId": "node-1781801959373",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "params"
+      }
+    },
+    {
+      "id": "e-node-1781802270944-image-node-1781803052421-port_0",
+      "source": {
+        "nodeId": "node-1781802270944",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "port_0"
+      }
+    },
+    {
+      "id": "e-node-1781802266475-image-node-1781803052421-port_1",
+      "source": {
+        "nodeId": "node-1781802266475",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "port_1"
+      }
+    },
+    {
+      "id": "e-node-1781802270136-image-node-1781803052421-port_2",
+      "source": {
+        "nodeId": "node-1781802270136",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "port_2"
+      }
+    },
+    {
+      "id": "e-node-1781802268242-image-node-1781803052421-port_3",
+      "source": {
+        "nodeId": "node-1781802268242",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "port_3"
+      }
+    },
+    {
+      "id": "e-node-1781802269137-image-node-1781803052421-port_4",
+      "source": {
+        "nodeId": "node-1781802269137",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "port_4"
+      }
+    },
+    {
+      "id": "e-node-1781802267370-image-node-1781803052421-port_5",
+      "source": {
+        "nodeId": "node-1781802267370",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803052421",
+        "port": "port_5"
+      }
+    },
+    {
+      "id": "e-node-1781803534907-2r7re-output-node-1781803562416-rule",
+      "source": {
+        "nodeId": "node-1781803534907-2r7re",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781803562416",
+        "port": "rule"
+      }
+    },
+    {
+      "id": "e-node-1781801959373-value-node-1781803562416-condition",
+      "source": {
+        "nodeId": "node-1781801959373",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781803562416",
+        "port": "condition"
+      }
+    },
+    {
+      "id": "e-node-1781803562416-result-node-1781803601886-value",
+      "source": {
+        "nodeId": "node-1781803562416",
+        "port": "result"
+      },
+      "target": {
+        "nodeId": "node-1781803601886",
+        "port": "value"
+      }
+    },
+    {
+      "id": "e-node-1781803601886-result-node-1781800365505-enable",
+      "source": {
+        "nodeId": "node-1781803601886",
+        "port": "result"
+      },
+      "target": {
+        "nodeId": "node-1781800365505",
+        "port": "enable"
+      }
+    },
+    {
+      "id": "e-node-1781803562416-result-node-1781800363011-enable",
+      "source": {
+        "nodeId": "node-1781803562416",
+        "port": "result"
+      },
+      "target": {
+        "nodeId": "node-1781800363011",
+        "port": "enable"
+      }
+    },
+    {
+      "id": "e-node-1781800367806-image-node-1781800363011-image",
+      "source": {
+        "nodeId": "node-1781800367806",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781800363011",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781803052421-value-node-1781800365505-template",
+      "source": {
+        "nodeId": "node-1781803052421",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781800365505",
+        "port": "template"
+      }
+    },
+    {
+      "id": "e-node-1781803052421-value-node-1781800363011-template",
+      "source": {
+        "nodeId": "node-1781803052421",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781800363011",
+        "port": "template"
+      }
+    },
+    {
+      "id": "e-node-1781800365505-image-node-1781803645979-item_0",
+      "source": {
+        "nodeId": "node-1781800365505",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803645979",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "e-node-1781800363011-image-node-1781803645979-item_1",
+      "source": {
+        "nodeId": "node-1781800363011",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781803645979",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "e-node-1781803645979-tree-node-1781799975981-7y5ft-image",
+      "source": {
+        "nodeId": "node-1781803645979",
+        "port": "tree"
+      },
+      "target": {
+        "nodeId": "node-1781799975981-7y5ft",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781800366456-error-node-1781803682437-item_1",
+      "source": {
+        "nodeId": "node-1781800366456",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781803682437",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "e-node-1781799975981-3hoju-error-node-1781803682437-item_0",
+      "source": {
+        "nodeId": "node-1781799975981-3hoju",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781803682437",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "e-node-1781800365505-error-node-1781803682437-item_2",
+      "source": {
+        "nodeId": "node-1781800365505",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781803682437",
+        "port": "item_2"
+      }
+    },
+    {
+      "id": "e-node-1781800363011-error-node-1781803682437-item_3",
+      "source": {
+        "nodeId": "node-1781800363011",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781803682437",
+        "port": "item_3"
+      }
+    },
+    {
+      "id": "e-node-1781803645979-tree-node-1781803705409-value",
+      "source": {
+        "nodeId": "node-1781803645979",
+        "port": "tree"
+      },
+      "target": {
+        "nodeId": "node-1781803705409",
+        "port": "value"
+      }
+    }
+  ],
+  "position": {
+    "x": -1830.2782816685349,
+    "y": 337.0466272588342
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "string",
+      "access": "list",
+      "sourceNodeId": "node-1781799975981-7y5ft",
+      "sourcePortName": "tags",
+      "hidden": true,
+      "order": 0
+    },
+    {
+      "portName": "in_1",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781799975981-3hoju",
+      "sourcePortName": "image",
+      "hidden": true,
+      "order": 1
+    },
+    {
+      "portName": "in_2",
+      "portType": "string",
+      "sourceNodeId": "node-1781799975981-3hoju",
+      "sourcePortName": "imageSize",
+      "customLabelEn": "imageSize",
+      "order": 14
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800365505",
+      "sourcePortName": "alpha_threshold",
+      "hidden": true,
+      "order": 2
+    },
+    {
+      "portName": "in_4",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781800365505",
+      "sourcePortName": "apply_tone",
+      "hidden": true,
+      "order": 3
+    },
+    {
+      "portName": "in_5",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800365505",
+      "sourcePortName": "ref_cell",
+      "hidden": true,
+      "order": 4
+    },
+    {
+      "portName": "in_6",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800366456",
+      "sourcePortName": "size",
+      "hidden": true,
+      "order": 5
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800366456",
+      "sourcePortName": "patch_size",
+      "hidden": true,
+      "order": 6
+    },
+    {
+      "portName": "in_8",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800366456",
+      "sourcePortName": "overlap",
+      "hidden": true,
+      "order": 7
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800366456",
+      "sourcePortName": "candidates",
+      "hidden": true,
+      "order": 8
+    },
+    {
+      "portName": "in_11",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781800367806",
+      "sourcePortName": "process_alpha",
+      "hidden": true,
+      "order": 9
+    },
+    {
+      "portName": "in_12",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781800962403-t1okw",
+      "sourcePortName": "value",
+      "order": 10,
+      "customLabelEn": "name"
+    },
+    {
+      "portName": "in_13",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781801959373",
+      "sourcePortName": "tile",
+      "order": 11
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781800366456",
+      "sourcePortName": "seed",
+      "hidden": true,
+      "order": 12
+    },
+    {
+      "portName": "in_14",
+      "portType": "string",
+      "sourceNodeId": "node-1781802036569",
+      "sourcePortName": "description",
+      "order": 13
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781799975981-7y5ft",
+      "sourcePortName": "alias",
+      "hidden": true,
+      "order": 0
+    },
+    {
+      "portName": "out_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781799975981-7y5ft",
+      "sourcePortName": "ok",
+      "hidden": true,
+      "order": 1
+    },
+    {
+      "portName": "out_2",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781803682437",
+      "sourcePortName": "tree",
+      "customLabelEn": "error",
+      "order": 3
+    },
+    {
+      "portName": "out_3",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781803705409",
+      "sourcePortName": "value",
+      "customLabelEn": "image",
+      "order": 2
+    }
+  ]
+}

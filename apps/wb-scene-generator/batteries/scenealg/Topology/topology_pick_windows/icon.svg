@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Topology pick windows battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M5.5 12h3.2M15.3 12h3.2" fill="none" stroke="#95aa9f" stroke-width="1.8" stroke-linecap="round"/>
+  <rect x="8.7" y="9.3" width="6.6" height="5.4" rx="0.6" fill="none" stroke="#b7ff5a" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M12 9.3v5.4M8.7 12h6.6" fill="none" stroke="#b7ff5a" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

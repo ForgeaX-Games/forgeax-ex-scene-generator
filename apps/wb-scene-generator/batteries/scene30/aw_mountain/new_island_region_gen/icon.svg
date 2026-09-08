@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_new_island_region_gen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#3a8e88"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_new_island_region_gen)"/>
+
+  <ellipse fill="#bbf7d0" cx="7" cy="9" rx="3" ry="2.2"/>
+  <ellipse fill="#bbf7d0" cx="16" cy="15" rx="3.5" ry="2.6"/>
+  <ellipse fill="#bbf7d0" cx="16" cy="7" rx="2.2" ry="1.6"/>
+
+  <circle fill="#f59e0b" cx="7" cy="9" r="1.1"/>
+  <circle fill="#f59e0b" cx="16" cy="15" r="1.1"/>
+  <circle fill="#f59e0b" cx="16" cy="7" r="1.1"/>
+</svg>

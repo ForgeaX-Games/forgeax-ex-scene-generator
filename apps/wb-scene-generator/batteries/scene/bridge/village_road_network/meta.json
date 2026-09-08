@@ -1,0 +1,32 @@
+{
+  "id": "village_road_network",
+  "label": "广场枢纽路网",
+  "name-en": "VillageRoadNetwork",
+  "description": "以广场为枢纽生成贴地分段曲线路网：环路、东西主干、磨坊引道、山坡支路与步道合成一张路网 Mesh，并输出钟塔、水车与石桥锚点。",
+  "description-en": "Generate a plaza-centric village road graph as segmented surface-draped curves: civic ring, west/east arterial spokes, mill access, hillside feeder and trail, plus one unified road mesh and landmark anchors from the same hub.",
+  "version": "1.2.0",
+  "tags": ["scene", "bridge", "road", "village", "layout"],
+  "inputs": [
+    { "name": "plazaCenter", "type": "point2d", "access": "item", "required": true, "label": "广场中心" },
+    { "name": "plazaRadius", "type": "number", "access": "item", "defaultValue": 7.4, "mode": "parameter", "control": true, "label": "广场半径" },
+    { "name": "riverPoints", "type": "point2d", "access": "list", "label": "河流中心线" },
+    { "name": "heightGrid", "type": "grid", "access": "item", "label": "高度场" },
+    { "name": "riverWidth", "type": "number", "access": "item", "defaultValue": 8, "mode": "parameter", "label": "河流宽度" },
+    { "name": "seed", "type": "number", "access": "item", "defaultValue": 27, "mode": "parameter", "label": "随机种子" }
+  ],
+  "outputs": [
+    { "name": "arterialPoints", "type": "point2d", "access": "list", "label": "主干道中心线" },
+    { "name": "ringPoints", "type": "point2d", "access": "list", "label": "广场环路" },
+    { "name": "trailPoints", "type": "point2d", "access": "list", "label": "南向步道" },
+    { "name": "feederPoints", "type": "point2d", "access": "list", "label": "山坡支路" },
+    { "name": "millAccessPoints", "type": "point2d", "access": "list", "label": "磨坊引道" },
+    { "name": "towerPosition", "type": "point2d", "access": "item", "label": "钟塔锚点" },
+    { "name": "millPosition", "type": "point2d", "access": "item", "label": "水车锚点" },
+    { "name": "millYaw", "type": "number", "access": "item", "label": "水车朝向" },
+    { "name": "bridgeStart", "type": "point2d", "access": "item", "label": "桥北端" },
+    { "name": "bridgeEnd", "type": "point2d", "access": "item", "label": "桥南端" },
+    { "name": "plazaCenter", "type": "point2d", "access": "item", "label": "广场中心" },
+    { "name": "plazaRadius", "type": "number", "access": "item", "label": "广场半径" },
+    { "name": "mesh", "type": "mesh", "access": "item", "label": "路网Mesh" }
+  ]
+}

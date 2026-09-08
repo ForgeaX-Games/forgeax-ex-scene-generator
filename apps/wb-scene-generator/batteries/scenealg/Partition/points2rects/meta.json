@@ -1,0 +1,70 @@
+{
+  "id": "alg_points2rects",
+  "label": "区域点集生矩形",
+  "name-en": "Points2Rects",
+  "description": "在 01 区域网格的有效（1）范围内，为一组采样 point2d 点各自贴合一个矩形：中心尽量贴近各自的点、长宽尽量接近输入宽高、完整落在区域内、放不下就缩小，并且所有矩形互不重叠。空间竞争时按目标面积从大到小优先放置（大矩形先占更优位置）。每个点输出一张同形状、矩形处为 1 的独立网格（rank=1 列表），顺序与输入点一致；放不下的点对应全 0 网格。width/height 长度为 1 时广播到所有点，否则按下标对应，缺省 5。坐标约定：x→列、y→行。",
+  "description-en": "Fits one rectangle per sampled point2d inside the valid (1) area of a 0/1 region grid: each rectangle's center stays close to its point, its size close to the target width/height, fully contained in the region, shrinking if needed, and all rectangles are mutually non-overlapping. When space is contested, larger target areas are placed first (big rects grab better spots). Each point yields a separate 0/1 grid (same shape, 1s in the rectangle) as a rank=1 list, in input order; points that cannot be placed yield an all-zero grid. width/height broadcast to all points when length 1, otherwise zip by index, defaulting to 5. Coordinates: x→column, y→row.",
+  "icon": "深色网格背景上有一片浅色不规则有效区域，区域内散布几个亮紫色小圆点，每个圆点周围各贴合一个亮蓝色矩形，矩形彼此不重叠、都完整落在浅色区域内，扁平插画风格小图标，主色蓝紫两种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "partition", "point", "points", "rect", "fit", "pack", "non-overlap", "mask"],
+  "tag_labels": ["区域", "分区", "点", "点集", "矩形", "贴合", "排布", "不重叠", "掩码"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "access": "item",
+      "label": "输入区域",
+      "description": "01（或多值）区域网格；矩形只在非零有效格内寻找。",
+      "description-en": "0/1 (or multi-valued) region grid; rectangles are searched only within non-zero valid cells."
+    },
+    {
+      "name": "points",
+      "type": "point2d",
+      "required": true,
+      "access": "list",
+      "label": "采样点集",
+      "description": "一组采样 point2d 点（整组消费），x→列、y→行；每个点各贴合一个矩形，中心尽量贴近该点。",
+      "description-en": "A list of sampled point2d (consumed atomically); x→column, y→row. Each point gets its own rectangle whose center stays close to it."
+    },
+    {
+      "name": "widths",
+      "type": "number",
+      "access": "list",
+      "min": 1,
+      "precision": 0,
+      "label": "目标宽度",
+      "description": "每个点对应矩形的目标宽度（列数）。长度为 1 时广播到所有点；否则按下标对应；缺省 5，最小 1，放不下会缩小。",
+      "description-en": "Target rectangle width (columns) per point. Broadcasts to all points when length 1, otherwise zips by index; defaults to 5, minimum 1, shrinks if it doesn't fit."
+    },
+    {
+      "name": "heights",
+      "type": "number",
+      "access": "list",
+      "min": 1,
+      "precision": 0,
+      "label": "目标高度",
+      "description": "每个点对应矩形的目标高度（行数）。长度为 1 时广播到所有点；否则按下标对应；缺省 5，最小 1，放不下会缩小。",
+      "description-en": "Target rectangle height (rows) per point. Broadcasts to all points when length 1, otherwise zips by index; defaults to 5, minimum 1, shrinks if it doesn't fit."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "rects",
+      "type": "grid",
+      "access": "list",
+      "label": "矩形网格列表",
+      "description": "每个输入点对应一张与输入同形状的 0/1 网格（贴合出的矩形处为 1，其余为 0），顺序与输入点一致；放不下的点为全 0 网格。所有网格的矩形互不重叠。",
+      "description-en": "One 0/1 grid per input point (same shape as the region; 1s in the fitted rectangle, 0s elsewhere), in input order; an unplaceable point yields an all-zero grid. Rectangles across all grids are mutually non-overlapping."
+    },
+    {
+      "name": "placedCount",
+      "type": "number",
+      "access": "item",
+      "label": "实际放置数量",
+      "description": "成功放置（非空）的矩形数量，可能小于输入点数。",
+      "description-en": "Number of rectangles successfully placed (non-empty); may be less than the number of input points."
+    }
+  ]
+}

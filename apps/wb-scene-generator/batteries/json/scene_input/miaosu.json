@@ -1,0 +1,254 @@
+{"nodes":[
+  {
+    "name": "九零年代的日本",
+    "parent": null,
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "故事发生的整个世界，时间跨度为1990年代初至2000年代中期，地理上涵盖日本的都市与乡间。",
+      "art_style_description": "整体呈现一种怀旧、略带忧伤的胶片质感。城市景观以冷色调和密集的几何线条为主，乡村则以温暖、自然的色块和广阔的天空为特征。光影对比强烈，用以强调时间的流逝感。",
+      "semantics_description": "承载整个故事的宏观舞台，其社会经济变迁与科技发展是驱动角色命运与情感纠葛的根本背景。"
+    }
+  },
+  {
+    "name": "东京",
+    "parent": "九零年代的日本",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "日本的首都，一个繁华、高效但又疏离的超级都市。是主角们童年的起点，也是成年后重逢与漂泊的地方。",
+      "art_style_description": "由摩天大楼的玻璃幕墙、密集的电车线路和夜晚的霓虹灯构成。色调偏冷，强调线条感和秩序感。雨天和夜晚的场景频繁，利用反光和光晕营造孤独氛围。",
+      "semantics_description": "“分离”与“迷失”的象征。代表着高效、理性但缺乏人情味的现代社会，是主角情感被现实消磨的主要场所。"
+    }
+  },
+  {
+    "name": "栃木县",
+    "parent": "九零年代的日本",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于关东地区北部的县，与东京有一定距离，是女主角篠原明里中学时搬迁的目的地。",
+      "art_style_description": "呈现出典型的日本乡间风貌，有广阔的田野、低矮的民居和稀疏的铁路线。色调比东京温暖，以自然绿和泥土棕为主。冬季场景以大雪的纯白为主，突出寂静感。",
+      "semantics_description": "“距离”的具象化。是主角第一次深刻体验到物理距离所带来的隔绝感的地方，也是纯真情感面临现实考验的第一个舞台。"
+    }
+  },
+  {
+    "name": "鹿儿岛县",
+    "parent": "九零年代的日本",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于日本本土西南端的县，下辖种子岛等离岛，是主角远野贵树高中时期的居住地。",
+      "art_style_description": "亚热带海岛风情，以湛蓝的海洋、广阔的甘蔗田和强烈的日照为特征。色彩饱和度高，天空和大海是主色调。场景开阔，强调人与自然环境的巨大对比。",
+      "semantics_description": "“遥远”的终极象征。代表着一个与主角内心世界完全隔绝的“远方”，在此地，主角的孤独与对过去的思念被推向顶峰。"
+    }
+  },
+  {
+    "name": "新宿区",
+    "parent": "东京",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "东京都的核心区域之一，高楼林立的商业和办公中心。成年后的远野贵树在此工作和生活。",
+      "art_style_description": "极度现代化的城市森林，由冰冷的玻璃、钢铁和混凝土构成。夜景中，办公楼的灯光如像素点般冷漠，街道上人流如织但面目模糊。整体风格冷静、克制。",
+      "semantics_description": "成年人世界的象征。代表着为了生存而放弃梦想、用工作麻痹情感的“失落”状态。"
+    }
+  },
+  {
+    "name": "代代木",
+    "parent": "东京",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于东京涩谷区，一个相对安静的住宅与商业混合区，参宫桥平交道所在地。",
+      "art_style_description": "融合了都市的便捷与居民区的日常感。场景元素包括普通的街道、便利店、电车线路和散落的樱花树。光线柔和，但会被疾驰的电车瞬间打破。",
+      "semantics_description": "“命运的交叉点”。是主角童年与成年两个时空交汇的节点，承载着“重逢”与“错过”的终极悬念。"
+    }
+  },
+  {
+    "name": "神保町",
+    "parent": "东京",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "东京著名的旧书店街，充满了历史感和文化气息。是“黄昏快门会”成员交换信息的非正式据点。",
+      "art_style_description": "街道狭窄，两旁是堆满旧书的书店，招牌古朴。色调温暖偏黄，有纸张的质感。室内光线昏暗，靠台灯照明，空气中仿佛有尘埃浮动。",
+      "semantics_description": "“记忆的避难所”。代表着对消逝过往的守护与怀念，是与主流商业社会相对立的、充满人情味的文化空间。"
+    }
+  },
+  {
+    "name": "岩舟町",
+    "parent": "栃木县",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "栃木县南部的一个小镇，是女主角篠原明里的家乡，拥有一个孤独的乡间车站。",
+      "art_style_description": "典型的日本乡村小镇，被农田和低山环绕。建筑稀疏，节奏缓慢。冬季场景中，整个城镇被厚厚的积雪覆盖，呈现出一种寂静甚至与世隔绝的美感。",
+      "semantics_description": "“约定之地”。是主角第一次挑战物理距离，兑现承诺的终点，也是他们青春期最重要情感事件的发生地。"
+    }
+  },
+  {
+    "name": "种子岛",
+    "parent": "鹿儿岛县",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于鹿儿岛县南部的离岛，以航天发射中心闻名。是远野贵树高中时期的生活地。",
+      "art_style_description": "广袤而孤独的岛屿景观。画面中常出现巨大的天空、无垠的大海和随风摇曳的芒草。巨大的火箭发射架与渺小的人物形成强烈对比。色彩明亮，但氛围空旷。",
+      "semantics_description": "“无法传达的思念之地”。象征着主角内心的极度孤独和与过往的彻底割裂，在此处他试图用新的方式联系，却最终失败。"
+    }
+  },
+  {
+    "name": "东京中学",
+    "parent": "东京",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "主角们小学毕业后就读的普通中学，位于东京都内某区。",
+      "art_style_description": "标准的日本校园建筑，有教学楼、操场和图书馆。色调明快，充满青春气息。午后的阳光、樱花树和放学后的教室是核心视觉元素。",
+      "semantics_description": "“共同记忆的起点”。是主角们最后一段能朝夕相处的时光，代表着纯真、无忧无虑的共同体。"
+    }
+  },
+  {
+    "name": "中学图书馆",
+    "parent": "东京中学",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于中学教学楼三楼的图书室，靠窗的角落是主角们分享秘密的专属空间。",
+      "art_style_description": "安静而温暖的室内空间。阳光透过布满灰尘的窗格，在木地板上形成光斑，空气中漂浮着微尘。书架林立，营造出被知识和故事包围的安全感。",
+      "semantics_description": "“二人世界的摇篮”。是主角情感萌芽、建立精神共鸣的核心场所，象征着与外界隔绝的、纯粹的内心世界。"
+    }
+  },
+  {
+    "name": "西新宿公寓楼",
+    "parent": "新宿区",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于西新宿的一栋普通单身公寓，成年后的远野贵树居住于此。",
+      "art_style_description": "典型的现代公寓建筑，外观缺乏特色，走廊狭长且灯光昏暗。外部是繁华的都市，内部空间则显得逼仄而孤独。",
+      "semantics_description": "“成年后的孤岛”。是主角肉体上的栖息地，但精神上却是与世界隔绝的封闭空间。"
+    }
+  },
+  {
+    "name": "西新宿出租屋",
+    "parent": "西新宿公寓楼",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "公寓楼内一个仅有六叠（约10平方米）大小的单间，被电脑、外卖盒和工作资料占据。",
+      "art_style_description": "空间狭小杂乱，色调以显示器的冷光和夜晚窗外的城市辉光为主，整体偏灰暗。房间里充满生活感，但却是疲惫和麻木的。",
+      "semantics_description": "“情感的真空区”。是主角成年后内心状态的物理投射，一个被工作填满、没有情感交流的孤独空间。"
+    }
+  },
+  {
+    "name": "中央信息塔",
+    "parent": "新宿区",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "NTI解决方案公司的总部，位于新宿的超高层办公楼。",
+      "art_style_description": "极简主义的现代建筑，巨大的玻璃幕墙反射着天空和城市，内部是开放式工位和冰冷的金属装饰。色调冷峻，强调秩序和效率，缺乏人情味。",
+      "semantics_description": "“无情的系统”。代表着驱动主角分离的宏观力量，一个将人异化为“人力资源”的庞大机器。"
+    }
+  },
+  {
+    "name": "参宫桥平交道",
+    "parent": "代代木",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "小田急线穿过的一处普通铁路道口，附近有樱花树，是主角擦肩而过的命运地点。",
+      "art_style_description": "强烈的动静对比。静止时是日常的街角，警报响起时，红灯闪烁、栏杆落下、电车呼啸而过，卷起樱花花瓣。核心是电车经过瞬间，视线被阻断又恢复的戏剧性场面。",
+      "semantics_description": "“命运的裁决之地”。是故事的标志性场景，象征着时间与距离对情感的最终裁决，是“错过”这一主题的最高潮。"
+    }
+  },
+  {
+    "name": "时光咖啡馆",
+    "parent": "神保町",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "一家即将结业的老式咖啡馆（喫茶店），是“黄昏快门会”的非正式总部。",
+      "art_style_description": "昭和时代的复古风格，木质内饰，昏黄的灯光，空气中弥漫着咖啡和香烟的味道。墙上挂着黑白照片，角落里堆放着旧杂志。氛围怀旧、安静、略带伤感。",
+      "semantics_description": "“记忆的守护者”。是与快速发展的现代社会相对的，一个试图留住时间、保存记忆的场所。"
+    }
+  },
+  {
+    "name": "岩舟站",
+    "parent": "岩舟町",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "一个只有单侧月台的乡村小站，是主角雪夜约会的地点。",
+      "art_style_description": "极简的车站结构，只有候车室、月台和铁轨。冬季夜晚，被暴风雪包围，呈现出极端的孤独感和与世隔绝感。唯一的光源来自贩卖机，营造出强烈的冷暖对比。",
+      "semantics_description": "“考验与承诺的终点”。是主角克服万难也要到达的目的地，是青春期爱情最炽热也最脆弱的见证地。"
+    }
+  },
+  {
+    "name": "雪夜候车室",
+    "parent": "岩舟站",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "岩舟站内简陋的候车室，是主角在暴风雪中等待与重逢的地方。",
+      "art_style_description": "空间狭小，窗外是狂暴的风雪，室内只有自动贩卖机的孤独光芒。冷冽的空气，凝结的白雾，和一罐温暖的红豆汤，构成了强烈的感官体验。",
+      "semantics_description": "“绝境中的温暖孤岛”。是整个故事中最具戏剧性的场景之一，代表着在残酷现实的包围下，两人情感所能达到的最温暖、最深刻的瞬间，同时也是诀别的序曲。"
+    }
+  },
+  {
+    "name": "种子岛宇宙中心",
+    "parent": "种子岛",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "面向太平洋的广阔航天中心区域，有巨大的火箭发射设施。",
+      "art_style_description": "宏大而空旷的场景。巨大的白色火箭与广阔的蓝天碧海形成对比，凸显人的渺小。风吹拂着无边的芒草，画面充满动感但又极为寂静。",
+      "semantics_description": "“远方的终极形态”。火箭象征着向着更遥远、未知世界的探索，与主角被困于过去回忆的状态形成讽刺对比，强化了“距离”与“孤独”的主题。"
+    }
+  },
+  {
+    "name": "小镇神社",
+    "parent": "栃木县",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "位于乡间小镇的一处普通神社，人们会在此进行季节性的参拜和祈愿。",
+      "art_style_description": "古老的木质结构，石制的鸟居和灯笼，树上系满了白色的御神签。氛围宁静、肃穆，带有一丝神秘感。光线透过树叶的缝隙洒下，形成斑驳的光影。",
+      "semantics_description": "“个体愿望的寄托处”。代表了人们在面对不可抗力命运时的微小祈愿与精神慰藉，是“物哀”与“无常”世界观的具象体现。"
+    }
+  },
+  {
+    "name": "黄昏商店街",
+    "parent": "栃木县",
+    "label": [
+      "narrative"
+    ],
+    "description": {
+      "location_description": "一条在大型连锁超市冲击下日渐式微的传统商业街，店铺多半已经关门。",
+      "art_style_description": "街道不宽，两旁的店铺多已拉下卷帘门，少数亮着灯的店铺显得格外温暖。黄昏时分，夕阳为整个街道染上金色和橙色，营造出怀旧和伤感的氛围。",
+      "semantics_description": "“消逝的日常”。象征着一个回不去的、充满人情味的时代，是宏观经济变迁在个体生活中的缩影。"
+    }
+  }
+]}

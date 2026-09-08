@@ -1,0 +1,148 @@
+{
+  "id": "alg_region_compass_squeeze",
+  "label": "区域偏压缩",
+  "name-en": "RegionCompassSqueeze",
+  "description": "以区域自身八个方位（北/东北/东/东南/南/西南/西/西北）的边界锚点为受力点，对区域做局部有符号形变，效果类似揉面团：每个方位独立设置力度，正数=压缩（该方位附近边界向内收缩），负数=拉伸（向外扩张），力度按距离平滑衰减，0=不施力。锚点按区域重心+方位投影自动定位，支持异形/非凸自然边界。拉伸受当前画布内已有背景余量限制（与 alg_region_offset 外扩同一约束）。",
+  "description-en": "Applies a signed local deformation to a region using anchor points auto-located at the region's eight compass directions (N/NE/E/SE/S/SW/W/NW), like kneading dough: each direction has an independent strength, positive squeezes the boundary inward, negative stretches it outward, decaying smoothly with distance, 0 = no force. Anchors are found via centroid + directional projection, so irregular/non-convex natural boundaries are supported. Outward stretch is bounded by existing background room in the working canvas (same constraint as alg_region_offset's dilation).",
+  "icon": "深色背景上一个不规则有机形状，边缘八个方向各有一个小箭头/手指按压或拉伸出的凹凸波浪痕迹，形成不对称的挤压变形轮廓，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "warp", "squeeze", "stretch", "deform", "compass", "direction", "organic", "grid"],
+  "tag_labels": ["区域", "形变", "压缩", "拉伸", "揉压", "方位", "方向", "有机", "网格"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1（或多值）区域网格；非零格视为前景。支持任意异形/不规则形状。",
+      "description-en": "0/1 (or multi-valued) region grid; non-zero cells are foreground. Any irregular shape is supported.",
+      "access": "item"
+    },
+    {
+      "name": "north",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "北（N）力度",
+      "description": "区域最北侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's northmost boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "northeast",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "东北（NE）力度",
+      "description": "区域最东北侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's northeast boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "east",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "东（E）力度",
+      "description": "区域最东侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's east boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "southeast",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "东南（SE）力度",
+      "description": "区域最东南侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's southeast boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "south",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "南（S）力度",
+      "description": "区域最南侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's south boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "southwest",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "西南（SW）力度",
+      "description": "区域最西南侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's southwest boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "west",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "西（W）力度",
+      "description": "区域最西侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's west boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "northwest",
+      "type": "number",
+      "default": 0,
+      "min": -64,
+      "max": 64,
+      "precision": 1,
+      "label": "西北（NW）力度",
+      "description": "区域最西北侧边界锚点的力度。正=压缩（内收），负=拉伸（外扩），0=不施力。",
+      "description-en": "Strength at the region's northwest boundary anchor. Positive = squeeze inward, negative = stretch outward, 0 = no force."
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "default": 10,
+      "min": 1,
+      "max": 128,
+      "precision": 0,
+      "label": "影响半径",
+      "description": "每个方位锚点的力影响范围（格数）。范围内按平滑曲线衰减到 0，范围外不受影响；多个方位的影响自然叠加过渡。",
+      "description-en": "Influence radius (cells) around each compass anchor. Falls off smoothly to 0 within the radius; no effect beyond it. Multiple directions blend naturally where they overlap."
+    },
+    {
+      "name": "connectivity",
+      "type": "number",
+      "default": 8,
+      "label": "邻接方式",
+      "description": "距离场计算用的邻接方式。4=菱形（曼哈顿），8=方块（含对角，默认，形变边界更顺滑）。",
+      "description-en": "Adjacency used for the distance transform. 4 = diamond (Manhattan), 8 = square incl. diagonals (default, smoother boundary)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "access": "item",
+      "label": "形变后区域",
+      "description": "形变后的 0/1 区域网格，与输入同形状。",
+      "description-en": "Deformed 0/1 region grid; same shape as the input."
+    },
+    {
+      "name": "delta",
+      "type": "grid",
+      "access": "item",
+      "label": "变化标记",
+      "description": "-1=被压缩移除的格，+1=被拉伸新增的格，0=未变化；可用于可视化/调试形变范围。",
+      "description-en": "-1 = cell removed by squeeze, +1 = cell added by stretch, 0 = unchanged; useful for visualizing/debugging the deformation extent."
+    }
+  ]
+}

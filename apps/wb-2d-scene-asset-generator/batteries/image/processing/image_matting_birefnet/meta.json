@@ -1,0 +1,121 @@
+{
+  "id": "image_matting_birefnet",
+  "label": "BiRefNet 抠图",
+  "name-en": "BiRefNet Matting",
+  "description": "基于 BiRefNet 语义分割模型的抠图。理解「前景物体 vs 背景」，能干净抠出与背景同色的缝隙/孔洞并输出软 alpha（抗锯齿边缘），适合颜色法（图像抠图）抠不干净缝隙的素材。模型跑在独立的 birefnet-server 微服务里（自带权重/GPU），使用前需先启动该服务并配置服务地址：设后端环境变量 FORGEAX_BIREFNET_URL，或在本节点 service_url 输入框填写（如 http://127.0.0.1:8080）。容错：当 BiRefNet 未部署、URL 未填或发生任何错误时，自动回退到传统颜色法抠图（图像抠图 / image_remove_bg）产出 image/mask，并把 BiRefNet 失败原因写入 error_message 端口供检查。",
+  "description-en": "Matting powered by the BiRefNet segmentation model. Understands foreground vs background, cleanly cuts out gaps/holes that share the background color, and outputs a soft anti-aliased alpha — ideal where the color-based RemoveBG leaves gaps. The model runs in a standalone birefnet-server microservice (its own weights/GPU); start that service first and point this node at it via the FORGEAX_BIREFNET_URL backend env var or the service_url input (e.g. http://127.0.0.1:8080). Fault-tolerant: if BiRefNet is not deployed, the URL is empty, or any error occurs, it automatically falls back to the classic color-based RemoveBG (image_remove_bg) to still produce image/mask, while recording the BiRefNet failure reason on the error_message port.",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "matting",
+    "remove background",
+    "cutout",
+    "alpha",
+    "birefnet",
+    "onnx",
+    "ai",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "抠图",
+    "背景移除",
+    "透明",
+    "语义分割",
+    "BiRefNet",
+    "AI",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "图像",
+      "description": "待抠图的图像 alias（PNG/JPEG，支持 RGB/RGBA）"
+    },
+    {
+      "name": "service_url",
+      "type": "string",
+      "access": "item",
+      "label": "服务地址",
+      "description": "BiRefNet 服务地址（如 http://127.0.0.1:8080）。留空则用后端环境变量 FORGEAX_BIREFNET_URL。",
+      "default": ""
+    },
+    {
+      "name": "soft_edges",
+      "type": "boolean",
+      "access": "item",
+      "label": "柔和边缘",
+      "description": "保留模型输出的软 alpha（抗锯齿、半透明过渡）；关闭则在 0.5 处硬二值化得到锐利边",
+      "default": true
+    },
+    {
+      "name": "crop",
+      "type": "boolean",
+      "access": "item",
+      "label": "自动裁剪",
+      "description": "裁剪到前景内容的最小边界框（含 2px 边距），去除多余空白",
+      "default": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "结果图像",
+      "description": "抠图后（背景透明）写入 staging 区的 alias"
+    },
+    {
+      "name": "mask",
+      "type": "image",
+      "access": "item",
+      "label": "抠图区域 mask",
+      "description": "抠图区域的灰度 mask（白=前景、黑=背景），原始全尺寸。可接入 CutByMask 电池，把任意其他同源图对齐到相同的抠图区域与尺寸。",
+      "description-en": "Grayscale mask of the cutout region (white = foreground, black = background) at the original full size. Feed it into the CutByMask battery to align any other same-source image to the identical cutout region and size."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "输出图像宽度（crop 后）"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "输出图像高度（crop 后）"
+    },
+    {
+      "name": "error_message",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "BiRefNet 失败原因（服务未配置/URL 未填/不可用、请求或解码失败等），成功时为空字符串。此时 image/mask 已由传统颜色法抠图（image_remove_bg）回退产出，仍可用。注意命名为 error_message 而非 error：内核会把非空的 error 输出当成节点失败直接丢弃所有输出，换名后原因才能正常落到此端口、节点也不会报红。",
+      "description-en": "Reason for a BiRefNet failure (service not configured/URL empty/unavailable, request/decode error, etc.); empty on success. When set, image/mask are still produced via the fallback color-based RemoveBG (image_remove_bg) and remain usable. Named error_message (not error) on purpose: the kernel treats a non-empty `error` output as a node failure and discards all outputs, so a different name is required to surface the reason on this port without failing the node."
+    }
+  ],
+  "params": [
+    {
+      "name": "suffix",
+      "type": "string",
+      "default": "_matte",
+      "label": "alias 后缀",
+      "description": "输出 alias = 原名 + 后缀；留空则自动生成"
+    }
+  ],
+  "alg_tag": [
+    "语义抠图",
+    "BiRefNet",
+    "外部服务推理",
+    "软alpha",
+    "前景分割"
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "id": "g_bake_object",
+  "label": "烘焙带色物体",
+  "name-en": "GBakeObject",
+  "description": "把一个由多个上色 part 组成的物体整体烘成单个多材质 GLB（颜色按 part 内嵌进 mesh），返回 filename(<sha>.glb)。场景里用 g_mesh(filename=<sha>.glb) 单实例引用即可保留多种颜色——前提是引用它的 g_part 不要再上 material（否则 viewer 会用 link 材质覆盖内嵌色）。输入 geometry 里所有 part 语句都会被烘进同一物体：每个 part 解析 shape(ref)+material(ref→rgba，缺省灰)+origin/rpy。part 的 shape 既可以是真形状（primitive/CSG/Parts/composite，逐 part 三角化），也可以是 g_mesh 引用的预烘 <sha>.obj（回读该 blob 三角面、按位姿合并，颜色取该 part 的 material）——角色路正是靠后者把分件预烘的件一起合并成一张可蒙皮网格。区别于 g_bake_part（烘单个形状成纯几何 OBJ、无颜色）。",
+  "description-en": "Bake an object made of multiple colored parts into a single multi-material GLB (per-part colors embedded into the mesh), returning filename(<sha>.glb). Reference it once via g_mesh(filename=<sha>.glb) in the scene to keep multiple colors — provided the referencing g_part carries NO material (otherwise the viewer overrides embedded colors with the link material). Every part() in the input geometry is baked into the same object: each part resolves shape(ref)+material(ref→rgba, gray fallback)+origin/rpy. A part's shape may be a REAL shape (primitive/CSG/Parts/composite, tessellated per part) OR a g_mesh reference to a pre-baked <sha>.obj (its triangles are read back from the blob and merged by pose, colored by the part's material) — the character path uses the latter to merge separately-baked parts into one skinnable mesh. Unlike g_bake_part (which bakes a single shape into a colorless OBJ).",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "bake",
+    "mesh",
+    "material",
+    "util",
+    "io"
+  ],
+  "tag_labels": [
+    "几何",
+    "烘焙",
+    "Mesh",
+    "材质",
+    "工具",
+    "IO"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": false,
+      "label": "几何",
+      "description": "由多个上色 part 组成的物体子图（PART A 阶段2 产物：每个 part = shape + material + 位姿）。",
+      "description-en": "Object subgraph made of colored parts (PART A phase-2 output: each part = shape + material + pose)."
+    },
+    {
+      "name": "include_mesh_parts",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "label": "合并 mesh 引用件",
+      "description": "引用预烘 <sha>.obj 的 part 算不算这个物体的一部分。true（默认，角色路需要）= 回读它们的三角面一并合并；false（静态路终端链）= 跳过，让它们各自作为一条场景 item 被引用，避免真形状件与 mesh 引用件混排时同一件出现两遍。",
+      "description-en": "Whether parts referencing a pre-baked <sha>.obj count as part of this object. true (default, required by the character path) merges their triangles in; false (used by the static terminal chain) skips them so they stay separate scene items, which is what keeps a mixed real-shape + mesh-ref model from emitting the same piece twice."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "filename",
+      "type": "string",
+      "label": "Mesh 文件名",
+      "description": "带色物体的内容寻址文件名 <sha>.glb；接 g_mesh.filename 在场景里引用。",
+      "description-en": "Content-addressed filename <sha>.glb of the colored object; wire into g_mesh.filename to reference it in the scene."
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "label": "sha256",
+      "description": "烘焙物体的 sha256 内容指纹（含每个 part 的形状/颜色/位姿）。",
+      "description-en": "sha256 content fingerprint of the baked object (includes each part's shape/color/pose)."
+    },
+    {
+      "name": "vertexCount",
+      "type": "number",
+      "label": "顶点数",
+      "description": "烘焙 GLB 的总顶点数。",
+      "description-en": "Total vertex count of the baked GLB."
+    },
+    {
+      "name": "triangleCount",
+      "type": "number",
+      "label": "三角面数",
+      "description": "烘焙 GLB 的总三角面数。",
+      "description-en": "Total triangle count of the baked GLB."
+    },
+    {
+      "name": "cacheHit",
+      "type": "boolean",
+      "label": "缓存命中",
+      "description": "本次烘焙是否命中进程内缓存。",
+      "description-en": "Whether this bake hit the in-process cache."
+    },
+    {
+      "name": "bbox_min",
+      "type": "array",
+      "label": "包围盒最小角",
+      "description": "烘焙物体的局部 AABB 最小角 [x,y,z]（米）。接 g_mesh.bbox_min。",
+      "description-en": "Local AABB min corner [x,y,z] (meters) of the baked object. Wire into g_mesh.bbox_min."
+    },
+    {
+      "name": "bbox_max",
+      "type": "array",
+      "label": "包围盒最大角",
+      "description": "烘焙物体的局部 AABB 最大角 [x,y,z]（米）。接 g_mesh.bbox_max。",
+      "description-en": "Local AABB max corner [x,y,z] (meters) of the baked object. Wire into g_mesh.bbox_max."
+    },
+    {
+      "name": "size",
+      "type": "array",
+      "label": "尺寸",
+      "description": "烘焙物体三轴尺寸 [sx,sy,sz]（米）= bbox_max - bbox_min。",
+      "description-en": "Baked object size [sx,sy,sz] (meters) = bbox_max - bbox_min."
+    },
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "透传输入 geometry，便于链式接线。",
+      "description-en": "Pass-through of the input geometry for chaining."
+    },
+    {
+      "name": "note",
+      "type": "string",
+      "label": "提示",
+      "description": "非错误说明（烘焙结果、引用方式提醒等）。",
+      "description-en": "Non-error note (bake result, referencing reminder, etc.)."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "烘焙失败 / 缺 baker / 缺 part 时的错误说明。",
+      "description-en": "Error message on bake failure / missing baker / no parts."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

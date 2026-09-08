@@ -1,0 +1,58 @@
+{
+  "id": "alg_field_inner_distance",
+  "label": "内部边界距离场",
+  "name-en": "FieldInnerDistance",
+  "description": "到「内部 0 区域边界」的多源 BFS 距离场。先用 border flood-fill 把 0 格分为外部背景（与网格边界连通）与内部洞（被有效区域包围，如海里的岛）。默认源 = 有效格中 4-邻接到内部洞的格（内部 0 边界）；includeOuterBoundary=true 时再并入区域外缘格（网格边缘或邻接外部背景 0 格的有效格，如海岸线）作为源。源格距离 0、逐层 +1，BFS 只在有效格内传播。region 外无效格输出 0；region 内但不可达的有效格输出 -1。用例：海洋（含内部岛屿）默认得到到岛岸的距离（近=浅海、远=深海）；岛屿/实心陆地需 includeOuterBoundary=true 得到到外缘海岸线的距离（近=海岸线、远=内陆）。",
+  "description-en": "Multi-source BFS distance field to the INNER 0-region boundary. First a border flood-fill classifies 0-cells into outer background (connected to the grid border) vs inner holes (enclosed by the valid region, e.g. islands inside an ocean). By default the sources are valid cells 4-adjacent to inner holes (the inner 0 boundary); when includeOuterBoundary=true, region-edge cells (on the grid border or 4-adjacent to outer-background 0-cells, e.g. a coastline) are added as sources. Source cells get distance 0, +1 per ring; BFS propagates only within valid cells. Invalid cells outside the region output 0; valid cells unreachable by BFS output -1. Use cases: an ocean (with inner islands) yields distance to island shores by default (near=shallow, far=deep); a solid island/land needs includeOuterBoundary=true to get distance to the outer coastline (near=coast, far=inland).",
+  "icon": "深色背景上一片区域内部有一个 0 洞，从洞的边界向区域内部扩散的同心等距波纹环，体现到内部边界的距离场，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["field", "scalar", "distance", "bfs", "inner", "boundary", "coast", "grid", "scenealg"],
+  "tag_labels": ["场", "标量", "距离", "BFS", "内部", "边界", "海岸", "网格", "场景算法"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "access": "item",
+      "label": "输入区域",
+      "description": "0/1（或多值）区网格；非零格为有效格，BFS 只在有效格内传播。",
+      "description-en": "0/1 (or multi-valued) region grid; non-zero cells are valid, BFS propagates only within valid cells."
+    },
+    {
+      "name": "includeOuterBoundary",
+      "type": "bool",
+      "default": false,
+      "access": "item",
+      "label": "包含外边界",
+      "description": "是否把区域外缘（网格边缘或邻接外部背景 0 格的有效格，如海岸线）也作为距离源。默认 false（只到内部洞边界）。海洋分浅/深海用 false；岛屿分海岸线/内陆用 true。",
+      "description-en": "Whether to also use the region's outer edge (cells on the grid border or 4-adjacent to outer-background 0-cells, e.g. a coastline) as distance sources. Default false (inner holes only). Use false for ocean shallow/deep; use true for island coast/inland."
+    },
+    {
+      "name": "connectivity",
+      "type": "number",
+      "default": 4,
+      "label": "邻接方式",
+      "description": "BFS 邻接：4=上下左右，8=含对角。默认 4。",
+      "description-en": "BFS neighbor relation: 4 = orthogonal, 8 = with diagonals. Default 4."
+    },
+    {
+      "name": "normalize",
+      "type": "bool",
+      "default": false,
+      "label": "归一化",
+      "description": "true 时把可达有效格距离线性归一化到 [0,1]。无效格仍 0，不可达仍 -1。",
+      "description-en": "When true, linearly normalize reachable valid cells' distances to [0,1]. Invalid cells stay 0, unreachable stay -1."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "field",
+      "type": "grid",
+      "access": "item",
+      "label": "距离场",
+      "description": "与输入同形状的距离场（number[][]）：源格=0，逐层+1；region 外无效格=0；region 内 BFS 不可达的有效格=-1。normalize=true 时可达距离归一化到 [0,1]。这是连续标量场而非 0/1 掩码。",
+      "description-en": "A distance field (number[][]) matching the input shape: source cells = 0, +1 per ring; invalid cells outside the region = 0; valid cells inside the region unreachable by BFS = -1. With normalize=true, reachable distances are normalized to [0,1]. This is a continuous scalar field, not a 0/1 mask."
+    }
+  ]
+}

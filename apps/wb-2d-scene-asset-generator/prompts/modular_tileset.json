@@ -1,0 +1,8 @@
+{
+  "id": "modular_tileset",
+  "name": "modular_tileset",
+  "tag": "four_way_seamless",
+  "template": "## 任务\n生成一套**模块化拼接 tile**，用于构建可对齐拼接的结构（如道路、路沿、墙、桥、轨道、路口、门、建筑边缘等）。\n\n## tile 信息\n- **画风 (style)**: [style]\n- **视角协议 (view)**: [view]（top_down 俯视 / three_quarter 斜俯视 / isometric 等距）\n- **tile 尺寸 (tileSize)**: [tileSize]×[tileSize]\n- **结构描述 (description)**: [description]\n\n## ⚠️ 路由约束（必须严格遵守）\n```\n1. **边缘对齐**：每块 tile 的内容严格对齐到 tile 边界与所声明的方向，相邻 tile 拼接处连续无错位。\n2. **无透视灭点**：采用正交相机，[view] 对应的平面，不出现透视灭点。\n3. **变体齐全**：按需要提供 straight（直段）、corner（拐角）、t-junction（三叉）、cross（十字）、endcap（端头）、empty（空白）等对齐变体。\n4. **禁止独立 prop**：不得把独特地标或随机散落道具烘焙进每一块 tile。\n5. **结构专用**：tile 表达道路/墙/桥/路口等可拼接结构，而非大面积无语义地表材质。\n```\n\n## 风格与视角\n- **画风**：严格按 [style] 表现结构的材质、配色与质感基调。\n- **视角**：采用 [view] 对应的正交平面，所有变体共享同一视角与像素颗粒度。\n- **尺寸锁定**：每块 tile 严格符合 [tileSize]×[tileSize]，边缘可与同尺寸 tile 精确衔接。\n\n## 输出要求\n生成一套 [style] 风格、[view] 视角、[tileSize]×[tileSize] 的模块化拼接 tile，严格符合 [description]。\n\n**核心特征必须保持一致**：\n- 边缘严格对齐、相邻可拼接 ✓\n- 正交视角、无透视灭点 ✓\n- 提供必要的拼接变体（直/角/三叉/十字等）✓\n- 不烘焙独立地标或随机道具 ✓\n- 画风/视角/尺寸严格符合 [style] / [view] / [tileSize] ✓",
+  "vars": ["style", "view", "tileSize", "description"],
+  "createdAt": 1782000000002
+}

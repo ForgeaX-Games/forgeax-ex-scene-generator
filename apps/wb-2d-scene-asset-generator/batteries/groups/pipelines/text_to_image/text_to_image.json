@@ -1,0 +1,365 @@
+{
+  "id": "group_1781668004242_jdwag",
+  "name": "text to image",
+  "nameEn": "text to image",
+  "nodes": [
+    {
+      "id": "node-1781665714978-8mp19",
+      "opId": "text_panel",
+      "name": "node-1781665714978-8mp19",
+      "position": {
+        "x": -559.2247624309338,
+        "y": 149.79701119821038
+      },
+      "params": {
+        "text": "帮我生成一棵宽高比为1：4左右、纯色背景与本体区分明显的、2d正45度俯视角、的高大的绿色松树，像素风格"
+      }
+    },
+    {
+      "id": "node-1781665714978-b4v5o",
+      "opId": "image_gen",
+      "name": "node-1781665714978-b4v5o",
+      "position": {
+        "x": -314.9290623067967,
+        "y": 160.30874221175753
+      },
+      "params": {
+        "_gen_image": "{\"alias\":\"ai-1-4-2d-45-node-1781665714978-b4v5o-mqhhybgt.jpg\",\"blobId\":\"434fef76875bcb2045545615fea420de0f400a08e7b51383e3215ce5c3d20a94\"}",
+        "_gen_error": ""
+      }
+    },
+    {
+      "id": "node-1781665714978-dkf1r",
+      "opId": "image_remove_bg",
+      "name": "node-1781665714978-dkf1r",
+      "position": {
+        "x": -61.348171557837986,
+        "y": 161.61949881619364
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781665714978-qdhx8",
+      "opId": "number_const",
+      "name": "node-1781665714978-qdhx8",
+      "position": {
+        "x": -61.348171557837986,
+        "y": 464.28670244986074
+      },
+      "params": {
+        "value": 13
+      }
+    },
+    {
+      "id": "node-1781665714978-2u9c7",
+      "opId": "image_pixel_fix",
+      "name": "node-1781665714978-2u9c7",
+      "position": {
+        "x": 172.72317260988405,
+        "y": 160.01873054229452
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781665714978-xhaum",
+      "opId": "image_pixel_scale",
+      "name": "node-1781665714978-xhaum",
+      "position": {
+        "x": 393.70900487299525,
+        "y": 158.54266079861486
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781665714978-78mfo",
+      "opId": "number_const",
+      "name": "node-1781665714978-78mfo",
+      "position": {
+        "x": 385.40113385159464,
+        "y": 467.40549252818107
+      },
+      "params": {
+        "value": 32
+      }
+    },
+    {
+      "id": "node-1781665714978-vdtod",
+      "opId": "number_const",
+      "name": "node-1781665714978-vdtod",
+      "position": {
+        "x": 385.40113385159464,
+        "y": 534.1654645691629
+      },
+      "params": {
+        "value": 128,
+        "min": 0,
+        "max": 128,
+        "precision": 0
+      }
+    },
+    {
+      "id": "node-1781665714978-xr64q",
+      "opId": "image_output",
+      "name": "node-1781665714978-xr64q",
+      "position": {
+        "x": 872.9939537398484,
+        "y": 160.7149607862524
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781665929666",
+      "opId": "toggle",
+      "name": "node-1781665929666",
+      "position": {
+        "x": 172.72317260988405,
+        "y": 441.1438922995924
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781666034706",
+      "opId": "text_panel",
+      "name": "node-1781666034706",
+      "position": {
+        "x": 872.9939537398484,
+        "y": 302.9188205030049
+      },
+      "params": {
+        "text": "一棵松树"
+      }
+    },
+    {
+      "id": "node-1781667094947",
+      "opId": "image_despeckle",
+      "name": "node-1781667094947",
+      "position": {
+        "x": 628.7162575582255,
+        "y": 163.54302726221158
+      },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-node-1781665714978-8mp19-output-node-1781665714978-b4v5o-prompt",
+      "source": {
+        "nodeId": "node-1781665714978-8mp19",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-b4v5o",
+        "port": "prompt"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-b4v5o-image-node-1781665714978-dkf1r-image",
+      "source": {
+        "nodeId": "node-1781665714978-b4v5o",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-dkf1r",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-dkf1r-image-node-1781665714978-2u9c7-image",
+      "source": {
+        "nodeId": "node-1781665714978-dkf1r",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-2u9c7",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-2u9c7-image-node-1781665714978-xhaum-image",
+      "source": {
+        "nodeId": "node-1781665714978-2u9c7",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-xhaum",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-78mfo-value-node-1781665714978-xhaum-width",
+      "source": {
+        "nodeId": "node-1781665714978-78mfo",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-xhaum",
+        "port": "width"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-vdtod-value-node-1781665714978-xhaum-height",
+      "source": {
+        "nodeId": "node-1781665714978-vdtod",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-xhaum",
+        "port": "height"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-qdhx8-value-node-1781665714978-dkf1r-lab_tolerance",
+      "source": {
+        "nodeId": "node-1781665714978-qdhx8",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-dkf1r",
+        "port": "lab_tolerance"
+      }
+    },
+    {
+      "id": "e-node-1781665929666-value-node-1781665714978-xhaum-lock_aspect",
+      "source": {
+        "nodeId": "node-1781665929666",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-xhaum",
+        "port": "lock_aspect"
+      }
+    },
+    {
+      "id": "e-node-1781666034706-output-node-1781665714978-xr64q-name",
+      "source": {
+        "nodeId": "node-1781666034706",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-xr64q",
+        "port": "name"
+      }
+    },
+    {
+      "id": "e-node-1781665714978-xhaum-image-node-1781667094947-image",
+      "source": {
+        "nodeId": "node-1781665714978-xhaum",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781667094947",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781667094947-image-node-1781665714978-xr64q-image",
+      "source": {
+        "nodeId": "node-1781667094947",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781665714978-xr64q",
+        "port": "image"
+      }
+    }
+  ],
+  "position": {
+    "x": 240.65096791503905,
+    "y": 277.03875033044477
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781665714978-b4v5o",
+      "sourcePortName": "image"
+    },
+    {
+      "portName": "in_1",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-dkf1r",
+      "sourcePortName": "bg_grow_tolerance"
+    },
+    {
+      "portName": "in_2",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-dkf1r",
+      "sourcePortName": "sample_points"
+    },
+    {
+      "portName": "in_3",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-dkf1r",
+      "sourcePortName": "crop"
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-2u9c7",
+      "sourcePortName": "k_colors"
+    },
+    {
+      "portName": "in_5",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-2u9c7",
+      "sourcePortName": "square_grid"
+    },
+    {
+      "portName": "in_6",
+      "portType": "string",
+      "access": "list",
+      "sourceNodeId": "node-1781665714978-xr64q",
+      "sourcePortName": "tags"
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781667094947",
+      "sourcePortName": "sat_threshold"
+    },
+    {
+      "portName": "in_8",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781667094947",
+      "sourcePortName": "value_min"
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781667094947",
+      "sourcePortName": "outlier_threshold"
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781667094947",
+      "sourcePortName": "max_speck_size"
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-xr64q",
+      "sourcePortName": "alias"
+    },
+    {
+      "portName": "out_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781665714978-xr64q",
+      "sourcePortName": "ok"
+    }
+  ]
+}

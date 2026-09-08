@@ -1,0 +1,126 @@
+{
+  "id": "alg_region_area_partition",
+  "label": "区域划分",
+  "name-en": "RegionAreaPartition",
+  "description": "在父区域掩码内，根据 point2d 中心点列表与面积权重列表，把可用区域切成若干互不重叠的子区域。配额感知 Voronoi + Lloyd 松弛 + 可选边界后处理。输出 partition[]（每张 0/1 网格），顺序与中心点一致。",
+  "description-en": "Partitions a parent region mask from a point2d center list and area weights. Quota-aware Voronoi + Lloyd relaxation + optional boundary post-processing. Outputs partition[] ordered by input points.",
+  "icon": "俯视分区地图，多个不规则彩色多边形紧密拼接填满矩形区域，每块有不同深浅色，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.1.0",
+  "autoIterate": true,
+  "tags": ["region", "partition", "zone", "layout", "voronoi", "point2d", "pcg"],
+  "tag_labels": ["区域", "分区", "地块", "布局", "Voronoi", "点", "PCG"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "父区域",
+      "description": "0/1（或多值）父区域掩码；非零像素为可划分区域。",
+      "description-en": "Parent region mask; non-zero cells are partitionable.",
+      "access": "item"
+    },
+    {
+      "name": "points",
+      "type": "point2d",
+      "access": "list",
+      "required": true,
+      "label": "中心点",
+      "description": "point2d 列表，x→列、y→行；每个点对应一个分区中心。",
+      "description-en": "List of point2d centers; x→column, y→row; one zone per point."
+    },
+    {
+      "name": "areas",
+      "type": "number",
+      "access": "list",
+      "label": "面积列表",
+      "description": "各分区面积权重（相对比例，内部归一化），与中心点等长。",
+      "description-en": "Per-zone area weights (relative ratios), same length as points."
+    },
+    {
+      "name": "centers",
+      "type": "array",
+      "label": "中心点数组（兼容）",
+      "description": "兼容：[[row,col],...] 或归一化 [[x,y],...]。优先使用 points 口。",
+      "description-en": "Legacy: coordinate arrays. Prefer points port."
+    },
+    {
+      "name": "positions",
+      "type": "array",
+      "label": "九宫格方位（兼容）",
+      "description": "兼容：方位数组 [1-9,...]。优先使用 points 口。",
+      "description-en": "Legacy: 1-9 grid slot positions. Prefer points port."
+    },
+    {
+      "name": "boundaryStyle",
+      "type": "string",
+      "access": "item",
+      "label": "边界风格",
+      "description": "organic / smooth / rectilinear / voronoi",
+      "description-en": "Boundary style: organic, smooth, rectilinear, or voronoi.",
+      "default": "organic",
+      "options": ["organic", "smooth", "rectilinear", "voronoi"]
+    },
+    {
+      "name": "relaxIterations",
+      "type": "number",
+      "access": "item",
+      "label": "松弛迭代",
+      "description": "Lloyd 松弛迭代次数，推荐 3-8。",
+      "description-en": "Lloyd relaxation iterations; recommended 3-8.",
+      "default": 6
+    },
+    {
+      "name": "smoothIterations",
+      "type": "number",
+      "access": "item",
+      "label": "平滑迭代",
+      "description": "边界平滑 CA 迭代次数（organic/smooth 风格），推荐 3-10。",
+      "description-en": "CA smoothing iterations for organic/smooth styles.",
+      "default": 10
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    },
+    {
+      "name": "stretch",
+      "type": "point2d",
+      "access": "list",
+      "label": "拉伸系数",
+      "description": "各分区形状拉伸系数（x→水平、y→竖直），与中心点等长；1=正圆，>1 沿该轴拉长，范围 0.25-4，缺省补 1。",
+      "description-en": "Per-zone anisotropy (x→horizontal, y→vertical) scale, same length as points; 1=circular, >1 stretches along that axis, clamped to 0.25-4, defaults to 1."
+    },
+    {
+      "name": "edgeNoise",
+      "type": "number",
+      "access": "item",
+      "label": "边界扰动",
+      "description": "低频噪声扰动幅度（像素），让分区边界自然蜿蜒、减少多区在同一点汇聚的生硬感；0 关闭。",
+      "description-en": "Low-frequency boundary warp amplitude in pixels; adds natural meander and reduces sharp multi-way vertices. 0 disables it.",
+      "default": 2.5
+    }
+  ],
+  "outputs": [
+    {
+      "name": "partition",
+      "type": "grid",
+      "access": "list",
+      "label": "分区列表",
+      "description": "每个分区一张 0/1 网格，顺序与中心点一致。",
+      "description-en": "One 0/1 grid per zone, ordered by center points."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "分区数",
+      "description": "实际产出的分区数量。",
+      "description-en": "Number of zones produced."
+    }
+  ]
+}

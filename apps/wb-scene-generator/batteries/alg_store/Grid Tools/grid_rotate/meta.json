@@ -1,0 +1,55 @@
+{
+  "id": "grid_rotate",
+  "label": "网格旋转",
+  "description": "将二维网格按 90°/180°/270° 顺时针旋转",
+  "description-en": "Rotate a 2D grid by 90°, 180°, or 270° clockwise.",
+  "icon": "一个方格网格上叠加一个弯曲的顺时针旋转箭头，扁平插画风格，简洁小图标，主色2种",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "basic",
+    "grid",
+    "rotate",
+    "transform"
+  ],
+  "tag_labels": [
+    "基础",
+    "网格",
+    "旋转",
+    "变换"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "待旋转的二维网格",
+      "description-en": "Input 2D grid to rotate."
+    },
+    {
+      "name": "angle",
+      "type": "string",
+      "label": "旋转角度",
+      "default": "90",
+      "options": [
+        "90",
+        "180",
+        "270"
+      ],
+      "description": "顺时针旋转角度：90°、180°、270°",
+      "description-en": "Clockwise rotation angle: 90, 180, or 270 degrees."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "旋转网格",
+      "description": "旋转后的二维网格",
+      "description-en": "Rotated 2D grid."
+    }
+  ],
+  "alg_tag": [
+    "旋转指定网格"
+  ]
+}

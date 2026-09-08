@@ -1,0 +1,16 @@
+{
+  "id": "extract_plane",
+  "label": "提取平面",
+  "name-en": "ExtractPlane",
+  "description": "Extract or construct a child-local Plane in metres.",
+  "version": "1.0.0",
+  "tags": ["scene", "spatial", "plane"],
+  "inputs": [
+    { "name": "width", "type": "number", "access": "item", "default": 600 },
+    { "name": "height", "type": "number", "access": "item", "default": 450 },
+    { "name": "x", "type": "number", "access": "item", "default": 0 },
+    { "name": "y", "type": "number", "access": "item", "default": 0 },
+    { "name": "plane", "type": "any", "access": "item" }
+  ],
+  "outputs": [{ "name": "plane", "type": "any", "access": "item" }]
+}

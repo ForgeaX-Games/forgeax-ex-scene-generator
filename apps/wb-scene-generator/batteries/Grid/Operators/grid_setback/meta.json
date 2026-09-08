@@ -1,0 +1,57 @@
+{
+  "id": "grid_setback",
+  "label": "随机退线",
+  "name-en": "Setback",
+  "description": "对输入网格随机选取0~4条边进行退线处理，输出退线后的网格。",
+  "description-en": "Randomly selects 0–4 edges on the input grid and applies a random setback, outputting the processed grid.",
+  "icon": "一个矩形网格内部四边各有不等宽的阴影退让区域被清除，留出内缩边框，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.1.1",
+  "tags": ["grid", "setback", "inset", "procedural"],
+  "tag_labels": ["网格", "退线", "内缩", "程序生成"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "待退线处理的网格；多网格批处理由 dispatcher fanout 处理",
+      "description-en": "Grid to apply setback to; multi-grid batching is handled by the dispatcher fanout."
+    },
+    {
+      "name": "variation",
+      "type": "number",
+      "access": "item",
+      "required": false,
+      "default": 0,
+      "label": "逐网格变化量",
+      "description": "可选的逐网格变化量，与 seed 叠加；接入 seed_control 或一个数字列表即可让批处理中每张网格得到不同退线。默认 0",
+      "description-en": "Optional per-grid variation, added to seed; wire in seed_control or a list of numbers so each grid in a batch gets a different setback. Defaults to 0."
+    },
+    {
+      "name": "intensity",
+      "type": "number",
+      "label": "退线强度",
+      "default": 0.5,
+      "description": "退线强度（0~1）；0 保持原始概率，1 大幅提升多边数和大退线量的概率",
+      "description-en": "Setback intensity (0–1); 0 keeps original probabilities, 1 heavily skews toward more edges and larger setback amounts."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子（整数）；0 表示使用当前时间戳（每次结果不同），非零值产生固定结果",
+      "description-en": "Random seed (integer); 0 uses the current timestamp for a different result each run; any non-zero value produces a fixed output."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "退线网格",
+      "description": "退线处理后的网格",
+      "description-en": "Grid after setback processing."
+    }
+  ]
+}

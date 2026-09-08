@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "rootDir": "..",
+    "outDir": "dist",
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "declaration": false
+  },
+  "include": [
+    "src/**/*",
+    "../vendor/shared/types/scene/**/*.ts"
+  ],
+  "exclude": [
+    "../vendor/**/*.test.ts",
+    "dist"
+  ]
+}

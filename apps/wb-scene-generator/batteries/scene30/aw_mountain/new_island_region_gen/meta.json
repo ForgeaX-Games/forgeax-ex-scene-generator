@@ -1,0 +1,87 @@
+{
+  "id": "new_island_region_gen",
+  "label": "指定锚点岛屿生成",
+  "name-en": "NewIslandRegionGen",
+  "description": "在输入网格（可放置区域掩码）内，把传入的 point 列表当作各岛锚点（每点一岛），用 island_poisson_gen 的内部「子种子散布 + 竞争 BFS 膨胀 + 去碎片 + 多数投票平滑」算法生成有机形状的岛屿区域。与 island_poisson_gen 的唯一差异是锚点由 point 列表指定而非泊松盘随机采样，因此岛屿出现在指定位置。",
+  "description-en": "Within the input grid (valid placement mask), treat the incoming point list as per-island anchors (one island per point) and grow organic island regions using island_poisson_gen's internal algorithm (sub-seed scatter + competitive BFS growth + small-fragment cleanup + majority-vote smoothing). The only difference from island_poisson_gen is that anchors come from the point list instead of Poisson-disk sampling, so islands appear at the specified positions.",
+  "icon": "俯视视角，深蓝水面中按几个亮色定位点散布出绿色有机岛屿，每个定位点对应一座岛，岛屿边缘圆润多叶，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["island", "anchor", "points", "bfs", "growth", "archipelago", "water", "terrain", "pcg", "organic"],
+  "tag_labels": ["岛屿", "锚点", "指定点", "BFS膨胀", "群岛", "水面", "地形", "PCG", "有机形状"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "区域网格",
+      "description": "可生成岛屿的区域掩码（非零格=可放置），网格尺寸决定输出大小。岛屿只在掩码内膨胀生长。",
+      "description-en": "Mask of valid island placement area (non-zero = valid). Grid size determines output size; islands only grow within the mask."
+    },
+    {
+      "name": "points",
+      "type": "point2d",
+      "access": "list",
+      "required": true,
+      "label": "岛屿锚点",
+      "description": "各岛屿中心锚点列表（x→列、y→行），每个点生成一座岛屿（islandId = 序号+1）。越界点会被忽略。",
+      "description-en": "List of island center anchors (x→column, y→row); each point yields one island (islandId = index+1). Out-of-bounds points are ignored."
+    },
+    {
+      "name": "islandSizes",
+      "type": "number",
+      "access": "list",
+      "required": false,
+      "label": "岛屿大小列表",
+      "description": "各岛屿膨胀半径（格）列表，与 points 一一对应；列表长度不足时复用最后一个值。建议 6~20，默认 [12]。",
+      "description-en": "Per-island expansion radius (cells), aligned with points; if shorter than points, the last value is reused. Recommended 6-20. Default [12].",
+      "default": [12]
+    },
+    {
+      "name": "radiusVar",
+      "type": "number",
+      "access": "item",
+      "required": false,
+      "label": "大小随机差异",
+      "description": "各岛屿子种子大小的随机差异（0=最均匀，0.8=差异最大），默认 0.3。",
+      "description-en": "Per-island sub-seed size variance. 0=uniform, 0.8=max variety. Default 0.3.",
+      "default": 0.3
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "required": false,
+      "label": "随机种子",
+      "description": "随机种子，0=每次不同，默认 0。",
+      "description-en": "Random seed; 0 = random each time. Default 0.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "islandGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "岛屿网格",
+      "description": "陆地二值掩码：1=岛屿/陆地，0=水面。所有岛屿合并为一张掩码。",
+      "description-en": "Land binary mask: 1=island/land, 0=water. All islands merged into one mask."
+    },
+    {
+      "name": "waterGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "水面网格",
+      "description": "水面二值掩码：1=水面，0=岛屿/陆地（= 1 - islandGrid）。",
+      "description-en": "Water binary mask: 1=water, 0=island/land (= 1 - islandGrid)."
+    },
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "岛屿 ID 网格",
+      "description": "各独立岛屿的 1-based ID（与 points 序号对应），水面=0，可用于区分不同岛屿。",
+      "description-en": "Per-island 1-based ID grid (matching point index). 0=water; use to distinguish islands."
+    }
+  ]
+}

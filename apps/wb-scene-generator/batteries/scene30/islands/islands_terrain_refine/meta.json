@@ -1,0 +1,75 @@
+{
+  "id": "islands_terrain_refine",
+  "label": "岛屿地形细化",
+  "description": "平滑原始地形，并补出泥地和悬崖等细节层。",
+  "description-en": "Smooths the raw terrain and adds mud and cliff detail layers.",
+  "icon": "岛屿地形边缘被平滑并出现泥地与悬崖区域细节，棕绿蓝配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["islands", "refine", "mud", "cliff", "terrain"],
+  "tag_labels": ["岛屿", "细化", "泥地", "悬崖", "地形"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入地形",
+      "description": "基础群系网格。",
+      "description-en": "Base biome terrain grid."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，控制泥地和悬崖扰动。",
+      "description-en": "Random seed controlling mud and cliff variation.",
+      "default": 0
+    },
+    {
+      "name": "smoothPasses",
+      "type": "number",
+      "label": "平滑次数",
+      "description": "多数表决平滑的迭代次数。",
+      "description-en": "Iteration count for majority-vote smoothing.",
+      "default": 2
+    },
+    {
+      "name": "mudRadius",
+      "type": "number",
+      "label": "泥地区半径",
+      "description": "搜索邻近水域的半径。",
+      "description-en": "Radius used to search nearby water for mud.",
+      "default": 2
+    },
+    {
+      "name": "mudChance",
+      "type": "number",
+      "label": "泥地概率",
+      "description": "草地或沙滩变成泥地的概率。",
+      "description-en": "Probability that grass or sand turns into mud.",
+      "default": 0.6
+    },
+    {
+      "name": "cliffChance",
+      "type": "number",
+      "label": "悬崖转换概率",
+      "description": "山地格转换为悬崖的概率。",
+      "description-en": "Probability that mountain cells become cliff.",
+      "default": 0.65
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "细化地形",
+      "description": "加入泥地和悬崖区域后的细化地形。",
+      "description-en": "Refined terrain with mud and cliff regions."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "细化地形对应的名称清单。",
+      "description-en": "Name list for the refined terrain."
+    }
+  ]
+}

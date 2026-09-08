@@ -1,0 +1,51 @@
+{
+  "id": "alg_region_components",
+  "label": "连通分量",
+  "name-en": "RegionComponents",
+  "description": "把输入区域按 4-邻接拆成独立连通分量，每个分量输出一张 0/1 网格。",
+  "description-en": "Splits a region into 4-connected components; each component is emitted as its own 0/1 grid.",
+  "icon": "深色背景上一张方形网格被切成几块互不相连的彩色小区，每块自成一组，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "region",
+    "partition",
+    "components",
+    "connectivity",
+    "split"
+  ],
+  "tag_labels": [
+    "区域",
+    "分块",
+    "连通分量",
+    "连通性",
+    "拆分"
+  ],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1 区域 grid。",
+      "description-en": "0/1 region grid."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "partition",
+      "type": "grid",
+      "label": "分量列表",
+      "description": "每个 4-邻接连通分量输出一张 0/1 网格；列表按 BFS 发现顺序排列。",
+      "description-en": "One 0/1 grid per 4-connected component; list ordered by BFS discovery.",
+      "access": "list"
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "分量数",
+      "description": "拆出的分量数量。",
+      "description-en": "Number of components."
+    }
+  ]
+}

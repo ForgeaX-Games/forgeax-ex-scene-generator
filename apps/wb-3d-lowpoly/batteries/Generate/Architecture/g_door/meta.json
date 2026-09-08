@@ -1,0 +1,41 @@
+{
+  "id": "g_door",
+  "label": "门",
+  "name-en": "GDoor",
+  "description": "追加 door_frame(...) + door_leaf(...) 两条 shape：门框 + 独立门扇。当 prompt 提到 门 / 门扇 / 门框 / door 时使用。摆放契约：门框以「所在墙」part 为父（g_joint_fixed），origin=[x,0,0]，x 取自该墙 openings 那一项；门扇**不要与门框同心**，须放到本电池返回的 leaf_origin/leaf_origins（门扇局部原点在铰链边），可以门框 part 为父。**默认全用 g_joint_fixed 连门扇（推荐）**：低模建筑通常不需要真会开的门。若用 g_joint_revolute 做可开门，门扇与门框在休止位的 AABB 交叠只会报 `aabb_overlap` **warning**（不 fail valid）；用 `allow_pairs` 白名单掉合理交叠对（如 \"door1:door1_leaf\"）即可。",
+  "description-en": "Append `door_frame(...)` + `door_leaf(...)` — frame plus a separate leaf shape. Use for door. Placement contract: parent the frame to its host WALL part (g_joint_fixed) with origin=[x,0,0] from that wall's `openings` entry; do NOT place the leaf concentric with the frame — put it at the returned leaf_origin/leaf_origins (the leaf's local origin is at the hinge edge), parented to the frame part. **Default to g_joint_fixed for the leaf (recommended)**: static low-poly buildings rarely need a truly swinging door. If you use g_joint_revolute, rest-pose leaf/frame AABB overlap emits `aabb_overlap` **warning** only (does not fail valid); whitelist intentional pairs via g_geometry_qc allow_pairs (e.g. \"door1:door1_leaf\").",
+  "version": "1.3.0",
+  "autoIterate": true,
+  "tags": ["geometry", "architecture", "door", "opening", "cad"],
+  "tag_labels": ["几何", "建筑", "门", "开口", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry；缺省视为空", "description-en": "Upstream Geometry; empty when absent." },
+    { "name": "width", "type": "number", "label": "门洞宽", "default": 0.9, "description": "门洞宽（X，米）", "description-en": "Door opening width along X." },
+    { "name": "height", "type": "number", "label": "门洞高", "default": 2.1, "description": "门洞高（Z，米）", "description-en": "Door opening height along Z." },
+    { "name": "depth", "type": "number", "label": "进深", "default": 0.2, "description": "进深（Y，对齐墙厚）", "description-en": "Depth along Y (matches wall thickness)." },
+    { "name": "frame", "type": "number", "required": false, "label": "门框宽", "default": 0.08, "description": "门框宽度", "description-en": "Door frame width." },
+    { "name": "leaf_thickness", "type": "number", "required": false, "label": "门扇厚", "default": 0.045, "description": "门扇厚（Y，米）", "description-en": "Door leaf thickness along Y." },
+    { "name": "hinge", "type": "string", "required": false, "label": "铰接边", "default": "left", "description": "left / right：门扇转轴落在哪侧（单扇）", "description-en": "left / right: which side carries the hinge axis (single leaf)." },
+    { "name": "leaves", "type": "number", "required": false, "label": "门扇数", "default": 1, "description": "1 单扇 / 2 双扇对开", "description-en": "1 single / 2 double (French) door." },
+    { "name": "style", "type": "string", "required": false, "label": "门扇样式", "default": "flush", "description": "flush 平板 / panel 嵌板 / glazed 上玻璃", "description-en": "flush / panel / glazed." },
+    { "name": "panel_rows", "type": "number", "required": false, "label": "嵌板行", "default": 0, "description": "panel 样式嵌板行数；0=默认", "description-en": "Panel-style recess rows; 0 = default." },
+    { "name": "panel_cols", "type": "number", "required": false, "label": "嵌板列", "default": 0, "description": "panel 样式嵌板列数；0=默认", "description-en": "Panel-style recess columns; 0 = default." },
+    { "name": "transom", "type": "number", "required": false, "label": "亮子高", "default": 0, "description": "门头亮子高度（在门扇上方加横挺，米）；0=无", "description-en": "Transom light height above the leaf; 0 = none." },
+    { "name": "sidelight", "type": "number", "required": false, "label": "侧窗宽", "default": 0, "description": "每侧侧窗宽度（在门洞两侧加竖挺，米）；0=无", "description-en": "Sidelight width per side; 0 = none." },
+    { "name": "openable", "type": "bool", "required": false, "label": "可开", "default": false, "description": "提示生成器用 revolute（可开）而非 fixed（静态）连接门扇。默认 false：低模建筑通常用 fixed；设 true 时门扇/门框休止位交叠只报 warning，可用 allow_pairs 白名单", "description-en": "Hint the generator to join the leaf revolute (openable) vs fixed. Default false: static low-poly buildings usually use fixed; if true, rest-pose leaf/frame overlap is warning-only — whitelist with allow_pairs if intentional." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "门框 id；空 = 自动 door{n}；门扇 id = <id>_leaf", "description-en": "Frame id; empty = auto door{n}; leaf id = <id>_leaf." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 door_frame + door_leaf 后的 Geometry", "description-en": "Geometry after appending frame + leaf." },
+    { "name": "id", "type": "string", "label": "id", "description": "门框 shape id", "description-en": "Door frame shape id." },
+    { "name": "frame_id", "type": "string", "label": "门框 id", "description": "门框 shape id", "description-en": "Door frame shape id." },
+    { "name": "frame_origin", "type": "string", "label": "门框 origin", "description": "门框相对墙洞中心的建议关节 origin JSON [x,y,z]（把门框放进墙洞时用 [openingX,0,0]）", "description-en": "Suggested joint origin JSON [x,y,z] of the frame relative to the wall opening center; place at [openingX,0,0]." },
+    { "name": "leaf_id", "type": "string", "label": "门扇 id", "description": "首个门扇 shape id（独立 shape，供 g_part + g_joint_revolute 使用）", "description-en": "First door leaf shape id (separate shape for g_part + g_joint_revolute)." },
+    { "name": "leaf_ids", "type": "string", "label": "门扇 id 列表", "description": "全部门扇 id（双扇时两条）", "description-en": "All door leaf ids (two for double doors)." },
+    { "name": "leaf_origin", "type": "string", "label": "门扇 origin", "description": "首个门扇相对门框中心的建议关节 origin JSON [x,y,z]（门扇局部原点在铰链边，须落在门挺处，否则戳出框）", "description-en": "Suggested joint origin JSON [x,y,z] of the first leaf relative to the frame center (leaf origin is at the hinge edge, must sit at the jamb)." },
+    { "name": "leaf_origins", "type": "string", "label": "门扇 origin 列表", "description": "全部门扇的建议关节 origin JSON 数组（与 leaf_ids 对应）", "description-en": "JSON array of suggested joint origins for all leaves (aligned with leaf_ids)." },
+    { "name": "error", "type": "string", "label": "错误", "description": "非致命错误信息", "description-en": "Non-fatal error string." }
+  ],
+  "projectTypes": ["asset3d"]
+}

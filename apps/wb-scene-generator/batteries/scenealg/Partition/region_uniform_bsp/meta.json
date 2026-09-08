@@ -1,0 +1,87 @@
+{
+  "id": "alg_region_uniform_bsp",
+  "label": "BSP均匀切分",
+  "name-en": "RegionUniformBsp",
+  "description": "对区域外接矩形做 BSP 二叉空间剖分递归切分：每次在可切方向上于「全区间均匀」处下刀（切分点在 [base+minSize, end-minSize-pathWidth] 内均匀采样），两子区之间留出 pathWidth 格作为通道。每个 BSP 叶子矩形输出一张独立 0/1 网格（按生成序：深度优先、先 a 后 b），叶子之间的通道与被裁掉的边角合并成一张 gap 网格。可横切条件 h≥minSize*2+pathWidth、可纵切条件 w≥minSize*2+pathWidth；当两向都不可切或达到 maxDepth 时该矩形作为叶子。",
+  "description-en": "Recursively partitions a region's bounding box via BSP (Binary Space Partition), cutting at a uniformly-sampled position across the whole splittable range (the cut lands in [base+minSize, end-minSize-pathWidth]) and leaving a pathWidth-wide channel between the two halves. Each BSP leaf rectangle is emitted as its own 0/1 grid (in generation order: depth-first, a-before-b); the inter-leaf channels and clipped corners are merged into one gap grid. Horizontal cut requires h≥minSize*2+pathWidth, vertical cut requires w≥minSize*2+pathWidth; a rectangle becomes a leaf when neither cut is possible or maxDepth is reached.",
+  "icon": "深色背景上一个矩形被两到三刀递归切成大小不一的小矩形，刀缝之间留出细通道，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "partition", "bsp", "uniform", "subdivide", "pcg"],
+  "tag_labels": ["区域", "分区", "BSP", "均匀", "子分", "PCG"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1（或多值）约束区网格；叶子只落在非零有效格内。",
+      "description-en": "0/1 (or multi-valued) constraint region grid; leaves fall only on non-zero valid cells.",
+      "access": "item"
+    },
+    {
+      "name": "minSize",
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "precision": 0,
+      "label": "最小边长",
+      "description": "叶子在任一方向上的最小边长（格），最小 1。决定可切阈值：某方向尺寸 ≥ minSize*2+pathWidth 才可在该方向切分。",
+      "description-en": "Minimum leaf edge length along either axis (in cells), minimum 1. Sets the split threshold: an axis is splittable only when its size ≥ minSize*2+pathWidth."
+    },
+    {
+      "name": "pathWidth",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "precision": 0,
+      "label": "通道宽度",
+      "description": "两子区之间留出的通道宽度（格），最小 0。通道格归入 gap 输出，不属于任何叶子。",
+      "description-en": "Channel width (in cells) left between the two halves of each split, minimum 0. Channel cells go to the gap output and belong to no leaf."
+    },
+    {
+      "name": "maxDepth",
+      "type": "number",
+      "default": 6,
+      "min": 0,
+      "precision": 0,
+      "label": "最大深度",
+      "description": "BSP 递归最大深度；达到该深度的矩形直接作为叶子，不再切分。",
+      "description-en": "Maximum BSP recursion depth; a rectangle reaching this depth becomes a leaf and is not split further."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子（决定每刀切向与切分点），0 使用当前时间。",
+      "description-en": "Random seed (drives each cut's direction and position); 0 uses the current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "partition",
+      "type": "grid",
+      "access": "list",
+      "label": "叶子列表",
+      "description": "每个 BSP 叶子矩形一张 0/1 网格，按生成序（深度优先、先 a 后 b）；被掩码截没的空叶子自动剔除。",
+      "description-en": "One 0/1 grid per BSP leaf rectangle, in generation order (depth-first, a-before-b); empty leaves clipped away by the mask are dropped."
+    },
+    {
+      "name": "gap",
+      "type": "grid",
+      "access": "item",
+      "label": "通道网格",
+      "description": "所有叶子之间的 pathWidth 通道（含被叶子裁掉的边角）合并成的一张 0/1 网格，与输入同形状。",
+      "description-en": "A single 0/1 grid merging all inter-leaf pathWidth channels (and clipped corners); same shape as the input."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "叶子数",
+      "description": "实际切出的非空叶子数量。",
+      "description-en": "Number of non-empty leaves produced."
+    }
+  ]
+}

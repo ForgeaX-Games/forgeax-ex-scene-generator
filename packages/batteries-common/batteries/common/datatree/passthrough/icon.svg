@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Passthrough battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M5 12h11" fill="none" stroke="#95aa9f" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M14.5 8.5 19 12l-4.5 3.5" fill="none" stroke="#b7ff5a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

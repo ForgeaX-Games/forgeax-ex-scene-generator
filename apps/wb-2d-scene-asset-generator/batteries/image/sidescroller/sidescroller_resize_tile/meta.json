@@ -1,0 +1,26 @@
+{
+  "id": "sidescroller_resize_tile",
+  "label": "横版标准尺寸",
+  "name-en": "SidescrollerResize",
+  "description": "把横版背景标准化为逻辑 tile 尺寸，默认 640x360。",
+  "description-en": "Resize a side-scroller background to the logical tile size, defaulting to 640x360.",
+  "version": "1.0.0",
+  "tags": ["image", "sidescroller", "resize", "tile"],
+  "tag_labels": ["图像", "横版", "缩放", "瓦片"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "image", "type": "image", "access": "item", "required": true, "label": "图像" },
+    { "name": "width", "type": "number", "access": "item", "label": "目标宽度", "default": 640, "min": 1, "max": 8192 },
+    { "name": "height", "type": "number", "access": "item", "label": "目标高度", "default": 360, "min": 1, "max": 8192 }
+  ],
+  "outputs": [
+    { "name": "image", "type": "image", "access": "item", "label": "缩放后图像" },
+    { "name": "width", "type": "number", "access": "item", "label": "宽度" },
+    { "name": "height", "type": "number", "access": "item", "label": "高度" },
+    { "name": "error", "type": "string", "access": "item", "label": "错误信息" }
+  ],
+  "params": [
+    { "name": "suffix", "type": "string", "default": "_tile640x360", "label": "alias 后缀" }
+  ],
+  "alg_tag": ["横版背景", "标准化尺寸"]
+}

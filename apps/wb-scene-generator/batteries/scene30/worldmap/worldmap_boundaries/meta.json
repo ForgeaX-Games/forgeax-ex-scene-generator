@@ -1,0 +1,20 @@
+{
+  "id": "worldmap_boundaries",
+  "label": "世界地图边界",
+  "description": "从国家网格提取国界与海岸线，形成独立边界覆盖层。",
+  "description-en": "Extracts country borders and coastlines from the country grid as an overlay layer.",
+  "icon": "地图上黑色国界线与浅色海岸线勾勒大陆。",
+  "version": "1.0.0",
+  "tags": ["worldmap", "boundary", "border", "coast", "edge"],
+  "tag_labels": ["世界地图", "边界", "国界", "海岸", "边缘"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "countryGrid", "type": "grid", "label": "国家网格" },
+    { "name": "includeCoast", "type": "bool", "label": "包含海岸线", "default": true }
+  ],
+  "outputs": [
+    { "name": "boundaryGrid", "type": "grid", "label": "边界网格" },
+    { "name": "outputGrid", "type": "grid", "label": "边界网格" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "id": "building_door",
+  "label": "建筑开门",
+  "description": "在墙体网格中随机打开指定数量和宽度的门洞，门洞仅在有效墙段（两侧具有贯通空间）上生成。",
+  "description-en": "Randomly punches door openings of specified count and width into a wall grid; openings are only placed on valid wall segments that connect two open spaces.",
+  "icon": "扁平插画风格小图标。建筑俯视平面图，深色矩形墙体轮廓上有2~3个缺口表示门洞，门洞处用亮色（米白或浅黄）填充，形象表达开门动作。主色深灰墙体配米白门洞，简洁现代。",
+  "version": "1.0.0",
+  "tags": [
+    "building",
+    "door",
+    "wall",
+    "opening",
+    "room",
+    "structure"
+  ],
+  "tag_labels": [
+    "建筑",
+    "门",
+    "墙体",
+    "开口",
+    "房间",
+    "结构"
+  ],
+  "inputs": [
+    {
+      "name": "gridList",
+      "type": "array",
+      "label": "墙体网格列表",
+      "description": "墙体掩码网格列表，每个网格的非零值视为墙体",
+      "description-en": "List of wall mask grids; non-zero values in each grid are treated as wall cells."
+    },
+    {
+      "name": "doorCount",
+      "type": "number",
+      "label": "开门数量",
+      "description": "要打开的门洞总数",
+      "description-en": "Total number of door openings to place.",
+      "default": 1
+    },
+    {
+      "name": "doorWidth",
+      "type": "number",
+      "label": "门宽（格）",
+      "description": "每个门洞沿墙方向的宽度（格子数），最小为1",
+      "description-en": "Width of each door opening in cells along the wall direction; minimum is 1.",
+      "default": 2
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间戳",
+      "description-en": "Random seed; 0 uses the current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "开门后墙体列表",
+      "description": "与输入列表一一对应，每个网格中门洞处=0，其余保持原值",
+      "description-en": "List of grids corresponding to input; door opening cells=0, all others retain original values."
+    },
+    {
+      "name": "doorGridList",
+      "type": "array",
+      "label": "门列表",
+      "description": "与输入列表一一对应，每个网格中门洞处=1，其余为0",
+      "description-en": "List of grids corresponding to input; door opening cells=1, all other cells=0."
+    }
+  ],
+  "alg_tag": []
+}

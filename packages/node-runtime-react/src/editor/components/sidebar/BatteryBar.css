@@ -1,0 +1,1364 @@
+/* 💡 电池选择栏样式（竖向版）
+ * 顶层结构（develop 模式）：
+ *   .battery-bar.battery-bar--vertical
+ *     └── .bb-scroller                        整列纵向滚动容器
+ *           └── .bb-big-section               大标签（手风琴一级）
+ *                 ├── .bb-big-header          大标签头（点击切换展开，draggable 用于排序）
+ *                 └── .bb-small-list          (active 时显示) 小标签列表
+ *                       └── .bb-small-section
+ *                             ├── .bb-small-header
+ *                             │     ├── .bb-small-toggle    点击切换 open
+ *                             │     └── .label-expand-btn   + 号：覆盖层模式
+ *                             └── .bb-row-list (open 时显示)
+ *                                   └── .battery-row        电池条目（图标+名称单行）
+ *           └── .bb-expanded-overlay          (+ 号展开时) 绝对定位多列网格
+ *     └── .bb-pin-footer                       图钉页脚：固定在电池栏最底部，独立于可
+ *                                               滚动的 rail 区域，任意分类数量下都可见
+ *     └── .bb-resize-handle                   右侧宽度拖拽把手
+ *
+ * Templates 模式：大标签 rail + 平铺模板卡片（无子目录小标签）；琥珀金强调色见 `.mode-templates`。
+ *
+ * 历史避坑：
+ *   - 覆盖层用 getBoundingClientRect 差值定位（不要 offsetTop+gap 累加，见 bugs/battery-bar-style.md 2026-03-17）
+ *   - 绝不要用 `overflow: hidden` 隐藏滚动条，会裁切 absolute 覆盖层（见 bugs/battery-bar-style.md 2026-04-13）
+ *     需要时改用 `scrollbar-width: none` + `::-webkit-scrollbar { display: none }`
+ *   - 圆形 + 号严禁用字符 content，必须用 ::before/::after CSS 矩形画十字（见 2026-03-10）
+ */
+
+.battery-bar {
+  background: linear-gradient(180deg, rgba(16, 25, 18, 0.96), rgba(9, 14, 11, 0.98));
+  display: flex;
+  flex-direction: column;
+  position: relative;        /* .bb-resize-handle 的定位基准 */
+  flex-shrink: 0;
+}
+
+.battery-bar--vertical {
+  /* 浮在工作区之上：脱离 .main-layout 的 flex 流，宽度 / 开闭都不挤压、不回流右侧画布，
+     因此收起 / 展开 / 拖宽时画布与其中的节点都不会移动。组内视图导航栏靠
+     `--bb-current-width`（本栏实测宽度，见 BatteryBar.tsx）右移到本栏右侧，避免被遮挡。 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 25;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.32);
+  overflow: hidden;          /* 限制内部滚动/覆盖层范围，避免越过电池栏列 */
+}
+
+/* 收起态：只收起右侧电池列表（.bb-scroller 不渲染），左侧大标签栏（rail）保留，
+   整栏宽度收缩到仅容纳 rail（自适应内容宽度）。画布不动，仅导航栏随本栏宽度左移。 */
+.battery-bar--vertical.battery-bar--collapsed {
+  width: auto;
+  min-width: 0;
+}
+
+/* 收起按钮（rail 底部、五角星之上）：沿用图标 rail 按钮的几何，配色走次级文字色。 */
+.bb-rail-button--collapse {
+  color: var(--color-text-secondary);
+}
+.bb-rail-button--collapse:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.10);
+  color: var(--color-text-primary);
+}
+
+/* Develop ⇄ Templates 切换按钮（rail 底部、收起之下、五角星之上）：
+   默认次级文字色；处于 templates 模式时点亮强调色，给出当前模式的视觉反馈。 */
+.bb-rail-button--mode {
+  color: var(--color-text-secondary);
+}
+.bb-rail-button--mode:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.10);
+  color: var(--color-text-primary);
+}
+.bb-rail-button--mode.is-templates {
+  color: var(--color-accent);
+}
+
+/* 图钉页脚：固定在电池栏最底部，独立于可滚动的 rail 区域（不随分类数量被挤出可视区）。
+   宽度随 rail 展开态同步（收起 / 展开或钉住），与上方 rail 列对齐。 */
+.bb-pin-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  transition: width 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 图钉按钮：常驻展开大标签 rail；钉住态点亮强调色。
+   用 .bb-pin-footer 限定作用域把选择器权重提到两个类，才能压过下方 .bb-rail-button
+   的 width:26px（否则同权重时后写的 .bb-rail-button 覆盖胜出，图钉按钮就撑不满页脚
+   宽度、图标居中，跟其余 rail 按钮「展开时撑宽、图标靠左」的行为不一致）。 */
+.bb-pin-footer .bb-rail-button--pin {
+  width: 100%;
+  color: var(--color-text-secondary);
+}
+.bb-pin-footer .bb-rail-button--pin:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.10);
+  color: var(--color-text-primary);
+}
+.bb-pin-footer .bb-rail-button--pin.active {
+  background-color: rgba(var(--color-accent-rgb), 0.16);
+  border-color: rgba(var(--color-accent-rgb), 0.35);
+  color: var(--color-accent);
+}
+
+/* 拖宽时禁用全局选择，避免 mousemove 文本被选中 */
+body.bb-resizing {
+  cursor: col-resize !important;
+  user-select: none;
+}
+
+/* 搜索结果计数行 */
+.search-result-count {
+  padding: 4px 10px;
+  font-size: 10.5px;
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 纵向滚动主容器 ─────────────────────────────────────────────────────── */
+.bb-body {
+  position: relative;        /* 展开态 rail 以此为绝对定位基准，覆盖右侧而不挤压 */
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.bb-big-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 0 0 36px;
+  width: 36px;
+  padding: 4px 3px;
+  gap: 3px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  background: rgba(0, 0, 0, 0.16);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  transition: width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              background-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+  will-change: width;
+}
+
+/* 展开态：脱离文档流叠放在右侧电池栏之上（覆盖而非挤压），
+   原 32px 槽位由占位元素 .bb-big-rail-spacer 保留，右侧 .bb-scroller 宽度恒定。
+   同时补 flex: 0 0 98px（跟 width 保持一致）：钉住态会把 position 改回 relative
+   （见下方 --pinned），届时 nav 重新参与 flex 布局，若不显式声明 flex-basis，
+   会沿用基础 .bb-big-rail 的 flex-basis——flex-basis 优先于 width 参与主轴
+   尺寸计算，nav 实际只挤占收起宽度，.bb-scroller 仍按旧宽度渲染，98px 内容视觉上盖住
+   .bb-scroller，看起来像"钉住后大标签被遮挡"。 */
+.bb-big-rail--expanded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  flex: 0 0 98px;
+  width: 98px;
+  z-index: 30;
+  background: rgba(12, 16, 12, 0.96);
+  box-shadow: 8px 0 18px rgba(0, 0, 0, 0.35);
+}
+
+/* 钉住态：覆盖 --expanded 的绝对定位覆盖层，改为正常文档流中的真实宽度，
+   把 .bb-scroller 正常挤窄而非浮在其上方遮挡内容（配合 BatteryBar.tsx 不渲染 spacer）。 */
+.bb-big-rail--expanded.bb-big-rail--pinned {
+  position: relative;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  z-index: 1;
+  box-shadow: none;
+}
+
+/* 展开态时占据原 rail 槽位，保证右侧内容不发生回流。 */
+.bb-big-rail-spacer {
+  flex: 0 0 36px;
+  width: 36px;
+}
+
+/* rail 分两组：电池组在上（独立滚动），收藏 / 预设组钉在底部并底部对齐。
+   两组之间用一条分隔线区隔，与右侧两个独立滚动视图（电池 / 收藏）一一对应。 */
+.bb-rail-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+
+.bb-rail-scroll-region {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.bb-rail-group--batteries {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-width: none;
+}
+
+.bb-rail-group--batteries::-webkit-scrollbar {
+  display: none;
+}
+
+.bb-rail-scrollbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+.bb-rail-scrollbar__thumb {
+  display: block;
+  width: 100%;
+  border-radius: 999px;
+  background: rgba(var(--color-accent-rgb), 0.9);
+  box-shadow: 0 0 5px rgba(var(--color-accent-rgb), 0.35);
+}
+
+/* 空间不足时与上方电池组一同收缩：min-height:0 解除自动最小高度，否则四个按钮的
+   固定 26px 会挡住收缩，压缩压力全部压在电池组上（大标签被挤成细线，底部按钮却满高）。 */
+.bb-rail-group--collection {
+  flex: 0 1 auto;
+  min-height: 0;
+  margin-top: auto;            /* 把收藏 / 预设按钮推到 rail 底部 */
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bb-rail-button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  padding-left: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              color var(--transition-fast),
+              width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              padding 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bb-big-rail--expanded .bb-rail-button {
+  width: 92px;
+  justify-content: flex-start;
+  padding-left: 5px;
+}
+
+.bb-rail-button-short {
+  flex: 0 0 auto;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.bb-rail-button-rest {
+  min-width: 0;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 140ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bb-big-rail--expanded .bb-rail-button-rest {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.bb-rail-button:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.10);
+  color: var(--color-text-primary);
+}
+
+.bb-rail-button.active {
+  background-color: rgba(var(--color-accent-rgb), 0.16);
+  border-color: rgba(var(--color-accent-rgb), 0.35);
+  color: var(--color-text-primary);
+}
+
+.bb-rail-button.tab-dragging {
+  opacity: 0.35;
+}
+
+.bb-rail-button.tab-drag-over {
+  box-shadow: inset 0 2px 0 0 var(--color-accent);
+}
+
+.bb-rail-button.tab-json { color: #FCA823; }
+.bb-rail-button.tab-json:hover,
+.bb-rail-button.tab-json.active {
+  background-color: rgba(217, 119, 6, 0.16);
+  border-color: rgba(217, 119, 6, 0.35);
+  color: #fcd34d;
+}
+
+.bb-rail-button.tab-common { color: #c084fc; }
+.bb-rail-button.tab-common:hover,
+.bb-rail-button.tab-common.active {
+  background-color: rgba(147, 51, 234, 0.16);
+  border-color: rgba(147, 51, 234, 0.35);
+  color: #d8b4fe;
+}
+
+.bb-rail-button.tab-ai { color: #FC8181; }
+.bb-rail-button.tab-ai:hover,
+.bb-rail-button.tab-ai.active {
+  background-color: rgba(220, 38, 38, 0.16);
+  border-color: rgba(220, 38, 38, 0.35);
+  color: #fca5a5;
+}
+
+.bb-rail-button.tab-special { color: #60a5fa; }
+.bb-rail-button.tab-special:hover,
+.bb-rail-button.tab-special.active {
+  background-color: rgba(37, 99, 235, 0.16);
+  border-color: rgba(37, 99, 235, 0.35);
+  color: #93c5fd;
+}
+
+.bb-rail-button.tab-groups { color: #34d399; }
+.bb-rail-button.tab-groups:hover,
+.bb-rail-button.tab-groups.active {
+  background-color: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+
+/* Prompts 大标签：与 GROUPS 同款品牌色样式，配色用青色（cyan）以区分。 */
+.bb-rail-button.tab-prompt { color: #22d3ee; }
+.bb-rail-button.tab-prompt:hover,
+.bb-rail-button.tab-prompt.active {
+  background-color: rgba(8, 145, 178, 0.16);
+  border-color: rgba(8, 145, 178, 0.35);
+  color: #67e8f9;
+}
+
+/* 纯图标 rail 按钮（收藏 / 预设）：始终左对齐、padding-left 与文字标签一致，
+   使图标在收起 / 展开切换时水平位置恒定（不左右跳动）。
+   图标走 .bb-rail-icon shell，颜色继承按钮 color（由 --favorites / --presets 修饰类决定）。 */
+.bb-rail-button--icon {
+  justify-content: flex-start;
+  padding-left: 5px;
+}
+
+.bb-big-rail--expanded .bb-rail-button--icon {
+  justify-content: flex-start;
+  padding-left: 5px;
+}
+
+.bb-rail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.bb-rail-icon svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+/* 合成「收藏」大标签：钉在大标签栏底端，琥珀色星标 */
+.bb-rail-button--favorites {
+  color: #fbbf24;
+}
+.bb-rail-button--favorites:hover,
+.bb-rail-button--favorites.active {
+  background-color: rgba(251, 191, 36, 0.16);
+  border-color: rgba(251, 191, 36, 0.35);
+  color: #fcd34d;
+}
+
+/* 合成「预设」大标签：钉在收藏之后，蓝色书签图标 */
+.bb-rail-button--presets {
+  color: #60a5fa;
+}
+.bb-rail-button--presets:hover,
+.bb-rail-button--presets.active {
+  background-color: rgba(96, 165, 250, 0.16);
+  border-color: rgba(96, 165, 250, 0.35);
+  color: #93c5fd;
+}
+
+/* 预设栏内容：可拖拽条目列表 */
+.bb-presets-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px;
+}
+.bb-presets-empty {
+  padding: 12px 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-tertiary, #9ca3af);
+  opacity: 0.8;
+}
+.bb-preset-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 7px 8px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 6px;
+  background-color: rgba(148, 163, 184, 0.06);
+  cursor: grab;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+.bb-preset-item:hover {
+  background-color: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+.bb-preset-item:active {
+  cursor: grabbing;
+}
+
+/* 内置预设：与用户保存的预设区分开来——琥珀色左侧色条 + 淡底色 */
+.bb-preset-item--builtin {
+  border-color: rgba(251, 146, 60, 0.32);
+  background-color: rgba(251, 146, 60, 0.08);
+  border-left: 3px solid #fb923c;
+  padding-left: 7px;
+}
+.bb-preset-item--builtin:hover {
+  background-color: rgba(251, 146, 60, 0.14);
+  border-color: rgba(251, 146, 60, 0.5);
+}
+
+.bb-preset-body {
+  flex: 1;
+  min-width: 0;
+}
+.bb-preset-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary, #e5e7eb);
+  margin-bottom: 2px;
+  min-width: 0;
+}
+.bb-preset-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* 内置徽标：小号琥珀色 pill，标明该条目为内置只读预设 */
+.bb-preset-badge {
+  flex-shrink: 0;
+  padding: 0 5px;
+  height: 14px;
+  line-height: 14px;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fb923c;
+  background-color: rgba(251, 146, 60, 0.16);
+  border: 1px solid rgba(251, 146, 60, 0.4);
+  border-radius: 7px;
+}
+
+/* 细节文本：最多显示一行，超出截断 */
+.bb-preset-text {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--text-secondary, #b6bdc9);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bb-preset-delete {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-tertiary, #9ca3af);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease, background-color 0.12s ease;
+}
+.bb-preset-item:hover .bb-preset-delete {
+  opacity: 1;
+}
+.bb-preset-delete:hover {
+  color: #f87171;
+  background-color: rgba(248, 113, 113, 0.14);
+}
+
+.bb-scroller {
+  position: relative;        /* .bb-expanded-overlay 的定位基准 */
+  flex: 1;
+  min-height: 0;
+  margin-right: 8px;         /* 为外侧的宽度拖拽把手保留独立命中区 */
+  padding: 4px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.bb-scroller::-webkit-scrollbar {
+  width: 6px;
+}
+.bb-scroller::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+.bb-scroller::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* 展开覆盖层激活时：滚动条隐藏（避免修改 overflow，否则会裁切覆盖层） */
+.bb-scroller--has-overlay {
+  scrollbar-width: none;
+}
+.bb-scroller--has-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── 大标签（手风琴一级） ──────────────────────────────────────────────── */
+.bb-big-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.bb-big-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 28px;
+  padding: 0 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.bb-big-header:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.08);
+  color: var(--color-text-primary);
+}
+
+/* 通用 active：左侧 2px 强调色竖条 + 加深背景 + 主文字 */
+.bb-big-header.active {
+  background-color: rgba(var(--color-accent-rgb), 0.10);
+  color: var(--color-text-primary);
+}
+.bb-big-header.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--color-accent);
+}
+
+/* 大标签三角图标：默认 ▶，展开后 ▼ */
+.bb-chevron {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  font-size: 8px;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+  transform: rotate(0deg);
+  flex-shrink: 0;
+}
+.bb-chevron--open {
+  transform: rotate(90deg);
+}
+.bb-big-header.active .bb-chevron {
+  color: var(--color-accent);
+}
+
+.bb-big-text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── 品牌色大标签（保留原 pill 配色，转换为竖条 + 文字色） ────────────── */
+.bb-big-header.tab-json { color: #FCA823; }
+.bb-big-header.tab-json:hover { background-color: rgba(217, 119, 6, 0.10); color: #fcd34d; }
+.bb-big-header.tab-json.active { background-color: rgba(217, 119, 6, 0.16); color: #fcd34d; }
+.bb-big-header.tab-json.active::before { background: #d97706; }
+.bb-big-header.tab-json.active .bb-chevron { color: #fcd34d; }
+
+.bb-big-header.tab-common { color: #c084fc; }
+.bb-big-header.tab-common:hover { background-color: rgba(147, 51, 234, 0.10); color: #d8b4fe; }
+.bb-big-header.tab-common.active { background-color: rgba(147, 51, 234, 0.16); color: #d8b4fe; }
+.bb-big-header.tab-common.active::before { background: #9333ea; }
+.bb-big-header.tab-common.active .bb-chevron { color: #d8b4fe; }
+
+.bb-big-header.tab-ai { color: #FC8181; }
+.bb-big-header.tab-ai:hover { background-color: rgba(220, 38, 38, 0.10); color: #fca5a5; }
+.bb-big-header.tab-ai.active { background-color: rgba(220, 38, 38, 0.16); color: #fca5a5; }
+.bb-big-header.tab-ai.active::before { background: #dc2626; }
+.bb-big-header.tab-ai.active .bb-chevron { color: #fca5a5; }
+
+.bb-big-header.tab-special { color: #60a5fa; }
+.bb-big-header.tab-special:hover { background-color: rgba(37, 99, 235, 0.10); color: #93c5fd; }
+.bb-big-header.tab-special.active { background-color: rgba(37, 99, 235, 0.16); color: #93c5fd; }
+.bb-big-header.tab-special.active::before { background: #2563eb; }
+.bb-big-header.tab-special.active .bb-chevron { color: #93c5fd; }
+
+.bb-big-header.tab-groups { color: #34d399; }
+.bb-big-header.tab-groups:hover { background-color: rgba(16, 185, 129, 0.10); color: #6ee7b7; }
+.bb-big-header.tab-groups.active { background-color: rgba(16, 185, 129, 0.16); color: #6ee7b7; }
+.bb-big-header.tab-groups.active::before { background: #059669; }
+.bb-big-header.tab-groups.active .bb-chevron { color: #6ee7b7; }
+
+.bb-big-header.tab-prompt { color: #22d3ee; }
+.bb-big-header.tab-prompt:hover { background-color: rgba(8, 145, 178, 0.10); color: #67e8f9; }
+.bb-big-header.tab-prompt.active { background-color: rgba(8, 145, 178, 0.16); color: #67e8f9; }
+.bb-big-header.tab-prompt.active::before { background: #0891b2; }
+.bb-big-header.tab-prompt.active .bb-chevron { color: #67e8f9; }
+
+/* ── 大标签内容分组（右侧全量目录，分组标题叠在分割线上） ─────────────────── */
+.bb-big-content-section {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0 6px;
+}
+
+/* 非空分组的分割线由 .bb-big-content-title 自带（左侧横线 + 右侧名称）承载，故不再画 border。 */
+.bb-big-content-section--separated {
+  margin-top: 2px;
+}
+
+/* 大标签名称叠在分割线右侧：默认白色，品牌色大标签沿用 rail 配色；上下间距略宽。 */
+.bb-big-content-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 7px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.bb-big-content-title::before {
+  content: '';
+  flex: 1 1 auto;
+  min-width: 12px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.bb-big-content-title--first {
+  margin-top: 4px;
+}
+
+.bb-big-content-title.tab-json { color: #FCA823; }
+.bb-big-content-title.tab-common { color: #c084fc; }
+.bb-big-content-title.tab-ai { color: #FC8181; }
+.bb-big-content-title.tab-special { color: #60a5fa; }
+.bb-big-content-title.tab-groups { color: #34d399; }
+.bb-big-content-title.tab-prompt { color: #22d3ee; }
+
+/* 空的大分类行与左侧 rail 的 26px 按钮 + 3px gap 垂直步进对齐（无标题，用细线分隔）。 */
+.bb-big-content-section:has(> .battery-empty-small:only-child) {
+  min-height: 29px;
+  padding: 0;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.bb-big-content-section--separated:has(> .battery-empty-small:only-child) {
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.bb-big-content-section:has(> .battery-empty-small:only-child) > .battery-empty-small {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 0 0 28px;
+  box-sizing: border-box;
+}
+
+/* ── 小标签列表（手风琴二级） ──────────────────────────────────────────── */
+.bb-small-list {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0 6px;
+}
+
+.bb-small-section {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.bb-small-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px 0 14px;
+  cursor: pointer;
+}
+
+.bb-small-toggle {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  height: 100%;
+  color: var(--color-accent);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.bb-small-toggle:hover {
+  color: var(--color-accent-strong, #d4ff48);
+}
+
+.bb-chevron--sm {
+  width: 7px;
+  height: 7px;
+  font-size: 7px;
+}
+
+.bb-small-text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bb-small-count {
+  font-size: 9px;
+  color: currentColor;
+  opacity: 1;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  padding-left: 4px;
+}
+
+/* ── 收藏分组头部：静态（不可折叠），琥珀色星标 ─────────────────────────── */
+.bb-small-section--favorites > .bb-small-header { cursor: default; }
+.bb-small-toggle--static { cursor: default; color: #fbbf24; }
+.bb-small-fav-star { font-size: 9px; line-height: 1; flex-shrink: 0; }
+
+/* ── 小标签 + 号（圆形展开按钮，CSS 矩形画十字防字体偏移） ────────────── */
+.label-expand-btn {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.48);
+  background: rgba(var(--color-accent-rgb), 0.16);
+  color: var(--color-accent);
+  font-size: 0;
+  cursor: pointer;
+  transition: background var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.label-expand-btn::before,
+.label-expand-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: currentColor;
+  border-radius: 1px;
+}
+.label-expand-btn::before { width: 1.5px; height: 7px; transform: translate(-50%, -50%); }
+.label-expand-btn::after  { width: 7px; height: 1.5px; transform: translate(-50%, -50%); }
+
+.label-expand-btn:hover {
+  border-color: var(--color-accent);
+  background: rgba(var(--color-accent-rgb), 0.30);
+  color: white;
+  transform: scale(1.12);
+}
+
+.label-expand-btn.active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-contrast, #10170e);
+  transform: rotate(45deg) scale(1.1);
+}
+
+/* ── 电池行列表 ────────────────────────────────────────────────────────── */
+.bb-row-list {
+  display: flex;
+  flex-direction: column;
+  padding: 1px 0 2px;
+}
+
+/* 单行电池条目：图标 + 名称（含 ellipsis） + 可选 meta（星 + 数字角标） */
+.battery-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding-left: 20px;       /* 缩进体现三级层次，同时给 24px 图标留出更充分的显示空间 */
+  padding-right: 8px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: var(--radius-sm);
+  margin: 0 4px;
+  transition: background-color var(--transition-fast);
+}
+
+.battery-row:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.10);
+}
+
+.battery-row:active {
+  cursor: grabbing;
+}
+
+/* Mac trackpad drag uses pointer capture instead of WebKit's intermittent
+   native HTML5 DnD. Keep a stable drag cursor across the palette and canvas. */
+html.battery-pointer-dragging,
+html.battery-pointer-dragging * {
+  cursor: grabbing !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.battery-row-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.battery-row-icon-svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.battery-row-icon-svg svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.battery-row-icon-fallback {
+  font-size: 15px;
+  line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+.battery-row-name {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 11.5px;
+  color: var(--color-text-primary);
+  /* line-height 1.4 给 g/y/p/q 等下伸字符留出 inline box 空间，
+     避免 overflow:hidden 把 descender 部分裁掉（line-height:1 时 inline box 紧贴 em-box，
+     下伸部分会伸出被裁）。row 自身 height 固定，文字仍垂直居中，仅扩大渲染盒高度。 */
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Derived from the Scene Contract acceptance matrix, not a hand-maintained
+ * battery property. Text remains explicit so color is never the only signal. */
+.battery-row-scene-status {
+  flex: 0 0 auto;
+  padding: 1px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  font-size: 8px;
+  line-height: 1.2;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.battery-row-scene-status--script-callable {
+  color: var(--color-warning, var(--color-text-secondary));
+}
+
+.battery-row-scene-status--equivalence-verified {
+  color: var(--color-success, var(--color-text-primary));
+}
+
+/* 已收藏黄色五角星：紧贴名称右侧（非右对齐）；margin-right:auto 把后续 meta 推到行末。 */
+.battery-row-fav-star {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 5px;
+  margin-right: auto;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* 模板缩略图角标：五角星钉在预览图右上角。 */
+.battery-row-fav-star--thumb {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  margin: 0;
+  padding: 1px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  z-index: 2;
+}
+
+.battery-row-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-size: 9px;
+  color: var(--color-text-secondary);
+  pointer-events: none;     /* meta 不拦截拖拽 */
+}
+
+.battery-row-stars {
+  color: #f5c518;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+/* GROUPS 行内删除按钮：默认透明，hover 行时浮现；推到行末。 */
+.battery-row-delete {
+  flex-shrink: 0;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-secondary, #9ca3af);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease, background-color 0.12s ease;
+}
+.battery-row:hover .battery-row-delete {
+  opacity: 1;
+}
+.battery-row-delete:hover {
+  color: #f87171;
+  background-color: rgba(248, 113, 113, 0.14);
+}
+
+.battery-row-note-count {
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+  min-width: 10px;
+  text-align: right;
+}
+
+/* 空状态 */
+.battery-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 8px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.battery-empty-small {
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  font-style: italic;
+  padding: 4px 0 4px 28px;
+  opacity: 0.6;
+}
+
+/* ── 拖拽排序：高亮当前 over 项（竖向：用 border-top 横条） ──────────── */
+.bb-small-section.group-dragging {
+  opacity: 0.35;
+}
+
+.bb-small-section.group-drag-over > .bb-small-header {
+  box-shadow: inset 0 2px 0 0 var(--color-accent);
+}
+
+/* ── 小标签 + 号展开覆盖层：多列网格平铺电池 ───────────────────────────── */
+.bb-expanded-overlay {
+  z-index: 10;
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+}
+
+.bb-expanded-overlay::-webkit-scrollbar {
+  width: 6px;
+}
+.bb-expanded-overlay::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.bb-expanded-overlay-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 4px;
+  padding: 6px 4px;
+}
+
+.bb-expanded-overlay-grid .battery-row {
+  margin: 0;
+  padding-left: 8px;      /* 覆盖层模式去掉三级缩进，因为有自己的网格 */
+}
+
+/* ── 右侧宽度拖拽把手（位于纵向滚动条外侧） ───────────────────────────── */
+.bb-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+  z-index: 20;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.bb-resize-handle:hover,
+body.bb-resizing .bb-resize-handle {
+  background: var(--color-accent);
+  box-shadow: 0 0 10px rgba(var(--color-accent-rgb), 0.28);
+}
+
+/* ── 右键上下文菜单 ───────────────────────────────────────────────────── */
+.battery-context-menu {
+  position: fixed;
+  z-index: 9999;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  min-width: 130px;
+  padding: 4px 0;
+  user-select: none;
+}
+
+.battery-context-menu-item {
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--transition-fast);
+}
+
+.battery-context-menu-item:hover {
+  background: var(--color-accent-hover);
+}
+
+.battery-context-menu-item--danger {
+  color: #ef4444;
+}
+
+.battery-context-menu-item--danger:hover {
+  background: rgba(239, 68, 68, 0.14);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TEMPLATES 模式：竖向手风琴琥珀金强调（与 Toolbar 模板切换品牌色一致）
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.battery-bar.mode-templates .bb-big-header {
+  color: rgba(251, 191, 36, 0.75);
+}
+
+.battery-bar.mode-templates .bb-big-rail {
+  background: rgba(120, 53, 15, 0.14);
+  border-right-color: rgba(251, 191, 36, 0.12);
+}
+
+/* 展开态必须不透明（否则右侧模板内容会透出），保留琥珀色调以与 develop 区分。 */
+.battery-bar.mode-templates .bb-big-rail--expanded {
+  background: rgba(28, 18, 8, 0.97);
+}
+
+.battery-bar.mode-templates .bb-rail-button {
+  color: rgba(251, 191, 36, 0.78);
+}
+.battery-bar.mode-templates .bb-rail-button:hover,
+.battery-bar.mode-templates .bb-rail-button.active {
+  background-color: rgba(251, 191, 36, 0.14);
+  border-color: rgba(251, 191, 36, 0.34);
+  color: #fde68a;
+}
+
+.battery-bar.mode-templates .bb-big-header:hover {
+  background-color: rgba(251, 191, 36, 0.08);
+  color: #fbbf24;
+}
+.battery-bar.mode-templates .bb-big-header.active {
+  background-color: rgba(251, 191, 36, 0.12);
+  color: #fde68a;
+}
+.battery-bar.mode-templates .bb-big-header.active::before {
+  background: linear-gradient(180deg, #b45309 0%, #f59e0b 100%);
+}
+.battery-bar.mode-templates .bb-big-header.active .bb-chevron {
+  color: #fbbf24;
+}
+
+.battery-bar.mode-templates .bb-big-content-title {
+  color: rgba(251, 191, 36, 0.9);
+}
+
+.battery-bar.mode-templates .bb-small-toggle {
+  color: rgba(251, 191, 36, 0.85);
+}
+.battery-bar.mode-templates .bb-small-toggle:hover {
+  color: #fcd34d;
+}
+
+.battery-bar.mode-templates .label-expand-btn {
+  border-color: rgba(251, 191, 36, 0.35);
+  color: rgba(251, 191, 36, 0.8);
+}
+.battery-bar.mode-templates .label-expand-btn:hover,
+.battery-bar.mode-templates .label-expand-btn.active {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.55);
+  color: #fde68a;
+}
+
+/* ── Templates 行：大图（占栏宽较大一块，黄金比例矩形）+ 右侧换行名称 ──────── */
+.battery-bar.mode-templates .bb-row-list--templates-flat {
+  padding: 4px 0 8px;
+  gap: 2px;
+}
+
+.battery-row--template {
+  height: auto;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 8px 8px 12px;
+  margin: 0 4px 4px;
+}
+
+.battery-row-thumb {
+  /* 缩略图固定尺寸（默认栏宽下的大小）：无论拉宽还是收窄电池栏，图尺寸都不变，
+     多余/不足的宽度只作用于文字。 */
+  flex: 0 0 164px;
+  width: 164px;
+  position: relative;
+  /* 黄金比例矩形：宽 : 高 = 1.618 : 1 */
+  aspect-ratio: 1.618 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #000;
+  border: 1.5px solid rgba(251, 191, 36, 0.45);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  transform-origin: center;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 200ms ease;
+}
+
+.battery-row--template:hover .battery-row-thumb,
+.battery-row--template.battery-row--context-active .battery-row-thumb {
+  border-color: rgba(251, 191, 36, 0.85);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 2px 10px rgba(251, 191, 36, 0.25);
+  transform: scale(1.08);
+}
+
+.battery-row-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  /* 像素素材放大时关闭浏览器插值平滑，保持锐利像素 */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* 无 icon.png 时的占位图（不回退 svg/⚡） */
+.battery-row-thumb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(251, 191, 36, 0.05),
+      rgba(251, 191, 36, 0.05) 6px,
+      rgba(251, 191, 36, 0.10) 6px,
+      rgba(251, 191, 36, 0.10) 12px
+    );
+}
+
+.battery-row-thumb-empty-glyph {
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.55;
+}
+
+.battery-row-thumb-empty-text {
+  font-size: 9.5px;
+  letter-spacing: 0.3px;
+  color: rgba(251, 191, 36, 0.7);
+}
+
+.battery-row-template-body {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;          /* 撑到与缩略图等高，便于名称垂直居中 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;      /* 名称在缩略图高度内垂直居中 */
+  gap: 3px;
+}
+
+/* 文字整体缩放由行内 --tpl-scale 驱动（JS 测量得出）：名称 / 版本 / 作者 / 日期
+   共用同一系数，保持相对大小一致。--tpl-scale 默认 1（窄栏不放大）。 */
+.battery-row-template-name {
+  font-size: calc(12px * var(--tpl-scale, 1));
+  line-height: 1.35;
+  color: var(--color-text-primary);
+  /* 默认（未能单行容纳时）：过长按单词换行，确保全部文字显示、绝不截断 */
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+/* 名称能单行完整容纳后才切换单行（此时由 --tpl-scale 等比放大，宽度始终够用，不会截断） */
+.battery-row-template-name.is-oneline {
+  white-space: nowrap;
+}
+
+/* 模板信息：版本 · 作者 · 制作时间戳（名称下方、弱化显示） */
+.battery-row-template-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.battery-row-template-info-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.battery-row-template-ver {
+  font-size: calc(9.5px * var(--tpl-scale, 1));
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: rgba(251, 191, 36, 0.85);
+}
+
+.battery-row-template-author {
+  font-size: calc(9.5px * var(--tpl-scale, 1));
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.battery-row-template-date {
+  font-size: calc(9px * var(--tpl-scale, 1));
+  color: var(--color-text-tertiary, rgba(255, 255, 255, 0.45));
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,60 @@
+{
+  "id": "add_child",
+  "label": "添加子节点",
+  "name-en": "AddChild",
+  "description": "把一组独立 scene 节点挂到 parent.focus 之下作为兄弟子节点。每个 nodes 元素是一棵单节点 scene（如 grid2node 的输出）；子节点名取该 scene focus 的最后一段。同名冲突显式报错。",
+  "description-en": "Attach a list of standalone scene nodes under parent.focus as siblings. Each element of nodes is a one-node scene (e.g. grid2node output); the child name is taken from the last segment of that scene's focus. Name collisions raise an explicit error.",
+  "version": "1.0.0",
+  "tags": [
+    "scene",
+    "compose",
+    "add",
+    "graft",
+    "children"
+  ],
+  "tag_labels": [
+    "场景",
+    "组合",
+    "添加",
+    "嫁接",
+    "子节点"
+  ],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "required": true,
+      "label": "scene",
+      "description": "父 scene（focus 指向父节点，必须落在已存在节点上）",
+      "description-en": "Parent scene (focus must point at an existing node)."
+    },
+    {
+      "name": "nodes",
+      "type": "scene",
+      "access": "list",
+      "required": true,
+      "label": "nodes",
+      "description": "要挂入的子节点 scene 列表；每个元素的 focus basename 作为新子节点名",
+      "description-en": "List of child scenes to graft; each element's focus basename becomes the child name."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "scene",
+      "description": "更新后的 scene（focus 保持父节点路径，便于继续添加 / 接下游 mutator）",
+      "description-en": "Updated scene (focus stays at the parent path; chain further add_child / mutator)."
+    },
+    {
+      "name": "childPaths",
+      "type": "string",
+      "access": "list",
+      "label": "子节点路径列表",
+      "description": "实际挂入的子节点绝对路径列表（与 nodes 输入一一对应）；可直接喂 scene_focus_path 定位某个子节点",
+      "description-en": "Absolute paths of the grafted children (1:1 with nodes input). Feed into scene_focus_path to target a specific child."
+    }
+  ]
+}

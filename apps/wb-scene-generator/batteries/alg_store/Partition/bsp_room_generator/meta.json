@@ -1,0 +1,127 @@
+{
+  "id": "bsp_room_generator",
+  "label": "BSP房间生成",
+  "description": "使用二叉空间分割（Binary Space Partition）递归划分空间并在叶节点生成矩形房间",
+  "description-en": "Generates rectangular rooms via Binary Space Partition: recursively splits the space and places rooms in leaf nodes.",
+  "icon": "俯视平面图被十字分割线分成多个矩形区域，每个区域内有一个较小的矩形房间，扁平几何线条风格，主色蓝绿两色",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "bsp",
+    "room",
+    "dungeon",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "BSP",
+    "房间",
+    "地牢",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "default": 50,
+      "min": 16,
+      "max": 512,
+      "description": "输出网格的宽度（像素列数）",
+      "description-en": "Width of the output grid in pixels/columns."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "default": 50,
+      "min": 16,
+      "max": 512,
+      "description": "输出网格的高度（像素行数）",
+      "description-en": "Height of the output grid in pixels/rows."
+    },
+    {
+      "name": "minRoomSize",
+      "type": "number",
+      "label": "最小房间尺寸",
+      "default": 5,
+      "min": 3,
+      "max": 50,
+      "description": "房间最小边长，分割区域小于此值的两倍时停止分割",
+      "description-en": "Minimum room side length; splitting stops when a partition is smaller than twice this value."
+    },
+    {
+      "name": "maxRoomSize",
+      "type": "number",
+      "label": "最大房间尺寸",
+      "default": 12,
+      "min": 3,
+      "max": 100,
+      "description": "房间最大边长，房间尺寸在最小和最大之间随机取值",
+      "description-en": "Maximum room side length; room size is randomized between min and max."
+    },
+    {
+      "name": "minSplitRatio",
+      "type": "number",
+      "label": "最小分割比",
+      "default": 0.4,
+      "description": "BSP 分割位置下限（0.3~0.5），控制分割的偏移范围",
+      "description-en": "Lower bound of the BSP split position ratio (0.3~0.5)."
+    },
+    {
+      "name": "maxSplitRatio",
+      "type": "number",
+      "label": "最大分割比",
+      "default": 0.6,
+      "description": "BSP 分割位置上限（0.5~0.7），与 minSplitRatio 共同决定分割随机范围",
+      "description-en": "Upper bound of the BSP split position ratio (0.5~0.7)."
+    },
+    {
+      "name": "wallPadding",
+      "type": "number",
+      "label": "墙壁边距",
+      "default": 1,
+      "min": 0,
+      "max": 5,
+      "description": "房间与分割边界之间的最小间距（像素），增大可让房间之间更宽松",
+      "description-en": "Minimum padding between rooms and partition edges; larger values create more spacing."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 使用默认种子，不同种子产生不同布局",
+      "description-en": "Random seed; 0 uses default seed. Different seeds produce different layouts."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "房间网格",
+      "description": "输出网格：0=墙壁，正整数=房间ID",
+      "description-en": "Output grid: 0=wall, positive integers=room IDs."
+    },
+    {
+      "name": "rooms",
+      "type": "dict",
+      "label": "房间列表",
+      "description": "房间信息数组 [{id, x, y, w, h, centerX, centerY}]（外层 rank=1：N 个 dict）",
+      "description-en": "Array of room info: [{id, x, y, w, h, centerX, centerY}] (rank=1)."
+    },
+    {
+      "name": "numRooms",
+      "type": "number",
+      "label": "房间数量",
+      "description": "生成的房间总数",
+      "description-en": "Total number of rooms generated."
+    }
+  ],
+  "alg_tag": [
+    "基于递归分割的房间生成",
+    "在指定大小的网格中生成一些矩形房间",
+    "可用于地牢生成、关卡设计等等"
+  ]
+}

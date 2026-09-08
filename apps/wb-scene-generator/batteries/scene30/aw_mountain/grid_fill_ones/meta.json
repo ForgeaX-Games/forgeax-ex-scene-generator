@@ -1,0 +1,28 @@
+{
+  "id": "grid_fill_ones",
+  "label": "网格填充为1",
+  "description": "将网格中所有格子（包括零）统一置为 1，输出一张与输入同尺寸的全1网格。",
+  "description-en": "Sets every cell in the grid (including zeros) to 1, outputting a same-size all-ones grid.",
+  "icon": "一个二维网格，左侧格子有不同数值颜色，右侧全部变成统一的亮色填充，中间有箭头指向，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["grid", "mask", "binary", "util"],
+  "tag_labels": ["网格", "掩码", "二值化", "工具"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "任意整数二维网格，所有格子（含零）将被置为 1",
+      "description-en": "Any integer 2D grid; every cell (including zeros) will be set to 1."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "全1网格",
+      "description": "与输入同尺寸的全1网格，每个格子均为 1",
+      "description-en": "All-ones grid with the same dimensions as the input."
+    }
+  ]
+}

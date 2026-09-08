@@ -1,0 +1,39 @@
+{
+  "id": "grid_filter",
+  "label": "过滤网格",
+  "name-en": "Filter",
+  "description": "过滤网格列表，移除非零格数量小于阈值的网格",
+  "description-en": "Filters a list of grids, removing any grid whose non-zero cell count is below the threshold.",
+  "icon": "一组矩形网格排列，部分带叉号被划掉，旁边有数字阈值标注，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["grid", "filter", "list"],
+  "tag_labels": ["网格", "过滤", "列表"],
+  "inputs": [
+    {
+      "name": "gridList",
+      "type": "grid",
+      "access": "list",
+      "label": "网格列表",
+      "description": "输入的网格列表（当前父分支的全部直接子分支作为一组）",
+      "description-en": "Input list of grids (all immediate children of the current parent branch, fed as a set)."
+    },
+    {
+      "name": "minSize",
+      "type": "number",
+      "label": "最小非零格数",
+      "default": 1,
+      "description": "非零格数量的最小阈值；非零格数量严格小于此值的网格将被移除",
+      "description-en": "Minimum non-zero cell count threshold; grids with fewer non-zero cells than this value are removed."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "grid",
+      "access": "list",
+      "label": "过滤后网格列表",
+      "description": "移除小尺寸网格后的结果列表，顺序与输入一致；每张保留网格成为独立子分支",
+      "description-en": "Filtered grid list with small grids removed, preserving input order; each kept grid becomes its own child branch."
+    }
+  ]
+}

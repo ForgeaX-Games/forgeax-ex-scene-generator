@@ -1,0 +1,19 @@
+{
+  "id": "base_plane",
+  "label": "底板平面",
+  "name-en": "BasePlane",
+  "description": "Create a metre-space Plane. Control points stay in plane metres.",
+  "description-en": "Create a metre-space Plane. Control points stay in plane metres.",
+  "version": "1.0.0",
+  "tags": ["scene", "spatial", "plane"],
+  "inputs": [
+    { "name": "width", "type": "number", "access": "item", "default": 2000, "label": "宽" },
+    { "name": "height", "type": "number", "access": "item", "default": 2000, "label": "高" },
+    { "name": "x", "type": "number", "access": "item", "default": 0, "label": "X" },
+    { "name": "y", "type": "number", "access": "item", "default": 0, "label": "Y" },
+    { "name": "z", "type": "number", "access": "item", "default": 0, "label": "Z" }
+  ],
+  "outputs": [
+    { "name": "plane", "type": "any", "access": "item", "label": "平面" }
+  ]
+}

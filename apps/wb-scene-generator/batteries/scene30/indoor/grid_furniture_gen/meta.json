@@ -1,0 +1,69 @@
+{
+  "id": "grid_furniture_gen",
+  "label": "网格家具生成器",
+  "description": "根据单元尺寸、间距、行列数量生成规律化居中型家具 mask 网格，周边自动补一圈 0。",
+  "description-en": "Generates a center-type furniture mask grid from unit size, gaps, and row/col counts, with a 0-border surrounding.",
+  "icon": "扁平插画风格图标，主视觉为一个浅灰色背景上排列整齐的小正方形阵列，正方形为蓝紫色填充，阵列之间有等宽白色间距，右下角有一个小网格图案作为点缀，整体简洁现代。",
+  "version": "1.0.0",
+  "tags": ["furniture", "grid", "mask", "generator", "indoor"],
+  "tag_labels": ["家具", "网格", "掩码", "生成器", "室内"],
+  "inputs": [
+    {
+      "name": "unitW",
+      "type": "number",
+      "label": "单元宽（列数）",
+      "description": "单个家具本体的列数（宽度，格子数）",
+      "description-en": "Column count of each unit body (width in cells).",
+      "default": 2
+    },
+    {
+      "name": "unitH",
+      "type": "number",
+      "label": "单元高（行数）",
+      "description": "单个家具本体的行数（高度，格子数）",
+      "description-en": "Row count of each unit body (height in cells).",
+      "default": 1
+    },
+    {
+      "name": "colGap",
+      "type": "number",
+      "label": "列间距",
+      "description": "相邻单元之间的列方向间距（格子数）",
+      "description-en": "Gap between columns in cells.",
+      "default": 1
+    },
+    {
+      "name": "rowGap",
+      "type": "number",
+      "label": "行间距",
+      "description": "相邻单元之间的行方向间距（格子数）",
+      "description-en": "Gap between rows in cells.",
+      "default": 1
+    },
+    {
+      "name": "cols",
+      "type": "number",
+      "label": "列数量",
+      "description": "横向排列的单元数量",
+      "description-en": "Number of units arranged horizontally.",
+      "default": 3
+    },
+    {
+      "name": "rows",
+      "type": "number",
+      "label": "行数量",
+      "description": "纵向排列的单元数量",
+      "description-en": "Number of units arranged vertically.",
+      "default": 4
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mask",
+      "type": "grid",
+      "label": "家具 mask",
+      "description": "生成的居中型家具 mask 二维网格，1 为本体，0 为过道/边界",
+      "description-en": "Generated center-type furniture mask grid; 1=body, 0=aisle/border."
+    }
+  ]
+}

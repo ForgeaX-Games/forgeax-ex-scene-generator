@@ -1,0 +1,30 @@
+{
+  "id": "g_pipe",
+  "label": "圆管",
+  "name-en": "GPipe",
+  "description": "沿 3D 路径生成圆管。path 为扁平点列；可用 spline=catmull_rom/bezier 生成光滑曲线管。何时用：管路/线束/弯折杆件/框架圆管，比一段段圆柱拼接更连续真实。⚠️ 本 op 直接产出三角网格(mesh)，不能作为布尔运算(g_union/g_difference/g_intersection)的输入——布尔仅支持实体(solid) shape。",
+  "description-en": "Create a round pipe along a 3D path, optionally smoothing it with Catmull-Rom or Bezier splines. Use when: tubing/wiring/bent rods/tubular frames — more continuous and realistic than chaining cylinders. WARNING: this op emits a triangle MESH and CANNOT be fed into boolean ops (g_union/g_difference/g_intersection), which only accept solid shapes.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "pipe", "sweep", "cad"],
+  "tag_labels": ["几何", "圆管", "Sweep", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（圆管不引用其它 shape，直接由 path 生成）", "description-en": "Upstream Geometry; the pipe is built from `path` and references no other shape." },
+    { "name": "path", "type": "array", "label": "路径点", "default": [0, 0, 0, 1, 0, 0, 1, 1, 0], "description": "扁平 3D 点列 [x1,y1,z1,x2,y2,z2,...]，至少两点", "description-en": "Flat 3D point list [x1,y1,z1,x2,y2,z2,...], at least two points." },
+    { "name": "radius", "type": "number", "label": "半径", "default": 0.05, "description": "圆管半径（米，正数）", "description-en": "Pipe radius (meters, positive)." },
+    { "name": "spline", "type": "string", "label": "样条", "default": "polyline", "options": ["polyline", "catmull_rom", "bezier"], "description": "polyline、catmull_rom 或 bezier", "description-en": "polyline, catmull_rom, or bezier path interpolation." },
+    { "name": "samples_per_segment", "type": "number", "label": "每段采样", "default": 12, "description": "样条每段的采样数（越大越光滑）", "description-en": "Samples per spline segment (higher = smoother)." },
+    { "name": "radial_segments", "type": "number", "label": "圆截面段数", "default": 16, "description": "圆截面的分段数（越大越圆）", "description-en": "Number of radial segments around the tube (higher = rounder)." },
+    { "name": "closed", "type": "boolean", "label": "闭合路径", "default": false, "description": "true = 路径首尾相接", "description-en": "true = close the path into a loop." },
+    { "name": "cap", "type": "boolean", "label": "封端", "default": true, "description": "true = 两端封口", "description-en": "true = cap the ends." },
+    { "name": "up_hint", "type": "array", "label": "上方向提示", "default": [0, 0, 1], "description": "构造管道截面朝向的 3D 向量 [x,y,z]", "description-en": "3D up vector [x,y,z] used to orient the tube section." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 pipe{n}", "description-en": "Custom id; empty = auto pipe{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加圆管后的 Geometry", "description-en": "Geometry after appending the pipe." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id（供下游引用）；path/半径错误时为空串", "description-en": "Id of the new shape (for downstream refs). Empty string when the path/radius was invalid." },
+    { "name": "error", "type": "string", "label": "错误", "description": "path 不合法或 radius 非正数时的原因；非空表示未追加任何几何，批次仍可能报 ok，务必读取", "description-en": "Reason when path is invalid or radius is non-positive. Non-empty means nothing was appended even though the batch may report ok — always read it." }
+  ],
+  "projectTypes": ["asset3d"]
+}

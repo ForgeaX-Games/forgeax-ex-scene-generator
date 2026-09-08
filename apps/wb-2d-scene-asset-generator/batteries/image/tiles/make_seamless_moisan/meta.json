@@ -1,0 +1,70 @@
+{
+  "id": "make_seamless_moisan",
+  "label": "无缝贴图（Moisan）",
+  "description": "用 Moisan 2011 周期+平滑分解算法将 AI 生成的 PNG 贴图转为可无缝平铺的版本：从原图中减去承载边界跳跃的平滑分量 S，仅保留周期分量 P，使左右、上下边像素严格连续，自贴自时不再出现缝隙",
+  "description-en": "Make AI-generated PNG tiles seamlessly tileable via Moisan 2011 Periodic+Smooth Image Decomposition. Subtracts the smooth boundary-correction component S and keeps the strictly periodic component P, so the tile wraps perfectly on all four edges.",
+  "icon": "一张方形贴图四角向中心收拢的环形箭头表示首尾相接，左下角有一条对接整齐的小缝，背景深青绿色，扁平插画图标风格，简洁，主色2种",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "texture",
+    "tile",
+    "seamless",
+    "moisan",
+    "fft",
+    "post-process"
+  ],
+  "tag_labels": [
+    "图像",
+    "贴图",
+    "瓦片",
+    "无缝",
+    "Moisan",
+    "FFT",
+    "后处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "源贴图",
+      "description": "待无缝化的图像别名（PNG，资产库中的 alias）。可来自 image_gen、导入资产或其它产出 image 的节点",
+      "description-en": "Alias of the source image (PNG) in the asset library. Connect from image_gen, imported assets, or any image-producing node."
+    },
+    {
+      "name": "process_alpha",
+      "type": "boolean",
+      "access": "item",
+      "label": "处理 Alpha 通道",
+      "default": false,
+      "description": "是否同时无缝化 Alpha 通道。默认 false：透明区域常用于精灵边缘，处理后会模糊。RGBA 纯不透明贴图可开启",
+      "description-en": "Also process the alpha channel. Default false: alpha is usually used for sprite cutouts; processing it may blur edges. Enable only for fully opaque RGBA tiles."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "无缝贴图",
+      "description": "无缝化后写入资产库的新图像别名，可直接连接到 texture_bind 等贴图消费节点",
+      "description-en": "Alias of the seamless image written back to the asset library. Connect to texture_bind or any image consumer."
+    },
+    {
+      "name": "info",
+      "type": "string",
+      "access": "item",
+      "label": "信息",
+      "description": "本次处理的简要信息（尺寸、通道数、FFT 路径、耗时），便于调试",
+      "description-en": "Brief processing info (size, channels, FFT path, elapsed) for debugging."
+    }
+  ],
+  "alg_tag": [
+    "Moisan 周期+平滑分解，使贴图首尾相接",
+    "AI 生成 tile 的无缝化后处理"
+  ]
+}

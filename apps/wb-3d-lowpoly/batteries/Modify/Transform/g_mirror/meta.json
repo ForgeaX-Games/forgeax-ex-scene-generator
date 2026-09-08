@@ -1,0 +1,25 @@
+{
+  "id": "g_mirror",
+  "label": "镜像",
+  "name-en": "GMirror",
+  "description": "按 XY/YZ/XZ 平面镜像 shape。",
+  "description-en": "Mirror a shape across an XY/YZ/XZ plane.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "csg", "transform", "cad"],
+  "tag_labels": ["几何", "CSG", "变换", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "shape_id", "type": "string", "label": "Shape id", "default": "" },
+    { "name": "plane", "type": "string", "label": "平面", "default": "YZ" },
+    { "name": "ox", "type": "number", "label": "原点 X", "default": 0 },
+    { "name": "oy", "type": "number", "label": "原点 Y", "default": 0 },
+    { "name": "oz", "type": "number", "label": "原点 Z", "default": 0 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

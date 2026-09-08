@@ -1,0 +1,61 @@
+{
+  "id": "scene_set_attribute",
+  "label": "设置属性",
+  "name-en": "SceneSetAttribute",
+  "description": "在 focus 场景节点上写入自定义属性 (key, value)。同名 key 覆盖；其他 key 保留。属性会随节点一起参与后续的变换、移植、cells 重写，不会丢失。",
+  "description-en": "Set a custom attribute (key, value) on the focused scene node. Same key overwrites; other keys are preserved. Attributes follow the node through subsequent transforms, grafting, and cell rewrites.",
+  "version": "1.0.0",
+  "tags": [
+    "scene",
+    "attribute",
+    "metadata",
+    "userData",
+    "customData"
+  ],
+  "tag_labels": [
+    "场景",
+    "属性",
+    "元数据",
+    "用户数据",
+    "自定义数据"
+  ],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "required": true,
+      "label": "scene",
+      "description": "目标节点的 scene 端口（focus 指向写入节点）",
+      "description-en": "Scene port of the target node (focus points at the node to write)."
+    },
+    {
+      "name": "key",
+      "type": "string",
+      "access": "item",
+      "required": true,
+      "label": "key",
+      "description": "属性键（非空字符串）",
+      "description-en": "Attribute key (non-empty string)."
+    },
+    {
+      "name": "value",
+      "type": "any",
+      "access": "item",
+      "required": true,
+      "label": "value",
+      "description": "属性值（任意类型）。每次写入一个 value（按 access:item 逐项 fanout）；如需把列表整体作为单值，外层再包一层（如 [[1,2,3]]）以逃逸迭代。",
+      "description-en": "Attribute value (any type). Each call writes one value (access:item fans out per item); to store a list as a single value, wrap it once more (e.g. [[1,2,3]])."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "scene",
+      "description": "更新后的 scene 端口（focus 不变）",
+      "description-en": "Updated scene port (focus unchanged)."
+    }
+  ]
+}

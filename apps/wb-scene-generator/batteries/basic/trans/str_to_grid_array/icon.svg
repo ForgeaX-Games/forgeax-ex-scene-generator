@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_str_to_grid_array" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#935df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_str_to_grid_array)"/>
+
+  <path fill="#fff" d="M3 11h7v2H3z" />
+  <path fill="#fff" d="M14 11h7v2h-7z" />
+  <rect x="4" y="5" width="5" height="5" fill="rgba(0,0,0,0.55)" rx="0.5"/>
+  <rect x="15" y="5" width="5" height="5" fill="#fff" rx="0.5"/>
+  <rect x="15" y="14" width="5" height="5" fill="#fff" rx="0.5"/>
+  <path fill="rgba(0,0,0,0.55)" d="M11.293 14.293a1 1 0 0 0-1.414 1.414l2.828 2.828a1 1 0 0 0 1.414-1.414l-2.828-2.828z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M11.293 5.293a1 1 0 0 0-1.414 1.414l2.828 2.828a1 1 0 0 0 1.414-1.414l-2.828-2.828z"/>
+
+</svg>

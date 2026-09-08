@@ -1,0 +1,83 @@
+{
+  "id": "alg_partition_field_quantize",
+  "label": "高度场整数截断",
+  "name-en": "PartitionFieldQuantize",
+  "description": "将 [0,1] 高度标量场按 maxElevationLayers 整数截断为互斥的高度层级 partition 列表：0=全部平地（仅 0 层），N=整数层 0..N 共 N+1 张 0/1 掩码，覆盖 region 内全部有效格。附带多值 levelGrid 与默认名称清单。",
+  "description-en": "Quantizes a [0,1] height scalar field into mutually exclusive elevation-tier partitions by maxElevationLayers: 0=all flat (single layer-0 partition), N=integer tiers 0..N (N+1 exclusive 0/1 masks covering all valid region cells). Also emits a multi-value levelGrid and default name list.",
+  "icon": "分层色带俯视图，由浅到深同心层级，体现高度整数截断分区，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["partition", "field", "quantize", "elevation", "mountain", "topography", "scenealg"],
+  "tag_labels": ["分区", "场", "截断", "抬升", "山地", "地形", "场景算法"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "父区域",
+      "description": "限定有效范围的父区域掩码。",
+      "description-en": "Parent region mask bounding valid cells.",
+      "access": "item"
+    },
+    {
+      "name": "field",
+      "type": "grid",
+      "required": true,
+      "label": "高度场",
+      "description": "[0,1] 高度标量场，通常接 alg_field_mountain_contour.field。",
+      "description-en": "[0,1] height scalar field, typically from alg_field_mountain_contour.field.",
+      "access": "item"
+    },
+    {
+      "name": "maxElevationLayers",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "label": "最高抬升层数",
+      "description": "整数。0=平地不改变高度（仅 0 层）；1=最多抬高 1 个单元（0/1 两层）；N=层 0..N。",
+      "description-en": "Integer. 0=flat only (tier 0); 1=max one elevation unit (tiers 0 and 1); N=tiers 0..N."
+    },
+    {
+      "name": "namePrefix",
+      "type": "string",
+      "default": "等高线",
+      "label": "名称前缀",
+      "description": "各层默认分区名前缀，输出 namePrefix+层号（如 等高线0、等高线1）。",
+      "description-en": "Default partition name prefix; outputs namePrefix+tier index (e.g. Contour0, Contour1)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "partition",
+      "type": "grid",
+      "access": "list",
+      "label": "高度层分区",
+      "description": "每层高度一张 0/1 掩码，下标=高度层 0..maxElevationLayers，互斥且覆盖全部有效格。",
+      "description-en": "One 0/1 mask per elevation tier, index=tier 0..maxElevationLayers; mutually exclusive and covering all valid cells."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "层数",
+      "description": "partition 列表长度 = maxElevationLayers + 1。",
+      "description-en": "Partition list length = maxElevationLayers + 1."
+    },
+    {
+      "name": "levelGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "多值高度网格",
+      "description": "有效格值=高度层+1（1..count），无效格=0；可用于 region 求差或 grid_split_by_value。",
+      "description-en": "Valid cells hold tier+1 (1..count), invalid=0; usable for subtract or grid_split_by_value."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "各层 { id, name }，与 partition 下标对齐。",
+      "description-en": "{ id, name } per tier, aligned with partition indices."
+    }
+  ]
+}

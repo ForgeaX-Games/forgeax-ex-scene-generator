@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_max_rectangle" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#456ddf"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_max_rectangle)"/>
+
+  <path fill="rgba(0,0,0,0.55)" d="M4 4h16v16H4zM5 5h14v14H5z"/>
+  <rect x="7" y="7" width="10" height="10" fill="#fff"/>
+  <rect x="7" y="7" width="10" height="2" fill="rgba(255,255,255,0.35)"/>
+  <rect x="7" y="15" width="10" height="2" fill="rgba(255,255,255,0.35)"/>
+  <rect x="7" y="7" width="2" height="10" fill="rgba(255,255,255,0.35)"/>
+  <rect x="15" y="7" width="2" height="10" fill="rgba(255,255,255,0.35)"/>
+
+</svg>

@@ -1,0 +1,32 @@
+{
+  "id": "keypoint_layout",
+  "label": "关键点布局求解",
+  "name-en": "Keypoint Layout",
+  "description": "为 keypoint 层级树的每个节点求解一个 2D 位置（单位米）：把面积、clearance 净距离、方位（orientation）关系建模为可微能量项，叠加「父节点=子节点面积加权平均」「圆盘非重叠」「整体紧凑」正则，用确定性 Adam 梯度下降最小化总能量。输出与输入结构一致、但每个节点附带 position {x,y} 的 keypoint 字典，可直接接入 关键点关系图(keypoint_graph) 按真实点位绘制。算法内部（建模/权重/约束项/优化器）解耦，便于后续精调变量定义、约束与目标函数。",
+  "description-en": "Solve a 2D position (meters) for every node of a keypoint hierarchy. Area, clearance net-distance and orientation relations become differentiable energy terms, plus regularizers for parent = area-weighted child mean, circle non-overlap, and overall compactness, minimized by a deterministic Adam gradient descent. Outputs the same keypoint dict with a position {x,y} added to each node, ready to feed Keypoint Graph for metric drawing. Internals (model / weights / terms / optimizer) are decoupled for later tuning of variables, constraints and objective.",
+  "icon": "深色背景上几个大小不一的圆盘按物理关系散开并由箭头/虚线相连，整体紧凑，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["keypoint", "layout", "solver", "optimization", "scene", "graph", "force"],
+  "tag_labels": ["关键点", "布局", "求解", "优化", "场景", "关系图", "力导向"],
+  "inputs": [
+    {
+      "name": "keypoint",
+      "type": "dict",
+      "access": "item",
+      "required": true,
+      "label": "keypoint",
+      "description": "输入 keypoint 字典（{ hierarchy, relations }）。",
+      "description-en": "Input keypoint dict ({ hierarchy, relations })."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "keypoint",
+      "type": "dict",
+      "access": "item",
+      "label": "keypoint",
+      "description": "与输入结构一致、但每个节点新增 position {x,y}（米）的 keypoint 字典。",
+      "description-en": "The same keypoint dict with position {x,y} (meters) added to each node."
+    }
+  ]
+}

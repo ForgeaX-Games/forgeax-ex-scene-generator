@@ -1,0 +1,27 @@
+{
+  "id": "fourway_metadata_pack",
+  "label": "四方元数据打包",
+  "name-en": "FourWayMetadata",
+  "description": "把四方向场景资产的路由、视角、阻挡、连续性检查等信息打包成 coding 可消费的 JSON metadata。",
+  "description-en": "Pack four-way scene asset routing, view, blocking, and seamless-check evidence into JSON metadata for coding consumption.",
+  "version": "1.0.0",
+  "tags": ["image", "four-way", "metadata", "manifest"],
+  "tag_labels": ["图像", "四方连续", "元数据", "清单"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "route", "type": "string", "access": "item", "label": "资产类型" },
+    { "name": "view", "type": "string", "access": "item", "label": "视角" },
+    { "name": "groundPlane", "type": "string", "access": "item", "label": "地面平面" },
+    { "name": "blocking", "type": "boolean", "access": "item", "label": "是否阻挡" },
+    { "name": "direction", "type": "string", "access": "item", "label": "方向" },
+    { "name": "edgeReport", "type": "string", "access": "item", "label": "边缘检查 JSON" },
+    { "name": "semantic", "type": "string", "access": "list", "label": "语义标签" },
+    { "name": "avoidZones", "type": "string", "access": "list", "label": "避让区域" }
+  ],
+  "outputs": [
+    { "name": "metadata", "type": "string", "access": "item", "label": "元数据 JSON" },
+    { "name": "assetType", "type": "string", "access": "item", "label": "资产类型" },
+    { "name": "ready", "type": "boolean", "access": "item", "label": "是否就绪" }
+  ],
+  "alg_tag": ["manifest 元数据", "四方连续资产"]
+}

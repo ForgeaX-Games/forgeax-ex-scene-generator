@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_rule_indoor_outer_door" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c2410c"/>
+      <stop offset="100%" stop-color="#cc6337"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_rule_indoor_outer_door)"/>
+
+  <path fill="#fff" d="M3 3h18v18H3z"/>
+  <rect x="6" y="6" width="12" height="12" fill="#fff"/>
+  <rect x="9" y="9" width="6" height="6" fill="rgba(0,0,0,0.55)"/>
+  <rect x="10" y="10" width="4" height="4" fill="#fff"/>
+  <path fill="rgba(255,255,255,0.35)" d="M10 10h4v1H10z"/>
+
+</svg>

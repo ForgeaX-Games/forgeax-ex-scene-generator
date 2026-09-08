@@ -1,0 +1,28 @@
+{
+  "id": "g_rock",
+  "label": "石头",
+  "name-en": "GRock",
+  "description": "在 Geometry DSL 末尾追加 rock(radius, irregularity, seed, detail, stretch) 一行，生成不规则石头/岩块（icosphere 细分 + 基于 seed 的确定性顶点位移，三角网格产物，非 OCCT 实体）。用于地形装饰/瓦砾/岩石——同参数（含 seed）复算形状确定不变。radius=基准半径，irregularity=凹凸幅度占半径比例(0~1,默认0.35)，seed=随机种子(默认0)，detail=icosphere细分级别(0~2,默认1)，stretch(sx/sy/sz)=非等比拉伸做椭圆/长条状石头。产物不能参与 union/difference/intersection（同 pipe/sweep/section_loft 的既有限制）。同义 op：boulder。",
+  "description-en": "Append a `rock(radius, irregularity, seed, detail, stretch)` line to the Geometry DSL, generating an irregular rock/boulder (icosphere subdivision + seed-based deterministic vertex displacement; a triangle-mesh product, not an OCCT solid). For terrain decoration/rubble/boulders — same params (incl. seed) always reproduce the same shape. radius=base radius, irregularity=bump amplitude as a fraction of radius (0~1, default 0.35), seed=random seed (default 0), detail=icosphere subdivision level (0~2, default 1), stretch(sx/sy/sz)=non-uniform scale for elongated/flattened rocks. Cannot participate in union/difference/intersection (same limitation as pipe/sweep/section_loft). Synonym op: boulder.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "primitive", "rock", "boulder", "terrain", "cad"],
+  "tag_labels": ["几何", "基础形状", "石头", "地形", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "radius", "type": "number", "label": "基准半径", "default": 0.3 },
+    { "name": "irregularity", "type": "number", "label": "凹凸幅度", "default": 0.35, "description": "凹凸幅度占半径的比例，0~1", "description-en": "Bump amplitude as a fraction of radius, 0~1." },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 0, "description": "整数随机种子；同参数复算形状确定不变", "description-en": "Integer random seed; same params always reproduce the same shape." },
+    { "name": "detail", "type": "number", "label": "细分级别", "default": 1, "description": "icosphere 细分级别 0~2，越大越圆润越多面", "description-en": "Icosphere subdivision level 0~2; higher = rounder, more faces." },
+    { "name": "sx", "type": "number", "label": "X 拉伸", "default": 1 },
+    { "name": "sy", "type": "number", "label": "Y 拉伸", "default": 1 },
+    { "name": "sz", "type": "number", "label": "Z 拉伸", "default": 1 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" },
+    { "name": "error", "type": "string", "label": "错误", "description": "非致命错误信息", "description-en": "Non-fatal error string." }
+  ],
+  "projectTypes": ["asset3d"]
+}

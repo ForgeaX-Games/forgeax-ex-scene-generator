@@ -1,0 +1,31 @@
+{
+  "id": "alg_region_border_is_rect",
+  "label": "区域外缘是否为矩形",
+  "name-en": "RegionBorderIsRect",
+  "description": "检测区域的有效格是否紧贴其自身外接矩形四条边完全填满：true=外缘正好是一个方正矩形（如被裁切的开放海域/无限延伸的地表，外缘不代表天然边界）；false=外缘凹凸不规则（天然海岸线/地形轮廓）。常用于自动决定「是否把区域外缘当作距离场源」。",
+  "description-en": "Detects whether a region's valid cells completely fill all four edges of its own tight bounding box: true = the outer edge is an exact rectangle (e.g. a cropped open sea / terrain that just continues past the tile, not a natural boundary); false = the outer edge is irregular (a natural coastline/terrain outline). Useful for auto-deciding whether a region's outer edge should act as a distance-field source.",
+  "icon": "深色背景上一个完整实心方框代表矩形边缘，旁边一个边缘带缺口的不规则形状代表天然轮廓，两者对比，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "rect", "border", "boundary", "detect", "topology", "scenealg"],
+  "tag_labels": ["区域", "矩形", "边界", "检测", "拓扑", "场景算法"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1 或多值区域 grid，非零格为有效格。",
+      "description-en": "0/1 or multi-value region grid; non-zero cells are valid."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "isRect",
+      "type": "bool",
+      "label": "外缘是否为矩形",
+      "description": "true=有效格紧贴自身外接矩形四条边完全填满（外缘是方正矩形，无天然边界）；false=外接矩形边上存在空缺格（外缘是天然/有机轮廓）。无有效格时输出 false。",
+      "description-en": "true = valid cells fully cover all four edges of the tight bounding box (rectangular outer edge, no natural boundary); false = the bounding box edge has gaps (irregular/organic outer edge). Outputs false when there are no valid cells."
+    }
+  ]
+}

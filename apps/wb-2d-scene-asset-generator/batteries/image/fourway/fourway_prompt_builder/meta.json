@@ -1,0 +1,25 @@
+{
+  "id": "fourway_prompt_builder",
+  "label": "四方场景提示词",
+  "name-en": "FourWayPrompt",
+  "description": "根据 Four-Way 路由、主题、风格和视角生成适合 image_gen 的场景资产提示词。",
+  "description-en": "Build image-generation prompts for four-way scene assets from route, subject, style and view metadata.",
+  "version": "1.0.0",
+  "tags": ["image", "four-way", "prompt", "scene asset"],
+  "tag_labels": ["图像", "四方连续", "提示词", "场景资产"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "route", "type": "string", "access": "item", "label": "路由", "description": "material_seamless / decal_sprite / modular_tileset / prop_sprite" },
+    { "name": "subject", "type": "string", "access": "item", "label": "主题", "description": "要生成的具体对象或材质，例如 grass, crosswalk, stone wall" },
+    { "name": "style", "type": "string", "access": "item", "label": "风格", "description": "美术风格或 paint anchor 摘要" },
+    { "name": "view", "type": "string", "access": "item", "label": "视角", "description": "top_down / three_quarter / isometric" },
+    { "name": "groundPlane", "type": "string", "access": "item", "label": "地面平面", "description": "flat_ground / oblique_ground / iso_diamond" },
+    { "name": "direction", "type": "string", "access": "item", "label": "方向", "description": "horizontal / vertical / nw_se / ne_sw / any" }
+  ],
+  "outputs": [
+    { "name": "prompt", "type": "string", "access": "item", "label": "提示词" },
+    { "name": "role", "type": "string", "access": "item", "label": "生成角色" },
+    { "name": "route", "type": "string", "access": "item", "label": "路由透传" }
+  ],
+  "alg_tag": ["四方连续提示词", "场景资产生成"]
+}

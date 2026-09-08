@@ -1,0 +1,123 @@
+{
+  "id": "g_material",
+  "label": "材质",
+  "name-en": "GMaterial",
+  "description": "在 Geometry DSL 末尾追加 material(rgba=[r,g,b,a], texture=tex_ref?, metalness=.., roughness=..) 一行。texture 可选，接一个 g_texture 的 id；贴图只在 g_bake_object 烘 GLB 时生效。",
+  "description-en": "Append a `material(rgba=[r,g,b,a], texture=tex_ref?, metalness=.., roughness=..)` line. texture is optional (feed a g_texture id); texturing only takes effect through the g_bake_object GLB bake pipeline.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "geometry",
+    "material",
+    "color",
+    "cad"
+  ],
+  "tag_labels": [
+    "几何",
+    "材质",
+    "颜色",
+    "CAD"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": false,
+      "label": "几何",
+      "description": "上游 Geometry",
+      "description-en": "Upstream Geometry."
+    },
+    {
+      "name": "r",
+      "type": "number",
+      "label": "红 r",
+      "default": 0.7,
+      "description": "红 0-1",
+      "description-en": "Red 0-1."
+    },
+    {
+      "name": "g",
+      "type": "number",
+      "label": "绿 g",
+      "default": 0.7,
+      "description": "绿 0-1",
+      "description-en": "Green 0-1."
+    },
+    {
+      "name": "b",
+      "type": "number",
+      "label": "蓝 b",
+      "default": 0.7,
+      "description": "蓝 0-1",
+      "description-en": "Blue 0-1."
+    },
+    {
+      "name": "a",
+      "type": "number",
+      "label": "不透明 a",
+      "default": 1,
+      "description": "不透明度 0-1",
+      "description-en": "Alpha 0-1."
+    },
+    {
+      "name": "texture_id",
+      "type": "string",
+      "required": false,
+      "label": "贴图 id",
+      "default": "",
+      "description": "可选：上游 g_texture 的 id；只在 g_bake_object 烘焙 GLB 时生效",
+      "description-en": "Optional: id of an upstream g_texture; only takes effect through g_bake_object's GLB bake."
+    },
+    {
+      "name": "metalness",
+      "type": "number",
+      "label": "金属度",
+      "default": 0.05,
+      "description": "金属度 0..1",
+      "description-en": "Metalness 0..1."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "label": "粗糙度",
+      "default": 0.48,
+      "description": "粗糙度 0..1",
+      "description-en": "Roughness 0..1."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空 = 自动 mat{n}",
+      "description-en": "Custom id; empty = auto mat{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加后 Geometry",
+      "description-en": "Geometry after appending."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 material 的 id",
+      "description-en": "Id of the material line."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "非致命错误信息（校验失败时返回，几何原样透传）",
+      "description-en": "Non-fatal error string (returned on validation failure; geometry passes through unchanged)."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

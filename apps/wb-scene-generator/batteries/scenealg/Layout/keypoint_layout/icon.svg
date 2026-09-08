@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Keypoint layout battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#161a2e" stroke="#5b6aa0" stroke-width="1.2"/>
+  <line x1="8.4" y1="8" x2="15.2" y2="6.4" stroke="#34d399" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="8.4" y1="8" x2="10.6" y2="15.4" stroke="#9aa7d8" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <line x1="15.2" y1="6.4" x2="10.6" y2="15.4" stroke="#c4b5fd" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <circle cx="8.4" cy="8" r="3" fill="#1d2440" stroke="#7d8fe0" stroke-width="1.3"/>
+  <circle cx="15.2" cy="6.4" r="2" fill="#1d2440" stroke="#34d399" stroke-width="1.3"/>
+  <circle cx="10.6" cy="15.4" r="2.6" fill="#1d2440" stroke="#c4b5fd" stroke-width="1.3"/>
+</svg>

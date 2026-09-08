@@ -1,0 +1,20 @@
+{
+  "id": "multi_tier_houses",
+  "label": "多样聚落建筑群",
+  "name-en": "MultiTierHouses",
+  "description": "程序化生成多样化3A山谷聚落建筑群（包含单层村舍、双层挑楼住宅、大开间农庄谷仓与哨所木屋）。",
+  "description-en": "Procedurally generate varied architectural white-box houses including cottages, 2-story townhouses with overhangs, and barns.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "houses", "architecture"],
+  "inputs": [
+    { "name": "plots", "type": "list", "access": "item", "label": "聚落宅基列表" },
+    { "name": "points", "type": "point2d", "access": "list", "label": "宅基点位" },
+    { "name": "heightGrid", "type": "grid", "access": "item", "label": "高度场" },
+    { "name": "yaw", "type": "number", "access": "list", "label": "建筑朝向" },
+    { "name": "types", "type": "string", "access": "list", "label": "建筑类型列表" }
+  ],
+  "outputs": [
+    { "name": "mesh", "type": "mesh", "access": "item", "label": "建筑Mesh" },
+    { "name": "count", "type": "number", "access": "item", "label": "建筑数量" }
+  ]
+}

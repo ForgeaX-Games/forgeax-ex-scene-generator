@@ -1,0 +1,30 @@
+{
+  "name": "@wb-2d-scene-asset-generator/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build:vendor": "node ../scripts/build-vendor.mjs",
+    "prebuild": "node ../scripts/build-vendor.mjs",
+    "build": "tsc -b",
+    "dev": "tsx --watch src/main.ts",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@forgeax/node-runtime": "workspace:*",
+    "@forgeax/batteries-common": "workspace:*",
+    "@forgeax/editor-host": "workspace:*",
+    "fastify": "^5.0.0",
+    "@fastify/websocket": "^11.0.0",
+    "jpeg-js": "^0.4.4"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.0",
+    "tsx": "^4.0.0",
+    "vitest": "^3.0.0",
+    "ws": "^8.18.0"
+  }
+}

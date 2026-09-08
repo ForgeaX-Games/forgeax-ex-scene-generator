@@ -1,0 +1,8 @@
+{
+  "id": "side_platform",
+  "name": "side_platform",
+  "tag": "side_scroller",
+  "template": "## 任务\n生成一张**横版 2D 游戏浮空平台**精灵图，纯正侧视、薄板造型，背景为纯色便于后续抠图。\n\n## 平台信息\n- **画风 (style)**: [style]\n- **材质描述 (material_description)**: [material_description]\n- **源图背景色 (source_background)**: [source_background]（绿色系主体→magenta/hot-pink；其他不透明主体→green 或高对比纯色）\n\n## ⚠️ 造型约束（必须严格遵守）\n```\n1. **纯正侧视**：相机完全平行于平台正面，只见正面，绝无 3/4 透视、不可见顶面、不可见底面、不倾斜。\n2. **横长薄板**：宽 ≫ 高，宽高比约 6:1～10:1，薄板造型，主体厚度不超过表面细节，像\"漂浮的石檐\"而非\"方块\"。\n3. **居中留白**：平台居中，四周为纯色留白，便于裁切；背景不投射阴影。\n4. **有限配色**：使用契合 [style] 的有限调色板，无渐变、无噪点填充、无发光。\n5. **有机装饰仅在顶边**：苔藓、藤蔓、根须等只允许出现在顶面边缘并略垂于下方，平台主体内部不加装饰。\n```\n\n## 风格与背景\n- **画风**：严格按 [style] 表现平台材质与质感，使其与场景同属一个世界。\n- **源图背景**：使用 [source_background] 纯色平涂背景，无纹理、无阴影，与主体对比强烈以便 AI 抠图（颜色可略漂移，不靠硬编码色键）。\n\n## 输出要求\n生成一张 [style] 风格的横版浮空平台，纯正侧视薄板造型，[source_background] 纯色背景，材质符合 [material_description]。\n\n**核心特征必须保持一致**：\n- 纯正侧视、无 3/4 透视、不可见顶面 ✓\n- 横长薄板、宽高比约 8:1 ✓\n- 居中留白、背景不投影 ✓\n- 有限配色、无渐变/发光，装饰仅在顶边 ✓\n- [source_background] 高对比纯色可去底背景 ✓",
+  "vars": ["style", "material_description", "source_background"],
+  "createdAt": 1782000000011
+}

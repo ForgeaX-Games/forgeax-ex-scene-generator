@@ -1,0 +1,3 @@
+# SQLite WAL 临时文件（运行时产物，不追踪）
+library.db-shm
+library.db-wal

@@ -1,0 +1,26 @@
+{
+  "id": "g_extrude_with_holes",
+  "label": "带孔拉伸",
+  "name-en": "GExtrudeWithHoles",
+  "description": "将外轮廓 profile 减去若干孔洞 profile 后沿 Z 轴拉伸。何时用：一次成型带孔的板/面板（螺孔、通风口框、镂空面板），比先拉伸再 difference 更省事。",
+  "description-en": "Extrude an outer profile with one or more hole profiles subtracted. Use when: making a perforated plate/panel in one step (bolt holes, vent frame, cut-out panel) instead of extrude-then-difference.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "profile", "extrude", "cad"],
+  "tag_labels": ["几何", "Profile", "拉伸", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（必须含 outer_id 与全部 hole_ids 所指 profile）", "description-en": "Upstream Geometry; must contain the outer_id and all hole_ids profiles." },
+    { "name": "outer_id", "type": "string", "label": "外轮廓 id", "default": "", "description": "外轮廓 profile id；从上游 Profile 节点的 id 输出连入", "description-en": "Id of the outer profile. Feed from an upstream Profile node's `id` output." },
+    { "name": "hole_ids", "type": "string", "label": "孔洞 id 列表", "default": "", "description": "孔洞 profile id 列表，用逗号/空格/分号分隔；每个来自一个上游 Profile 节点的 id", "description-en": "Delimited list (comma/space/semicolon) of hole profile ids; each from an upstream Profile node's `id`." },
+    { "name": "height", "type": "number", "label": "高度", "default": 0.2, "description": "沿 Z 的拉伸高度（米）", "description-en": "Extrusion height along Z (meters)." },
+    { "name": "center", "type": "boolean", "label": "居中", "default": true, "description": "true = 关于 Z=0 居中", "description-en": "true = center about Z=0." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 ext{n}", "description-en": "Custom id; empty = auto ext{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加带孔实体后的 Geometry", "description-en": "Geometry after appending the perforated solid." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id（供下游引用）；引用失败时为空串", "description-en": "Id of the new shape (for downstream refs). Empty string when a ref failed." },
+    { "name": "error", "type": "string", "label": "错误", "description": "outer_id / 任一 hole_id 缺失或找不到时的原因；非空表示未追加任何几何，批次仍可能报 ok，务必读取", "description-en": "Reason when outer_id or any hole_id is missing or not found. Non-empty means nothing was appended even though the batch may report ok — always read it." }
+  ],
+  "projectTypes": ["asset3d"]
+}

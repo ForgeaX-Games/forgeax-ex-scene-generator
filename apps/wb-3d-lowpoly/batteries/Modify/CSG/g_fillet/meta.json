@@ -1,0 +1,26 @@
+{
+  "id": "g_fillet",
+  "label": "圆角/倒角",
+  "name-en": "GFillet",
+  "description": "对一个实体 shape 的边做圆角(round)或斜角(chamfer)，追加 fillet/chamfer 到 Geometry DSL。何时用：软化机箱/面板/支架等实体的锐边（type=round 圆角、type=chamfer 斜切）；只作用于 CSG/primitive 实体，不能倒 pipe/sweep/section_loft 产生的 mesh。edges=vertical 只倒平行 Z 的竖直边（盒体四立边），edges=all 倒所有边。",
+  "description-en": "Round (fillet) or bevel (chamfer) the edges of a solid shape, appending `fillet`/`chamfer` to the Geometry DSL. Use when: softening the sharp edges of a solid (enclosure, panel, bracket) — `type=round` for a rounded fillet, `type=chamfer` for a flat bevel. Operates on CSG/primitive solids only, NOT on meshes from pipe/sweep/section_loft. `edges=vertical` only affects edges parallel to Z (a box's four upright edges); `edges=all` affects every edge.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "csg", "fillet", "chamfer", "bevel", "cad"],
+  "tag_labels": ["几何", "CSG", "圆角", "倒角", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（必须含 shape_id 所指实体）", "description-en": "Upstream Geometry; must contain the solid referenced by shape_id." },
+    { "name": "shape_id", "type": "string", "label": "形状 id", "default": "", "description": "被倒角的实体 shape id；从上游 shape（g_box / g_difference / g_extrude / …）的 id 输出端口连入，或填其 id 参数", "description-en": "Id of the solid to bevel. Feed from an upstream shape's `id` output port (g_box / g_difference / g_extrude / …), or set the shape's `id` param and pass the literal." },
+    { "name": "radius", "type": "number", "label": "半径/距离", "default": 0.01, "description": "圆角半径 / 斜角距离（米）。取值需小于相邻面的一半，过大 OCCT 会拒绝并回退 AABB", "description-en": "Fillet radius / chamfer distance (meters). Keep it below half the adjacent face; too large and OCCT rejects it (falls back to an AABB box)." },
+    { "name": "type", "type": "string", "label": "类型", "default": "round", "options": ["round", "chamfer"], "description": "round = 圆角（fillet，弧面过渡）；chamfer = 斜角（平切）", "description-en": "round = rounded fillet (arc); chamfer = flat bevel cut." },
+    { "name": "edges", "type": "string", "label": "选边", "default": "all", "options": ["all", "vertical"], "description": "all = 所有边；vertical = 仅平行 Z 轴的竖直边（如盒体四条立边）", "description-en": "all = every edge; vertical = only edges parallel to the Z axis (e.g. a box's four upright edges)." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 fillet{n} / chamfer{n}", "description-en": "Custom id for this result; empty = auto fillet{n} / chamfer{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加圆角/倒角后的 Geometry", "description-en": "Geometry after appending the fillet/chamfer." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行结果的 id（供下游 g_part / 其它 CSG 引用）；引用失败时为空串", "description-en": "Id of the result line (for downstream g_part / CSG). Empty string when the ref failed." },
+    { "name": "error", "type": "string", "label": "错误", "description": "shape_id 缺失/找不到、radius 非正、type/edges 非法时的原因；非空表示未追加任何几何——批次仍可能报 ok，务必读取此端口", "description-en": "Reason when shape_id is missing/not found, radius is non-positive, or type/edges are invalid. Non-empty means this op appended NOTHING even though the batch may report ok — always read this port." }
+  ],
+  "projectTypes": ["asset3d"]
+}

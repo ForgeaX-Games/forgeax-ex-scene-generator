@@ -1,0 +1,21 @@
+{
+  "id": "complex_indoor_doors",
+  "label": "复杂室内开门",
+  "description": "在已完成的室内布局中，通过共享墙壁开门",
+  "description-en": "Carves doors through shared walls between connected rooms in a completed layout.",
+  "icon": "两个相邻矩形房间中间的墙壁有一段红色缺口表示门洞，俯视平面图，扁平插画风格简洁小图标主色2种",
+  "version": "1.0.0",
+  "tags": ["indoor", "doors", "post-process"],
+  "tag_labels": ["室内", "门", "后处理"],
+  "inputs": [
+    { "name": "inputGrid", "type": "grid", "label": "输入网格", "description": "完成布局的网格", "description-en": "Completed layout grid" },
+    { "name": "roomList", "type": "array", "label": "房间列表", "description": "房间数据", "description-en": "Room data" },
+    { "name": "connectionList", "type": "array", "label": "连接列表", "description": "房间连接关系", "description-en": "Room connections" },
+    { "name": "doorWidthMin", "type": "number", "label": "最小门宽", "description": "门洞最小宽度(格数)，不小于2", "description-en": "Minimum door width in cells", "default": 2 },
+    { "name": "seed", "type": "number", "label": "随机种子", "description": "随机种子，0使用当前时间戳", "description-en": "Random seed; 0 uses timestamp", "default": 0 }
+  ],
+  "outputs": [
+    { "name": "outputGrid", "type": "grid", "label": "输出网格", "description": "含门洞的最终网格", "description-en": "Final grid with doors" },
+    { "name": "nameList", "type": "array", "label": "名称清单", "description": "网格值与名称的映射", "description-en": "Grid value to name mapping" }
+  ]
+}

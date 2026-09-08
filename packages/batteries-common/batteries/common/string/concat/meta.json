@@ -1,0 +1,63 @@
+{
+  "id": "string_concat",
+  "label": "拼接",
+  "name-en": "Concat",
+  "description": "把两个字符串首尾相接成一个字符串；可选地在中间插入分隔符。支持 DataTree 批处理（多 branch 时按 lacing 逐对拼接）。",
+  "description-en": "Concatenate two strings into one, optionally joined by a separator. Supports DataTree batching (per-branch pairing via lacing).",
+  "icon": "两个文本片段首尾相接成一段，中间一个连接点，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "lacing": "longest",
+  "tags": [
+    "string",
+    "concat",
+    "join",
+    "basic",
+    "utility"
+  ],
+  "tag_labels": [
+    "字符串",
+    "拼接",
+    "连接",
+    "基础",
+    "工具"
+  ],
+  "inputs": [
+    {
+      "name": "a",
+      "type": "string",
+      "access": "item",
+      "label": "字符串 A",
+      "default": "",
+      "description": "第一个字符串",
+      "description-en": "First string."
+    },
+    {
+      "name": "b",
+      "type": "string",
+      "access": "item",
+      "label": "字符串 B",
+      "default": "",
+      "description": "第二个字符串",
+      "description-en": "Second string."
+    },
+    {
+      "name": "separator",
+      "type": "string",
+      "access": "tree",
+      "label": "分隔符",
+      "default": "",
+      "description": "插入到 A 与 B 之间的分隔符；默认为空表示纯拼接",
+      "description-en": "Separator inserted between A and B; empty by default for plain concatenation."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "string",
+      "access": "item",
+      "label": "结果",
+      "description": "拼接结果",
+      "description-en": "Concatenation result."
+    }
+  ]
+}

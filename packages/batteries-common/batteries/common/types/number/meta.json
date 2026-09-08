@@ -1,0 +1,41 @@
+{
+  "id": "type_number",
+  "label": "数值",
+  "name-en": "Number",
+  "description": "原样透传 number：输入的整棵 DataTree 不做任何变换直接输出，branches/paths/version 全部保持不变。用于连线、分流、占位或类型标注。",
+  "description-en": "Pass a number through unchanged: the entire input DataTree is emitted as-is with no transform; branches/paths/version are all preserved. Useful for wiring, fan-out, placeholder, or type annotation.",
+  "version": "1.0.0",
+  "tags": [
+    "type",
+    "passthrough",
+    "identity",
+    "number"
+  ],
+  "tag_labels": [
+    "类型",
+    "透传",
+    "原样",
+    "数值"
+  ],
+  "inputs": [
+    {
+      "name": "value",
+      "type": "number",
+      "access": "tree",
+      "required": true,
+      "label": "值",
+      "description": "输入 number；整棵 DataTree 将被原样透传，不做任何修改",
+      "description-en": "Input number; the entire DataTree is passed through unchanged."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "value",
+      "type": "number",
+      "access": "tree",
+      "label": "值",
+      "description": "与输入完全一致的 number（同一棵 DataTree，结构零变换）",
+      "description-en": "The same number as the input (identical DataTree, zero transform)."
+    }
+  ]
+}

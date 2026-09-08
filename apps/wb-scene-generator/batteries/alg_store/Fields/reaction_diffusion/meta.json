@@ -1,0 +1,138 @@
+{
+  "id": "reaction_diffusion",
+  "label": "Gray-Scott 反应扩散",
+  "description": "Gray-Scott 反应扩散模拟：A、B 两种化学物质相互反应+扩散，根据 F/K 参数生成斑点、条纹、迷宫、珊瑚等有机纹理。",
+  "description-en": "Gray-Scott reaction-diffusion simulation. Two chemicals A and B react and diffuse on a grid; depending on F/K parameters it produces spots, stripes, mazes, coral, mitosis, and other organic textures.",
+  "icon": "网格上分布着有机的不规则斑纹和条纹图案，形似豹纹或珊瑚生长纹理，斑纹边界柔和，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["algorithm", "field", "reaction_diffusion", "gray_scott", "organic"],
+  "tag_labels": ["算法", "场", "反应扩散", "Gray-Scott", "有机纹理"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "default": 128,
+      "min": 16,
+      "max": 512,
+      "description": "输出网格宽度。",
+      "description-en": "Output grid width."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "default": 128,
+      "min": 16,
+      "max": 512,
+      "description": "输出网格高度。",
+      "description-en": "Output grid height."
+    },
+    {
+      "name": "iterations",
+      "type": "number",
+      "label": "迭代步数",
+      "default": 5000,
+      "min": 100,
+      "max": 50000,
+      "description": "模拟的时间步数，越多斑纹越成熟。",
+      "description-en": "Simulation time-steps; more = more developed pattern."
+    },
+    {
+      "name": "preset",
+      "type": "string",
+      "label": "预设",
+      "default": "spots",
+      "options": ["custom", "spots", "stripes", "maze", "coral", "mitosis", "worms"],
+      "description": "选择预设会自动覆盖 feedRate / killRate；custom 时使用手填值。",
+      "description-en": "Preset auto-overrides feedRate/killRate; choose custom to use manual values."
+    },
+    {
+      "name": "feedRate",
+      "type": "number",
+      "label": "投入速率 F",
+      "default": 0.055,
+      "description": "A 物质投入速率（preset=custom 时生效）。",
+      "description-en": "Feed rate of chemical A (only when preset=custom)."
+    },
+    {
+      "name": "killRate",
+      "type": "number",
+      "label": "消耗速率 K",
+      "default": 0.062,
+      "description": "B 物质消耗速率（preset=custom 时生效）。",
+      "description-en": "Kill rate of chemical B (only when preset=custom)."
+    },
+    {
+      "name": "diffuseA",
+      "type": "number",
+      "label": "A 扩散",
+      "default": 1.0,
+      "description": "A 物质扩散系数。",
+      "description-en": "Diffusion coefficient of A."
+    },
+    {
+      "name": "diffuseB",
+      "type": "number",
+      "label": "B 扩散",
+      "default": 0.5,
+      "description": "B 物质扩散系数。",
+      "description-en": "Diffusion coefficient of B."
+    },
+    {
+      "name": "dt",
+      "type": "number",
+      "label": "时间步长",
+      "default": 1.0,
+      "description": "积分时间步长，过大会发散。",
+      "description-en": "Integration time step; too large causes blow-up."
+    },
+    {
+      "name": "seedDensity",
+      "type": "number",
+      "label": "初始扰动密度",
+      "default": 0.05,
+      "min": 0,
+      "max": 1,
+      "description": "初始随机扰动 B 物质点的密度 0~1。",
+      "description-en": "Density 0~1 of initial random B perturbation seeds."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 使用当前时间戳。",
+      "description-en": "Random seed; 0 uses current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "gridB",
+      "type": "grid",
+      "label": "B 浓度",
+      "description": "B 物质浓度图，0~1 连续值，纹理通常出现在这里。",
+      "description-en": "Concentration of B (0~1 continuous). Patterns usually appear here."
+    },
+    {
+      "name": "gridA",
+      "type": "grid",
+      "label": "A 浓度",
+      "description": "A 物质浓度图，0~1 连续值。",
+      "description-en": "Concentration of A (0~1 continuous)."
+    },
+    {
+      "name": "maskGrid",
+      "type": "grid",
+      "label": "二值掩码",
+      "description": "B>0.3 阈值二值化，1=有 B，0=无 B。",
+      "description-en": "Binary mask thresholded at B>0.3 (1=B present, 0=otherwise)."
+    }
+  ],
+  "alg_tag": [
+    "有机纹理生成",
+    "豹纹/迷宫/珊瑚图案",
+    "生物形态发生模拟"
+  ]
+}

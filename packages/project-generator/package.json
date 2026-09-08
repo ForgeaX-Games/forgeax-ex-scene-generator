@@ -1,0 +1,47 @@
+{
+  "name": "@forgeax/project-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Project-local Generator SDK, static compile, and child-process sandbox",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./sdk": {
+      "source": "./src/sdk.ts",
+      "types": "./dist/sdk.d.ts",
+      "import": "./dist/sdk.js"
+    },
+    "./geom": {
+      "source": "./src/geom.ts",
+      "types": "./dist/geom.d.ts",
+      "import": "./dist/geom.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@forgeax/node-runtime": "workspace:*",
+    "@forgeax/scene-authoring": "workspace:*",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

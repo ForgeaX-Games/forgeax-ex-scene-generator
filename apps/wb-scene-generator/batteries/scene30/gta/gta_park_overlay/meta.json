@@ -1,0 +1,19 @@
+{
+  "id": "gta_park_overlay",
+  "label": "GTA 公园绿地覆盖",
+  "description": "从功能区网格中提取绿地公园区域（值413），输出 parkGrid 供渲染层叠加显示。",
+  "description-en": "Extracts park zones (value 413) from the zone grid and outputs a parkGrid for render-layer overlay.",
+  "icon": "🌳",
+  "version": "1.0.0",
+  "tags": ["gta", "park", "green", "zone", "overlay"],
+  "tag_labels": ["GTA", "公园", "绿地", "叠加层"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "zoneGrid", "type": "grid", "label": "功能区网格 (来自 gta_zones)" }
+  ],
+  "outputs": [
+    { "name": "parkGrid", "type": "grid", "label": "公园绿地网格 (值413)" },
+    { "name": "outputGrid", "type": "grid", "label": "公园预览" },
+    { "name": "cellCount", "type": "number", "label": "公园格子数" }
+  ]
+}

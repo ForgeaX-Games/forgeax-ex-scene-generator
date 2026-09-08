@@ -1,0 +1,145 @@
+{
+  "id": "cave_tunnel",
+  "label": "洞穴隧道",
+  "description": "在岩石区域内生成分叉洞穴隧道。基于 3D Perlin 噪声方向偏移、宽度衰减、递归分支，产生树状洞穴网络",
+  "description-en": "Generates branching cave tunnels inside rock regions. Uses 3D Perlin noise direction bias, width decay, and recursive branching to produce tree-like cave networks.",
+  "icon": "从一个入口向内延伸的分叉隧道，主隧道逐渐变窄，两侧有分支隧道岔开，类似地下洞穴结构，简洁线条风格",
+  "version": "2.0.0",
+  "autoIterate": true,
+  "tags": [
+    "terrain",
+    "cave",
+    "tunnel",
+    "branch",
+    "random_walk",
+    "pcg"
+  ],
+  "tag_labels": [
+    "地形",
+    "洞穴",
+    "隧道",
+    "分支",
+    "随机行走",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "输入网格掩码，非零区域视为岩石（可挖掘区域），0 为背景",
+      "description-en": "Input grid mask; non-zero cells are treated as rock (diggable), 0 is background."
+    },
+    {
+      "name": "maxOpenTunnels",
+      "type": "number",
+      "label": "开放隧道上限",
+      "default": 3,
+      "min": 0,
+      "max": 10,
+      "description": "每个连通岩石区域的开放隧道数量上限（从边缘向内挖掘）。实际数量根据区域面积按 5.8/万 的密度自动计算",
+      "description-en": "Max open tunnels per connected rock group (dig inward from edges). Actual count auto-computed at 5.8 per 10000 cells."
+    },
+    {
+      "name": "maxClosedTunnels",
+      "type": "number",
+      "label": "封闭隧道上限",
+      "default": 1,
+      "min": 0,
+      "max": 5,
+      "description": "每个连通岩石区域的封闭隧道数量上限（从内部向随机方向挖掘）。实际数量根据区域面积按 2.5/万 的密度自动计算",
+      "description-en": "Max closed tunnels per connected rock group (dig from interior in random direction). Actual count auto-computed at 2.5 per 10000 cells."
+    },
+    {
+      "name": "minGroupSize",
+      "type": "number",
+      "label": "最小区域面积",
+      "default": 20,
+      "min": 1,
+      "max": 5000,
+      "description": "连通岩石区域的最小像素数，低于此值的区域不会生成隧道。原版为 300（适配 250x250），此处降低以适配 50x50",
+      "description-en": "Minimum pixel count for a connected rock group; smaller groups are skipped. Original is 300 (for 250x250), lowered for 50x50."
+    },
+    {
+      "name": "tunnelWidth",
+      "type": "number",
+      "label": "隧道宽度",
+      "default": 0,
+      "min": 0,
+      "max": 20,
+      "description": "隧道初始直径。0=自动根据岩石区域面积缩放（100格→2, 300格→4, 3000格→5.5）；>0 则使用固定值",
+      "description-en": "Initial tunnel diameter. 0=auto-scale by group size via WIDTH_CURVE (100→2, 300→4, 3000→5.5); >0 uses fixed value."
+    },
+    {
+      "name": "widthDecay",
+      "type": "number",
+      "label": "宽度衰减",
+      "default": 0.034,
+      "min": 0.001,
+      "max": 1,
+      "description": "每步隧道宽度减少量，值越大隧道越短",
+      "description-en": "Width reduction per step; larger values produce shorter tunnels."
+    },
+    {
+      "name": "minWidth",
+      "type": "number",
+      "label": "最小宽度",
+      "default": 1.4,
+      "min": 0.5,
+      "max": 10,
+      "description": "隧道宽度低于此值时停止挖掘",
+      "description-en": "Stop digging when tunnel width drops below this value."
+    },
+    {
+      "name": "branchChance",
+      "type": "number",
+      "label": "分支概率",
+      "default": 0.1,
+      "min": 0,
+      "max": 1,
+      "description": "每步生成分支隧道的概率，默认 10%",
+      "description-en": "Per-step probability of spawning a branch tunnel; default 10%."
+    },
+    {
+      "name": "branchAfter",
+      "type": "number",
+      "label": "分支最小步数",
+      "default": 15,
+      "min": 0,
+      "max": 100,
+      "description": "隧道至少行进多少步后才允许分支",
+      "description-en": "Minimum steps before branching is allowed."
+    },
+    {
+      "name": "dirChangeSpeed",
+      "type": "number",
+      "label": "方向变化幅度",
+      "default": 8,
+      "min": 0,
+      "max": 45,
+      "description": "每步最大方向变化角度（度）",
+      "description-en": "Max direction change per step in degrees."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机数种子，0 使用默认种子。不同值产生不同隧道布局",
+      "description-en": "Random seed; 0 uses default seed. Different seeds produce different tunnel layouts."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "隧道网格",
+      "description": "输出网格，隧道区域值为 1，其余为 0",
+      "description-en": "Output grid with tunnel cells set to 1 and all others 0."
+    }
+  ],
+  "alg_tag": [
+    "方向随机行走挖掘洞穴",
+    "递归分支生成树状隧道网络"
+  ]
+}

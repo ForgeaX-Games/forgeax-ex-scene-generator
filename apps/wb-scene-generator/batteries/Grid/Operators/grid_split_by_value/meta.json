@@ -1,0 +1,39 @@
+{
+  "id": "grid_split_by_value",
+  "label": "按值拆分",
+  "name-en": "SplitValue",
+  "description": "将多值网格按不同值拆分为多个独立网格组成的列表，每个子网格只保留对应值，其余位置填0。",
+  "description-en": "Splits a multi-value grid into a list of grids, one per distinct non-zero value, preserving the original value at matching cells and 0 elsewhere.",
+  "icon": "一个彩色多值网格从中央向四周分裂成多个单色小网格，每个小网格只保留一种颜色的色块，背景简洁浅灰，扁平插画风格，主色为紫色和橙色。",
+  "version": "2.0.0",
+  "tags": ["grid", "split", "decompose", "mask", "layer"],
+  "tag_labels": ["网格", "拆分", "分解", "掩码", "图层"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "待拆分的多值网格",
+      "description-en": "The multi-value grid to split."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grids",
+      "type": "grid",
+      "access": "list",
+      "label": "网格列表",
+      "description": "拆分后的网格列表，每个元素是一个只含对应值的二维网格；每个子网格成为独立子分支",
+      "description-en": "List of grids, one per distinct non-zero value in the input; each becomes its own child branch."
+    },
+    {
+      "name": "values",
+      "type": "number",
+      "access": "list",
+      "label": "值列表",
+      "description": "与 grids 一一对应的拆分键（升序）。等高线场景可接到 grid2node.z，按层写体素高度。",
+      "description-en": "Split keys aligned with grids (ascending). For elevation bands, wire to grid2node.z."
+    }
+  ]
+}

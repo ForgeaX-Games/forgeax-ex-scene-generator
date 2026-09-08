@@ -1,0 +1,127 @@
+{
+  "id": "opensimplex2s_noise",
+  "label": "OpenSimplex2S 噪声",
+  "description": "基于 FastNoiseLite 的 OpenSimplex2S 噪声生成器，OpenSimplex2 的平滑变体，质量更高但计算略慢，支持分形叠加",
+  "description-en": "OpenSimplex2S noise generator based on FastNoiseLite, a smoother variant of OpenSimplex2 with higher quality, supporting fractal types.",
+  "icon": "平滑渐变的有机纹理，圆润的等值线区域层层包裹，比普通噪声更丝滑流畅的过渡效果，简洁扁平风格",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "noise",
+    "opensimplex2s",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "噪声",
+    "OpenSimplex2S",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "default": 128,
+      "min": 1,
+      "max": 1024,
+      "description": "输出网格宽度（像素）",
+      "description-en": "Output grid width in pixels."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "default": 128,
+      "min": 1,
+      "max": 1024,
+      "description": "输出网格高度（像素）",
+      "description-en": "Output grid height in pixels."
+    },
+    {
+      "name": "frequency",
+      "type": "number",
+      "label": "频率",
+      "default": 0.02,
+      "description": "噪声采样频率，值越大细节越密集",
+      "description-en": "Noise sampling frequency; higher values produce denser detail."
+    },
+    {
+      "name": "fractalType",
+      "type": "string",
+      "label": "分形类型",
+      "default": "FBm",
+      "description": "分形叠加方式：None=单层, FBm=分形布朗运动, Ridged=脊状, PingPong=乒乓",
+      "description-en": "Fractal type: None, FBm, Ridged, or PingPong.",
+      "options": [
+        "None",
+        "FBm",
+        "Ridged",
+        "PingPong"
+      ]
+    },
+    {
+      "name": "octaves",
+      "type": "number",
+      "label": "八度数",
+      "default": 4,
+      "min": 1,
+      "max": 8,
+      "description": "分形叠加层数，层数越多细节越丰富",
+      "description-en": "Number of fractal octaves; more octaves add finer detail."
+    },
+    {
+      "name": "lacunarity",
+      "type": "number",
+      "label": "间隙度",
+      "default": 2,
+      "description": "每层八度的频率倍增系数",
+      "description-en": "Frequency multiplier per octave."
+    },
+    {
+      "name": "gain",
+      "type": "number",
+      "label": "增益",
+      "default": 0.5,
+      "description": "每层八度的振幅衰减系数",
+      "description-en": "Amplitude multiplier per octave."
+    },
+    {
+      "name": "offsetX",
+      "type": "number",
+      "label": "X偏移",
+      "default": 0,
+      "description": "噪声采样的X偏移量，用于平移噪声图案",
+      "description-en": "X offset for noise sampling, used to pan the noise pattern."
+    },
+    {
+      "name": "offsetY",
+      "type": "number",
+      "label": "Y偏移",
+      "default": 0,
+      "description": "噪声采样的Y偏移量，用于平移噪声图案",
+      "description-en": "Y offset for noise sampling, used to pan the noise pattern."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 1337,
+      "description": "随机种子，不同种子产生不同的噪声图案",
+      "description-en": "Random seed; different seeds produce different noise patterns."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "噪声网格",
+      "description": "输出网格，单层值域约 0~1（连续浮点值）；启用 FBm/Ridged/PingPong 分形时极值可能略超出该区间。渲染器自动识别为连续值网格，使用单色 + 透明度渐变显示",
+      "description-en": "Output grid; single-octave values are in ~[0,1] (continuous floats). Fractal modes (FBm/Ridged/PingPong) may slightly exceed this range. Renderer auto-detects as continuous grid."
+    }
+  ],
+  "alg_tag": [
+    "梯度噪声"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "id": "alg_topology_pick_windows",
+  "label": "拓扑开窗",
+  "name-en": "TopologyPickWindows",
+  "description": "在输入拓扑（墙状 0/1 grid）上挑出 count 个宽度为 width 的「对外」窗户段。候选段必须在两端各延一格仍是非零墙体（避免落在端点），且整个段的两个垂直方向的相邻行/列都为空（确保是外墙面）。random=true 用 seed 打散候选，否则按方向+坐标排序后均匀采样。输出只包含被挑中的窗格。",
+  "description-en": "Picks `count` outward-facing window segments of `width` cells from an input topology (wall-like 0/1 grid). A candidate must remain wall on both ends (one cell extension) and have empty cells on both perpendicular sides along its full length (i.e. an exterior wall face). With random=true, candidates are shuffled by seed; otherwise sorted by dir+coord and uniformly sampled. Output is the chosen window cells.",
+  "icon": "深色背景上一段水平细线中央显示一段亮色短亮窗，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "topology",
+    "window",
+    "opening",
+    "subsample"
+  ],
+  "tag_labels": [
+    "拓扑",
+    "窗",
+    "开洞",
+    "子采样"
+  ],
+  "inputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "required": true,
+      "label": "输入拓扑",
+      "description": "要在其上开窗的 0/1 拓扑 grid（通常是墙体）。",
+      "description-en": "0/1 topology grid (typically a wall) where windows will be picked."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "default": 4,
+      "min": 0,
+      "precision": 0,
+      "label": "窗数量",
+      "description": "目标窗户数量；若候选不足，实际数量可能小于此值。",
+      "description-en": "Target number of windows; the actual count may be smaller if candidates are insufficient.",
+      "max": 20
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 4,
+      "precision": 0,
+      "label": "窗宽度",
+      "description": "窗段宽度（格数）。",
+      "description-en": "Window segment width in cells."
+    },
+    {
+      "name": "random",
+      "type": "boolean",
+      "default": true,
+      "label": "随机分布",
+      "description": "true：用 seed 打散候选；false：按方向+坐标排序后均匀采样（更整齐）。",
+      "description-en": "true: shuffle candidates with seed; false: uniformly sample after sorting by dir+coord."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间；仅在 random=true 时生效。",
+      "description-en": "Random seed (0 uses current timestamp); only used when random=true."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "label": "窗拓扑",
+      "description": "挑出的窗户位置 0/1 grid，与输入拓扑同形状。",
+      "description-en": "0/1 topology of chosen window cells, same shape as input."
+    }
+  ]
+}

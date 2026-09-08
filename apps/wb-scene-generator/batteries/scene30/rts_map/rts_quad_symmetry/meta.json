@@ -1,0 +1,51 @@
+{
+  "id": "rts_quad_symmetry",
+  "label": "RTS四重旋转对称",
+  "description": "接收原始完整网格（确定尺寸/底图）与左上角基地形状网格，将基地形状旋转0°/90°/180°/270°后放置于四角，输出完整的四重旋转对称地图。",
+  "description-en": "Takes the original full grid (for dimensions/base layer) and the top-left base shape, rotates it 0/90/180/270 degrees and stamps into all four corners, producing a fully symmetric RTS map.",
+  "icon": "正方形地图俯视图，四个角落各有一个相同的不规则白色块状图形，以地图中心点呈现旋转对称排列，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["rts", "symmetry", "rotate", "map", "pcg", "terrain"],
+  "tag_labels": ["RTS", "对称", "旋转", "地图", "PCG", "地形"],
+  "inputs": [
+    {
+      "name": "originalGrid",
+      "type": "grid",
+      "label": "原始完整网格",
+      "description": "完整地图的原始网格，仅用于读取地图宽高（输出 fullGrid 从全零开始，仅含四角基地形状）",
+      "description-en": "Full map original grid, used only to determine map dimensions. The output fullGrid starts from zero and contains only the four corner base shapes."
+    },
+    {
+      "name": "quadGrid",
+      "type": "grid",
+      "label": "角落网格",
+      "description": "左上角基地形状掩码（来自 rts_base_shape_gen），1=平台，0=空",
+      "description-en": "Top-left corner base shape mask (from rts_base_shape_gen); 1=platform, 0=empty."
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "label": "对称模式",
+      "description": "4way=四角对称（推荐），2way=对角双基地",
+      "description-en": "Symmetry mode: 4way = four corners (recommended), 2way = diagonal two bases.",
+      "default": "4way",
+      "options": ["4way", "2way"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fullGrid",
+      "type": "grid",
+      "label": "完整对称地图",
+      "description": "包含四角基地平台的完整地图掩码，1=基地平台，0=空地",
+      "description-en": "Full map mask with base platforms in all four corners; 1=platform, 0=empty."
+    },
+    {
+      "name": "baseCenters",
+      "type": "array",
+      "label": "基地中心坐标",
+      "description": "各基地质心坐标列表 [{x,y}]，用于后续走廊/资源规划",
+      "description-en": "List of base centroid coordinates [{x,y}] for corridor and resource planning."
+    }
+  ]
+}

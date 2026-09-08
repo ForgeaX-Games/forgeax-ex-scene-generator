@@ -1,0 +1,85 @@
+{
+  "id": "alg_region_flood_grow",
+  "label": "洪泛生长",
+  "name-en": "RegionFloodGrow",
+  "description": "从一组种子点出发，在区域约束内做随机 frontier 洪泛生长，长成一组有机斑块（organic blob）。对每个种子点，从生长前沿随机取格、4-邻接扩张、达到目标格数截停，得到不规则的湖泊状形态；后长的斑块自动避开已长的（互不重叠）。size 控制每个斑块的目标格数，sizeVariance 给目标格数加 ± 抖动。每个斑块输出一张独立的 0/1 网格，顺序=生长顺序。",
+  "description-en": "Grows a set of organic blobs by randomized frontier flood-fill from seed points within a region constraint. For each seed, cells are pulled randomly from the growth frontier and expanded over 4-connected neighbors until the target cell count is reached, producing irregular lake-like shapes; later blobs avoid earlier ones (non-overlapping). size sets each blob's target cell count, sizeVariance adds ± jitter. Each blob is emitted as its own 0/1 grid, ordered by growth order.",
+  "icon": "深色背景上几个不规则的有机斑块从中心点向外蔓延生长，形态像水洼或墨迹扩散，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "partition", "flood", "grow", "organic", "blob", "pcg"],
+  "tag_labels": ["区域", "分区", "洪泛", "生长", "有机", "斑块", "PCG"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "约束区域",
+      "description": "0/1（或多值）约束区网格；斑块只能长在非零有效格内。",
+      "description-en": "0/1 (or multi-valued) constraint region grid; blobs grow only on non-zero valid cells.",
+      "access": "item"
+    },
+    {
+      "name": "points",
+      "type": "grid",
+      "required": true,
+      "label": "种子点掩码",
+      "description": "种子点掩码网格，非零格各视为一个生长种子点（通常来自 alg_points_scatter 的 points 输出）。",
+      "description-en": "Seed point mask grid; each non-zero cell is a growth seed (typically the points output of alg_points_scatter).",
+      "access": "item"
+    },
+    {
+      "name": "size",
+      "type": "number",
+      "default": 40,
+      "label": "斑块大小",
+      "description": "每个斑块的目标格数（生长到该格数即停）。",
+      "description-en": "Target cell count for each blob (growth stops at this size)."
+    },
+    {
+      "name": "sizeVariance",
+      "type": "number",
+      "default": 0.3,
+      "min": 0,
+      "max": 1,
+      "label": "大小抖动",
+      "description": "目标格数的 ± 随机抖动比例（0..1）。0=所有斑块同样大；0.3=每个斑块在 ±30% 范围内随机。",
+      "description-en": "Random ± jitter ratio for the target size (0..1). 0 = uniform size; 0.3 = each blob randomized within ±30%."
+    },
+    {
+      "name": "spacingDilate",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "label": "间距禁区",
+      "description": "斑块间最小间隔圈数。0=斑块只互不重叠（与旧版完全一致）；>0=每个斑块长完后，对其占用格做该步数的 4-邻接 BFS 膨胀并并入禁区，后续斑块不能在膨胀区内生长，从而保证斑块之间至少隔这么多圈空格。膨胀格只作禁区，不计入斑块输出。复刻自老电池 lake_gen 的 minSpacing。",
+      "description-en": "Minimum ring gap between blobs. 0 = blobs only avoid overlap (identical to old behavior); >0 = after each blob is grown, its cells are dilated by this many 4-connected BFS steps and merged into the forbidden zone so later blobs cannot grow within it, keeping at least this many empty rings between blobs. Dilated cells are forbidden-zone only and are not part of any blob output. Replicates the minSpacing of the legacy lake_gen battery."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "partition",
+      "type": "grid",
+      "access": "list",
+      "label": "斑块列表",
+      "description": "每个长成的斑块输出一张独立的 0/1 网格；列表按生长（种子）顺序排列。",
+      "description-en": "One 0/1 grid per grown blob; list ordered by growth (seed) order."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "斑块数",
+      "description": "实际长出的斑块数量。",
+      "description-en": "Number of blobs actually grown."
+    }
+  ]
+}

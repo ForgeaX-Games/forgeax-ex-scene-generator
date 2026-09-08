@@ -1,0 +1,168 @@
+{
+  "id": "cellular_noise",
+  "label": "Cellular 噪声",
+  "description": "基于 FastNoiseLite 的 Cellular（Voronoi/Worley）噪声生成器，支持多种距离函数和返回类型，可生成细胞状、马赛克或裂纹纹理，支持分形叠加",
+  "description-en": "Cellular (Voronoi/Worley) noise generator based on FastNoiseLite, supporting multiple distance functions and return types for cell, mosaic, or crack textures, with fractal support.",
+  "icon": "蜂巢状的多边形镶嵌图案，每个多边形区域颜色深浅不同，边界清晰可见，类似玻璃碎裂或龟壳纹理，简洁扁平风格",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "noise",
+    "cellular",
+    "voronoi",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "噪声",
+    "Cellular",
+    "Voronoi",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "default": 128,
+      "min": 1,
+      "max": 1024,
+      "description": "输出网格宽度（像素）",
+      "description-en": "Output grid width in pixels."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "default": 128,
+      "min": 1,
+      "max": 1024,
+      "description": "输出网格高度（像素）",
+      "description-en": "Output grid height in pixels."
+    },
+    {
+      "name": "frequency",
+      "type": "number",
+      "label": "频率",
+      "default": 0.02,
+      "description": "噪声采样频率，值越大细胞越密集",
+      "description-en": "Noise sampling frequency; higher values produce denser cells."
+    },
+    {
+      "name": "fractalType",
+      "type": "string",
+      "label": "分形类型",
+      "default": "None",
+      "description": "分形叠加方式：None=单层, FBm=分形布朗运动, Ridged=脊状, PingPong=乒乓",
+      "description-en": "Fractal type: None, FBm, Ridged, or PingPong.",
+      "options": [
+        "None",
+        "FBm",
+        "Ridged",
+        "PingPong"
+      ]
+    },
+    {
+      "name": "octaves",
+      "type": "number",
+      "label": "八度数",
+      "default": 4,
+      "min": 1,
+      "max": 8,
+      "description": "分形叠加层数，层数越多细节越丰富",
+      "description-en": "Number of fractal octaves; more octaves add finer detail."
+    },
+    {
+      "name": "lacunarity",
+      "type": "number",
+      "label": "间隙度",
+      "default": 2,
+      "description": "每层八度的频率倍增系数",
+      "description-en": "Frequency multiplier per octave."
+    },
+    {
+      "name": "gain",
+      "type": "number",
+      "label": "增益",
+      "default": 0.5,
+      "description": "每层八度的振幅衰减系数",
+      "description-en": "Amplitude multiplier per octave."
+    },
+    {
+      "name": "distanceFunction",
+      "type": "string",
+      "label": "距离函数",
+      "default": "EuclideanSq",
+      "description": "距离计算方式：Euclidean=欧氏距离, EuclideanSq=欧氏平方（默认，快速）, Manhattan=曼哈顿距离, Hybrid=混合",
+      "description-en": "Distance function: Euclidean, EuclideanSq (default, fast), Manhattan, or Hybrid.",
+      "options": [
+        "Euclidean",
+        "EuclideanSq",
+        "Manhattan",
+        "Hybrid"
+      ]
+    },
+    {
+      "name": "returnType",
+      "type": "string",
+      "label": "返回类型",
+      "default": "Distance",
+      "description": "返回值类型：CellValue=细胞随机值, Distance=最近距离, Distance2=次近距离, Distance2Add/Sub/Mul/Div=两距离的运算",
+      "description-en": "Return type: CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, or Distance2Div.",
+      "options": [
+        "CellValue",
+        "Distance",
+        "Distance2",
+        "Distance2Add",
+        "Distance2Sub",
+        "Distance2Mul",
+        "Distance2Div"
+      ]
+    },
+    {
+      "name": "jitter",
+      "type": "number",
+      "label": "抖动",
+      "default": 1,
+      "description": "细胞特征点的抖动系数（0~1），0=规则网格，1=最大随机偏移",
+      "description-en": "Jitter modifier for cell feature points (0~1); 0=regular grid, 1=maximum randomization."
+    },
+    {
+      "name": "offsetX",
+      "type": "number",
+      "label": "X偏移",
+      "default": 0,
+      "description": "噪声采样的X偏移量",
+      "description-en": "X offset for noise sampling."
+    },
+    {
+      "name": "offsetY",
+      "type": "number",
+      "label": "Y偏移",
+      "default": 0,
+      "description": "噪声采样的Y偏移量",
+      "description-en": "Y offset for noise sampling."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 1337,
+      "description": "随机种子，不同种子产生不同的噪声图案",
+      "description-en": "Random seed; different seeds produce different noise patterns."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "噪声网格",
+      "description": "输出网格，值域 0~1（连续浮点值）",
+      "description-en": "Output grid with values in 0~1 (continuous floats)."
+    }
+  ],
+  "alg_tag": [
+    "生成细胞、裂纹状的噪声或纹理"
+  ]
+}

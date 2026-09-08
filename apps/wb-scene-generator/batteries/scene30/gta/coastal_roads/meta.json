@@ -1,0 +1,29 @@
+{
+  "id": "coastal_roads",
+  "label": "GTA 沿海道路",
+  "description": "对陆地掩码做内缩距离变换（BFS），取目标距离处的等距曲线作为沿海道路骨架，叠加噪声扰动使其更自然，再平滑并随机拆分为若干段。",
+  "description-en": "Insets the land mask by coastDist pixels via BFS distance transform, extracts the iso-distance contour as a coastal road, applies noise perturbation, smooths it, then randomly splits it into segments.",
+  "icon": "GTA 海岸线内侧一条弯曲公路，点线状分段，距离海边数格。",
+  "version": "1.0.0",
+  "tags": ["gta", "road", "coast", "coastal", "segment", "smooth"],
+  "tag_labels": ["GTA", "道路", "海岸", "沿海", "分段", "平滑"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid",    "type": "grid",   "label": "陆地掩码" },
+    { "name": "seed",        "type": "number", "label": "随机种子",     "default": 42 },
+    { "name": "coastDist",   "type": "number", "label": "距海岸距离(px)", "default": 5, "min": 1, "max": 30,
+      "description": "道路距海岸边缘的像素距离。" },
+    { "name": "roadWidth",   "type": "number", "label": "道路宽度(px)", "default": 1, "min": 1, "max": 7 },
+    { "name": "perturbAmp",  "type": "number", "label": "扰动幅度(px)", "default": 6, "min": 0, "max": 20,
+      "description": "噪声对道路位置的最大偏移量，值越大海岸线越弯曲自然。" },
+    { "name": "smoothIter",  "type": "number", "label": "平滑次数",     "default": 0, "min": 0, "max": 6 },
+    { "name": "segCount",    "type": "number", "label": "分段数",       "default": 1, "min": 1, "max": 12,
+      "description": "将道路随机切分为约 N 段；1 表示连续不断。" },
+    { "name": "segLength",   "type": "number", "label": "段长比例",     "default": 1.0, "min": 0.1, "max": 1.0,
+      "description": "每段道路存在的比例（1.0=完全连续，0.7=70% 有路、30% 空缺）。" }
+  ],
+  "outputs": [
+    { "name": "roadGrid",       "type": "grid",  "label": "道路掩码" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

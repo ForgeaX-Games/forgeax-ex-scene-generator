@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Column battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <rect x="9.4" y="7" width="5.2" height="10" fill="#b7ff5a" fill-opacity=".16" stroke="#e7f5ee" stroke-width="1.5"/>
+  <path d="M12 7.3v9.4" fill="none" stroke="#e7f5ee" stroke-width="1" opacity=".7"/>
+  <rect x="6.8" y="4.6" width="10.4" height="2.6" rx=".6" fill="none" stroke="#e7f5ee" stroke-width="1.5"/>
+  <rect x="6.8" y="16.8" width="10.4" height="2.6" rx=".6" fill="#b7ff5a" fill-opacity=".2" stroke="#b7ff5a" stroke-width="1.5"/>
+</svg>

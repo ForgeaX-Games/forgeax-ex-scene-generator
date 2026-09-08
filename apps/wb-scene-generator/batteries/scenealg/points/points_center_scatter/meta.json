@@ -1,0 +1,100 @@
+{
+  "id": "alg_points_center_scatter",
+  "label": "中心点采样",
+  "name-en": "PointsCenterScatter",
+  "description": "以兴趣点 point2d 为中心，在父 region 有效格内的圆形 scatterRadius 范围内，按 algorithm 采样 count 个装饰点位；兴趣点不在有效格内时 BFS 吸附到最近有效格。输出与 alg_field2points 一致的 points 列表（每格一张单点 0/1 网格）。算法源自 components/decoration/precise_decoration_scatter。",
+  "description-en": "Samples count decoration locations within a circular scatterRadius around a point2d center on valid region cells; BFS-snaps the center to the nearest valid cell when outside. Outputs a points list (one single-cell 0/1 grid per sample), matching alg_field2points. Algorithm from components/decoration/precise_decoration_scatter.",
+  "icon": "俯视地形网格，中心点向外辐射散落若干小花草树木符号，绿色装饰点从中心向边缘扩散分布，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["points", "scatter", "center", "precise", "decoration", "sample", "bfs", "scenealg"],
+  "tag_labels": ["采样点", "播撒", "中心", "精准", "装饰", "采样", "BFS", "场景算法"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "父区域",
+      "description": "父区域掩码；采样只在有效格内进行。",
+      "description-en": "Parent region mask; sampling occurs only on valid cells.",
+      "access": "item"
+    },
+    {
+      "name": "point",
+      "type": "point2d",
+      "required": false,
+      "label": "兴趣点",
+      "description": "播撒中心 point2d，x→列、y→行；缺省则从有效格随机选中心。",
+      "description-en": "Scatter center point2d; x→column, y→row. Random valid cell if omitted.",
+      "access": "item"
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "default": 5,
+      "label": "采样数量",
+      "description": "目标采样装饰点数量。",
+      "description-en": "Target number of decoration sample points."
+    },
+    {
+      "name": "scatterRadius",
+      "type": "number",
+      "default": 12,
+      "min": 1,
+      "label": "播撒半径",
+      "description": "以吸附后中心为原点的圆形播撒半径（格数）。",
+      "description-en": "Circular scatter radius in cells around the snapped center."
+    },
+    {
+      "name": "algorithm",
+      "type": "string",
+      "default": "random",
+      "label": "采样算法",
+      "description": "random / cluster / ring / poisson / noise。",
+      "description-en": "random, cluster, ring, poisson, or noise.",
+      "options": ["random", "cluster", "ring", "poisson", "noise"]
+    },
+    {
+      "name": "targetValue",
+      "type": "number",
+      "default": 0,
+      "label": "目标区域值",
+      "description": "0=任意非零有效格；非 0 时精确匹配该掩码值。",
+      "description-en": "0 = any non-zero valid cell; non-zero requires exact mask value."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "points",
+      "type": "grid",
+      "access": "list",
+      "label": "采样点列表",
+      "description": "每个采样格一张单点 0/1 网格，与 alg_field2points 列表契约一致。",
+      "description-en": "One single-cell 0/1 grid per sampled cell; same list contract as alg_field2points."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "实际采样数",
+      "description": "实际选中的点数（可能小于 count）。",
+      "description-en": "Number of points actually sampled (may be less than count)."
+    },
+    {
+      "name": "snappedCenter",
+      "type": "array",
+      "access": "item",
+      "label": "吸附中心",
+      "description": "BFS 吸附后的中心坐标 [x, y]。",
+      "description-en": "BFS-snapped center coordinate [x, y]."
+    }
+  ]
+}

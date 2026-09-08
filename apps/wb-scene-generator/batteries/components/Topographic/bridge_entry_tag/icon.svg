@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_bridge_entry_tag" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_bridge_entry_tag)"/>
+
+  <rect x="3" y="9" width="18" height="6" fill="rgba(0,0,0,0.45)"/>
+  <rect x="3" y="9" width="3" height="6" fill="#fff"/>
+  <rect x="18" y="9" width="3" height="6" fill="#fff"/>
+</svg>

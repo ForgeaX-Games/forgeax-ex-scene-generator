@@ -1,0 +1,39 @@
+{
+  "id": "mask_subtract",
+  "label": "掩码差集",
+  "name-en": "Subtract",
+  "description": "对两个网格求差集：网格1中为非零值、且网格2中为零值的点位输出1，其余输出0。尺寸策略：允许两网格尺寸不一，按左下角对齐，输出尺寸与网格1相同，网格2未覆盖的区域视为0（与「掩码交集」mask_intersect 不同，后者要求尺寸完全相同否则报错）。",
+  "description-en": "Computes the difference of two grids: outputs 1 where grid1 is non-zero and grid2 is zero, and 0 elsewhere. Size policy: differing sizes are tolerated by aligning the grids at their bottom-left corners; output size matches grid1, and areas grid2 does not cover are treated as 0 (unlike Intersect (mask_intersect), which requires identical sizes and otherwise errors).",
+  "icon": "扁平插画风格小图标。两个圆形色块，左圆蓝色，右圆绿色，交叠区域被裁去（变为深灰镂空），左圆剩余部分高亮蓝色，背景浅灰，突出差集概念。主色3种，简洁现代。",
+  "version": "2.0.0",
+  "tags": ["mask", "subtract", "difference", "grid", "boolean"],
+  "tag_labels": ["掩码", "差集", "减法", "网格", "布尔"],
+  "inputs": [
+    {
+      "name": "inputGrid1",
+      "type": "grid",
+      "access": "item",
+      "label": "网格1（被减）",
+      "description": "被减网格，非零值视为有效区域",
+      "description-en": "The minuend grid; non-zero values are treated as valid regions."
+    },
+    {
+      "name": "inputGrid2",
+      "type": "grid",
+      "access": "item",
+      "label": "网格2（减数）",
+      "description": "减数网格，非零值视为需要排除的区域；与网格1按 lacing 逐分支配对",
+      "description-en": "The subtrahend grid; non-zero values indicate regions to exclude. Paired branch-by-branch with grid1 via lacing."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "差集网格",
+      "description": "网格1 减去 网格2 的结果，输出尺寸与网格1相同",
+      "description-en": "grid1 minus grid2; output size matches grid1."
+    }
+  ]
+}

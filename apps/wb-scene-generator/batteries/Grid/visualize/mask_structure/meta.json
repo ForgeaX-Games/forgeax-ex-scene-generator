@@ -1,0 +1,46 @@
+{
+  "id": "mask_structure",
+  "label": "Mask结构",
+  "name-en": "Mask Structure",
+  "description": "原样透传 grid，并在节点下方以圆点黑白 mask 预览：0 为黑色、非 0 为白色圆点。用于调试、检查网格 mask 形状。",
+  "description-en": "Pass grid through unchanged and preview a black/white dot mask below the node: 0 renders black, non-zero renders white dots. Useful for inspecting grid masks.",
+  "version": "1.0.0",
+  "tags": [
+    "grid",
+    "visualize",
+    "mask",
+    "preview",
+    "debug"
+  ],
+  "tag_labels": [
+    "网格",
+    "可视化",
+    "Mask",
+    "预览",
+    "调试"
+  ],
+  "frontend": {
+    "nodeType": "mask_structure"
+  },
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "grid",
+      "description": "输入 grid；将被原样透传，并在 UI 中展示黑白 mask",
+      "description-en": "Input grid; passed through unchanged and rendered as a dot mask."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "label": "grid",
+      "description": "与输入完全一致的 grid",
+      "description-en": "The same grid as the input."
+    }
+  ]
+}

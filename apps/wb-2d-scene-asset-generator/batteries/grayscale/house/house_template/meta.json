@@ -1,0 +1,99 @@
+{
+  "id": "house_template",
+  "label": "房屋模板",
+  "name-en": "HouseTemplate",
+  "description": "只画房顶掩码，程序自动生成立面、窗，门由掩码控制，渲染成房屋灰度图。输入一个只表达房顶的二维数组字符串 [[1,1,0],[1,1,1],...]（1=房顶，0=空，2=在该列开门）；按「高度」向上投影出立面；门不再随机生成，而是把某列底部的 1 改成 2，即在该列的立面墙脚开一扇固定 1 格高的门（相邻列的 2 连成更宽的门）；立面再按网格自动排布窗户。顶面按「屋顶类型」着色（pitched 坡屋顶 / flat 平屋顶），并沿建筑外缘与门窗框描深色细线，使灰度图更像房屋、更易被大模型识别。输出灰度图（同时归档到顶层 .forgeax/grayscale/）。",
+  "description-en": "Draw only the roof mask; the program auto-generates facades and windows, with doors controlled by the mask, then renders a house grayscale map. Input is a roof-only 2D array string [[1,1,0],[1,1,1],...] (1=roof, 0=empty, 2=open a door in that column); facades are projected upward by 'height'; doors are no longer random — replacing a 1 at the bottom of a column with 2 opens a fixed 1-cell-high door at that column's wall front (adjacent 2s merge into a wider door); windows are then auto-gridded onto facades. The top face is shaded by 'roofType' (pitched / flat) and a dark outline is drawn along the silhouette and door/window frames, making the grayscale read more like a house for better model recognition. Output grayscale image(s); also archived under the top-level .forgeax/grayscale/.",
+  "icon": "一张深色画布上叠着一栋简化房屋的灰度立面剪影，顶面深灰、立面浅灰、底部一个门洞，左侧一个 JSON 花括号图标用箭头指向房屋，扁平插画风格，主色青绿与深灰两种，小尺寸可辨。",
+  "version": "1.0.0",
+  "tags": [
+    "house",
+    "template",
+    "grayscale",
+    "mask",
+    "render",
+    "decoration"
+  ],
+  "tag_labels": [
+    "房屋",
+    "模板",
+    "灰度图",
+    "掩码",
+    "渲染",
+    "装饰"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "spec",
+      "type": "string",
+      "access": "item",
+      "required": true,
+      "label": "房顶掩码",
+      "description": "只表达房顶的二维数组字符串，形如 [[1,1,0],[1,1,1],[1,1,1]]（1=房顶，0=空，2=在该列开门）。立面由程序自动生成；门由掩码的 2 标记控制——把某列底部的 1 改成 2，即在该列立面墙脚开一扇 1 格高的门。也兼容三维数组 [[[...]],[[...]]] 批量产出多栋。",
+      "description-en": "Roof-only 2D array string, e.g. [[1,1,0],[1,1,1],[1,1,1]] (1=roof, 0=empty, 2=open a door in that column). Facades are auto-generated; doors are controlled by the mask's 2 markers — replacing a 1 at a column's bottom with 2 opens a 1-cell-high door at that column's wall front. A 3D array [[[...]],[[...]]] is also accepted to emit multiple houses."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "required": false,
+      "default": 1,
+      "min": 0,
+      "max": 64,
+      "label": "高度",
+      "description": "房屋高度（立面向上投影的行数）。越大立面越高。",
+      "description-en": "House height (number of rows the facade is projected upward). Larger = taller facade."
+    },
+    {
+      "name": "roofType",
+      "type": "string",
+      "access": "item",
+      "required": false,
+      "default": "pitched",
+      "options": ["pitched", "flat"],
+      "label": "屋顶类型",
+      "description": "屋顶着色方式：pitched=坡屋顶（屋脊高光向两侧屋檐渐暗，读作两面坡）；flat=平屋顶（顶面纯色平涂）。",
+      "description-en": "Roof shading: pitched = gabled roof (bright ridge fading to darker eaves, reads as two slopes); flat = flat roof (solid-color top)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "list",
+      "label": "灰度图",
+      "description": "渲染出的房屋灰度图引用（资产库 alias），每个 entry 一张；同时归档到顶层 .forgeax/grayscale/。",
+      "description-en": "Rendered house grayscale image refs (asset-library alias), one per entry; also archived under the top-level .forgeax/grayscale/."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串。",
+      "description-en": "Error message on failure; empty string on success."
+    }
+  ],
+  "params": [
+    {
+      "name": "imageSize",
+      "type": "number",
+      "default": 300,
+      "label": "图像尺寸",
+      "description": "输出灰度图的边长（像素，正方形）。",
+      "description-en": "Output grayscale square edge length (pixels).",
+      "min": 16,
+      "max": 1024
+    }
+  ],
+  "alg_tag": [
+    "房屋灰度图",
+    "掩码渲染",
+    "高度投影立面",
+    "扁平纯色着色",
+    "二维数组转图像"
+  ]
+}

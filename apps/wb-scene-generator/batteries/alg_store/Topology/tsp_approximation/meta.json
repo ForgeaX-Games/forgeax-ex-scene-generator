@@ -1,0 +1,114 @@
+{
+  "id": "tsp_approximation",
+  "label": "TSP 近似回路",
+  "description": "旅行商问题近似算法：最近邻初始化 + 2-opt 优化，对一组点求近似最短回路或路径。可输出顺序索引、顺序点列与路径光栅图。",
+  "description-en": "Approximate Traveling Salesman Problem solver: nearest-neighbor initialization + 2-opt improvement. Outputs visit order, ordered points, and a rasterized path grid (closed loop or open path).",
+  "icon": "若干散落的点用一条折线按特定顺序串联起来形成一条不交叉的环路，整体呈现优雅的回路形态，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["algorithm", "graph", "tsp", "tour", "approximation"],
+  "tag_labels": ["算法", "图论", "TSP", "回路", "近似"],
+  "inputs": [
+    {
+      "name": "points",
+      "type": "number",
+      "label": "点列表",
+      "default": [],
+      "description": "节点坐标 [[x,y], ...]，至少 2 个。（外层 rank=2：N 个点 × [x,y]；同时兼容老字符串格式 \"x1,y1; x2,y2\"）",
+      "description-en": "Node coordinates [[x,y], ...]. At least 2 points required (rank=2; legacy string also accepted)."
+    },
+    {
+      "name": "closed",
+      "type": "boolean",
+      "label": "闭合回路",
+      "default": true,
+      "description": "true=回到起点形成回路；false=只输出开放路径。",
+      "description-en": "true = return to start (loop); false = open path."
+    },
+    {
+      "name": "algorithm",
+      "type": "string",
+      "label": "算法",
+      "default": "nearest_2opt",
+      "options": ["nearest_neighbor", "nearest_2opt"],
+      "description": "nearest_neighbor=纯贪心；nearest_2opt=贪心+2-opt 优化（推荐）。",
+      "description-en": "nearest_neighbor = pure greedy; nearest_2opt = greedy + 2-opt refinement (recommended)."
+    },
+    {
+      "name": "metric",
+      "type": "string",
+      "label": "距离度量",
+      "default": "euclidean",
+      "options": ["euclidean", "manhattan"],
+      "description": "两点距离度量。",
+      "description-en": "Distance metric between points."
+    },
+    {
+      "name": "maxIterations",
+      "type": "number",
+      "label": "最大迭代",
+      "default": 1000,
+      "description": "2-opt 迭代上限，超过则提前终止。",
+      "description-en": "Upper bound on 2-opt iterations; the search exits early once reached."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "default": 64,
+      "description": "pathGrid 的宽度。",
+      "description-en": "Width of the pathGrid output."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "default": 64,
+      "description": "pathGrid 的高度。",
+      "description-en": "Height of the pathGrid output."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，决定 nearest_neighbor 的起点选择。0=使用当前时间戳自动生成，不同种子产生不同起点。",
+      "description-en": "Random seed for nearest_neighbor starting point. 0 uses the current timestamp; non-zero is reproducible."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "order",
+      "type": "number",
+      "label": "访问顺序",
+      "description": "按访问顺序输出原始点的索引数组（不含闭合回返）。（外层 rank=1：N 个索引）",
+      "description-en": "Indices into the input points array in visit order (no closing repeat) (rank=1)."
+    },
+    {
+      "name": "pathPoints",
+      "type": "number",
+      "label": "顺序点列",
+      "description": "按 order 重排后的点坐标数组（闭合时末尾追加起点）。（外层 rank=2：N 个点 × [x,y]）",
+      "description-en": "Reordered points (closed loops append the start at the end) (rank=2)."
+    },
+    {
+      "name": "pathGrid",
+      "type": "grid",
+      "label": "路径网格",
+      "description": "把回路依序光栅化成 0/1 网格。",
+      "description-en": "Rasterized 0/1 path grid."
+    },
+    {
+      "name": "totalLength",
+      "type": "number",
+      "label": "总长度",
+      "description": "回路（或路径）的总度量长度。",
+      "description-en": "Total metric length of the tour (or open path)."
+    }
+  ],
+  "alg_tag": [
+    "巡逻路线规划",
+    "装饰性回路",
+    "POI 串联最短回路"
+  ]
+}

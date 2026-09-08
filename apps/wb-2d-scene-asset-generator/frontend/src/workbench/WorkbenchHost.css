@@ -1,0 +1,140 @@
+/* Workbench host layout: editor pane (bottom) + embedded Renderer/AssetStore
+   row (top), separated by a draggable row splitter. Adapted from the legacy
+   editor App.css workbench grid, restyled under scene-* classes so it never
+   collides with the kernel Editor's own `.app` layout. */
+
+.scene-workbench {
+  display: grid;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg-primary, #14161a);
+}
+
+.scene-workbench--embedded {
+  grid-template-rows: minmax(180px, var(--workbench-height, 40%)) 4px minmax(180px, 1fr);
+}
+
+.scene-workbench__panes {
+  display: grid;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.scene-workbench__editor {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* The kernel Editor renders its own full-height `.app`; let it fill the cell. */
+.scene-workbench__editor > .app {
+  height: 100%;
+}
+
+/* All panels hidden (AssetStore + Preview + Scene Gen all off). Fills the grid's
+   single 1fr row with a centered hint pointing back to the left-nav toggles. */
+.scene-workbench__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-secondary, #8b90a0);
+  background: var(--color-bg-primary, #14161a);
+}
+
+.scene-workbench__empty-inner {
+  max-width: 360px;
+}
+
+.scene-workbench__empty-inner h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--color-text-primary, #e6e8ef);
+}
+
+.scene-workbench__empty-inner p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.scene-pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-bg-primary, #14161a);
+}
+
+.scene-pane__iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: var(--color-bg-primary, #14161a);
+}
+
+.scene-pane__resize {
+  position: relative;
+  z-index: 5;
+  background: var(--color-border, #2a2e36);
+  transition: background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.scene-pane__resize:hover,
+.scene-pane__resize:active {
+  background: var(--color-accent, #d4ff48);
+  box-shadow: 0 0 10px rgba(212, 255, 72, 0.28);
+}
+
+.scene-pane__resize--row {
+  cursor: row-resize;
+}
+.scene-pane__resize--col {
+  cursor: col-resize;
+}
+
+.scene-workbench--resizing {
+  user-select: none;
+}
+.scene-workbench--resizing .scene-pane__iframe {
+  pointer-events: none;
+}
+
+/* Focus (single-window fullscreen) modes. */
+.scene-workbench--focus-editor,
+.scene-workbench--focus-renderer,
+.scene-workbench--focus-assetstore {
+  grid-template-rows: 1fr !important;
+}
+
+.scene-workbench--focus-editor > .scene-workbench__panes,
+.scene-workbench--focus-editor > .scene-pane__resize--row {
+  display: none !important;
+}
+
+.scene-workbench--focus-renderer > .scene-workbench__editor,
+.scene-workbench--focus-renderer > .scene-pane__resize--row,
+.scene-workbench--focus-assetstore > .scene-workbench__editor,
+.scene-workbench--focus-assetstore > .scene-pane__resize--row {
+  display: none !important;
+}
+
+.scene-workbench--focus-renderer > .scene-workbench__panes,
+.scene-workbench--focus-assetstore > .scene-workbench__panes {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.scene-workbench--focus-renderer .scene-pane--assetstore,
+.scene-workbench--focus-renderer .scene-pane__resize--col {
+  display: none !important;
+}
+.scene-workbench--focus-assetstore .scene-pane--renderer,
+.scene-workbench--focus-assetstore .scene-pane__resize--col {
+  display: none !important;
+}

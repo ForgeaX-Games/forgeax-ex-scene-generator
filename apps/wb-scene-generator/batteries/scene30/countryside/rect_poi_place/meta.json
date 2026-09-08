@@ -1,0 +1,44 @@
+{
+  "id": "rect_poi_place",
+  "label": "矩形点位",
+  "description": "对网格列表中每个有值区域，在其边缘随机采样生成 POI 点位，输出为单张点位网格，点位值取所有输入网格的最大值。",
+  "description-en": "For each grid in the input list, randomly samples POI points from the edge cells of non-zero regions. Outputs a single point grid with value equal to the max value across all input grids.",
+  "icon": "俯视矩形色块边缘散落若干高亮圆点，圆点沿边界分布，深色底配亮色点位，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["poi", "point", "edge", "sample", "countryside", "rect"],
+  "tag_labels": ["点位", "兴趣点", "边缘", "采样", "田园", "矩形"],
+  "inputs": [
+    {
+      "name": "inputGrids",
+      "type": "array",
+      "label": "网格列表",
+      "description": "输入网格列表，每个 grid 代表一个区域层，从每层的有值边缘格随机生成点位。",
+      "description-en": "List of input grids; POI points are sampled from the edge cells of non-zero regions in each grid."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "每层点位数量",
+      "description": "每个网格生成的点位数量，默认 3。若边缘格不足则取全部边缘格。",
+      "description-en": "Number of POI points to place per grid layer. Default 3. Capped by available edge cells.",
+      "default": 3
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current time.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "点位网格",
+      "description": "所有层点位叠加后的输出网格，点位值=所有输入网格最大非零值，其余=0。",
+      "description-en": "Output grid with all POI points merged; point value = max non-zero value across all input grids, others = 0."
+    }
+  ]
+}

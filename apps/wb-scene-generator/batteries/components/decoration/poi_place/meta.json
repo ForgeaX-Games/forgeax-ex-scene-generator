@@ -1,0 +1,80 @@
+{
+  "id": "poi_place",
+  "label": "精准POI分布",
+  "description": "在指定坐标放置兴趣点，若坐标不在目标区域值内则BFS搜索整个网格找最近的合法格子，并从等距候选格中随机选取，支持多条规则批量放置。",
+  "description-en": "Places POI points at given coordinates; if a coordinate does not match the target value, BFS searches the entire grid for the nearest valid cells and randomly picks one.",
+  "icon": "深色网格上若干精确定位的彩色圆点，每个圆点带一根细线指向原始坐标位置，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["poi", "place", "precise", "landmark", "grid", "snap", "datatree"],
+  "tag_labels": ["兴趣点", "精准放置", "坐标", "地标", "网格", "就近吸附", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "单张输入网格 (number[][])，网格列表由 DataTree 引擎自动逐张处理",
+      "description-en": "Single input grid (number[][]); grid lists are handled per-item by the DataTree engine."
+    },
+    {
+      "name": "poiRules",
+      "type": "array",
+      "label": "POI规则列表",
+      "description": "POI规则数组，**标准格式**为 [[\"名称\", targetValue, [x1,y1], [x2,y2], ...], ...]，例如 [[\"洞穴入口\",1,[10,20],[30,40]]]；也兼容旧格式 [{decoration, targetValue, points: [[x,y],...]}]",
+      "description-en": "Array of POI rules; simplified [[\"name\", targetValue, [x1,y1], ...], ...]; legacy [{decoration, targetValue, points}] also accepted."
+    },
+    {
+      "name": "minDistance",
+      "type": "number",
+      "access": "item",
+      "label": "最小间距",
+      "default": 8,
+      "description": "所有POI点之间的最小格距（欧式距离），防止重叠堆积",
+      "description-en": "Minimum cell distance between all placed POI points."
+    },
+    {
+      "name": "scatterR",
+      "type": "number",
+      "access": "item",
+      "label": "散播半径",
+      "default": 5,
+      "description": "找到最近合法格后，在额外半径范围内随机散播（格数），0=精确就近",
+      "description-en": "Extra radius for random scatter around the nearest valid cell (0 = exact snap)."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0表示使用当前时间自动随机",
+      "description-en": "Random seed; 0 uses current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "单张多值网格：每种POI一个递增id，未放置处为0；可接 grid_split_by_value 拆分",
+      "description-en": "Single multi-value grid: each POI type gets an increasing id, 0 elsewhere; pipe to grid_split_by_value to separate."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "网格中实际出现的POI条目，格式为 [{id, name, type}]，type 固定为 asset",
+      "description-en": "Name list for POI ids actually present in the grid: [{id, name, type}], type is always \"asset\"."
+    },
+    {
+      "name": "placedCount",
+      "type": "number",
+      "access": "item",
+      "label": "成功放置数量",
+      "description": "成功放置的POI点总数",
+      "description-en": "Total number of POI points successfully placed."
+    }
+  ]
+}

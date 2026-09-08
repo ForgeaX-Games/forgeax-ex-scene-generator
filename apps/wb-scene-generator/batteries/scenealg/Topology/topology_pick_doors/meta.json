@@ -1,0 +1,93 @@
+{
+  "id": "alg_topology_pick_doors",
+  "label": "拓扑开门",
+  "name-en": "TopologyPickDoors",
+  "description": "在输入拓扑（墙状 0/1 grid）上挑出 count 个宽度为 width 的门洞段。先在每段连续墙体（≥6 格）的中心找候选，要求候选至少有一侧紧邻空格；若候选不足则 fallback 到无段长限制的逐格枚举。输出只包含被挑中的门洞格。",
+  "description-en": "Picks `count` doorway segments of `width` cells from an input topology (wall-like 0/1 grid). First seeks segment-center candidates within continuous wall runs (>=6 cells), requiring an empty neighbor on the perpendicular side; falls back to per-cell enumeration if needed. Output contains only the chosen door cells.",
+  "icon": "深色背景上一条水平细线中间出现一段亮色短缺口表示门洞，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "topology",
+    "door",
+    "opening",
+    "subsample"
+  ],
+  "tag_labels": [
+    "拓扑",
+    "门",
+    "开洞",
+    "子采样"
+  ],
+  "inputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "required": true,
+      "label": "输入拓扑",
+      "description": "要在其上开门的 0/1 拓扑 grid（通常是墙体）。",
+      "description-en": "0/1 topology grid (typically a wall) where doors will be picked."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "precision": 0,
+      "label": "门数量",
+      "description": "目标开门数量；若候选不足，实际数量可能小于此值。",
+      "description-en": "Target number of doors; the actual count may be smaller if candidates are insufficient."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 6,
+      "precision": 0,
+      "label": "门宽度",
+      "description": "门洞宽度（格数）。",
+      "description-en": "Doorway width in cells."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current timestamp."
+    },
+    {
+      "name": "bottomDoor",
+      "type": "boolean",
+      "default": false,
+      "label": "外门朝下",
+      "description": "默认关。开启后只在朝下且朝向建筑外部的水平墙段开门，并优先取最靠下的墙——适配 2D 俯视角游戏外门通常开在下方。建议同时接入 region 输入以可靠区分室内/室外（墙有缺口时尤其重要）；未接 region 时退回边界泛洪启发式。关闭时上下左右皆可。",
+      "description-en": "Default off. When on, doors are only placed on downward-facing horizontal walls that face the building exterior, preferring the lowest wall — matching top-down 2D games where the exterior door opens at the bottom. Wire the `region` input for reliable inside/outside detection (important when walls have gaps); without it, a border flood-fill heuristic is used. When off, any side is allowed."
+    },
+    {
+      "name": "region",
+      "type": "grid",
+      "required": false,
+      "label": "建筑区域",
+      "description": "可选。建筑整体区域（含墙）的 0/1 grid：1=属于这栋建筑，0=建筑之外，须与 topology 同形状。提供后用它判定内外（朝下朝外=正下方区域为 0），对墙体缺口完全鲁棒；仅在 bottomDoor 开启时生效。",
+      "description-en": "Optional. 0/1 grid of the whole building footprint including walls: 1 = belongs to this building, 0 = outside; must match the topology shape. When provided it is used to decide inside/outside (downward-exterior = the region cell directly below is 0), robust to gaps in walls; only takes effect when bottomDoor is on."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "label": "门拓扑",
+      "description": "挑出的门洞位置 0/1 grid，与输入拓扑同形状。",
+      "description-en": "0/1 topology of chosen door cells, same shape as input."
+    },
+    {
+      "name": "placed",
+      "type": "number",
+      "label": "实际数量",
+      "description": "成功放置的门数（可能小于 count）。",
+      "description-en": "Number of doors actually placed (may be less than count)."
+    }
+  ]
+}

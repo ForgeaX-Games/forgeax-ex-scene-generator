@@ -1,0 +1,26 @@
+{
+  "id": "gta_mainroad_zones",
+  "label": "GTA 主路前置区",
+  "description": "保留旧版 GTA 功能区生成逻辑，作为当前 gta_main_roads 的稳定前置约束底图。",
+  "description-en": "Preserves the legacy GTA zone generator as a stable pre-step for the current gta_main_roads workflow.",
+  "icon": "海岛地图被简化功能区分色，供主路骨架使用。",
+  "version": "1.0.0",
+  "tags": ["gta", "zone", "district", "mainroad"],
+  "tag_labels": ["GTA", "主路前置", "功能区", "街区"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "countryGrid", "type": "grid", "label": "国家网格" },
+    { "name": "heightMap", "type": "grid", "label": "高度图" },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 20260602 },
+    { "name": "coastInset", "type": "number", "label": "海岸退让", "default": 10, "min": 0, "max": 80 },
+    { "name": "urbanCoverage", "type": "number", "label": "城区覆盖率", "default": 0.72, "min": 0.1, "max": 1 },
+    { "name": "largestCountryOnly", "type": "boolean", "label": "仅最大国家", "default": false }
+  ],
+  "outputs": [
+    { "name": "zoneGrid", "type": "grid", "label": "功能区网格" },
+    { "name": "buildableMask", "type": "grid", "label": "可建设掩码" },
+    { "name": "outputGrid", "type": "grid", "label": "功能区预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

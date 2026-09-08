@@ -1,0 +1,84 @@
+{
+  "id": "cosmos_zone_marker",
+  "label": "宇宙区域标记",
+  "description": "使用Voronoi噪声在地形网格上标记建筑区域、水晶区域和远古区域三类特殊POI",
+  "description-en": "Marks special POI zones (structure/crystal/ancient) on terrain grid using Voronoi noise.",
+  "icon": "网格图上散落三种高亮色斑块：蓝色结构区、紫色水晶区、金色远古区，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.2.0",
+  "tags": ["cosmos", "zone", "voronoi", "poi", "procedural"],
+  "tag_labels": ["宇宙", "区域", "Voronoi", "POI", "程序化"],
+  "inputs": [
+    {
+      "name": "terrainGrid",
+      "type": "array",
+      "label": "地形网格",
+      "description": "地形类型网格（接 cosmos_terrain_variation.variedGridList），兼容单张或列表，内部自动合并",
+      "description-en": "Terrain type grid (from cosmos_terrain_variation.variedGridList); accepts single grid or list, merged internally.",
+      "default": []
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    },
+    {
+      "name": "zoneDensity",
+      "type": "number",
+      "label": "区域块数密度",
+      "description": "控制地图上区域的数量：值越大区域块数越多，1.0为默认，2.0约为两倍块数；不影响每块的大小",
+      "description-en": "Controls number of zone clusters on the map; higher = more clusters; 1.0 = default, 2.0 = ~2x clusters. Does not affect cluster size.",
+      "default": 0.38,
+      "min": 0.1,
+      "max": 5.0
+    },
+    {
+      "name": "structureZoneSize",
+      "type": "number",
+      "label": "结构区域大小",
+      "description": "结构区域的面积阈值（0~0.5），越大每块面积越大；0不生成",
+      "description-en": "Area threshold for structure zones (0~0.5); higher = larger clusters; 0 = disabled.",
+      "default": 0.08,
+      "min": 0,
+      "max": 0.5
+    },
+    {
+      "name": "crystalZoneSize",
+      "type": "number",
+      "label": "水晶区域大小",
+      "description": "水晶区域的面积阈值（0~0.5），越大每块面积越大；0不生成",
+      "description-en": "Area threshold for crystal zones (0~0.5); higher = larger clusters; 0 = disabled.",
+      "default": 0.12,
+      "min": 0,
+      "max": 0.5
+    },
+    {
+      "name": "ancientZoneSize",
+      "type": "number",
+      "label": "远古区域大小",
+      "description": "远古区域的面积阈值（0~0.5），越大每块面积越大；0不生成",
+      "description-en": "Area threshold for ancient zones (0~0.5); higher = larger clusters; 0 = disabled.",
+      "default": 0.10,
+      "min": 0,
+      "max": 0.5
+    }
+  ],
+  "outputs": [
+    {
+      "name": "zoneGridList",
+      "type": "array",
+      "label": "区域网格列表",
+      "description": "多张单值网格，每张对应一种区域类型；该网格在区域格子填充对应ID（100/200/300），其余格子为0；与nameList顺序一一对应",
+      "description-en": "Multiple single-value grids, one per zone type; each grid has the zone ID (100/200/300) at matching cells and 0 elsewhere; corresponds 1:1 with nameList."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "区域名称列表",
+      "description": "实际出现的区域条目 [{id, name, type:\"asset\"}]，与zoneGridList顺序一一对应",
+      "description-en": "Name entries for zones that actually appear [{id, name, type:\"asset\"}]; corresponds 1:1 with zoneGridList."
+    }
+  ]
+}

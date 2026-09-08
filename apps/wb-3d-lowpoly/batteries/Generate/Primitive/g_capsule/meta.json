@@ -1,0 +1,22 @@
+{
+  "id": "g_capsule",
+  "label": "胶囊体",
+  "name-en": "GCapsule",
+  "description": "在 Geometry DSL 末尾追加 capsule(radius,length) 一行，轴向为 Z，length 为总长。",
+  "description-en": "Append a `capsule(radius,length)` line to the Geometry DSL, with its axis along Z and length as total length.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "primitive", "capsule", "cad"],
+  "tag_labels": ["几何", "基础形状", "胶囊体", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "radius", "type": "number", "label": "半径", "default": 0.25 },
+    { "name": "length", "type": "number", "label": "总长", "default": 1 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

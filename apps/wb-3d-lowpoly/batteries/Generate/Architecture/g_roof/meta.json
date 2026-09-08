@@ -1,0 +1,33 @@
+{
+  "id": "g_roof",
+  "label": "屋顶",
+  "name-en": "GRoof",
+  "description": "追加 roof(...)：footprint 之上的 flat/shed/gable/hip/gambrel/mansard/pyramid 屋顶（平/单坡/双坡/四坡/谷仓/孟莎/金字塔）。当 prompt 提到 屋顶 / 屋面 / 坡屋顶 / roof 时使用。",
+  "description-en": "Append `roof(...)` — flat/shed/gable/hip/gambrel/mansard/pyramid roof over a footprint. Use for roof, pitched roof, gable, hip, gambrel, mansard.",
+  "version": "1.1.0",
+  "autoIterate": true,
+  "tags": ["geometry", "architecture", "roof", "cad"],
+  "tag_labels": ["几何", "建筑", "屋顶", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry；缺省视为空", "description-en": "Upstream Geometry; empty when absent." },
+    { "name": "width", "type": "number", "label": "footprint 宽", "default": 6, "description": "X 向尺寸（米）", "description-en": "Footprint X (meters)." },
+    { "name": "depth", "type": "number", "label": "footprint 深", "default": 4, "description": "Y 向尺寸（米）", "description-en": "Footprint Y (meters)." },
+    { "name": "type", "type": "string", "label": "类型", "default": "gable", "description": "flat / shed / gable / hip / gambrel / mansard / pyramid", "description-en": "flat / shed / gable / hip / gambrel / mansard / pyramid." },
+    { "name": "height", "type": "number", "required": false, "label": "屋脊高", "default": 1.6, "description": "屋脊相对底面高度（非 flat）", "description-en": "Ridge height (non-flat)." },
+    { "name": "thickness", "type": "number", "required": false, "label": "平顶厚", "default": 0.15, "description": "flat 屋顶板厚", "description-en": "Flat roof thickness." },
+    { "name": "overhang", "type": "number", "required": false, "label": "出檐", "default": 0.3, "description": "出檐宽度（米）；eave/verge 未给时对两向通用", "description-en": "Overhang (meters); used for both directions when eave/verge unset." },
+    { "name": "eave_overhang", "type": "number", "required": false, "label": "檐口出挑", "default": 0, "description": "檐口出挑（短边/坡向，米）；0=沿用 overhang", "description-en": "Eave overhang along the span/slope sides; 0 = fall back to overhang." },
+    { "name": "verge_overhang", "type": "number", "required": false, "label": "山墙出挑", "default": 0, "description": "山墙出挑（屋脊/长边，米）；0=沿用 overhang", "description-en": "Verge overhang along the ridge sides; 0 = fall back to overhang." },
+    { "name": "parapet_height", "type": "number", "required": false, "label": "女儿墙高", "default": 0, "description": "flat：女儿墙高度（米）；0=无", "description-en": "flat: parapet height (meters); 0 = none." },
+    { "name": "parapet_thickness", "type": "number", "required": false, "label": "女儿墙厚", "default": 0, "description": "flat：女儿墙壁厚（米）；0=默认", "description-en": "flat: parapet wall thickness; 0 = default." },
+    { "name": "coping_width", "type": "number", "required": false, "label": "压顶外挑", "default": 0, "description": "flat：女儿墙压顶外挑宽（米）；0=无压顶", "description-en": "flat: parapet coping projection; 0 = no coping." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "自定义 id；空 = 自动 roof{n}", "description-en": "Custom id; empty = auto roof{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 roof 行后的 Geometry", "description-en": "Geometry after appending the roof." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id", "description-en": "Id of the new shape." },
+    { "name": "error", "type": "string", "label": "错误", "description": "非致命错误信息", "description-en": "Non-fatal error string." }
+  ],
+  "projectTypes": ["asset3d"]
+}

@@ -1,0 +1,84 @@
+{
+  "id": "deeper_density_field",
+  "label": "深空密度场",
+  "description": "生成深层空间场景的密度权重图，用分形叠加噪声+幂函数极化产生极度不均匀的空间分布，为后续 POI 放置提供密度引导。",
+  "description-en": "Generates a density weight map for deep-space scenes using fractal noise with power-curve polarization, creating highly uneven spatial distribution to guide POI placement.",
+  "icon": "深色方形网格上叠加多层半透明热力色块，中心区域亮橙色高密度、边缘渐变为深蓝低密度，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["density", "field", "noise", "fractal", "deep space", "pcg", "weight map"],
+  "tag_labels": ["密度场", "噪声", "分形", "深层空间", "PCG", "权重图"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "description": "输出网格的列数",
+      "description-en": "Number of columns in the output grid.",
+      "default": 64
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "description": "输出网格的行数",
+      "description-en": "Number of rows in the output grid.",
+      "default": 64
+    },
+    {
+      "name": "scale",
+      "type": "number",
+      "label": "噪声频率",
+      "description": "基础噪声频率（推荐 4–16）：越小区域块越大，越大噪声越细碎",
+      "description-en": "Base noise frequency (recommended 4–16): smaller = larger blobs, larger = finer detail.",
+      "default": 7
+    },
+    {
+      "name": "octaves",
+      "type": "number",
+      "label": "叠加层数",
+      "description": "分形叠加的噪声层数（推荐 3–5），越多细节越丰富",
+      "description-en": "Number of fractal octaves (recommended 3–5); more = richer detail.",
+      "default": 4
+    },
+    {
+      "name": "persistence",
+      "type": "number",
+      "label": "高频衰减",
+      "description": "每叠加层振幅衰减系数（0.1–1.0），越小高频细节越弱",
+      "description-en": "Amplitude decay per octave (0.1–1.0); smaller = weaker high-frequency detail.",
+      "default": 0.11
+    },
+    {
+      "name": "polarize",
+      "type": "number",
+      "label": "极化指数",
+      "description": "幂函数极化强度（推荐 4–10）：越大则高密度区更密、低密度区更空旷，两极分化越剧烈",
+      "description-en": "Power-curve polarization exponent (recommended 4–10): higher = denser peaks and emptier valleys.",
+      "default": 4.0
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间自动随机",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "densityGrid",
+      "type": "grid",
+      "label": "密度权重图",
+      "description": "密度权重网格，值域 0–100，高值区域 POI 放置概率高",
+      "description-en": "Density weight grid with values 0–100; higher values mean higher POI placement probability."
+    },
+    {
+      "name": "groundGrid",
+      "type": "grid",
+      "label": "地面底图",
+      "description": "全1地面网格，代表可放置 POI 的平坦地面",
+      "description-en": "All-1 ground grid representing flat terrain available for POI placement."
+    }
+  ]
+}

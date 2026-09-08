@@ -1,0 +1,8 @@
+{
+  "id": "foreground_matting_bg_rule",
+  "name": "foreground_matting_bg_rule",
+  "tag": "matting",
+  "template": "## 前景抠图·源图背景色选择规则\n用于需要透明化的 runtime 前景图（角色/道具/障碍/平台/UI/拾取物/非 additive 粒子）。**背景色必须在生成前决定**，并扫描主体描述里的**所有元素**，不只看主物体。\n\n## 主体\n- **主体描述 (subject)**: [subject]\n\n## 背景色判定（命中即用）\n```\n1. 主体或任何附属元素含绿色系语义 → 用 magenta / hot-pink 纯色背景\n   （绿色主体极易被绿/蓝绿背景误删；如\"带绿叶装饰的灯笼\"\"长苔的石台\"均按此处理）。\n   绿色系关键词：green, olive, moss, grass, jade, lime, mint, emerald, forest,\n   sage, teal, plant, tree, mushroom, vine, leaf, fern, botanical, verdant,\n   nature, foliage, bush, shrub, algae, lichen。\n2. 发光 / luminous / glow-only 粒子 → 用黑色纯背景（仅辅助生成发光形态，\n   最终透明仍来自 AI 抠图，且 runtime 须确为 additive/screen 混合）。\n3. 其他不透明主体（石、金属、木、骨、布、红/橙/紫等）→ 用 green 或其他高对比纯色背景。\n```\n\n## 源图生成要求\n- 背景**纯色、无纹理、无阴影、高对比**；主体完整、居中、留白。\n- 不画场景背景、不画地面、不投阴影、无 UI 文字、无水印。\n- 不依赖精确 hex（输出颜色可漂移，纯色只为辅助 AI 抠图，**不要硬编码色键参数**）。\n\n## 抠图与验收（生成之后）\n- 最终透明**只来自 AI 抠图**，禁止 chroma key / black_to_alpha / despill 等本地兜底。\n- 抠图后中和透明像素 RGB：四角 alpha=0 且 RGB 总和低于阈值，避免 alpha=0 却残留粉/绿边。\n- 抠图失败时换更干净的源图重试一次；服务持续失败则如实标记，不无限重试。\n\n## 输出\n请据 [subject] 给出本资产应使用的源图背景色（magenta/hot-pink、black、green/高对比纯色之一）及理由，并把上述生成与抠图要求纳入该资产的提示词与验收。",
+  "vars": ["subject"],
+  "createdAt": 1782000000020
+}

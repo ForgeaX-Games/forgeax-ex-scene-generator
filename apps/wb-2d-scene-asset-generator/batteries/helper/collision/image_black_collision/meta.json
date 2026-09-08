@@ -1,0 +1,101 @@
+{
+  "id": "image_black_collision",
+  "label": "黑图碰撞与锚点",
+  "name-en": "BlackCollision",
+  "description": "针对一张黑白图，按灰度阈值二值化（灰度<阈值且非透明=黑色区域），计算黑色区域的外轮廓输出为碰撞，并计算黑色区域质心输出为锚点。碰撞同时给出两种形式：与图等尺寸的二值轮廓网格，以及多连通区域的有序顶点环 JSON（像素坐标）；锚点为质心点 JSON。",
+  "description-en": "For a black/white image, binarize by a grayscale threshold (gray<threshold and not transparent = black region), trace the outline of the black region as collision, and compute the centroid as an anchor. Collision is provided two ways: a binary outline grid the same size as the image, and an ordered vertex-ring JSON of all connected regions (pixel coords); the anchor is a centroid point JSON.",
+  "icon": "深色画布上一个黑色不规则形状，外缘描一圈青绿色轮廓线，形状中心一个十字准星标记锚点，扁平插画风格，主色青绿与深灰。",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "collision",
+    "contour",
+    "outline",
+    "anchor",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "碰撞",
+    "轮廓",
+    "锚点",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "黑白图",
+      "description": "待分析的黑白位图 alias（PNG/JPEG，支持 RGB/RGBA）。",
+      "description-en": "Black/white bitmap alias to analyze (PNG/JPEG, RGB/RGBA)."
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "access": "item",
+      "label": "黑色阈值",
+      "description": "灰度判黑阈值（0~255）；像素灰度 < 该值且非全透明时视为黑色区域。",
+      "description-en": "Grayscale threshold (0-255); a pixel with gray < threshold and non-transparent is treated as the black region.",
+      "default": 128,
+      "min": 0,
+      "max": 255
+    },
+    {
+      "name": "simplify",
+      "type": "number",
+      "access": "item",
+      "label": "轮廓简化容差",
+      "description": "Douglas–Peucker 简化容差（像素）；0 = 不简化，保留逐像素轮廓。",
+      "description-en": "Douglas-Peucker simplify tolerance (pixels); 0 = no simplification (keep per-pixel outline).",
+      "default": 1.5,
+      "min": 0,
+      "max": 64
+    }
+  ],
+  "outputs": [
+    {
+      "name": "collision_grid",
+      "type": "grid",
+      "access": "item",
+      "label": "碰撞轮廓网格",
+      "description": "与输入图等尺寸的二值轮廓矩阵（外轮廓像素=1，其余=0）。",
+      "description-en": "Binary outline matrix the same size as the input (outline pixels=1, else 0)."
+    },
+    {
+      "name": "collision",
+      "type": "string",
+      "access": "item",
+      "label": "碰撞顶点环",
+      "description": "多连通区域的有序顶点环 JSON，形如 [[[x,y],...],...]（像素坐标）。",
+      "description-en": "Ordered vertex-ring JSON of connected regions, e.g. [[[x,y],...],...] (pixel coords)."
+    },
+    {
+      "name": "anchor",
+      "type": "string",
+      "access": "item",
+      "label": "锚点",
+      "description": "黑色区域质心点 JSON，形如 {\"x\":cx,\"y\":cy}（像素坐标）。",
+      "description-en": "Centroid point JSON of the black region, e.g. {\"x\":cx,\"y\":cy} (pixel coords)."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串。",
+      "description-en": "Error message on failure; empty string on success."
+    }
+  ],
+  "alg_tag": [
+    "黑白图二值化",
+    "外轮廓提取",
+    "Moore 边界跟踪",
+    "Douglas-Peucker 简化",
+    "质心锚点"
+  ]
+}

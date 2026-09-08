@@ -1,0 +1,28 @@
+{
+  "id": "str_to_grid_array",
+  "label": "字符串提取Grid数组",
+  "description": "递归解析字符串中的 JSON 内容，提取所有有效 grid（二维整数数组）并收集为 array 输出",
+  "description-en": "Recursively parse a JSON string of any format and collect all valid grids (2D integer arrays) into an array.",
+  "icon": "一个绿色字符串插槽连接着橙色数组插槽，中间有一个放大镜在扫描嵌套方格结构，扁平插画风格，背景简洁白色，主色为绿和橙",
+  "version": "1.0.0",
+  "tags": ["string", "grid", "array", "parse", "extract", "transform"],
+  "tag_labels": ["字符串", "网格", "数组", "解析", "提取", "转换"],
+  "inputs": [
+    {
+      "name": "str",
+      "type": "string",
+      "label": "输入字符串",
+      "description": "任意格式的 JSON 字符串，电池会递归遍历其中所有值，提取有效 grid",
+      "description-en": "A JSON string of any format. The battery recursively traverses all values to extract valid grids."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "array",
+      "type": "array",
+      "label": "Grid 数组",
+      "description": "所有找到的 grid（二维整数数组）组成的列表",
+      "description-en": "A list of all found grids (2D integer arrays)."
+    }
+  ]
+}

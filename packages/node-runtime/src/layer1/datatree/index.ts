@@ -1,0 +1,5 @@
+// Datatree — the path-keyed, immutable data structure that every wire in the node-runtime carries as its runtime payload, modelled on upstream node-editor's GH_Structure so branches are addressed by an integer path, items within a branch stay homogeneous, and the whole value serialises losslessly across the process boundary between executor and editor. As a layer1 sibling of asset-resolver, this cluster owns the data-shape contract that layer2 execution and the dispatcher build on: it defines the path/entry types and their invariants, a library of pure structural operators (graft, flatten, trim, shift, simplify, renumber, merge, concat) that transform one entries array into another, and the DataTree<T> class that wraps those operators as immutable methods with JSON isomorphism. Consumers normally use the DataTree class, but the operators are exported directly so the dispatcher, tests, and other low-level paths can transform entries without binding to the wrapper.
+
+export * from './types.js';
+export * from './operators.js';
+export * from './tree.js';

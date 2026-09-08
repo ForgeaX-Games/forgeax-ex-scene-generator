@@ -1,0 +1,76 @@
+{
+  "id": "gen_bleeding_forest",
+  "label": "出血森林生成",
+  "description": "元胞自动机算法生成有机森林地图，含生物发光点、暗池和随机路径连通。装饰物、传送门、出生点均以掩码形式写入网格。",
+  "description-en": "Cellular automata forest generator with organic clearings, bioluminescent glow spots, dark pools, and random-walk paths. Decors, portal and spawn point are encoded as mask IDs in the grid.",
+  "icon": "扁平插画风格小图标。深色丛林俯视图，深绿色茂密区域中散布亮绿色发光圆点，蜿蜒小径穿插其中，黑色暗池点缀，主色2种。",
+  "version": "2.0.0",
+  "tags": ["chaos", "forest", "cellular-automata", "procedural", "nature"],
+  "tag_labels": ["混沌", "森林", "元胞自动机", "程序生成", "自然"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "array",
+      "label": "输入网格",
+      "description": "输入网格或网格列表。提供时从列表第一个网格读取宽高；不提供时使用默认宽高72×72。支持单个网格（二维数组）或网格列表（三维数组）。",
+      "description-en": "Input grid or list of grids. When provided, width/height are derived from the first grid in the list. Accepts a single grid (2D array) or a list of grids (3D array).",
+      "default": []
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    },
+    {
+      "name": "iterations",
+      "type": "number",
+      "label": "CA迭代次数",
+      "description": "元胞自动机迭代次数，1-10，越多越平滑",
+      "description-en": "Cellular automata iteration count, 1-10; more iterations create smoother clearings.",
+      "default": 9
+    },
+    {
+      "name": "fillRatio",
+      "type": "number",
+      "label": "初始密度",
+      "description": "初始填充为森林的概率，0.3-0.8，越高越茂密",
+      "description-en": "Initial fill ratio for dense forest, 0.3-0.8; higher values create denser forest.",
+      "default": 0.51
+    },
+    {
+      "name": "pathCount",
+      "type": "number",
+      "label": "路径数量",
+      "description": "连通林间空地的随机步行路径数量",
+      "description-en": "Number of random-walk paths carved to connect clearings.",
+      "default": 9
+    },
+    {
+      "name": "poolCount",
+      "type": "number",
+      "label": "暗池数量",
+      "description": "散布在地图中的暗池数量",
+      "description-en": "Number of dark pool clusters placed in the map.",
+      "default": 19
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "输出网格列表",
+      "description": "单值网格列表，每个元素对应一个掩码ID的单值网格（该掩码处为1，其余为0）",
+      "description-en": "List of single-value grids, one per mask ID (1 where that mask appears, 0 elsewhere)."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "各掩码ID与中文名称的映射列表，含type字段（asset或tile），仅含网格中实际出现的ID",
+      "description-en": "Mask ID to Chinese name mapping list with type field (asset or tile), only IDs that appear in the grid."
+    }
+  ]
+}

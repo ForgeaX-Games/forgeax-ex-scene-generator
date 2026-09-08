@@ -1,0 +1,106 @@
+{
+  "id": "image_cut_by_mask",
+  "label": "按 mask 裁切",
+  "name-en": "CutByMask",
+  "description": "把任意一张图对齐到一张 mask 定义的「保留区域 + 原始尺寸」：先将图双线性缩放到 mask 的宽高（mask 为原始全尺寸、标出保留了哪片区域），再按 mask 强度调制 alpha（白色处保留、黑色/透明处裁掉），默认再裁剪到保留区域外接框，得到裁剪后的区域图。mask 通常取自 RemoveBG 电池的 mask 输出，从而让多张同源图被裁切对齐到完全相同的轮廓、位置与尺寸，无需逐张重新抠图。输出背景透明的 PNG。",
+  "description-en": "Aligns any image to the kept-region + original-size defined by a mask: bilinearly resize the image to the mask's size (the mask is full original size and marks which region was kept), modulate alpha by the mask (white = keep, black/transparent = cut), then by default crop to the kept region's bounding box to get the cropped-region image. The mask usually comes from the RemoveBG battery's mask output, so multiple same-source images can be cut/aligned to the exact same silhouette, position and size without re-running background removal. Outputs a transparent-background PNG.",
+  "icon": "深色画布上：左侧一张彩色图片缩略图，中间一个白底黑形的 mask 方块，右侧用箭头指向被裁成该形状、背景透明（棋盘格）的结果，扁平插画风格，小尺寸可辨。",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "mask",
+    "cutout",
+    "align",
+    "resize",
+    "alpha",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "mask",
+    "抠图",
+    "对齐",
+    "缩放",
+    "透明",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "图像",
+      "description": "要被对齐裁切的任意图 alias（PNG，支持 RGB/RGBA）。",
+      "description-en": "Any image alias to align and cut (PNG, RGB/RGBA)."
+    },
+    {
+      "name": "mask",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "mask",
+      "description": "保留区域 mask（白=保留、黑=裁掉）；通常接 RemoveBG 的 mask 输出（原始全尺寸）。图会先缩放到 mask 的宽高再按其裁切。也可直接用一张抠好的透明图当 mask（透明处=裁掉）。",
+      "description-en": "Region mask (white = keep, black = cut); typically wired from RemoveBG's mask output (original full size). The image is resized to the mask's size, then cut by it. A pre-cut transparent image also works as a mask (transparent = cut)."
+    },
+    {
+      "name": "crop",
+      "type": "boolean",
+      "access": "item",
+      "required": false,
+      "label": "裁剪到区域",
+      "description": "裁剪到保留区域的外接框（含 2px 边距），得到与 RemoveBG 结果图对齐、同尺寸的裁剪区域图。关闭则输出保持 mask 的原始全尺寸。",
+      "description-en": "Crop to the kept region's bounding box (with 2px padding), yielding a cropped-region image aligned and sized like RemoveBG's result. Disable to keep the mask's original full size.",
+      "default": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "结果图像",
+      "description": "按 mask 裁切后（背景透明）写入 staging 区的 alias；crop 开启时为裁剪后的区域图。"
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "输出图像宽度（crop 开启时为裁剪区域宽度，否则 = mask 宽度）。"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "输出图像高度（crop 开启时为裁剪区域高度，否则 = mask 高度）。"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串。"
+    }
+  ],
+  "params": [
+    {
+      "name": "suffix",
+      "type": "string",
+      "default": "_cut",
+      "label": "alias 后缀",
+      "description": "输出 alias = 原名 + 后缀；留空则自动生成。"
+    }
+  ],
+  "alg_tag": [
+    "按mask裁切",
+    "抠图区域对齐",
+    "双线性缩放",
+    "alpha调制",
+    "图像对齐"
+  ]
+}

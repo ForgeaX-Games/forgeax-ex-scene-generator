@@ -1,0 +1,23 @@
+{
+  "id": "gta_city_parcels",
+  "label": "GTA 城市道路地块",
+  "description": "从道路和功能片区中提取可建设地块，作为建筑足迹生成的约束。",
+  "description-en": "Extracts developable parcels from roads and districts for building footprint placement.",
+  "icon": "道路围合出可建设地块。",
+  "version": "1.0.0",
+  "tags": ["gta", "city", "parcel", "block", "planning"],
+  "tag_labels": ["GTA", "城市", "地块", "街区"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "districtGrid", "type": "grid", "label": "功能片区" },
+    { "name": "roadGrid", "type": "grid", "label": "完整道路" },
+    { "name": "minParcelArea", "type": "number", "label": "最小地块面积", "default": 24, "min": 1, "max": 20000 },
+    { "name": "roadSetback", "type": "number", "label": "道路退让", "default": 1, "min": 0, "max": 8 }
+  ],
+  "outputs": [
+    { "name": "parcelGrid", "type": "grid", "label": "地块网格" },
+    { "name": "developableMask", "type": "grid", "label": "可开发掩码" },
+    { "name": "outputGrid", "type": "grid", "label": "地块预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "scene_focus_path",
+  "label": "聚焦路径",
+  "name-en": "FocusPath",
+  "description": "显式把 scene 的 focus 改到指定路径。tree 不变，仅 focus 不同。用途：手动定位节点，或在多层 fanout 后把 focus 重置回某个公共祖先。",
+  "description-en": "Explicit refocus: keep the tree, change focus to the given path. Useful for manual targeting or resetting focus to a common ancestor after multi-level fanout.",
+  "icon": "一个十字光标停在树状结构的某个节点上，扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": ["scene", "focus", "refocus"],
+  "tag_labels": ["场景", "聚焦", "重定位"],
+  "projectTypes": ["both"],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "required": true,
+      "label": "scene",
+      "description": "输入 scene（focus 不限）",
+      "description-en": "Input scene (any focus)."
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "access": "item",
+      "required": true,
+      "label": "路径",
+      "description": "目标路径（绝对路径，必须存在于 tree 中；'/' 代表根节点）",
+      "description-en": "Target absolute path (must exist in tree; '/' means root)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "scene",
+      "description": "focus 已重置为 path 的 scene",
+      "description-en": "Scene with focus set to path."
+    }
+  ]
+}

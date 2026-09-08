@@ -1,0 +1,58 @@
+{
+  "id": "building_inner_door",
+  "label": "建筑内墙开门",
+  "description": "在建筑内墙上随机开 2~4 格宽的门洞，使用最小生成树算法确保每个房间都互相连通。",
+  "description-en": "Randomly opens 2–4 cell-wide doorways in interior walls, using a minimum spanning tree to guarantee every room is reachable.",
+  "icon": "扁平插画风格小图标。建筑俯视平面图，深橄榄色矩形区域内有若干白色内墙线将内部分割成多个房间，内墙上有若干缺口表示门洞，配色深橄榄底色配白色线条和亮黄色缺口，简洁现代，主色2种。",
+  "version": "1.0.0",
+  "tags": [
+    "building",
+    "interior",
+    "door",
+    "room",
+    "connectivity",
+    "structure"
+  ],
+  "tag_labels": [
+    "建筑",
+    "内部",
+    "门洞",
+    "房间",
+    "连通性",
+    "结构"
+  ],
+  "inputs": [
+    {
+      "name": "gridList",
+      "type": "array",
+      "label": "建筑墙体列表",
+      "description": "建筑轮廓及内墙掩码列表，每个网格的非零值为墙体",
+      "description-en": "List of building outline and interior wall masks; non-zero values in each grid are walls."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间戳",
+      "description-en": "Random seed; 0 uses the current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "开门后墙体列表",
+      "description": "与输入列表一一对应，每个网格内墙上开好 2~4 格门洞，门洞处值为 0",
+      "description-en": "List of grids corresponding to input; interior walls have 2–4 cell doorways cut through them (set to 0)."
+    },
+    {
+      "name": "doorGridList",
+      "type": "array",
+      "label": "门列表",
+      "description": "与输入列表一一对应，每个网格中门洞处=1，其余为0",
+      "description-en": "List of grids corresponding to input; door opening cells=1, all other cells=0."
+    }
+  ],
+  "alg_tag": []
+}

@@ -1,0 +1,37 @@
+{
+  "id": "pt2_explode",
+  "label": "展开2D点",
+  "name-en": "Pt2Explode",
+  "description": "把一个 point2d 拆成 x/y 两个数值输出。",
+  "description-en": "Split a point2d into its x/y number outputs.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["point2d", "basic", "explode"],
+  "tag_labels": ["二维点", "基础", "展开"],
+  "inputs": [
+    {
+      "name": "point",
+      "type": "point2d",
+      "required": true,
+      "label": "point",
+      "description": "待解构的二维点",
+      "description-en": "Point2D to deconstruct."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "x",
+      "type": "number",
+      "label": "x",
+      "description": "X 分量",
+      "description-en": "X component."
+    },
+    {
+      "name": "y",
+      "type": "number",
+      "label": "y",
+      "description": "Y 分量",
+      "description-en": "Y component."
+    }
+  ]
+}

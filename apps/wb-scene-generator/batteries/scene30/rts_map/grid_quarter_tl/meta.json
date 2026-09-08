@@ -1,0 +1,28 @@
+{
+  "id": "grid_quarter_tl",
+  "label": "网格左上角四分之一",
+  "description": "提取输入网格左上角四分之一区域，输出尺寸为 ⌈w/2⌉ × ⌈h/2⌉。",
+  "description-en": "Extracts the top-left quarter of the input grid, outputting a subgrid of size ⌈w/2⌉ × ⌈h/2⌉.",
+  "icon": "一个大正方形网格被十字线分割为四格，左上角格子高亮填色，其余三格半透明，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["grid", "crop", "quarter", "rts", "utility"],
+  "tag_labels": ["网格", "裁剪", "四分之一", "RTS", "工具"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "源网格",
+      "description": "要裁剪的输入网格",
+      "description-en": "Input grid to crop."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "quarterGrid",
+      "type": "grid",
+      "label": "左上角四分之一网格",
+      "description": "左上角 ⌈w/2⌉ × ⌈h/2⌉ 子网格",
+      "description-en": "Top-left subgrid of size ⌈w/2⌉ × ⌈h/2⌉."
+    }
+  ]
+}

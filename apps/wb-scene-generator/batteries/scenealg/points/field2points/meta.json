@@ -1,0 +1,48 @@
+{
+  "id": "alg_field2points",
+  "label": "场转采样点",
+  "name-en": "Field2Points",
+  "description": "从标量场（field，每格一个数值）按阈值采样出采样点列表：遍历输入 field 的所有格（行优先，r 外层、c 内层），凡是「值 > threshold」（严格大于）的格，各自生成一张与输入同尺寸、仅该格=1 其余=0 的单点 0/1 网格，所有这些单点网格按行优先顺序组成一个列表（DataTree）输出。每张输出网格恰好一个 1，列表长度等于超阈值的格数；没有任何格超阈值时输出空列表。常用于把 field_noise / field_distance 等连续标量场离散化成一组可逐点处理的采样点。",
+  "description-en": "Samples a list of points from a scalar field (a field — one value per cell) by threshold: iterate all cells of the input field in row-major order (r outer, c inner); for every cell whose value is strictly greater than threshold, emit a single-point 0/1 grid matching the input size (only that cell = 1, the rest = 0). All such single-point grids form a list (DataTree) in row-major order. Each output grid has exactly one 1; the list length equals the number of cells above the threshold; an empty list is output when no cell exceeds the threshold. Useful for discretizing continuous scalar fields (e.g. field_noise / field_distance) into a set of per-point samples.",
+  "icon": "深色网格背景上，从连续明暗的标量场里挑出几个分散的亮绿单点高亮显示，体现按阈值采样出离散点，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["points", "field", "scalar", "threshold", "sample", "grid", "scenealg"],
+  "tag_labels": ["采样点", "场", "标量", "阈值", "采样", "网格", "场景算法"],
+  "inputs": [
+    {
+      "name": "field",
+      "type": "grid",
+      "required": true,
+      "label": "输入标量场",
+      "description": "输入标量场/网格（number[][]），每格一个连续数值。按阈值在其上采样点。",
+      "description-en": "Input scalar field / grid (number[][]), one continuous value per cell. Points are sampled on it by threshold.",
+      "access": "item"
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "default": 0,
+      "label": "阈值",
+      "description": "采样阈值。只有「值 > threshold」（严格大于）的格会被采为一个点，等于阈值的格不被选中。",
+      "description-en": "Sampling threshold. Only cells whose value is strictly greater than threshold are sampled as a point; cells equal to the threshold are not selected."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "points",
+      "type": "grid",
+      "access": "list",
+      "label": "采样点列表",
+      "description": "采样点列表（grid[]）：每个「field 值 > threshold」的格产生一张与输入同尺寸的 0/1 网格（仅该格=1，其余=0），行优先顺序。列表长度=超阈值格数；无超阈值时为空列表。",
+      "description-en": "List of sampled points (grid[]): each cell whose field value > threshold yields a 0/1 grid matching the input size (only that cell = 1, the rest = 0), in row-major order. List length equals the number of cells above the threshold; an empty list when none exceed it."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "采样点数",
+      "description": "超阈值的格数，即 points 列表的长度（采样到的点个数）。",
+      "description-en": "Number of cells above the threshold, i.e. the length of the points list (count of sampled points)."
+    }
+  ]
+}

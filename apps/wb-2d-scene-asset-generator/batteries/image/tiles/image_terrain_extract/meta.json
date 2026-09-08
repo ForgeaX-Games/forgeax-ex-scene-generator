@@ -1,0 +1,184 @@
+{
+  "id": "image_terrain_extract",
+  "label": "提取大块纹理",
+  "name-en": "TerrainExtract",
+  "description": "从任意图像中提取一张干净的大块纹理：K-means 聚类识别主纹理颜色并构建装饰物掩码 → Image Quilting (Efros-Freeman 2001) 用最小割接缝拼接无装饰物的小块 → 输出 size×size 的方形纹理。适合从含有装饰物（精灵、阴影、噪点）的图像中提炼出可作为种子贴图的干净大块。",
+  "description-en": "Extract a clean, large terrain texture from any image: K-means clusters the dominant terrain colour and builds a decoration mask, then Image Quilting (Efros-Freeman 2001) stitches decoration-free patches with min-cut seams into a size×size canvas. Outputs a clean, large texture suitable as a seed tile (downstream connect to make_seamless_moisan for tileability).",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "texture",
+    "terrain",
+    "extract",
+    "quilting",
+    "synthesis",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "纹理",
+    "地形",
+    "提取",
+    "拼接",
+    "合成",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "源图像",
+      "description": "用于提取大块纹理的源图像 alias（任意尺寸，将自动转 RGBA）",
+      "description-en": "Source image alias to extract terrain from (any size, will be converted to RGBA)."
+    },
+    {
+      "name": "size",
+      "type": "number",
+      "access": "item",
+      "label": "输出尺寸",
+      "description": "输出方形纹理的边长（像素）。建议 64/128/256/512；越大越长非重复",
+      "description-en": "Edge length of the square output texture in pixels. Recommended 64/128/256/512; larger = longer non-repeating texture.",
+      "default": 128,
+      "min": 16,
+      "max": 2048
+    },
+    {
+      "name": "patch_size",
+      "type": "number",
+      "access": "item",
+      "label": "拼接块尺寸",
+      "description": "Image Quilting 的小块边长 P。常用 16~48；越小变化越多但接缝越多，越大越平滑",
+      "description-en": "Image Quilting patch edge length P. Typical 16..48; smaller = more variety but more seams.",
+      "default": 32,
+      "min": 8,
+      "max": 128
+    },
+    {
+      "name": "overlap",
+      "type": "number",
+      "access": "item",
+      "label": "块重叠",
+      "description": "相邻拼接块的重叠宽度 O（像素）。一般取 P/5；太小接缝可见，太大浪费内容",
+      "description-en": "Overlap O between adjacent patches in pixels. Typical P/5; too small leaves visible seams.",
+      "default": 6,
+      "min": 2,
+      "max": 32
+    },
+    {
+      "name": "candidates",
+      "type": "number",
+      "access": "item",
+      "label": "候选数量",
+      "description": "每次放置块时从 SSD 最低的前 K 个候选中随机抽取。越高纹理变化越多，越低拼接越严密",
+      "description-en": "At each placement, pick uniformly from the top-K lowest-SSD candidates. Higher = more variety, lower = tighter match.",
+      "default": 30,
+      "min": 1,
+      "max": 200
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "RNG 种子，控制放置随机性。相同 seed + 相同输入 → 相同输出",
+      "description-en": "RNG seed for placement randomness. Same seed + same input = reproducible output.",
+      "default": 0,
+      "min": 0,
+      "max": 2147483647
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "结果纹理",
+      "description": "提取出的大块纹理（size×size，PNG），写入资产库 staging 区的新 alias",
+      "description-en": "Extracted terrain texture (size×size PNG), saved to staging zone with a new alias."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "输出图像宽度（像素）"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "输出图像高度（像素）"
+    },
+    {
+      "name": "source_patches",
+      "type": "number",
+      "access": "item",
+      "label": "可用源块数",
+      "description": "源图中通过装饰物过滤、参与拼接的小块数量；过少（<10）说明源图装饰物太多或 patch_size 过大"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串"
+    }
+  ],
+  "params": [
+    {
+      "name": "suffix",
+      "type": "string",
+      "default": "_terrain",
+      "label": "alias 后缀",
+      "description": "输出 alias = 原名 + 后缀；如 grass.png + _terrain → grass_terrain.png"
+    },
+    {
+      "name": "k_clusters",
+      "type": "number",
+      "default": 5,
+      "min": 2,
+      "max": 12,
+      "label": "K-means 聚类数",
+      "description": "K-means 的聚类数。默认 5：自然纹理常含若干变体（光照、阴影、边缘高光），少了会把变体误判为装饰物"
+    },
+    {
+      "name": "terrain_radius",
+      "type": "number",
+      "default": 80,
+      "min": 10,
+      "max": 200,
+      "label": "纹理合并半径",
+      "description": "颜色相近的聚类视为同一纹理材质（RGB 欧氏距离）。默认 80：可合并阴影/高光，避免误把它们当装饰物"
+    },
+    {
+      "name": "min_decoration_size",
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 10,
+      "label": "装饰物最小尺寸",
+      "description": "形态学开运算核大小：< 该尺寸的非纹理斑点视为聚类噪声允许保留；≥ 该尺寸的视为装饰物必须避开"
+    },
+    {
+      "name": "max_source_patches",
+      "type": "number",
+      "default": 4096,
+      "min": 256,
+      "max": 16384,
+      "label": "最大候选块数",
+      "description": "预扫描的最大无装饰物源块数。仅控内存（4096 个 32×32×4 块 ≈ 16 MB）"
+    }
+  ],
+  "alg_tag": [
+    "K-means 颜色聚类识别主纹理",
+    "形态学开运算过滤装饰物",
+    "Image Quilting 最小割接缝拼接",
+    "从含装饰物图像中提取干净大块纹理"
+  ]
+}

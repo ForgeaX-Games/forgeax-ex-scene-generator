@@ -1,0 +1,74 @@
+{
+  "id": "island_poisson_gen",
+  "label": "岛屿生成",
+  "description": "输入一个网格作为可生成区域，在其中用泊松盘均匀放置岛屿锚点，再通过竞争 BFS 膨胀生长为有机形状的群岛。",
+  "description-en": "Input a grid as the valid area, place island anchors via Poisson disk sampling, then grow organic-shaped islands with competitive BFS expansion.",
+  "icon": "俯视视角，深蓝水面中散布多个不同大小的绿色有机岛屿，岛屿边缘圆润多叶，间距均匀，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["island", "poisson", "bfs", "growth", "archipelago", "water", "terrain", "pcg", "organic"],
+  "tag_labels": ["岛屿", "泊松盘", "BFS膨胀", "群岛", "水面", "地形", "PCG", "有机形状"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "区域网格",
+      "description": "可生成岛屿的区域掩码（非零格=可放置），网格尺寸决定输出大小；不连接时默认全图可放置。",
+      "description-en": "Mask of valid island placement area (non-zero = valid). Grid size determines output size; if not connected, full map is used."
+    },
+    {
+      "name": "numIslands",
+      "type": "number",
+      "label": "岛屿数量",
+      "description": "希望生成的岛屿数量上限，实际数量受地图面积和岛屿大小限制，默认 8",
+      "description-en": "Max number of islands. Actual count limited by map area and island size. Default 8.",
+      "default": 8
+    },
+    {
+      "name": "islandSize",
+      "type": "number",
+      "label": "岛屿大小",
+      "description": "岛屿膨胀半径（格），控制岛屿整体大小，建议 6~20，默认 12",
+      "description-en": "Island expansion radius in cells. Recommended 6-20. Default 12.",
+      "default": 12
+    },
+    {
+      "name": "radiusVar",
+      "type": "number",
+      "label": "大小随机差异",
+      "description": "各岛屿大小的随机差异（0=全部等大，0.8=差异最大），默认 0.3",
+      "description-en": "Island size variance. 0=uniform, 0.8=max variety. Default 0.3.",
+      "default": 0.3
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0=每次不同，默认 0",
+      "description-en": "Random seed; 0 = random each time. Default 0.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "islandGrid",
+      "type": "grid",
+      "label": "岛屿网格",
+      "description": "陆地二值掩码：1=岛屿/陆地，0=水面",
+      "description-en": "Land binary mask: 1=island/land, 0=water."
+    },
+    {
+      "name": "waterGrid",
+      "type": "grid",
+      "label": "水面网格",
+      "description": "水面二值掩码：1=水面，0=岛屿/陆地",
+      "description-en": "Water binary mask: 1=water, 0=island/land."
+    },
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "岛屿 ID 网格",
+      "description": "各独立岛屿的 1-based ID，水面=0，可用于区分不同岛屿",
+      "description-en": "Per-island 1-based ID grid. 0=water."
+    }
+  ]
+}

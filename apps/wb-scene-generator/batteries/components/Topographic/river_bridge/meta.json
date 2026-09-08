@@ -1,0 +1,77 @@
+{
+  "id": "river_bridge",
+  "label": "河流架桥",
+  "name-en": "RiverBridge",
+  "description": "分析单张网格中河流的局部流向，在垂直于流向的位置生成桥掩码。直线桥用投影法，折线桥用连连看算法连接两侧河岸端点（最多2次H/V转弯）。输入/输出都是单张 grid（item），网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Analyzes the local river flow direction in a single grid and generates a bridge mask perpendicular to it. Straight mode uses projection; zigzag mode uses Shisen-Sho pathfinding (≤2 H/V turns) connecting opposite bank endpoints. Input/output are single grids (item); the engine fans out a DataTree of grids one-by-one.",
+  "icon": "俯视河流上一座横跨两岸的桥梁，细长矩形横穿蓝色水域，扁平插画风格，主色2种。",
+  "version": "2.0.0",
+  "tags": ["river", "bridge", "mask", "cross", "road", "path", "2.5d", "datatree"],
+  "tag_labels": ["河流", "桥", "掩码", "穿越", "道路", "路径", "2.5D", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "河流网格",
+      "description": "单张二维网格（grid[y][x]）；非零值为河流区域，自动识别流向。网格列表由引擎按 DataTree 自动逐张 fanout。",
+      "description-en": "A single 2D grid (grid[y][x]); non-zero cells define the river region and flow is auto-detected. The engine fans out a DataTree of grids one-by-one."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "桥宽（格）",
+      "description": "桥梁宽度，单位为格数",
+      "description-en": "Bridge width in cells.",
+      "default": 1
+    },
+    {
+      "name": "position",
+      "type": "number",
+      "access": "item",
+      "label": "桥位置",
+      "description": "0.0~1.0，沿河流主轴方向的相对位置，0=起点端，1=终点端，0.5=中央",
+      "description-en": "0.0 to 1.0, relative position along the river's main axis. 0=start, 1=end, 0.5=center.",
+      "default": 0.5
+    },
+    {
+      "name": "algorithm",
+      "type": "string",
+      "access": "item",
+      "label": "桥形算法",
+      "description": "straight=直线桥；zigzag=水平竖直折线桥（Z形/L形）",
+      "description-en": "straight = straight perpendicular bridge; zigzag = H/V polyline bridge (Z or L shape).",
+      "default": "straight",
+      "options": ["straight", "zigzag"]
+    },
+    {
+      "name": "extendToLand",
+      "type": "boolean",
+      "access": "item",
+      "label": "延伸到陆地",
+      "description": "开启后桥的两端落点各延伸1格到河岸外的陆地，使桥真正连接两岸",
+      "description-en": "When enabled, the bridge extends 1 cell beyond each river bank onto land, connecting both shores.",
+      "default": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "桥掩码",
+      "description": "桥掩码网格，桥格值为 1，其余为 0；输入为网格列表时引擎逐张产出对应的 DataTree。",
+      "description-en": "Bridge mask grid; bridge cells = 1, others = 0. With a grid-list input the engine emits one per branch as a DataTree."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "名称清单，固定 [{id: 1, name: '桥', type: 'tile'}]",
+      "description-en": "Name list, always [{id: 1, name: '桥', type: 'tile'}]."
+    }
+  ]
+}

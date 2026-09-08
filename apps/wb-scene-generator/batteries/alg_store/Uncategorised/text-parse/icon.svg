@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_text_parse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#3a8e88"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_text_parse)"/>
+
+  <path fill="#fff" d="M12,4 L7,12 L17,12 L12,4 Z M8,13 L16,13 L12,5.5 L8,13 Z"/>
+  <rect x="6" y="15" width="1" height="4" fill="#fff"/>
+  <rect x="11.5" y="15" width="1" height="4" fill="#fff"/>
+  <rect x="17" y="15" width="1" height="4" fill="#fff"/>
+  <text x="5" y="11" font-size="4" fill="rgba(0,0,0,0.55)">abc</text>
+  <text x="16" y="19" font-size="4" fill="rgba(0,0,0,0.55)">123</text>
+
+</svg>

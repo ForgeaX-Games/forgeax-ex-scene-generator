@@ -1,0 +1,27 @@
+{
+  "id": "sidescroller_quality_check",
+  "label": "横版质量检查",
+  "name-en": "SidescrollerQuality",
+  "description": "检查横版背景是否存在纯色边框/黑边和明显纵向拼接线，输出 proceed/regenerate 建议并透传图像。",
+  "description-en": "Check side-scroller backgrounds for solid borders/black bars and vertical stitching seams, emitting a proceed/regenerate decision while passing the image through.",
+  "version": "1.0.0",
+  "tags": ["image", "sidescroller", "quality", "seamless"],
+  "tag_labels": ["图像", "横版", "质量", "无缝"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "image", "type": "image", "access": "item", "required": true, "label": "图像" },
+    { "name": "border_threshold", "type": "number", "access": "item", "label": "边框阈值", "default": 8, "min": 0, "max": 255 },
+    { "name": "seam_threshold", "type": "number", "access": "item", "label": "拼接阈值", "default": 38, "min": 0, "max": 255 }
+  ],
+  "outputs": [
+    { "name": "image", "type": "image", "access": "item", "label": "透传图像" },
+    { "name": "action", "type": "string", "access": "item", "label": "建议" },
+    { "name": "score", "type": "number", "access": "item", "label": "评分" },
+    { "name": "report", "type": "string", "access": "item", "label": "报告 JSON" },
+    { "name": "error", "type": "string", "access": "item", "label": "错误信息" }
+  ],
+  "params": [
+    { "name": "suffix", "type": "string", "default": "_quality", "label": "alias 后缀" }
+  ],
+  "alg_tag": ["横版背景质量检查", "边框检测", "拼接检测"]
+}

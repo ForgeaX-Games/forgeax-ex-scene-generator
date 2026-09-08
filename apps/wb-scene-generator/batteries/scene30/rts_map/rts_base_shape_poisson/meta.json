@@ -1,0 +1,115 @@
+{
+  "id": "rts_base_shape_poisson",
+  "label": "RTS基地泊松分布生成",
+  "description": "泊松盘采样锚点 + 多子种子竞争膨胀：用 Bridson 泊松盘算法在 mask 内均匀分布锚点，保证最小间距，每个锚点衍生多个子种子融合成有机 blob，区域间斥力保持间隙。",
+  "description-en": "Poisson disk sampling for anchor placement + multi-sub-seed competitive BFS growth. Bridson algorithm distributes anchors uniformly within the mask with a guaranteed minimum separation; each anchor spawns sub-seeds that merge into an organic multi-lobed blob, with repulsion gap between regions.",
+  "icon": "俯视视角深色网格内均匀散布多个白色有机团状图形，间距均匀，每个团有多个圆润叶瓣，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["rts", "base", "poisson", "bfs", "growth", "repulsion", "platform", "pcg", "terrain", "organic"],
+  "tag_labels": ["RTS", "基地", "泊松盘", "BFS膨胀", "子种子融合", "斥力", "平台", "PCG", "地形", "有机形状"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "可用区域掩码，非零格子为可生长范围，blob 只在掩码内生成",
+      "description-en": "Input mask grid; non-zero cells define the growable region. Blobs are confined to mask area."
+    },
+    {
+      "name": "maxRegions",
+      "type": "number",
+      "label": "最大区域数",
+      "description": "泊松盘采样最多放置的锚点（区域）数量，实际数量取决于 minDist 与 mask 面积",
+      "description-en": "Maximum number of anchor points (regions) to place via Poisson sampling. Actual count depends on minDist and mask area.",
+      "default": 6
+    },
+    {
+      "name": "minDist",
+      "type": "number",
+      "label": "锚点最小间距",
+      "description": "泊松盘最小间距（格），控制区域分布密度，默认为 min(宽,高)×0.25，设为 0 自动计算",
+      "description-en": "Minimum distance between anchor points in Poisson disk sampling. Default auto = min(w,h)*0.25. Set 0 for auto.",
+      "default": 0
+    },
+    {
+      "name": "subSeeds",
+      "type": "number",
+      "label": "每区域子种子数",
+      "description": "每个区域内的子膨胀种子数量，越多叶瓣越丰富，建议 3~6",
+      "description-en": "Sub-seeds per region for multi-lobe organic shape. More = more lobes. Recommended 3-6.",
+      "default": 4
+    },
+    {
+      "name": "maxRadius",
+      "type": "number",
+      "label": "最大膨胀半径",
+      "description": "每个子种子的最大膨胀半径（格），建议 12~22",
+      "description-en": "Max expansion radius per sub-seed in cells. Recommended 12-22.",
+      "default": 16
+    },
+    {
+      "name": "radiusVariance",
+      "type": "number",
+      "label": "半径差异",
+      "description": "各子种子半径的随机差异比例（0=全等，0.5=最大差半倍），默认 0.25",
+      "description-en": "Variance ratio for per-seed radius. Default 0.25.",
+      "default": 0.25
+    },
+    {
+      "name": "gapWidth",
+      "type": "number",
+      "label": "斥力间隙宽度",
+      "description": "不同区域之间的最小间隙（格），建议 2~5，默认 3",
+      "description-en": "Min gap between different regions in cells. Recommended 2-5, default 3.",
+      "default": 3
+    },
+    {
+      "name": "growProb",
+      "type": "number",
+      "label": "生长概率",
+      "description": "每次膨胀的基础生长概率（0~1），默认 0.88",
+      "description-en": "Base growth probability per step. Default 0.88.",
+      "default": 0.88
+    },
+    {
+      "name": "noiseAmp",
+      "type": "number",
+      "label": "噪声强度",
+      "description": "空间噪声对生长概率的调制幅度，越大边缘越有机凹凸，默认 0.12",
+      "description-en": "Noise modulation for organic edges. Default 0.12.",
+      "default": 0.12
+    },
+    {
+      "name": "subSpacing",
+      "type": "number",
+      "label": "子种子间距",
+      "description": "同区域内子种子之间的间距（格），控制叶瓣分散程度，建议 4~10，默认 6",
+      "description-en": "Spacing between sub-seeds within a region. Controls lobe separation. Recommended 4-10, default 6.",
+      "default": 6
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0=使用时间戳（每次不同）",
+      "description-en": "Random seed; 0 uses current timestamp for unique results.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "baseGrid",
+      "type": "grid",
+      "label": "基地形状网格",
+      "description": "所有区域合并的平台掩码：1=平台，0=空地",
+      "description-en": "Merged platform mask: 1=any platform, 0=empty."
+    },
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "区域 ID 网格",
+      "description": "各独立区域的 1-based ID，空地为 0",
+      "description-en": "Per-region 1-based ID grid; 0=empty."
+    }
+  ]
+}

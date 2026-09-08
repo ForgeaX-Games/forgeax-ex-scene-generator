@@ -1,0 +1,28 @@
+{
+  "id": "str_to_list",
+  "label": "字符串转列表",
+  "description": "将 JSON 数组字符串解析为列表，元素原样保留（字符串、数字、对象、布尔均不转换）。",
+  "description-en": "Parse a JSON array string into a list, preserving element types as-is (string, number, object, boolean).",
+  "icon": "一个绿色字符串插槽通过箭头连接橙色数组插槽，中间有方括号符号和引号标记，扁平插画风格，背景简洁白色，主色为绿和橙",
+  "version": "1.0.0",
+  "tags": ["string", "list", "array", "parse", "transform"],
+  "tag_labels": ["字符串", "列表", "数组", "解析", "转换"],
+  "inputs": [
+    {
+      "name": "str",
+      "type": "string",
+      "label": "输入字符串",
+      "description": "形如 [...] 的 JSON 字符串，元素可为任意类型（字符串、数字、对象等）",
+      "description-en": "A JSON array string like [...]; elements can be any type (string, number, object, etc.)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "list",
+      "type": "array",
+      "label": "字符串列表",
+      "description": "解析后的列表，元素保持原始类型",
+      "description-en": "The parsed list with elements preserving their original types."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "id": "render_preprocess",
+  "label": "渲染预处理",
+  "description": "按照渲染顺序对网格列表和名称清单进行重排与合并：tile类型按顺序累积（后面的tile会包含前面所有tile的区域），asset类型排在末尾，输出重排后的网格列表与名称清单。",
+  "description-en": "Reorders and merges grid list and name list according to render order: tile types are accumulated (each tile includes all previous tiles' areas), asset types are placed at the end, outputs reordered grid list and name list.",
+  "icon": "扁平插画风格小图标，图层叠加排序，左侧多张彩色网格，右侧按顺序叠加的网格，主色为蓝绿和金色，简洁现代。",
+  "version": "1.0.0",
+  "tags": ["render", "preprocess", "sort", "grid", "namelist", "merge", "order", "tile"],
+  "tag_labels": ["渲染", "预处理", "排序", "网格", "名称清单", "合并", "顺序", "地块"],
+  "inputs": [
+    {
+      "name": "inputGridList",
+      "type": "array",
+      "label": "网格列表",
+      "description": "输入的01网格列表，与名称清单一一对应",
+      "description-en": "Input binary grid list, one-to-one correspondence with name list."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "名称清单，格式为 [{id, name, type}]，type为tile或asset",
+      "description-en": "Name list with entries {id, name, type}, type is 'tile' or 'asset'."
+    },
+    {
+      "name": "renderOrder",
+      "type": "string",
+      "label": "渲染顺序",
+      "description": "JSON字符串，格式如 [\"浅水\",\"中水\",[\"草地\",\"浓草地\"],\"山地\"]，[]内为平级关系",
+      "description-en": "JSON string, e.g. [\"water\",\"deep_water\",[\"grass\",\"thick_grass\"],\"mountain\"], [] means same level.",
+      "default": "[]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "网格列表",
+      "description": "按渲染顺序重排并累积合并后的网格列表，asset排在末尾",
+      "description-en": "Grid list reordered and accumulated by render order, assets placed at end."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "按渲染顺序重排后的名称清单，格式为 [{id, name, type}]",
+      "description-en": "Name list reordered by render order, format [{id, name, type}]."
+    },
+    {
+      "name": "detail",
+      "type": "string",
+      "label": "详细信息",
+      "description": "处理过程报告",
+      "description-en": "Processing report."
+    }
+  ]
+}

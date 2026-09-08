@@ -1,0 +1,142 @@
+{
+  "id": "wfc_tileset",
+  "label": "波函数坍缩模版生成",
+  "description": "生成多值 WFC 瓦片模板集（0=背景 1=墙壁 2=地板 3=资源点 4=柱子），输出模板列表、邻接规则和权重，可直接连接 wfc_tile_solver 组装地图",
+  "description-en": "Generates multi-value WFC tile templates (0=bg 1=wall 2=floor 3=resource 4=pillar). Outputs templates, adjacency rules, and weights ready for wfc_tile_solver.",
+  "icon": "俯视网格中排列的多种不同房间瓦片，有门廊走廊连接，部分房间内有方块障碍物，扁平插画风格，简洁小图标，主色2种",
+  "version": "2.1.0",
+  "autoIterate": true,
+  "tags": [
+    "pcg",
+    "tileset",
+    "wfc",
+    "shooter",
+    "dungeon",
+    "template"
+  ],
+  "tag_labels": [
+    "PCG",
+    "瓦片集",
+    "WFC",
+    "射击",
+    "地牢",
+    "模板"
+  ],
+  "inputs": [
+    {
+      "name": "tileSize",
+      "type": "number",
+      "label": "瓦片尺寸",
+      "default": 11,
+      "min": 7,
+      "max": 21,
+      "description": "单个瓦片的边长（奇数，偶数自动+1），越大则房间越大",
+      "description-en": "Side length of each tile (odd, even values rounded up). Larger = bigger rooms."
+    },
+    {
+      "name": "corridorWidth",
+      "type": "number",
+      "label": "走廊宽度",
+      "default": 3,
+      "min": 1,
+      "max": 7,
+      "description": "门/走廊的宽度（奇数），控制房间之间通道的粗细",
+      "description-en": "Width of corridor/door openings (odd). Controls passage width between rooms."
+    },
+    {
+      "name": "wallThickness",
+      "type": "number",
+      "label": "墙壁厚度",
+      "default": 1,
+      "min": 1,
+      "max": 3,
+      "description": "外墙厚度（格数），增大后房间变小、墙更厚实",
+      "description-en": "Outer wall thickness in cells. Larger = smaller rooms, thicker walls."
+    },
+    {
+      "name": "pillarSize",
+      "type": "number",
+      "label": "柱子尺寸",
+      "default": 2,
+      "min": 1,
+      "max": 4,
+      "description": "房间内柱子/障碍物的边长",
+      "description-en": "Side length of pillar obstacles inside rooms."
+    },
+    {
+      "name": "backgroundWeight",
+      "type": "number",
+      "label": "背景权重",
+      "default": 3,
+      "min": 0,
+      "max": 10,
+      "description": "控制地图空旷程度。0=密集无背景，3=适中（默认），10=极度稀疏。背景瓦片权重=bgW²，房间权重缩放=1/(1+bgW×0.4)",
+      "description-en": "Controls map openness. 0=dense, 3=moderate, 10=very sparse. BG tile weight=bgW², room scale=1/(1+bgW×0.4)."
+    },
+    {
+      "name": "irregularRatio",
+      "type": "number",
+      "label": "不规则比例",
+      "default": 0.3,
+      "min": 0,
+      "max": 1,
+      "description": "不规则房间变体的出现比例。0=无不规则房间，0.3=适中（默认），1=大量不规则房间。不规则变体会在封闭边切除矩形区域形成L形/缺角",
+      "description-en": "Proportion of irregular room variants. 0=none, 0.3=moderate (default), 1=many. Irregular variants cut rectangles from closed edges to form L-shapes."
+    },
+    {
+      "name": "largeRoomWeight",
+      "type": "number",
+      "label": "大房间权重",
+      "default": 2,
+      "min": 0,
+      "max": 10,
+      "description": "控制大房间（宽开口瓦片）出现概率。0=几乎无大房间，2=适中（默认），10=大量大房间。大房间通过相邻宽口瓦片合并地板实现",
+      "description-en": "Controls large room (wide-opening tiles) probability. 0=almost none, 2=moderate (default), 10=many. Large rooms form when adjacent wide-opening tiles merge floors."
+    },
+    {
+      "name": "densityBias",
+      "type": "number",
+      "label": "密度偏好",
+      "default": 0.5,
+      "min": 0,
+      "max": 1,
+      "description": "0=偏向稀疏（更多墙壁/死胡同），1=偏向密集（更多通道/十字路口）",
+      "description-en": "0 = sparse maps (more walls/dead ends), 1 = dense maps (more corridors/crossroads)."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0=使用当前时间戳。固定种子可复现相同的掩体/凹室布局",
+      "description-en": "Random seed; 0 uses current timestamp. Fixed seed reproduces identical layouts."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "templates",
+      "type": "grid",
+      "label": "模板列表",
+      "description": "瓦片模板数组，每个元素为 tileSize×tileSize 的二维网格（0=背景 1=墙壁 2=地板 3=资源点 4=柱子），可直接连接 wfc_tile_solver 的 templates 输入（外层 rank=1：K 个 grid）",
+      "description-en": "Array of tile templates, each a tileSize×tileSize 2D grid (0=bg 1=wall 2=floor 3=resource 4=pillar) (rank=1: K grids)."
+    },
+    {
+      "name": "adjacency",
+      "type": "dict",
+      "label": "邻接规则",
+      "description": "与模板列表等长的邻接规则数组，每个元素为 {N,E,S,W} 字典，值为可邻接的模板索引数组（外层 rank=1：K 个 dict）",
+      "description-en": "Adjacency rules array (same length as templates). Each element is {N,E,S,W} dict with arrays of compatible template indices (rank=1)."
+    },
+    {
+      "name": "weights",
+      "type": "number",
+      "label": "权重列表",
+      "description": "与模板列表等长的权重数组，值越大该瓦片被选中概率越高（外层 rank=1：K 个 number）",
+      "description-en": "Weight array (same length as templates). Higher weight = higher selection probability (rank=1)."
+    }
+  ],
+  "alg_tag": [
+    "WFC 瓦片模板生成",
+    "孤胆枪手/战术射击风格地牢"
+  ]
+}

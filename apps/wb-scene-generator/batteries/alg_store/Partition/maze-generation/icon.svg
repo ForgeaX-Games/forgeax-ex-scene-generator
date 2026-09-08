@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_maze_generation" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#3084b1"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_maze_generation)"/>
+
+  <path fill="#fff" d="M3 3h3v3H3V3zM3 8h3v3H3V8zM3 13h3v3H3v-3zM3 18h3v3H3v-3z"/>
+  <path fill="#fff" d="M8 3h3v3H8V3zM8 8h3v3H8V8zM8 13h3v3H8v-3zM8 18h3v3H8v-3z"/>
+  <path fill="#fff" d="M13 3h3v3h-3V3zM13 8h3v3h-3V8zM13 13h3v3h-3v-3zM13 18h3v3h-3v-3z"/>
+  <path fill="#fff" d="M18 3h3v3h-3V3zM18 8h3v3h-3V8zM18 13h3v3h-3v-3zM18 18h3v3h-3v-3z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M6 6h2v2H6V6zM11 11h2v2h-2v-2zM16 16h2v2h-2v-2z"/>
+
+</svg>

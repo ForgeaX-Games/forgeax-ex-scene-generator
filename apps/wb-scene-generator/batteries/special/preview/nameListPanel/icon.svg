@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_name_list_panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b1f6e"/>
+      <stop offset="100%" stop-color="#6b3fa0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_name_list_panel)"/>
+
+  <!-- 列表行1：勾选框 + 横线（模仿图片右侧构图） -->
+  <rect x="3"  y="4"  width="5" height="5" rx="1" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.2"/>
+  <polyline points="4.5,6.5 5.5,7.8 7.5,5" fill="none" stroke="rgba(120,220,120,1)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="10" y="5.5" width="11" height="1.5" rx="0.75" fill="rgba(255,255,255,0.75)"/>
+  <rect x="10" y="8"   width="7"  height="1"   rx="0.5"  fill="rgba(255,255,255,0.4)"/>
+
+  <!-- 列表行2 -->
+  <rect x="3"  y="11" width="5" height="5" rx="1" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.2"/>
+  <polyline points="4.5,13.5 5.5,14.8 7.5,12" fill="none" stroke="rgba(120,220,120,1)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="10" y="12.5" width="11" height="1.5" rx="0.75" fill="rgba(255,255,255,0.75)"/>
+  <rect x="10" y="15"   width="8"  height="1"   rx="0.5"  fill="rgba(255,255,255,0.4)"/>
+
+  <!-- 列表行3（无勾，暗示更多条目） -->
+  <rect x="3"  y="18" width="5" height="4" rx="1" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+  <rect x="10" y="19.2" width="9" height="1.5" rx="0.75" fill="rgba(255,255,255,0.4)"/>
+</svg>

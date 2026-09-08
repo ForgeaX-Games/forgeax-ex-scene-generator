@@ -1,0 +1,22 @@
+{
+  "id": "complex_indoor_init",
+  "label": "复杂室内初始化",
+  "description": "创建网格并放置带墙壁轮廓的初始方形房间",
+  "description-en": "Creates grid and places the initial square room with wall outline.",
+  "icon": "一个正方形房间俯视图，外圈粗黑线为墙壁轮廓，内部浅色填充为房间地板，简洁扁平图标风格，主色2种",
+  "version": "1.0.0",
+  "tags": ["indoor", "init", "room"],
+  "tag_labels": ["室内", "初始化", "房间"],
+  "inputs": [
+    { "name": "width", "type": "number", "label": "网格宽度", "description": "输出网格总宽度", "description-en": "Grid width in cells", "default": 300 },
+    { "name": "height", "type": "number", "label": "网格高度", "description": "输出网格总高度", "description-en": "Grid height in cells", "default": 220 },
+    { "name": "roomMinSize", "type": "number", "label": "房间最小内径", "description": "初始房间内部最小边长", "description-en": "Min inner dimension of initial room", "default": 10 },
+    { "name": "roomMaxSize", "type": "number", "label": "房间最大内径", "description": "初始房间内部最大边长", "description-en": "Max inner dimension of initial room", "default": 20 },
+    { "name": "seed", "type": "number", "label": "随机种子", "description": "随机种子，0使用当前时间戳", "description-en": "Random seed; 0 uses timestamp", "default": 0 }
+  ],
+  "outputs": [
+    { "name": "outputGrid", "type": "grid", "label": "输出网格", "description": "包含初始房间的网格(0=空地,1=墙壁,2=房间)", "description-en": "Grid with initial room (0=void,1=wall,2=room)" },
+    { "name": "roomList", "type": "array", "label": "房间列表", "description": "房间数据数组", "description-en": "Room data array" },
+    { "name": "nextRoomId", "type": "number", "label": "下一个房间ID", "description": "下一个可用的房间ID", "description-en": "Next available room ID" }
+  ]
+}

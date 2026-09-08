@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_gen_hospital_dungeon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#456ddf"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_gen_hospital_dungeon)"/>
+
+  <path fill="#fff" d="M2 2h20v20H2z" />
+  <path fill="rgba(0,0,0,0.55)" d="M8 2H2v6h6V2zM16 2h6v6h-6V2zM2 16h6v6H2v-6zM16 16h6v6h-6v-6z" />
+  <path fill="#fff" d="M9 9h6v6H9z" />
+  <path fill="red" d="M10 10h4v1h-1v2h1v1h-4v-1h1v-2h-1z" />
+
+</svg>

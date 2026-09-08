@@ -1,0 +1,19 @@
+{
+  "layers": [
+    {
+      "nodePath": "/ground/四合院",
+      "nodeName": "四合院",
+      "value": 1,
+      "assetName": "四合院",
+      "assetType": "object",
+      "cells": [
+        { "x": 29, "y": 38, "z": 1, "token": "四合院" },
+        { "x": 30, "y": 38, "z": 1, "token": "四合院" }
+      ],
+      "attributes": {
+        "asset_name": "四合院",
+        "asset_type": "object"
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "g_collision_box",
+  "label": "碰撞盒（AABB）",
+  "name-en": "GCollisionBox",
+  "description": "为指定 part 自动追加一个 AABB 盒型 <collision>（autocollide 单盒模式）。从 part 的 visual shape 解析出局部 AABB → emit `collision(link=part, box=[w,d,h], origin=[cx,cy,cz])`。复杂 visual mesh 用一个等效 box 当 collision 是仿真器的常见做法（碰撞精度↓ 但 broadphase 性能↑）。已存在 collision 语句时默认追加；replace=true 时先清理同 link 的旧 collision。",
+  "description-en": "Append a single AABB box <collision> for the target part (autocollide single mode). Parses the part's visual shape into a local AABB and emits `collision(link=part, box=[w,d,h], origin=[cx,cy,cz])`. Standard simulator practice (lower collision fidelity, faster broadphase). Existing collisions are kept by default; pass replace=true to clear them first.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "collision",
+    "physics",
+    "urdf"
+  ],
+  "tag_labels": [
+    "几何",
+    "碰撞",
+    "物理",
+    "URDF"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry（必须包含目标 part 及其引用的 shape）",
+      "description-en": "Upstream Geometry containing the target part and its referenced shape."
+    },
+    {
+      "name": "part_id",
+      "type": "string",
+      "required": true,
+      "label": "part id",
+      "description": "要附加 collision 的 part id",
+      "description-en": "Target part id."
+    },
+    {
+      "name": "padding",
+      "type": "number",
+      "label": "外扩 (m)",
+      "default": 0,
+      "description": "AABB 三轴各向同性外扩量（米）；正值 → 包络更宽松，避免擦边穿透",
+      "description-en": "Isotropic AABB padding (meters). Positive widens the box to avoid grazing penetration."
+    },
+    {
+      "name": "min_size",
+      "type": "number",
+      "label": "最小尺寸 (m)",
+      "default": 0.0001,
+      "description": "AABB 三轴最小尺寸；过薄的 visual（如薄板）防止 collision 退化为零体积",
+      "description-en": "Minimum AABB extent on each axis to avoid zero-volume collisions for thin visuals."
+    },
+    {
+      "name": "replace",
+      "type": "bool",
+      "label": "替换现有 collision",
+      "default": false,
+      "description": "true → 先删除同 link 上的旧 collision 语句再追加；false → 直接追加",
+      "description-en": "When true, drop existing collision statements targeting the same link before appending."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空 = 自动 col{n}",
+      "description-en": "Custom id; empty = auto col{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加 collision 后 Geometry",
+      "description-en": "Geometry after appending collision."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 collision 的 id",
+      "description-en": "Id of the new collision."
+    },
+    {
+      "name": "size_x",
+      "type": "number",
+      "label": "size X",
+      "description": "推导出的 box 宽（沿 X）",
+      "description-en": "Derived box size along X."
+    },
+    {
+      "name": "size_y",
+      "type": "number",
+      "label": "size Y",
+      "description": "推导出的 box 深（沿 Y）",
+      "description-en": "Derived box size along Y."
+    },
+    {
+      "name": "size_z",
+      "type": "number",
+      "label": "size Z",
+      "description": "推导出的 box 高（沿 Z）",
+      "description-en": "Derived box size along Z."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

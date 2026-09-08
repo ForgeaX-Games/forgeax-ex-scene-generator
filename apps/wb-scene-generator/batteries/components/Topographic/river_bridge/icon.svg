@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_river_bridge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#456ddf"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_river_bridge)"/>
+
+  <path fill="rgba(0,0,0,0.55)" d="M2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v3c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-3z"/>
+  <path fill="#fff" d="M2 15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-1c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v1z"/>
+  <rect x="2" y="9" width="20" height="3" fill="#fff"/>
+  <rect x="2" y="9" width="20" height="1" fill="rgba(0,0,0,0.55)"/>
+
+</svg>

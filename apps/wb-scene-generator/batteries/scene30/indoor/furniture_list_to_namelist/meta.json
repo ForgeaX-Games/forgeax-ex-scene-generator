@@ -1,0 +1,37 @@
+{
+  "id": "furniture_list_to_namelist",
+  "label": "家具清单转名称清单",
+  "description": "将家具清单（rank/name/isGroup 格式）转换为渲染器名称清单（id/name/type 格式）",
+  "description-en": "Converts a furniture list (rank/name/isGroup format) to a renderer name list (id/name/type format).",
+  "icon": "左侧列表含rank数字与家具名称，右箭头转换，右侧简洁id+name+type列表，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["furniture", "convert", "namelist", "transform", "list"],
+  "tag_labels": ["家具", "转换", "名称清单", "格式转换", "列表"],
+  "inputs": [
+    {
+      "name": "list",
+      "type": "array",
+      "label": "家具清单",
+      "description": "家具清单，每项含 rank、name、isGroup 字段",
+      "description-en": "Furniture list, each item has rank, name, isGroup fields."
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "label": "类型",
+      "description": "输出名称清单的 type 字段值：asset（场景摆件）或 tile（地面砖块）",
+      "description-en": "Type value for the output name list: asset or tile.",
+      "default": "asset",
+      "options": ["asset", "tile"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "渲染器标准名称清单，每项含 id、name、type 字段",
+      "description-en": "Renderer standard name list, each item has id, name, type fields."
+    }
+  ]
+}

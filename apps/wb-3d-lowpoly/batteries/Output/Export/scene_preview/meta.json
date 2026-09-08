@@ -1,0 +1,18 @@
+{
+  "id": "scene_preview",
+  "label": "静态预览",
+  "name-en": "ScenePreview",
+  "description": "把 SceneSpec（来自 g_to_scene）推送到内嵌 3D 预览器进行静态可视化。前端 live-sync 拉取本节点 sceneSpec 输出，命中即切 static 模式（逐条加载 <sha>.obj/.glb → 应用 origin/rpy/scale + 材质 → 组合成静态场景）。sceneSpec 端口透传，便于继续接线。",
+  "description-en": "Forward a SceneSpec (from g_to_scene) to the embedded 3D viewer for static preview. The frontend live-sync pulls this node's sceneSpec output and switches to static mode (load each <sha>.obj/.glb → apply origin/rpy/scale + material → compose a static scene). Pass-through for chaining.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["scene", "preview", "viewer", "static", "io"],
+  "tag_labels": ["场景", "预览", "可视化", "静态", "IO"],
+  "inputs": [
+    { "name": "sceneSpec", "type": "object", "required": true, "label": "SceneSpec", "description": "静态 IR 对象（接 g_to_scene.sceneSpec）", "description-en": "Static IR object (from g_to_scene.sceneSpec)." }
+  ],
+  "outputs": [
+    { "name": "sceneSpec", "type": "object", "label": "SceneSpec", "description": "原 SceneSpec 透传输出", "description-en": "Pass-through SceneSpec." }
+  ],
+  "projectTypes": ["asset3d"]
+}

@@ -1,0 +1,89 @@
+{
+  "id": "alg_field_mountain_contour",
+  "label": "山地高度场",
+  "name-en": "FieldMountainContour",
+  "description": "在输入 region 的有效格（非零格）上生成 [0,1] 山地高度标量场：Domain-warped FBM 有机底形 + 多峰高斯增益 + 等面积分位数重映射，算法源自 scene30/mountain/mountain_contour_generate 的高度场核心。region 外格输出 0。",
+  "description-en": "Generates a [0,1] mountain height scalar field on valid (non-zero) cells of the input region: domain-warped FBM base terrain + multi-peak Gaussian boosts + equal-area quantile remap, extracted from the height-field core of scene30/mountain/mountain_contour_generate. Invalid cells output 0.",
+  "icon": "山地俯视等高线，多圈闭合曲线从山峰向外扩散，棕色与米色渐变配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["field", "scalar", "mountain", "contour", "topography", "noise", "scenealg"],
+  "tag_labels": ["场", "标量", "山地", "等高线", "地形", "噪声", "场景算法"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "父区域",
+      "description": "0/1（或多值）父区域掩码；仅对非零有效格生成高度场。",
+      "description-en": "0/1 (or multi-valued) parent region mask; height is generated only on non-zero valid cells.",
+      "access": "item"
+    },
+    {
+      "name": "peakCount",
+      "type": "number",
+      "default": 3,
+      "label": "山头数量",
+      "description": "山峰个数，多个山头各自产生高斯增益并融入噪声地形。",
+      "description-en": "Number of peaks; each adds a Gaussian boost into the noise terrain."
+    },
+    {
+      "name": "peakRadius",
+      "type": "number",
+      "default": 0.14,
+      "label": "山头半径",
+      "description": "每个山峰的影响半径，归一化坐标（0~1）。",
+      "description-en": "Gaussian peak influence radius in normalized coords (0-1)."
+    },
+    {
+      "name": "peakStrength",
+      "type": "number",
+      "default": 1.2,
+      "label": "山头强度",
+      "description": "山峰增益强度，越大山头越突出。",
+      "description-en": "Peak boost intensity; higher values make peaks more prominent."
+    },
+    {
+      "name": "noiseScale",
+      "type": "number",
+      "default": 2.5,
+      "label": "噪声缩放",
+      "description": "FBM 底层噪声频率缩放，越大地形越细碎。",
+      "description-en": "FBM base noise frequency scale; higher = busier terrain."
+    },
+    {
+      "name": "warpStrength",
+      "type": "number",
+      "default": 1.2,
+      "label": "域扭曲强度",
+      "description": "控制地形/等高线有机程度。0=较圆，1.2=流动感。",
+      "description-en": "Domain warp strength: 0=rounder, 1.2=organic flow."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current time."
+    },
+    {
+      "name": "edgeFalloffCells",
+      "type": "number",
+      "default": 6,
+      "label": "边缘衰减格数",
+      "description": "从区域外缘向内平滑抬升的带宽（格）。避免高度场在掩码边界被硬切成「矩形截断」；0=关闭。",
+      "description-en": "Soft rise band (cells) from the region perimeter inward. Prevents hard rectangular truncation at the mask edge; 0=off."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "field",
+      "type": "grid",
+      "access": "item",
+      "label": "高度场",
+      "description": "与输入同形状的 [0,1] 标量高度场；有效格为归一化高度，无效格为 0。",
+      "description-en": "A [0,1] scalar height field matching the input shape; valid cells hold normalized height, invalid cells are 0."
+    }
+  ]
+}

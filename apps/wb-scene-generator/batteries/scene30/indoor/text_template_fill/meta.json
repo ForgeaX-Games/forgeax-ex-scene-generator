@@ -1,0 +1,53 @@
+{
+  "id": "text_template_fill",
+  "label": "文本模板填充",
+  "description": "将三个字符串值填入模板中的 {0} {1} {2} 占位符，输出替换后的完整文本。",
+  "description-en": "Fills template placeholders {0} {1} {2} with three string inputs and outputs the assembled text.",
+  "icon": "一张模板纸上有四个方形空位，分别被四段文字填满，扁平插画风格，主色橙色和深灰，简洁现代。",
+  "version": "1.0.0",
+  "tags": ["text", "template", "fill", "string"],
+  "tag_labels": ["文本", "模板", "填充", "字符串"],
+  "inputs": [
+    {
+      "name": "template",
+      "type": "string",
+      "label": "模板",
+      "description": "包含 {0} {1} {2} 占位符的文本模板",
+      "description-en": "Text template containing {0} {1} {2} placeholders.",
+      "default": ""
+    },
+    {
+      "name": "value_0",
+      "type": "string",
+      "label": "{0}",
+      "description": "替换模板中 {0} 的字符串",
+      "description-en": "String to replace {0} in the template.",
+      "default": ""
+    },
+    {
+      "name": "value_1",
+      "type": "string",
+      "label": "{1}",
+      "description": "替换模板中 {1} 的字符串",
+      "description-en": "String to replace {1} in the template.",
+      "default": ""
+    },
+    {
+      "name": "value_2",
+      "type": "string",
+      "label": "{2}",
+      "description": "替换模板中 {2} 的字符串",
+      "description-en": "String to replace {2} in the template.",
+      "default": ""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "text",
+      "type": "string",
+      "label": "输出文本",
+      "description": "填充占位符后的完整文本字符串",
+      "description-en": "Assembled text after all placeholder substitutions."
+    }
+  ]
+}

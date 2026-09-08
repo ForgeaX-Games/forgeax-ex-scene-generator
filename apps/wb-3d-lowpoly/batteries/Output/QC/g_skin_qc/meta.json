@@ -1,0 +1,24 @@
+{
+  "id": "g_skin_qc",
+  "label": "蒙皮 QC",
+  "name-en": "GSkinQc",
+  "description": "角色骨架/蒙皮的静态质量检查（只读）：skeleton/root 有效、bone 父链无环、骨长非零、skin 引用有效、可蒙皮网格来源存在；可选接收前端体素测地绑定求解后的 unreachable 诊断并打非致命警告。权重和=1/无零权重等纯数值校验仍放前端求解后做。输出 valid + report + 结构化 signals，几何透传。",
+  "description-en": "Static QC for character skeleton/skin (read-only): valid skeleton/root, acyclic bone parents, non-zero bone length, valid skin refs, skinnable-mesh source present; optionally accepts post-solve voxel geodesic binding \"unreachable\" diagnostics and emits a non-fatal warning. Purely numeric weight checks (sum=1, no zero-weight vertex) still happen on the frontend after solving. Emits valid + report + structured signals; geometry passes through.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["rig", "skin", "qc", "character"],
+  "tag_labels": ["骨架", "蒙皮", "质检", "角色"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": true, "label": "几何", "description": "含 bone/skeleton/skin 的角色几何", "description-en": "Character geometry with bone/skeleton/skin." },
+    { "name": "weight_diagnostics", "type": "string", "required": false, "default": "", "label": "权重诊断（可选）", "description": "前端 computeSkinWeightsVoxel 求解后的诊断，object 或 JSON 字符串：{unreachableVertexCount, unreachableBoneNames}。DSL 编译期没有三角面数据算不出来，只有调用方（无头渲染/回归脚本等）显式喂入时才生效；留空则跳过这项检查。", "description-en": "Optional post-solve diagnostics from the frontend's computeSkinWeightsVoxel, as an object or JSON string: {unreachableVertexCount, unreachableBoneNames}. Cannot be computed at DSL-compile time (no triangle data yet) — only takes effect when a caller (headless render/regression script, etc.) explicitly supplies it; leave empty to skip this check." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "透传输入几何", "description-en": "Pass-through geometry." },
+    { "name": "valid", "type": "boolean", "label": "有效", "description": "无致命错误", "description-en": "No fatal errors." },
+    { "name": "bones", "type": "number", "label": "骨骼数", "description": "bone 语句数量", "description-en": "Number of bones." },
+    { "name": "skins", "type": "number", "label": "蒙皮数", "description": "skin 语句数量", "description-en": "Number of skins." },
+    { "name": "report", "type": "string", "label": "报告", "description": "多行检查报告", "description-en": "Multi-line report." },
+    { "name": "signals", "type": "object", "label": "信号", "description": "结构化 QC 信号列表", "description-en": "Structured QC signals." }
+  ],
+  "projectTypes": ["asset3d"]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "worldmap_countries",
+  "label": "世界地图国家",
+  "description": "按陆地连通块分配种子，用地形代价区域生长生成连续国家区域；边界会顺着海岸、高地与噪声带自然弯曲，并清理过小碎片。",
+  "description-en": "Allocates seeds per land component and grows contiguous countries with terrain-aware costs; borders bend along coasts, highlands, and noise bands while tiny fragments are cleaned up.",
+  "icon": "幻想世界地图被多色国境区域分割，带不规则边界。",
+  "version": "1.0.0",
+  "tags": ["worldmap", "country", "voronoi", "region", "nation"],
+  "tag_labels": ["世界地图", "国家", "Voronoi", "区域", "国度"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "heightMap", "type": "grid", "label": "高度图", "description": "可选。接入后国家边界会更倾向沿高地/地形梯度分布。" },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 12345 },
+    { "name": "countryCount", "type": "number", "label": "国家数量", "default": 20, "min": 2, "max": 120 },
+    { "name": "relax", "type": "number", "label": "边界平滑", "default": 2, "min": 0, "max": 5 },
+    { "name": "warp", "type": "number", "label": "边界扰动", "default": 0.06, "min": 0, "max": 0.3 },
+    { "name": "minPatchArea", "type": "number", "label": "最小碎片面积", "default": 48, "min": 0, "max": 1000 }
+  ],
+  "outputs": [
+    { "name": "countryGrid", "type": "grid", "label": "国家网格" },
+    { "name": "countryNameList", "type": "array", "label": "国家名称清单" },
+    { "name": "outputGrid", "type": "grid", "label": "国家网格" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "search",
+  "label": "搜索",
+  "description": "在名称清单列表中搜索包含指定关键词的条目。输入网格列表与名称清单列表一一对应，搜索后只保留名称匹配的条目及其对应网格，整组输出。",
+  "description-en": "Searches a name list for entries whose name contains the specified keywords. The grid list and name list are paired by index; only matching pairs are kept in the output.",
+  "icon": "一个放大镜对准一列标签条目，匹配项高亮，非匹配项半透明，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["search", "filter", "nameList", "grid", "keyword", "contains"],
+  "tag_labels": ["搜索", "过滤", "名称清单", "网格", "关键词", "包含"],
+  "inputs": [
+    {
+      "name": "gridList",
+      "type": "any",
+      "label": "网格列表",
+      "default": null,
+      "description": "网格列表（number[][][]），每个网格与名称清单列表中同索引的条目一一对应"
+    },
+    {
+      "name": "nameListList",
+      "type": "any",
+      "label": "名称清单",
+      "default": null,
+      "description": "名称清单（NameEntry[]），所有网格共用；也支持 NameEntry[][] 自动打平"
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "label": "模式",
+      "default": "包含",
+      "options": ["包含"],
+      "description": "搜索模式，目前仅支持「包含」：name 字段包含任意关键词即匹配"
+    },
+    {
+      "name": "searchContent",
+      "type": "any",
+      "label": "搜索内容",
+      "default": "",
+      "description": "搜索关键词，支持多种格式：字符串、字符串列表、名称清单（取 name 字段）、字符串化的 JSON 数组。多个关键词取「任意匹配」（OR）"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "输出网格列表",
+      "description": "过滤后只保留含匹配 id 的网格，顺序与输入一致"
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "输出名称清单",
+      "description": "过滤后的名称清单，只保留匹配的条目（id/name/type 任意字段包含关键词即匹配）"
+    }
+  ]
+}

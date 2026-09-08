@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    {
+      "id": "world",
+      "name": "幻想大陆",
+      "parent": null,
+      "label": "narrative",
+      "description": {
+        "location_description": "一片神秘的大陆，包含多个独特的区域",
+        "art_style_description": "奇幻风格，色彩丰富",
+        "semantics_description": "充满魔法和冒险的世界"
+      }
+    },
+    {
+      "id": "forest",
+      "name": "精灵森林",
+      "parent": "world",
+      "label": "narrative",
+      "description": {
+        "location_description": "大陆西部的茂密森林",
+        "art_style_description": "翠绿色为主调，阳光斑驳",
+        "semantics_description": "精灵族的家园，神秘而美丽"
+      }
+    },
+    {
+      "id": "dwarf_castle",
+      "name": "矮人城堡",
+      "parent": "world",
+      "label": "narrative",
+      "description": {
+        "location_description": "大陆东部的矮人城堡",
+        "art_style_description": "矮人城堡的外观为石头建筑，城堡的内部为石头建筑，是个不规则的石头建筑",
+        "semantics_description": "矮人工匠的领地"
+      }
+    },
+    {
+      "id": "plain",
+      "name": "中央平原",
+      "parent": "world",
+      "label": "narrative",
+      "description": {
+        "location_description": "大陆中心的广阔平原",
+        "art_style_description": "金黄色麦田与青绿草地交织",
+        "semantics_description": "人类王国的核心区域"
+      }
+    },
+    {
+      "id": "road",
+      "name": "道路",
+      "parent": "world",
+      "label": "narrative",
+      "description": {
+        "location_description": "连接各个区域的交通要道",
+        "art_style_description": "道路的宽度为2米，道路的材质为石板路",
+        "semantics_description": "连接各个区域的交通要道"
+      }
+    },
+    {
+      "id": "river",
+      "name": "河流",
+      "parent": "world",
+      "label": "narrative",
+      "description": {
+        "location_description": "随处可见的河流",
+        "art_style_description": "河流的宽度为2米，河流的材质为水流",
+        "semantics_description": "随处可见的河流"
+      }
+    }
+  ]
+}
+

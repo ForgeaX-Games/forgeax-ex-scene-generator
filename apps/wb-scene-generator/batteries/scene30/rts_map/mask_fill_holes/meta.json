@@ -1,0 +1,28 @@
+{
+  "id": "mask_fill_holes",
+  "label": "掩码空洞填充",
+  "description": "从地图边界出发 BFS 标记所有外部空地，剩余被平台包围的内部空洞格子统一填充为平台（1），消除基地形状内部的零散空缺。",
+  "description-en": "BFS from map borders marks all exterior empty cells; any interior zero-cell enclosed by platform is filled to 1, eliminating scattered holes inside base shapes.",
+  "icon": "二值网格，左侧有内部空洞的不规则白色区域，右侧空洞被填满变为实心完整区域，中间一个向右箭头，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["mask", "fill", "hole", "binary", "morphology", "rts", "grid"],
+  "tag_labels": ["掩码", "填充", "空洞", "二值", "形态学", "RTS", "网格"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "二值掩码网格",
+      "description": "待填充的二值网格（1=平台，0=空地），通常来自 rts_base_shape_gen.baseGrid 或 rts_quad_symmetry.fullGrid",
+      "description-en": "Binary mask grid to fill (1=platform, 0=empty). Typically from rts_base_shape_gen.baseGrid or rts_quad_symmetry.fullGrid."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "filledGrid",
+      "type": "grid",
+      "label": "填充后掩码",
+      "description": "内部空洞已填充的二值网格，外部空地不变，平台内部的 0 格均变为 1",
+      "description-en": "Binary mask with all interior holes filled; exterior empty cells unchanged, interior zeros set to 1."
+    }
+  ]
+}

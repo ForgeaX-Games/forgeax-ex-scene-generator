@@ -1,0 +1,24 @@
+{
+  "id": "g_difference",
+  "label": "布尔差集",
+  "name-en": "GDifference",
+  "description": "从 base shape 中减去 tool shape，追加 difference(base,tool) 到 Geometry DSL。何时用：在实体上挖空腔 / 开孔 / 开槽 / 切口（不要用 primitive 去假装这种被切掉的形态）。",
+  "description-en": "Subtract tool shape from base shape, appending `difference(base,tool)` to the Geometry DSL. Use when: hollowing a cavity, cutting an opening/hole/slot/recess into a solid — do NOT fake a cut form with primitives.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "csg", "boolean", "cad"],
+  "tag_labels": ["几何", "CSG", "布尔", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（必须同时含 base_id 与 tool_id 两个形状）", "description-en": "Upstream Geometry; must already contain both the base_id and tool_id shapes." },
+    { "name": "base_id", "type": "string", "label": "基础形状 id", "default": "", "description": "被减的形状 id；从上游 shape（g_box / g_extrude / …）的 id 输出端口连入，或填其 id 参数", "description-en": "Id of the shape kept (minuend). Feed from an upstream shape's `id` output port, or set the shape's `id` param and pass the literal." },
+    { "name": "tool_id", "type": "string", "label": "切割形状 id", "default": "", "description": "用来切除的形状 id；同样来自上游某个 shape 的 id 输出", "description-en": "Id of the shape subtracted (tool). Also comes from an upstream shape's `id` output." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 diff{n}", "description-en": "Custom id for this result; empty = auto diff{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 difference 后的 Geometry", "description-en": "Geometry after appending the difference." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行结果的 id（供下游 g_part / 其它 CSG 引用）；引用失败时为空串", "description-en": "Id of the result line (for downstream g_part / CSG). Empty string when the refs failed." },
+    { "name": "error", "type": "string", "label": "错误", "description": "引用错误时的原因（base_id/tool_id 缺失或在上游 Geometry 中找不到）；非空表示本 op 未追加任何几何——批次仍可能报 ok，务必读取此端口", "description-en": "Reason when a ref is bad (base_id/tool_id missing or not found upstream). Non-empty means this op appended NOTHING even though the batch may report ok — always read this port." }
+  ],
+  "projectTypes": ["asset3d"]
+}

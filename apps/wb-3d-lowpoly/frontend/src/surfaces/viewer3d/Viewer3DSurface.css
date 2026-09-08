@@ -1,0 +1,287 @@
+/* 💡 Viewer 根布局：标题栏 + 主视口 + 右侧关节面板 + 底部状态栏 */
+
+.viewer-app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-primary);
+  overflow: hidden;
+}
+
+.viewer-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+.viewer-canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--viewport-bg);
+  min-width: 0;
+  position: relative;
+}
+
+.viewer-canvas-error {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 70%;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background-color: rgba(240, 78, 82, 0.18);
+  border: 1px solid var(--color-error);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  z-index: 20;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+}
+
+/* 操作类错误（导出 / 截图失败）的瞬时提示条，区别于 canvas 内的场景解析错误。 */
+.viewer-error-toast {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 80%;
+  padding: 10px 12px 10px 16px;
+  border-radius: var(--radius-md);
+  background-color: rgba(240, 78, 82, 0.2);
+  border: 1px solid var(--color-error);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  z-index: 30;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+}
+
+.viewer-error-toast-dismiss {
+  flex: none;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  opacity: 0.8;
+}
+
+.viewer-error-toast-dismiss:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.viewer-canvas-loading {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: var(--font-size-xs);
+  z-index: 20;
+}
+
+.viewer-canvas-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--color-text-muted);
+  gap: var(--spacing-sm);
+}
+
+.viewer-canvas-empty-title {
+  color: var(--color-text-primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.viewer-canvas-empty-sub {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.viewer-direct-import-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(4px);
+}
+
+.viewer-direct-import-modal {
+  width: min(480px, 92vw);
+  max-height: min(640px, 90vh);
+  overflow: auto;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.viewer-direct-import-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--titlebar-height);
+  padding: 0 var(--spacing-md);
+  background: linear-gradient(180deg, var(--color-bg-titlebar) 0%, var(--color-bg-titlebar-gradient) 100%);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.viewer-direct-import-close {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.viewer-direct-import-close:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  color: var(--color-accent);
+}
+
+.viewer-direct-import-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.viewer-direct-import-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
+.viewer-direct-import-description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+}
+
+.viewer-direct-import-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.viewer-direct-import-field input {
+  width: 100%;
+  height: 32px;
+  padding: 0 9px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font: 12px var(--font-mono);
+}
+
+.viewer-direct-import-field input:focus {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.viewer-direct-import-field input:disabled {
+  opacity: 0.55;
+}
+
+.viewer-direct-import-field small {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.viewer-direct-import-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: -6px;
+}
+
+.viewer-direct-import-preset {
+  padding: 4px 7px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: 11px var(--font-mono);
+  cursor: pointer;
+}
+
+.viewer-direct-import-preset:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-hover);
+}
+
+.viewer-direct-import-preset:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.viewer-direct-import-target {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(var(--color-accent-rgb), 0.08);
+  color: var(--color-accent);
+  font: 11px var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer-direct-import-status {
+  margin: 0;
+  color: var(--color-info);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+}
+
+.viewer-direct-import-status.success {
+  color: var(--color-success);
+}
+
+.viewer-direct-import-status.error {
+  color: var(--color-error);
+  overflow-wrap: anywhere;
+}
+
+.viewer-direct-import-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+}

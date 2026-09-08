@@ -1,0 +1,111 @@
+{
+  "id": "g_place_on_face",
+  "label": "贴面摆放",
+  "name-en": "GPlaceOnFace",
+  "description": "把 child 部件贴到 parent 的某个轴对齐外表面（+x/-x/+y/-y/+z/-z）上，输出新的 Geometry（child 的 origin 已写回）；同时给出 ox/oy/oz 三个数。proud 沿法向突出/嵌入；face_u / face_v 是面内偏移。",
+  "description-en": "Place child on a parent's axis-aligned face (+x/-x/+y/-y/+z/-z). Outputs a new Geometry with the child's origin rewritten, plus the raw ox/oy/oz numbers. proud = normal-direction protrusion; face_u/face_v are in-face offsets.",
+  "version": "1.2.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "placement",
+    "face",
+    "mount"
+  ],
+  "tag_labels": [
+    "几何",
+    "放置",
+    "贴面"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry（必须含两个 part）",
+      "description-en": "Upstream Geometry containing both parts."
+    },
+    {
+      "name": "parent_id",
+      "type": "string",
+      "required": true,
+      "label": "父部件 id",
+      "description": "父 part id；也可以填 shape id（box/cylinder/...）—— 没有 part 包它时会自动隐式补一行 part",
+      "description-en": "Parent part id; or a shape id (box/cylinder/…) — an implicit `part(shape=ref(id))` is auto-appended if none wraps it."
+    },
+    {
+      "name": "child_id",
+      "type": "string",
+      "required": true,
+      "label": "子部件 id",
+      "description": "子 part id（其 origin 会被改写）；同样支持填 shape id，必要时自动包裹",
+      "description-en": "Child part id (its origin will be rewritten). Shape id is also accepted with auto-wrap fallback."
+    },
+    {
+      "name": "face",
+      "type": "string",
+      "label": "目标面",
+      "default": "+z",
+      "description": "+x / -x / +y / -y / +z / -z 之一",
+      "description-en": "One of +x / -x / +y / -y / +z / -z."
+    },
+    {
+      "name": "proud",
+      "type": "number",
+      "label": "突出 (m)",
+      "default": 0,
+      "description": "沿法向额外突出（>0）或嵌入（<0），单位米",
+      "description-en": "Extra protrusion along normal in meters (negative = sink into parent)."
+    },
+    {
+      "name": "face_u",
+      "type": "number",
+      "label": "面内 U (m)",
+      "default": 0,
+      "description": "面内 U 方向偏移",
+      "description-en": "In-face U offset (m)."
+    },
+    {
+      "name": "face_v",
+      "type": "number",
+      "label": "面内 V (m)",
+      "default": 0,
+      "description": "面内 V 方向偏移",
+      "description-en": "In-face V offset (m)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "改写过 child.origin 后的新 Geometry，可直接接 g_to_urdf / g_preview",
+      "description-en": "New Geometry with the child's origin rewritten; pipe directly to g_to_urdf / g_preview."
+    },
+    {
+      "name": "ox",
+      "type": "number",
+      "label": "原点 X",
+      "description": "建议的 ox",
+      "description-en": "Suggested ox."
+    },
+    {
+      "name": "oy",
+      "type": "number",
+      "label": "原点 Y",
+      "description": "建议的 oy",
+      "description-en": "Suggested oy."
+    },
+    {
+      "name": "oz",
+      "type": "number",
+      "label": "原点 Z",
+      "description": "建议的 oz",
+      "description-en": "Suggested oz."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

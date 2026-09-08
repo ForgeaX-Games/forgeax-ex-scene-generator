@@ -1,0 +1,45 @@
+{
+  "id": "tess_cairo",
+  "label": "开罗五边形镶嵌",
+  "description": "生成开罗五边形镶嵌格（Cairo pentagonal tiling），所有格子是完全相同的不规则五边形，因埃及开罗街道铺装而得名。",
+  "description-en": "Generates a Cairo pentagonal tiling where all tiles are identical irregular pentagons, named after the street pavements of Cairo, Egypt.",
+  "icon": "俯视视角的开罗五边形镶嵌图案，不规则五边形格子以四重对称旋转排列铺满画面，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["tessellation", "cairo", "pentagon", "tile", "pattern", "pcg"],
+  "tag_labels": ["镶嵌", "开罗", "五边形", "图案", "PCG"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "description": "输出网格宽度（格），默认 80",
+      "description-en": "Output grid width in cells. Default 80.",
+      "default": 80
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "description": "输出网格高度（格），默认 80",
+      "description-en": "Output grid height in cells. Default 80.",
+      "default": 80
+    },
+    {
+      "name": "cellSize",
+      "type": "number",
+      "label": "基础格边长",
+      "description": "底层正方格的边长（格），五边形约占 2 个正方格，默认 10",
+      "description-en": "Side length of the underlying square cell in grid units. Each pentagon spans ~2 cells. Default 10.",
+      "default": 10
+    }
+  ],
+  "outputs": [
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "五边形 ID 网格",
+      "description": "每格存储所属五边形单元的 1-based ID，所有五边形形状完全相同",
+      "description-en": "Each cell stores the 1-based ID of its Cairo pentagon. All pentagons are identical in shape."
+    }
+  ]
+}

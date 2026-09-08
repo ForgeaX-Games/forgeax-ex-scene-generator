@@ -1,0 +1,59 @@
+{
+  "id": "image_gen",
+  "label": "AI 图像生成",
+  "name-en": "ImageGen",
+  "description": "使用 Gemini AI 模型根据提示词和/或参考图片生成新图像。节点上有手动触发按钮，生成结果存入资产库 staging 区并透传到下游。",
+  "description-en": "Generate images with Gemini AI from a prompt and optional reference image. Use the manual run button on the node; result is stored in the asset library (staging) and passed downstream.",
+  "version": "1.1.0",
+  "tags": ["ai", "image", "gemini", "generate", "text-to-image", "image-to-image"],
+  "tag_labels": ["AI", "图像", "Gemini", "生成", "文生图", "图生图"],
+  "autoIterate": true,
+  "manualTrigger": true,
+  "inputs": [
+    {
+      "name": "prompt",
+      "type": "string",
+      "label": "提示词",
+      "description": "描述要生成的图像内容",
+      "description-en": "Prompt describing the image to generate.",
+      "access": "item",
+      "default": ""
+    },
+    {
+      "name": "image",
+      "type": "image",
+      "label": "参考图像列表",
+      "description": "可选：传入参考图像（支持零张或多张，任意 tree 结构）。节点会把整棵树里的所有图 alias 拍平成一个数组，在单次调用中一并发送给 Gemini。",
+      "description-en": "Optional reference images (zero or many, any tree shape). The node flattens every image alias in the whole tree into a single array and sends them in one Gemini call.",
+      "access": "tree"
+    },
+    {
+      "name": "imageSize",
+      "type": "string",
+      "label": "分辨率",
+      "description": "Gemini 输出分辨率档位（512 / 1K / 2K / 4K）。不指定宽高比；有参考图时模型通常自动匹配参考图比例。",
+      "description-en": "Gemini output resolution tier (512 / 1K / 2K / 4K). Aspect ratio is not forced; with reference images the model usually matches the reference aspect.",
+      "default": "2K",
+      "options": ["512", "1K", "2K", "4K"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "label": "生成图像",
+      "description": "生成图像在资产库中的 alias",
+      "description-en": "Alias of the generated image in the asset library.",
+      "access": "item"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误信息",
+      "description": "生成失败时的错误信息",
+      "description-en": "Error message if generation failed.",
+      "access": "item"
+    }
+  ],
+  "alg_tag": ["AI图像生成", "Gemini图生图", "文生图"]
+}

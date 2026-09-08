@@ -1,0 +1,76 @@
+{
+  "id": "aw_river_gen",
+  "label": "山地河流生成",
+  "description": "在指定地块类型内生成自适应宽度的有机河流，宽阔地带自动变粗，狭窄地带自动变细。",
+  "description-en": "Generates an organic river inside a target biome zone; width adapts automatically to the local terrain width.",
+  "icon": "俯视地形上一条蜿蜒的蓝色河流，两侧有绿色草地，河流有机弯曲、中间宽两端细，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["terrain", "river", "mountain", "pcg", "pathfinding"],
+  "tag_labels": ["地形", "河流", "山地", "PCG", "寻路"],
+  "inputs": [
+    {
+      "name": "terrainGrid",
+      "type": "grid",
+      "label": "地块网格",
+      "description": "地块分类器输出的整数地块网格（地块 ID 1–7）",
+      "description-en": "Integer terrain grid from biome_classifier (biome IDs 1–7)."
+    },
+    {
+      "name": "targetBiome",
+      "type": "number",
+      "label": "目标地块 ID",
+      "description": "河流在哪种地块内流动（默认 3=草地/橙色区域）",
+      "description-en": "Biome ID the river will flow through (default 3 = grassland).",
+      "default": 3
+    },
+    {
+      "name": "widthScale",
+      "type": "number",
+      "label": "宽度缩放",
+      "description": "河流宽度与距离场值的比例系数，值越大河流越宽",
+      "description-en": "Scale factor mapping distance field value to river width; larger = wider river.",
+      "default": 0.55
+    },
+    {
+      "name": "noiseStrength",
+      "type": "number",
+      "label": "蜿蜒强度",
+      "description": "路径蜿蜒的随机扰动强度（0=走中心直线，1=高度蜿蜒）",
+      "description-en": "Noise perturbation strength for path meandering (0=straight center line, 1=highly winding).",
+      "default": 0.45
+    },
+    {
+      "name": "smoothSigma",
+      "type": "number",
+      "label": "宽度平滑半径",
+      "description": "宽度变化的高斯平滑 sigma 值，越大过渡越均匀",
+      "description-en": "Gaussian sigma for width smoothing along path; larger = smoother width transitions.",
+      "default": 8
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "河流数量",
+      "description": "生成河流的条数（1–6），每条使用不同的空间路线方向和子种子",
+      "description-en": "Number of rivers to generate (1–6); each uses a different spatial axis and sub-seed.",
+      "default": 1
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，控制河流起终点和蜿蜒方向",
+      "description-en": "Random seed controlling river start/end points and meandering direction.",
+      "default": 42
+    }
+  ],
+  "outputs": [
+    {
+      "name": "riverMask",
+      "type": "grid",
+      "label": "河流掩码",
+      "description": "河流区域为 1，其余为 0 的二值网格，可与地块网格叠加使用",
+      "description-en": "Binary grid where river cells are 1 and others are 0; can be overlaid on the terrain grid."
+    }
+  ]
+}

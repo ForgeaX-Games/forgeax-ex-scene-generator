@@ -1,0 +1,18 @@
+{
+  "id": "rig_preview",
+  "label": "角色预览",
+  "name-en": "RigPreview",
+  "description": "把 RigSpec（来自 g_to_rig）推送到内嵌 3D 预览器进行角色可视化。前端 live-sync 拉取本节点 rigSpec 输出，命中即切 character 模式（加载 <sha>.glb + 测地体素绑定求权重 → SkinnedMesh + Skeleton + 播放骨骼 clip）。rigSpec 端口透传，便于继续接线。",
+  "description-en": "Forward a RigSpec (from g_to_rig) to the embedded 3D viewer for character preview. The frontend live-sync pulls this node's rigSpec output and switches to character mode (load <sha>.glb + geodesic voxel binding → SkinnedMesh + Skeleton + play bone clips). Pass-through for chaining.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["rig", "preview", "viewer", "character", "io"],
+  "tag_labels": ["骨架", "预览", "可视化", "角色", "IO"],
+  "inputs": [
+    { "name": "rigSpec", "type": "object", "required": true, "label": "RigSpec", "description": "角色 IR 对象（接 g_to_rig.rigSpec）", "description-en": "Character IR object (from g_to_rig.rigSpec)." }
+  ],
+  "outputs": [
+    { "name": "rigSpec", "type": "object", "label": "RigSpec", "description": "原 RigSpec 透传输出", "description-en": "Pass-through RigSpec." }
+  ],
+  "projectTypes": ["asset3d"]
+}

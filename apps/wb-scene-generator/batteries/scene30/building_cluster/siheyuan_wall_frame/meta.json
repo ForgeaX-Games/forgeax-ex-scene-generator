@@ -1,0 +1,43 @@
+{
+  "id": "siheyuan_wall_frame",
+  "label": "四合院围墙",
+  "name-en": "SiheyuanWallFrame",
+  "description": "输入多个矩形（每个矩形为一张 0/1 网格，或一张每块不同 id 的多值网格），取每个矩形长边方向的中心线，按围绕整体质心的环形顺序，用连接段把各条中心线首尾串成一个闭合的「框」，输出一张围墙网格。坐标约定：x→列、y→行。",
+  "description-en": "Takes multiple rectangles (each a 0/1 grid, or one multi-value grid with a distinct id per rectangle), draws the center line along each rectangle's long edge, orders them in a ring around the overall centroid, and stitches the center lines head-to-tail with connector segments into one closed frame. Outputs a single wall grid. Coordinates: x→column, y→row.",
+  "icon": "深色圆角方块底，内部几个矩形房屋俯视排成一圈，一条浅色闭合折线穿过每个矩形长边中心并把它们串成方框（四合院围墙），扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["siheyuan", "courtyard", "wall", "frame", "rect", "rectangle", "centerline", "loop", "scene"],
+  "tag_labels": ["四合院", "院落", "围墙", "框", "矩形", "中心线", "闭环"],
+  "inputs": [
+    {
+      "name": "rects",
+      "type": "grid",
+      "access": "list",
+      "required": true,
+      "label": "矩形列表",
+      "description": "矩形输入：可接 0/1 网格列表（每张一个矩形），也可接单张多值网格（每个不同非零 id 视为一个矩形）。取每个矩形的最小包围盒求长边中心线。",
+      "description-en": "Rectangle input: a list of 0/1 grids (one rectangle each), or a single multi-value grid (each distinct non-zero id is one rectangle). The long-edge center line is derived from each rectangle's bounding box."
+    },
+    {
+      "name": "thickness",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 1,
+      "label": "围墙厚度",
+      "description": "围墙线宽（格数），1 为单格细线，越大墙越厚。",
+      "description-en": "Wall line thickness in grid cells; 1 is a single-cell thin line, larger values widen the wall."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "wall",
+      "type": "grid",
+      "access": "item",
+      "label": "围墙网格",
+      "description": "单张围墙网格：穿过每个矩形长边中心线、并把它们串成闭合框的线段处为 1，其余为 0。",
+      "description-en": "Single wall grid: cells on the closed frame (the long-edge center lines plus their connectors) are 1, others are 0."
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "nodes": [
+    {
+      "id": "l0_origin_continent",
+      "name": "起源大陆",
+      "parent": null,
+      "label": "narrative",
+      "description": {
+        "location_description": "整张大地图所在的大陆，以南部近海绿地、中央缓坡小镇与北部侵蚀高地构成整体地貌。",
+        "art_style_description": "像素化色块勾勒出海岸、平原、山丘与侵蚀区，色彩随海拔与危险度逐渐偏冷偏暗。",
+        "semantics_description": "世界观的宏观舞台，承载摇篮之乡、白马小城与失落之域三大区域。"
+      }
+    },
+    {
+      "id": "l0_sky_temple",
+      "name": "凯尔特神庙遗址",
+      "parent": "l1_lost_realm",
+      "label": "narrative",
+      "description": {
+        "location_description": "处于失落之域南方的废弃神庙，也是失落之域和缄钢地的交汇处",
+        "art_style_description": "神庙的残垣断壁，破败的石柱和残缺的石像，以及残留的紫色符文和能量波动",
+        "semantics_description": "在这里进行战斗教学与引导"
+      }
+    },
+    {
+      "id": "l1_cradle_land",
+      "name": "摇篮之乡",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于起源大陆西南部近海的起始区域，一侧靠艾尔温长河，一侧延伸向被茂盛植被与清澈溪水覆盖的缓丘地带。",
+        "art_style_description": "整体以翠绿色与灰绿色为主调勾勒草地与林带，清澈的青蓝色水体在其间蜿蜒流淌，点缀淡紫色、薰衣草色与粉色花带，在明亮光线与米白、淡黄色光晕映照下，营造出如梦似幻、远离尘嚣的仙境氛围。",
+        "semantics_description": "玩家初次登陆与新手引导发生的区域，自然环境安全而生机勃勃，充满希望与探索的邀请。"
+      }
+    },
+    {
+      "id": "l1_whitehorse_town",
+      "name": "白马小城",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于大陆中部偏东的聚落小镇，依托河流与道路节点发展而成的小型城镇。",
+        "art_style_description": "以暖色建筑色块与规则街区拼合而成，周边被较亮的道路与河道环绕。",
+        "semantics_description": "承担补给与社交功能的中继点，是王国军队的集结地和出发地。"
+      }
+    },
+    {
+      "id": "l1_jian_gang_di",
+      "name": "缄钢地（郊外）",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于白马小城以西，夹在摇篮之乡与失落之域之间的开阔缓坡地带，人类居住与耕作活动集中分布于此。",
+        "art_style_description": "大片浅褐与浅绿像素平铺在起伏地形上，少量较深色块勾勒出道路与分区边界，远处失落之域的暗色天际线与此形成鲜明对比。",
+        "semantics_description": "人类活动最活跃的郊区，既是白马小城的生活外缘，也是前往前线前的缓冲地带，是从摇篮之乡前往失落之域的必经之地。"
+      }
+    },
+    {
+      "id": "l2_stele_altar",
+      "name": "缄钢祭坛",
+      "parent": "l1_jian_gang_di",
+      "label": "interactive",
+      "description": {
+        "location_description": "位于缄钢地核心略高的地势中央，周围缓坡与交通线条自然汇聚于此，构成整个郊外区域的视觉与动线焦点。",
+        "art_style_description": "中央区域由一块高耸的白色竖立色块主导，表面贯穿金与淡紫色的细密光纹，周边浅褐与灰绿色地表呈环形渐次抬升，仿佛一处兼具远古仪式感与科技能量的节点。",
+        "semantics_description": "插有石中剑的核心祭坛，被视为创世神武器的封印之所，玩家在此获得象征「起源之力」的关键武器，引导故事迈向更深层的命运舞台。"
+      }
+    },
+    {
+      "id": "l1_lost_realm",
+      "name": "失落之域",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于起源大陆北部的高危战区，大面积地表被侵蚀能量覆盖。",
+        "art_style_description": "紫色与暗红像素构成不稳定地形，夹杂零散高亮点表示爆裂能量与残骸。",
+        "semantics_description": "主战线所在的区域，承载大规模战斗与剧情推进的关键场景。"
+      }
+    },
+    {
+      "id": "l1_ai_er_wen_chang_he",
+      "name": "艾尔温长河",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "自起源大陆南部近海向北流淌，沿摇篮之乡西缘蜿蜒而上，在中部缓坡处分叉。",
+        "art_style_description": "宽阔的青蓝色河道贯穿两岸翠绿与灰绿色坡地，水体清澈透亮，在阳光下泛起细碎高光，沿岸可见淡紫色与粉色花带顺势展开，整体气氛明快而充满探索感。在接近失落之域的区域，河面泛着紫红色，河水变得浑浊。",
+        "semantics_description": "连接海岸与内陆的交通水路，也是划分摇篮之乡与外侧荒野的天然边界。"
+      }
+    },
+    {
+      "id": "l1_sai_yi_si_he",
+      "name": "塞伊斯河",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "贯穿大陆中轴的主河流，自白马小城附近向北流入失落之域周边的峡谷地带。",
+        "art_style_description": "一条清澈的青蓝色长河自南向北贯穿大地，两岸由层叠的翠绿色与灰绿色坡地环绕，沿途夹杂淡紫色、薰衣草色与米黄色的柔和色带，在明亮光线下形成通向远方的光之走廊。临近失落之域的区域，河面泛着紫红色，河水变得浑浊。",
+        "semantics_description": "将中部缓坡与北部战区连接在一起，是军队调动与物资运输的关键命脉。"
+      }
+    },
+    {
+      "id": "l1_ken_te_dao",
+      "name": "肯特岛",
+      "parent": "l0_origin_continent",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于起源大陆西南侧外海、距离摇篮之乡海岸不远的一块独立陆地。",
+        "art_style_description": "小块浅黄色与绿色像素从海面中凸起，周围环绕浅蓝色近海水域。",
+        "semantics_description": "可作为支线探索与隐藏事件的发生地点，通过小船或传送点与摇篮之乡相连。"
+      }
+    },
+    {
+      "id": "l2_li_ming_sheng_lin",
+      "name": "黎明圣林",
+      "parent": "l1_cradle_land",
+      "label": "narrative",
+      "description": {
+        "location_description": "摇篮之乡腹地的大型森林带，从南部近海一路向内陆延展。",
+        "art_style_description": "深浅不一的翠绿与灰绿色交织成绵延的树海与草地，清澈的青蓝色溪流在林间迂回，水面映着明亮天光，林下点缀淡紫色、薰衣草色与粉色的花带，营造出自然生机与宁静共存的梦境氛围。",
+        "semantics_description": "早期探索的核心区域，代表神明初醒后受自然拥抱的第一片庇护之地，唤起玩家对未知世界的好奇与希望。"
+      }
+    },
+    {
+      "id": "l3_yi_zhi_shu",
+      "name": "一之树（终端机接口）",
+      "parent": "l2_li_ming_sheng_lin",
+      "label": "interactive",
+      "description": {
+        "location_description": "黎明圣林最深处的一块高地中心，一株古老而高耸的巨树扎根于大地，被清澈溪流与环形林带所环绕。",
+        "art_style_description": "树干呈温润的灰绿色石木质感，枝干间流淌着细密的青蓝光纹与淡紫色符文脉络，树冠在明亮天光与米白色微光映照下如同一座呼吸的能量灯塔，既古老自然又透出微妙的科技感。",
+        "semantics_description": "象征世界被最初之光点燃的源头，是神明初次苏醒与创世力量凝聚的起点，玩家与树交互开始创造世界，作为特殊物体存在。"
+      }
+    },
+    {
+      "id": "l2_wang_xi_hua_hai",
+      "name": "往昔花海",
+      "parent": "l1_cradle_land",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于黎明圣林右上方边缘的一片开阔花田，与南侧草地和小径相接。",
+        "art_style_description": "大片由淡紫色、薰衣草色与粉色花带在翠绿与灰绿色草地上错落铺展，间或有青蓝色细流闪烁与米白、淡黄色光晕，让整片花海如同漂浮在光与花香中的仙境草原。",
+        "semantics_description": "安全度较高的休憩与采集区域，充满怀旧与慰藉感，是主角与同伴共同回忆与约定的温柔之地。"
+      }
+    },
+    {
+      "id": "l2_qin_shi_huang_yuan",
+      "name": "侵蚀荒原",
+      "parent": "l1_lost_realm",
+      "label": "narrative",
+      "description": {
+        "location_description": "失落之域正面的交战地带，贴近侵蚀区边缘左上角，布设多条防线。",
+        "art_style_description": "紫红与暗棕像素交错，散落破碎器械与爆裂痕迹，局部高亮表示能量喷发点。",
+        "semantics_description": "与敌方大军对峙的主战场，承载重要战斗关卡与剧情触发事件。"
+      }
+    },
+    {
+      "id": "l2_wang_guo_ying_di",
+      "name": "王国营地",
+      "parent": "l1_lost_realm",
+      "label": "narrative",
+      "description": {
+        "location_description": "位于侵蚀荒原右下方略显安全的高地与洼地组合区域，长期驻军使地表呈现出明显的人为区划痕迹。",
+        "art_style_description": "以偏暖的橘色与灰色色块在局部高地上集中分布，与周边自然地形形成清晰边界。",
+        "semantics_description": "我方军队集结、整备与任务接取的核心区域，是玩家在战区内的主要据点。"
+      }
+    },
+    {
+      "id": "l3_wang_guo_jun_ying_zhan_zhang_mu",
+      "name": "王国军营帐",
+      "parent": "l2_wang_guo_ying_di",
+      "label": "interactive",
+      "description": {
+        "location_description": "王国营地内部的一处集中驻扎区，标记了士兵休整与整理装备的核心位置。",
+        "art_style_description": "由3个呈半环形排布的褐色帐篷色块构成，帐幕顶端色调略浅，与周围偏深的地表与防线色块形成对比，清晰指示出军队的驻扎核心。",
+        "semantics_description": "关键交互节点，玩家可在附件进行休整、对话以及战前准备等互动。"
+      }
+    }
+  ]
+}
+

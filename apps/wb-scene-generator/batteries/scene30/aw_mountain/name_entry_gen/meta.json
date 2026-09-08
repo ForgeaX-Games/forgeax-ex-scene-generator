@@ -1,0 +1,45 @@
+{
+  "id": "name_entry_gen",
+  "label": "名称清单生成",
+  "description": "用一个数字 ID、名称和图层类型，生成单条格式为 [{id, name, type}] 的名称清单。",
+  "description-en": "Generates a single-entry name list [{id, name, type}] from an integer ID, a name string, and a layer type string.",
+  "icon": "一个标签卡片，上方有数字编号，中间有文字名称，下方有类型标注，简洁扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": ["name-list", "label", "util", "terrain"],
+  "tag_labels": ["名称清单", "标签", "工具", "地形"],
+  "inputs": [
+    {
+      "name": "id",
+      "type": "number",
+      "label": "ID",
+      "description": "名称清单条目的数字 ID，应与网格中的对应值一致",
+      "description-en": "Numeric ID for the name list entry; should match the corresponding value in the grid.",
+      "default": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "label": "名称",
+      "description": "条目的显示名称",
+      "description-en": "Display name for this entry.",
+      "default": "未命名"
+    },
+    {
+      "name": "layerType",
+      "type": "string",
+      "label": "图层类型",
+      "description": "条目所属的图层类型（可选，留空则不输出 type 字段）",
+      "description-en": "Layer type for this entry (optional; omitted from output if empty).",
+      "default": ""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "单条名称清单 [{id, name, type}]，可直接接入填充排序等节点",
+      "description-en": "Single-entry name list [{id, name, type}]; can be connected directly to fill_sort or similar nodes."
+    }
+  ]
+}

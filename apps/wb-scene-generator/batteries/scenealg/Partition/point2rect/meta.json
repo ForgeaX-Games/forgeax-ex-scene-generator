@@ -1,0 +1,62 @@
+{
+  "id": "alg_point2rect",
+  "label": "区域点生矩形",
+  "name-en": "Point2Rect",
+  "description": "在 01 区域网格的有效（1）范围内，围绕一个采样 point2d 点贴合一个矩形：中心尽量靠近该点、长宽尽量接近输入宽高，且完整落在区域内，放不下就缩小。点落在 0 格时取最近的 1 格作为锚点；只要区域内还有任意一个可用格，至少保留 1×1。区域全 0（无任何可用格）时报 error（而非静默输出全 0 网格，2026-07-01 postmortem 修复：避免 PlaceOneDecoration/PickOneBuilding 悄悄产出空节点）。输出与输入同形状、矩形处为 1 的新网格。坐标约定：x→列、y→行。",
+  "description-en": "Fit a rectangle around a sampled point2d inside the valid (1) area of a 0/1 region grid: center as close to the point as possible, size as close to the target width/height as possible, fully contained in the region, shrinking if it doesn't fit. If the point lands on a 0 cell, the nearest 1 cell anchors it; at least one cell is kept as long as any valid cell exists in the region. An all-zero region (no valid cells at all) now returns an explicit error instead of silently yielding an all-zero grid (2026-07-01 postmortem fix — prevents PlaceOneDecoration/PickOneBuilding from silently producing an invisible node). Output is a new grid (same shape) with 1s in the rectangle. Coordinates: x→column, y→row.",
+  "icon": "深色网格背景上有一片不规则的浅色有效区域，区域内有一个亮紫色小圆点，圆点周围贴合出一个亮蓝色矩形，矩形完整落在浅色区域内，扁平插画风格小图标，主色蓝紫两种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "partition", "point", "rect", "fit", "mask"],
+  "tag_labels": ["区域", "分区", "点", "矩形", "贴合", "掩码"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "access": "item",
+      "label": "输入区域",
+      "description": "01（或多值）区域网格；矩形只在非零有效格内寻找。",
+      "description-en": "0/1 (or multi-valued) region grid; the rectangle is searched only within non-zero valid cells."
+    },
+    {
+      "name": "point",
+      "type": "point2d",
+      "required": true,
+      "access": "item",
+      "label": "采样点",
+      "description": "采样 point2d 点，x→列、y→行；矩形中心尽量贴近此点。",
+      "description-en": "Sampled point2d (x→column, y→row); the rectangle center stays as close to it as possible."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "default": 5,
+      "min": 1,
+      "precision": 0,
+      "label": "目标宽度",
+      "description": "目标矩形宽度（列数），放不下会缩小，最小 1。",
+      "description-en": "Target rectangle width in columns; shrinks if it doesn't fit, minimum 1."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "default": 5,
+      "min": 1,
+      "precision": 0,
+      "label": "目标高度",
+      "description": "目标矩形高度（行数），放不下会缩小，最小 1。",
+      "description-en": "Target rectangle height in rows; shrinks if it doesn't fit, minimum 1."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "与输入同形状的 01 网格，贴合出的矩形处为 1，其余为 0。",
+      "description-en": "A 0/1 grid (same shape as input) with 1s in the fitted rectangle and 0s elsewhere."
+    }
+  ]
+}

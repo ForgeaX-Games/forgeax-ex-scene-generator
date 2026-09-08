@@ -1,0 +1,39 @@
+{
+  "id": "alg_region_outline",
+  "label": "区域轮廓",
+  "name-en": "RegionOutline",
+  "description": "从输入区域中向内提取 thickness 层边缘格作为轮廓拓扑。第一层用 8-邻接找最外圈非零边界格；之后每层用 4-邻接向内扩一格。",
+  "description-en": "Extracts an inward outline of given thickness from a 0/1 region. The first layer uses 8-connectivity to find the outermost border cells; subsequent layers expand inward using 4-connectivity.",
+  "icon": "深色背景上一个填充矩形被一层细线轮廓包围，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "topology", "outline", "border", "morphology"],
+  "tag_labels": ["区域", "拓扑", "轮廓", "边界", "形态学"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1 区域 grid。",
+      "description-en": "0/1 region grid."
+    },
+    {
+      "name": "thickness",
+      "type": "number",
+      "default": 1,
+      "label": "厚度",
+      "description": "轮廓厚度（向内层数），>=1。",
+      "description-en": "Outline thickness (inward layers), >=1."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "label": "轮廓拓扑",
+      "description": "0/1 拓扑 grid，包含从输入区域边缘向内 thickness 层的格。",
+      "description-en": "0/1 topology grid containing the inward outline of given thickness."
+    }
+  ]
+}

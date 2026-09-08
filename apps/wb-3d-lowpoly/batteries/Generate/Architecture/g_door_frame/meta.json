@@ -1,0 +1,28 @@
+{
+  "id": "g_door_frame",
+  "label": "门框",
+  "name-en": "GDoorFrame",
+  "description": "追加一条 door_frame(...) shape；供 Geometry DSL 编译器精确执行门框语句。",
+  "description-en": "Append exactly one door_frame(...) shape for deterministic Geometry DSL execution.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "architecture", "door", "frame", "cad"],
+  "tag_labels": ["几何", "建筑", "门", "门框", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "width", "type": "number", "required": true, "label": "门框宽" },
+    { "name": "height", "type": "number", "required": true, "label": "门框高" },
+    { "name": "depth", "type": "number", "required": true, "label": "进深" },
+    { "name": "frame", "type": "number", "required": false, "label": "框宽", "default": 0.08 },
+    { "name": "transom", "type": "number", "required": false, "label": "亮子高", "default": 0 },
+    { "name": "sidelight", "type": "number", "required": false, "label": "侧窗宽", "default": 0 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" },
+    { "name": "error", "type": "string", "label": "错误" }
+  ],
+  "projectTypes": ["asset3d"]
+}

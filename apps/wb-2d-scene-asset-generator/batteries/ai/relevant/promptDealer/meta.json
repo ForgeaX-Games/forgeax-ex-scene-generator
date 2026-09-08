@@ -1,0 +1,49 @@
+{
+  "id": "prompt_dealer",
+  "label": "提示词模板填充",
+  "description": "将多个字符串填入提示词模板的占位符 {0}, {1}, {2}…（动态端口）",
+  "description-en": "Fill template placeholders {0}, {1}, {2}… with string inputs (dynamic ports).",
+  "icon": "填空题或填字格被逐格填满，或模板纸上的空位被笔填上，扁平插画风格，适合做电池图标，小尺寸可辨、背景简洁、主色一至两种。",
+  "version": "1.0.0",
+  "tags": ["model", "prompt", "template"],
+  "tag_labels": ["模型", "提示词", "模板"],
+  "inputs": [
+    {
+      "name": "template",
+      "type": "string",
+      "label": "模板",
+      "description": "包含 {0}, {1}, {2}… 占位符的提示词模板字符串",
+      "description-en": "Template string with placeholders {0}, {1}, {2}…",
+      "default": ""
+    },
+    {
+      "name": "value_0",
+      "type": "string",
+      "label": "{0}",
+      "description": "替换模板中 {0} 的字符串",
+      "description-en": "String to replace {0} in template."
+    },
+    {
+      "name": "value_1",
+      "type": "string",
+      "label": "{1}",
+      "description": "替换模板中 {1} 的字符串",
+      "description-en": "String to replace {1} in template."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prompt",
+      "type": "string",
+      "label": "提示词",
+      "description": "填充占位符后的完整提示词字符串",
+      "description-en": "Final prompt string after placeholder substitution."
+    }
+  ],
+  "dynamicInputs": {
+    "prefix": "value_",
+    "labelTemplate": "{$i}",
+    "minCount": 2,
+    "type": "string"
+  }
+}

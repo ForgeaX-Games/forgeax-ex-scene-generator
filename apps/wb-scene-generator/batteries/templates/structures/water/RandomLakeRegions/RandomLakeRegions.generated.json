@@ -1,0 +1,1236 @@
+{
+  "id": "group_1781238394903_rz71v",
+  "name": "RandomLakeRegions",
+  "nameEn": "RandomLakeRegions",
+  "author": "wwz",
+  "nodes": [
+    {
+      "id": "node-1781195086749-tmrnd",
+      "opId": "scene_passthrough",
+      "name": "node-1781195086749-tmrnd",
+      "position": {
+        "x": 709.7069570196088,
+        "y": 6509.377106199554
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781195086751-18hzj",
+      "opId": "node_explode",
+      "name": "node-1781195086751-18hzj",
+      "position": {
+        "x": 1080.635804333139,
+        "y": 6502.927537793127
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781195086752-rl289",
+      "opId": "rect_grid",
+      "name": "node-1781195086752-rl289",
+      "position": {
+        "x": 1332.2716262322908,
+        "y": 6502.8036484433915
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781195086753-lprq9",
+      "opId": "voxel_slice",
+      "name": "node-1781195086753-lprq9",
+      "position": {
+        "x": 1620.8295505311496,
+        "y": 6605.146090191906
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196067660",
+      "opId": "alg_points_scatter",
+      "name": "node-1781196067660",
+      "position": {
+        "x": 1862.721001594558,
+        "y": 6622.0973128979385
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196193164",
+      "opId": "alg_region_flood_grow",
+      "name": "node-1781196193164",
+      "position": {
+        "x": 2300.786664071482,
+        "y": 6655.084317049672
+      },
+      "params": {
+        "size": 50
+      }
+    },
+    {
+      "id": "node-1781196357316-pwne4",
+      "opId": "text_panel",
+      "name": "node-1781196357316-pwne4",
+      "position": {
+        "x": 2751.1466785549537,
+        "y": 6604.1405311066455
+      },
+      "params": {
+        "text": "lake_",
+        "_nodeWidth": 172,
+        "_nodeHeight": 69
+      }
+    },
+    {
+      "id": "node-1781196357317-p09mn",
+      "opId": "grid2node",
+      "name": "node-1781196357317-p09mn",
+      "position": {
+        "x": 3156.3841035604664,
+        "y": 6709.68112403637
+      },
+      "params": {}
+    },
+    {
+      "id": "group_1781196357312_1adif",
+      "opId": "__group__",
+      "name": "MultiNames",
+      "position": {
+        "x": 3033.8004285498555,
+        "y": 6530.897749095017
+      },
+      "params": {
+        "groupId": "group_1781196357312_1adif"
+      }
+    },
+    {
+      "id": "group_1781196424173_7w8rd",
+      "opId": "__group__",
+      "name": "TileAssetName",
+      "position": {
+        "x": 3422.667157925096,
+        "y": 6670.313230525903
+      },
+      "params": {
+        "groupId": "group_1781196424173_7w8rd"
+      }
+    },
+    {
+      "id": "node-1781196524935-1n9ci",
+      "opId": "add_child",
+      "name": "node-1781196524935-1n9ci",
+      "position": {
+        "x": 3833.070433470617,
+        "y": 6696.060792985814
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524936-fwqpu",
+      "opId": "scene_merge_subtrees",
+      "name": "node-1781196524936-fwqpu",
+      "position": {
+        "x": 4040.5286750577598,
+        "y": 6629.46827555708
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524937-pz7vk",
+      "opId": "scene_focus_path",
+      "name": "node-1781196524937-pz7vk",
+      "position": {
+        "x": 4326.1615335201695,
+        "y": 6702.109579348151
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524938-1gejd",
+      "opId": "scene_passthrough",
+      "name": "node-1781196524938-1gejd",
+      "position": {
+        "x": 4551.89815697473,
+        "y": 6600.178469377956
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524938-x6l38",
+      "opId": "add_child",
+      "name": "node-1781196524938-x6l38",
+      "position": {
+        "x": 3958.4225008938947,
+        "y": 7021.425982613782
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524939-ha9qx",
+      "opId": "scene_focus_path",
+      "name": "node-1781196524939-ha9qx",
+      "position": {
+        "x": 4326.1615335201695,
+        "y": 7015.350812988972
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524940-5z8b3",
+      "opId": "scene_passthrough",
+      "name": "node-1781196524940-5z8b3",
+      "position": {
+        "x": 4551.89815697473,
+        "y": 6710.288663756723
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196524940-y8gid",
+      "opId": "scene_passthrough",
+      "name": "node-1781196524940-y8gid",
+      "position": {
+        "x": 4551.89815697473,
+        "y": 7026.699047113132
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196534055-ydsjh",
+      "opId": "alg_region_subtract",
+      "name": "node-1781196534055-ydsjh",
+      "position": {
+        "x": 3115.500802976965,
+        "y": 6979.593229344785
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196534057-5e8c1",
+      "opId": "grid2node",
+      "name": "node-1781196534057-5e8c1",
+      "position": {
+        "x": 3542.5805594938975,
+        "y": 7028.976522183705
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781196534058-ork8p",
+      "opId": "text_panel",
+      "name": "node-1781196534058-ork8p",
+      "position": {
+        "x": 3344.0723307253775,
+        "y": 6920.568874822212
+      },
+      "params": {
+        "text": "rest",
+        "_nodeWidth": 172,
+        "_nodeHeight": 69
+      }
+    },
+    {
+      "id": "node-1781196557844",
+      "opId": "alg_region_union_all",
+      "name": "node-1781196557844",
+      "position": {
+        "x": 2716.4738660407284,
+        "y": 7056.531358979412
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781197086189-poa0d",
+      "opId": "number_const",
+      "name": "node-1781197086189-poa0d",
+      "position": {
+        "x": 1607.4975169656757,
+        "y": 6791.506384826704
+      },
+      "params": {
+        "value": 3
+      }
+    },
+    {
+      "id": "node-1781238278026",
+      "opId": "type_string",
+      "name": "node-1781238278026",
+      "position": {
+        "x": 4551.89815697473,
+        "y": 6812.195928018387
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781238286100-4naph",
+      "opId": "type_string",
+      "name": "node-1781238286100-4naph",
+      "position": {
+        "x": 4554.843806359341,
+        "y": 7128.827825562344
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781238323504",
+      "opId": "multi_seed",
+      "name": "node-1781238323504",
+      "position": {
+        "x": 1685.479205182161,
+        "y": 6938.626798009215
+      },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1781195086754-sn5st",
+      "source": {
+        "nodeId": "node-1781195086751-18hzj",
+        "port": "width"
+      },
+      "target": {
+        "nodeId": "node-1781195086752-rl289",
+        "port": "width"
+      }
+    },
+    {
+      "id": "edge-1781195086755-2escz",
+      "source": {
+        "nodeId": "node-1781195086751-18hzj",
+        "port": "height"
+      },
+      "target": {
+        "nodeId": "node-1781195086752-rl289",
+        "port": "height"
+      }
+    },
+    {
+      "id": "edge-1781195086755-2bwip",
+      "source": {
+        "nodeId": "node-1781195086751-18hzj",
+        "port": "voxels"
+      },
+      "target": {
+        "nodeId": "node-1781195086753-lprq9",
+        "port": "voxels"
+      }
+    },
+    {
+      "id": "edge-1781195086756-avj39",
+      "source": {
+        "nodeId": "node-1781195086752-rl289",
+        "port": "grid"
+      },
+      "target": {
+        "nodeId": "node-1781195086753-lprq9",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "edge-1781195086757-rui3w",
+      "source": {
+        "nodeId": "node-1781195086749-tmrnd",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781195086751-18hzj",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "e-node-1781195086753-lprq9-slice-node-1781196067660-region",
+      "source": {
+        "nodeId": "node-1781195086753-lprq9",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1781196067660",
+        "port": "region"
+      }
+    },
+    {
+      "id": "e-node-1781196067660-points-node-1781196193164-points",
+      "source": {
+        "nodeId": "node-1781196067660",
+        "port": "points"
+      },
+      "target": {
+        "nodeId": "node-1781196193164",
+        "port": "points"
+      }
+    },
+    {
+      "id": "e-node-1781195086753-lprq9-slice-node-1781196193164-region",
+      "source": {
+        "nodeId": "node-1781195086753-lprq9",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1781196193164",
+        "port": "region"
+      }
+    },
+    {
+      "id": "e-node-1781196357316-pwne4-output-group_1781196357312_1adif-in_3",
+      "source": {
+        "nodeId": "node-1781196357316-pwne4",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "group_1781196357312_1adif",
+        "port": "in_3"
+      }
+    },
+    {
+      "id": "e-node-1781196193164-count-group_1781196357312_1adif-in_1",
+      "source": {
+        "nodeId": "node-1781196193164",
+        "port": "count"
+      },
+      "target": {
+        "nodeId": "group_1781196357312_1adif",
+        "port": "in_1"
+      }
+    },
+    {
+      "id": "e-group_1781196357312_1adif-out_1-node-1781196357317-p09mn-name",
+      "source": {
+        "nodeId": "group_1781196357312_1adif",
+        "port": "out_1"
+      },
+      "target": {
+        "nodeId": "node-1781196357317-p09mn",
+        "port": "name"
+      }
+    },
+    {
+      "id": "e-node-1781196193164-partition-node-1781196357317-p09mn-grid",
+      "source": {
+        "nodeId": "node-1781196193164",
+        "port": "partition"
+      },
+      "target": {
+        "nodeId": "node-1781196357317-p09mn",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "e-node-1781196357317-p09mn-scene-group_1781196424173_7w8rd-in_0",
+      "source": {
+        "nodeId": "node-1781196357317-p09mn",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "group_1781196424173_7w8rd",
+        "port": "in_0"
+      }
+    },
+    {
+      "id": "edge-1781196524941-rjduq",
+      "source": {
+        "nodeId": "node-1781196524935-1n9ci",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1781196524937-pz7vk",
+        "port": "path"
+      }
+    },
+    {
+      "id": "edge-1781196524942-05h21",
+      "source": {
+        "nodeId": "node-1781196524936-fwqpu",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524937-pz7vk",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1781196524942-rmt98",
+      "source": {
+        "nodeId": "node-1781196524936-fwqpu",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524938-1gejd",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1781196524943-rqm33",
+      "source": {
+        "nodeId": "node-1781196524935-1n9ci",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524938-x6l38",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1781196524944-x51ai",
+      "source": {
+        "nodeId": "node-1781196524938-x6l38",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524936-fwqpu",
+        "port": "scenes"
+      }
+    },
+    {
+      "id": "edge-1781196524944-63cwu",
+      "source": {
+        "nodeId": "node-1781196524938-x6l38",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1781196524939-ha9qx",
+        "port": "path"
+      }
+    },
+    {
+      "id": "edge-1781196524945-aah6c",
+      "source": {
+        "nodeId": "node-1781196524936-fwqpu",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524939-ha9qx",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1781196524946-6n4ew",
+      "source": {
+        "nodeId": "node-1781196524937-pz7vk",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524940-5z8b3",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1781196524946-fym68",
+      "source": {
+        "nodeId": "node-1781196524939-ha9qx",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524940-y8gid",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1781196534058-cjcfb",
+      "source": {
+        "nodeId": "node-1781196534058-ork8p",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781196534057-5e8c1",
+        "port": "name"
+      }
+    },
+    {
+      "id": "edge-1781196534059-lgzfx",
+      "source": {
+        "nodeId": "node-1781196534055-ydsjh",
+        "port": "region"
+      },
+      "target": {
+        "nodeId": "node-1781196534057-5e8c1",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "e-node-1781196193164-partition-node-1781196557844-regions",
+      "source": {
+        "nodeId": "node-1781196193164",
+        "port": "partition"
+      },
+      "target": {
+        "nodeId": "node-1781196557844",
+        "port": "regions"
+      }
+    },
+    {
+      "id": "e-node-1781195086753-lprq9-slice-node-1781196534055-ydsjh-a",
+      "source": {
+        "nodeId": "node-1781195086753-lprq9",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1781196534055-ydsjh",
+        "port": "a"
+      }
+    },
+    {
+      "id": "e-node-1781196557844-region-node-1781196534055-ydsjh-b",
+      "source": {
+        "nodeId": "node-1781196557844",
+        "port": "region"
+      },
+      "target": {
+        "nodeId": "node-1781196534055-ydsjh",
+        "port": "b"
+      }
+    },
+    {
+      "id": "e-group_1781196424173_7w8rd-out_0-node-1781196524935-1n9ci-nodes",
+      "source": {
+        "nodeId": "group_1781196424173_7w8rd",
+        "port": "out_0"
+      },
+      "target": {
+        "nodeId": "node-1781196524935-1n9ci",
+        "port": "nodes"
+      }
+    },
+    {
+      "id": "e-node-1781195086749-tmrnd-scene-node-1781196524935-1n9ci-scene",
+      "source": {
+        "nodeId": "node-1781195086749-tmrnd",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524935-1n9ci",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "e-node-1781196534057-5e8c1-scene-node-1781196524938-x6l38-nodes",
+      "source": {
+        "nodeId": "node-1781196534057-5e8c1",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781196524938-x6l38",
+        "port": "nodes"
+      }
+    },
+    {
+      "id": "e-node-1781197086189-poa0d-value-node-1781196067660-minSpacing",
+      "source": {
+        "nodeId": "node-1781197086189-poa0d",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781196067660",
+        "port": "minSpacing"
+      }
+    },
+    {
+      "id": "e-node-1781196524935-1n9ci-childPaths-node-1781238278026-value",
+      "source": {
+        "nodeId": "node-1781196524935-1n9ci",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1781238278026",
+        "port": "value"
+      }
+    },
+    {
+      "id": "e-node-1781196524938-x6l38-childPaths-node-1781238286100-4naph-value",
+      "source": {
+        "nodeId": "node-1781196524938-x6l38",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1781238286100-4naph",
+        "port": "value"
+      }
+    },
+    {
+      "id": "e-node-1781195086753-lprq9-slice-node-1781238323504-shape",
+      "source": {
+        "nodeId": "node-1781195086753-lprq9",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1781238323504",
+        "port": "shape"
+      }
+    },
+    {
+      "id": "e-node-1781238323504-seed-node-1781196067660-seed",
+      "source": {
+        "nodeId": "node-1781238323504",
+        "port": "seed"
+      },
+      "target": {
+        "nodeId": "node-1781196067660",
+        "port": "seed"
+      }
+    },
+    {
+      "id": "e-node-1781238323504-seed-node-1781196193164-seed",
+      "source": {
+        "nodeId": "node-1781238323504",
+        "port": "seed"
+      },
+      "target": {
+        "nodeId": "node-1781196193164",
+        "port": "seed"
+      }
+    }
+  ],
+  "position": {
+    "x": 3059.249858745193,
+    "y": 6769.2598538054835
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1781195086749-tmrnd",
+      "sourcePortName": "scene"
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781195086752-rl289",
+      "sourcePortName": "fillValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_5",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781195086753-lprq9",
+      "sourcePortName": "z",
+      "hidden": true
+    },
+    {
+      "portName": "in_6",
+      "portType": "string",
+      "sourceNodeId": "node-1781196067660",
+      "sourcePortName": "mode",
+      "hidden": true
+    },
+    {
+      "portName": "in_7",
+      "portType": "string",
+      "sourceNodeId": "node-1781196067660",
+      "sourcePortName": "countMode",
+      "hidden": true
+    },
+    {
+      "portName": "in_8",
+      "portType": "number",
+      "sourceNodeId": "node-1781196067660",
+      "sourcePortName": "density",
+      "hidden": true
+    },
+    {
+      "portName": "in_1",
+      "portType": "number",
+      "sourceNodeId": "node-1781196067660",
+      "sourcePortName": "count",
+      "customLabelEn": "ExpectedLakes"
+    },
+    {
+      "portName": "in_18",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781196193164",
+      "sourcePortName": "size",
+      "customLabelEn": "LakeSize"
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "sourceNodeId": "node-1781196067660",
+      "sourcePortName": "targetValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "sourceNodeId": "node-1781196193164",
+      "sourcePortName": "sizeVariance",
+      "hidden": true
+    },
+    {
+      "portName": "in_11",
+      "portType": "number",
+      "sourceNodeId": "node-1781196193164",
+      "sourcePortName": "spacingDilate",
+      "hidden": true
+    },
+    {
+      "portName": "in_12",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781196357317-p09mn",
+      "sourcePortName": "schema",
+      "hidden": true
+    },
+    {
+      "portName": "in_13",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781196357317-p09mn",
+      "sourcePortName": "token",
+      "hidden": true
+    },
+    {
+      "portName": "in_14",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "node-1781196357317-p09mn",
+      "sourcePortName": "zRange",
+      "hidden": true
+    },
+    {
+      "portName": "in_2",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "group_1781196424173_7w8rd",
+      "sourcePortName": "in_1",
+      "customLabelEn": "LakeAsset"
+    },
+    {
+      "portName": "in_15",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781196534057-5e8c1",
+      "sourcePortName": "schema",
+      "hidden": true
+    },
+    {
+      "portName": "in_16",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781196534057-5e8c1",
+      "sourcePortName": "token",
+      "hidden": true
+    },
+    {
+      "portName": "in_17",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "node-1781196534057-5e8c1",
+      "sourcePortName": "zRange",
+      "hidden": true
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "tree",
+      "sourceNodeId": "node-1781238323504",
+      "sourcePortName": "seed",
+      "customLabelEn": "Seed"
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1781196524938-1gejd",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "out_2",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1781196524940-5z8b3",
+      "sourcePortName": "scene",
+      "order": 1,
+      "customLabelEn": "Lake"
+    },
+    {
+      "portName": "out_1",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1781196524940-y8gid",
+      "sourcePortName": "scene",
+      "order": 3,
+      "customLabelEn": "Rest"
+    },
+    {
+      "portName": "out_3",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781238278026",
+      "sourcePortName": "value",
+      "order": 2,
+      "customLabelEn": "LakePath"
+    },
+    {
+      "portName": "out_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781238286100-4naph",
+      "sourcePortName": "value",
+      "order": 4,
+      "customLabelEn": "RestPath"
+    }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_1781196357312_1adif",
+      "name": "MultiNames",
+      "nameEn": "MultiNames",
+      "nodes": [
+        {
+          "id": "node-1781196357312-kpdc6",
+          "opId": "number_const",
+          "name": "数值",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 108.01685495642711
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1781196357313-zx4q3",
+          "opId": "number_const",
+          "name": "数值",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 221.28108876692943
+          },
+          "params": {
+            "value": 1
+          }
+        },
+        {
+          "id": "node-1781196357313-uv479",
+          "opId": "basic_math_op",
+          "name": "数学",
+          "position": {
+            "x": 2981.8326151083947,
+            "y": 138.56331665977086
+          },
+          "params": {
+            "op": "-"
+          }
+        },
+        {
+          "id": "node-1781196357313-ytu1s",
+          "opId": "type_number",
+          "name": "数值",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 142.41093776070238
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1781196357313-c34js",
+          "opId": "range_list",
+          "name": "数列",
+          "position": {
+            "x": 3231.2967396093886,
+            "y": 115.47226699649377
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1781196357313-p3rbt",
+          "opId": "type_string",
+          "name": "字符串",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 277.3822303033402
+          },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-1781196357313-0uiz6",
+          "source": {
+            "nodeId": "node-1781196357313-zx4q3",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1781196357313-uv479",
+            "port": "b"
+          }
+        },
+        {
+          "id": "edge-1781196357313-33iuv",
+          "source": {
+            "nodeId": "node-1781196357313-ytu1s",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1781196357313-uv479",
+            "port": "a"
+          }
+        },
+        {
+          "id": "edge-1781196357313-wy2uz",
+          "source": {
+            "nodeId": "node-1781196357312-kpdc6",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1781196357313-c34js",
+            "port": "start"
+          }
+        },
+        {
+          "id": "edge-1781196357313-ouyik",
+          "source": {
+            "nodeId": "node-1781196357313-uv479",
+            "port": "result"
+          },
+          "target": {
+            "nodeId": "node-1781196357313-c34js",
+            "port": "end"
+          }
+        },
+        {
+          "id": "edge-1781196357313-llgli",
+          "source": {
+            "nodeId": "node-1781196357313-p3rbt",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1781196357313-c34js",
+            "port": "prefix"
+          }
+        }
+      ],
+      "position": {
+        "x": 3033.8004285498555,
+        "y": 6530.897749095017
+      },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-1781196357313-uv479",
+          "sourcePortName": "op",
+          "hidden": true
+        },
+        {
+          "portName": "in_1",
+          "portType": "number",
+          "access": "tree",
+          "sourceNodeId": "node-1781196357313-ytu1s",
+          "sourcePortName": "value",
+          "customLabelEn": "Count"
+        },
+        {
+          "portName": "in_2",
+          "portType": "number",
+          "access": "item",
+          "sourceNodeId": "node-1781196357313-c34js",
+          "sourcePortName": "step",
+          "hidden": true
+        },
+        {
+          "portName": "in_3",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-1781196357313-p3rbt",
+          "sourcePortName": "value",
+          "customLabelEn": "Prefix"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "number",
+          "access": "list",
+          "sourceNodeId": "node-1781196357313-c34js",
+          "sourcePortName": "list",
+          "hidden": true
+        },
+        {
+          "portName": "out_1",
+          "portType": "string",
+          "access": "list",
+          "sourceNodeId": "node-1781196357313-c34js",
+          "sourcePortName": "stringList",
+          "customLabelEn": "Names"
+        },
+        {
+          "portName": "out_2",
+          "portType": "number",
+          "access": "item",
+          "sourceNodeId": "node-1781196357313-c34js",
+          "sourcePortName": "count"
+        }
+      ]
+    },
+    {
+      "id": "group_1781196424173_7w8rd",
+      "name": "TileAssetName",
+      "nodes": [
+        {
+          "id": "node-1781196424173-48nka",
+          "opId": "text_panel",
+          "name": "node-1781094591109",
+          "position": {
+            "x": 1823.2161694202596,
+            "y": 320.5333437440952
+          },
+          "params": {
+            "text": "asset_name",
+            "_nodeWidth": 180,
+            "_nodeHeight": 67
+          }
+        },
+        {
+          "id": "node-1781196424173-s5urz",
+          "opId": "text_panel",
+          "name": "node-1781094625955-ysok9",
+          "position": {
+            "x": 2101.219750353309,
+            "y": 317.34099784790226
+          },
+          "params": {
+            "text": "asset_type",
+            "_nodeWidth": 181,
+            "_nodeHeight": 60
+          }
+        },
+        {
+          "id": "node-1781196424173-v6d58",
+          "opId": "text_panel",
+          "name": "node-1781094635614-mu6fs",
+          "position": {
+            "x": 2101.219750353309,
+            "y": 486.1257362686896
+          },
+          "params": {
+            "text": "tile",
+            "_nodeWidth": 181,
+            "_nodeHeight": 60
+          }
+        },
+        {
+          "id": "node-1781196424173-a61li",
+          "opId": "scene_set_attribute",
+          "name": "node-1781097305549",
+          "position": {
+            "x": 2003.1308341299732,
+            "y": 159.02072612717268
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1781196424173-qh0dn",
+          "opId": "scene_set_attribute",
+          "name": "node-1781097326596-22xx1",
+          "position": {
+            "x": 2273.5984614822623,
+            "y": 167.27027591857814
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1781196424173-zxpwk",
+          "opId": "type_string",
+          "name": "node-1781159302096",
+          "position": {
+            "x": 1795.2161694202596,
+            "y": 219.59964172770196
+          },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-1781196424173-drc0f",
+          "source": {
+            "nodeId": "node-1781196424173-48nka",
+            "port": "output"
+          },
+          "target": {
+            "nodeId": "node-1781196424173-a61li",
+            "port": "key"
+          }
+        },
+        {
+          "id": "edge-1781196424173-0n05c",
+          "source": {
+            "nodeId": "node-1781196424173-a61li",
+            "port": "scene"
+          },
+          "target": {
+            "nodeId": "node-1781196424173-qh0dn",
+            "port": "scene"
+          }
+        },
+        {
+          "id": "edge-1781196424173-4bet9",
+          "source": {
+            "nodeId": "node-1781196424173-s5urz",
+            "port": "output"
+          },
+          "target": {
+            "nodeId": "node-1781196424173-qh0dn",
+            "port": "key"
+          }
+        },
+        {
+          "id": "edge-1781196424173-2godm",
+          "source": {
+            "nodeId": "node-1781196424173-v6d58",
+            "port": "output"
+          },
+          "target": {
+            "nodeId": "node-1781196424173-qh0dn",
+            "port": "value"
+          }
+        },
+        {
+          "id": "edge-1781196424173-us7qs",
+          "source": {
+            "nodeId": "node-1781196424173-zxpwk",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1781196424173-a61li",
+            "port": "value"
+          }
+        }
+      ],
+      "position": {
+        "x": 3422.667157925096,
+        "y": 6670.313230525903
+      },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-1781196424173-a61li",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-1781196424173-zxpwk",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-1781196424173-qh0dn",
+          "sourcePortName": "scene"
+        }
+      ]
+    }
+  ]
+}

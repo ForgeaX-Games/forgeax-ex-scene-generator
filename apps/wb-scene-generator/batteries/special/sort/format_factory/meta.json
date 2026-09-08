@@ -1,0 +1,58 @@
+{
+  "id": "format_factory",
+  "label": "格式工厂",
+  "description": "对输入的网格与名称清单进行格式校验、拆分与规范化，输出标准单值网格列表和规范名称清单。",
+  "description-en": "Validates, splits, and normalizes input grids and name lists into standard single-value grid list and canonical name entries.",
+  "icon": "扁平插画风格小图标，工厂齿轮图案，左侧输入不规则多彩网格，右侧输出整齐01网格列表，主色为深蓝和橙色，简洁现代。",
+  "version": "1.0.0",
+  "tags": ["format", "validate", "grid", "namelist", "normalize", "split", "flatten"],
+  "tag_labels": ["格式化", "校验", "网格", "名称清单", "规范化", "拆分", "拍平"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "any",
+      "label": "网格输入",
+      "description": "支持单值网格、多值网格、网格列表及混合嵌套格式",
+      "description-en": "Accepts single-value grid, multi-value grid, grid list, or any nested mix."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "支持任意嵌套格式的名称清单，将被拍平并规范化为标准格式",
+      "description-en": "Name list in any nested format; will be flattened and normalized to standard entries."
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "label": "运行模式",
+      "description": "sort=执行所有步骤（校验+拆分+拍平）；后续可扩展更多模式",
+      "description-en": "sort=run all steps (validate + split + flatten); more modes can be added later.",
+      "default": "sort",
+      "options": ["sort"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "array",
+      "label": "网格列表",
+      "description": "拆分后的单值01网格列表",
+      "description-en": "List of single-value binary (0/1) grids after splitting."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "规范化后的名称清单，格式为 [{id, name, type}]",
+      "description-en": "Normalized name list with entries in format {id, name, type}."
+    },
+    {
+      "name": "detail",
+      "type": "string",
+      "label": "详细信息",
+      "description": "各步骤的校验与处理结果说明",
+      "description-en": "Detailed report of each step's validation and processing result."
+    }
+  ]
+}

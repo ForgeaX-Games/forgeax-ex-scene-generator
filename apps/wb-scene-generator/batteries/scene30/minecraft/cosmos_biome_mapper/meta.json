@@ -1,0 +1,58 @@
+{
+  "id": "cosmos_biome_mapper",
+  "label": "宇宙生物群系映射",
+  "description": "根据星球类型将高度图和湿度图映射为地形类型grid，支持6种星球风格",
+  "description-en": "Maps elevation and moisture grids to terrain type grid based on planet type (lush/desert/frozen/volcanic/toxic/barren).",
+  "icon": "六格星球类型图标，每格一种地形配色，从蓝绿到红火渐变排列，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["cosmos", "biome", "terrain", "mapping", "procedural"],
+  "tag_labels": ["宇宙", "生物群系", "地形", "映射", "程序化"],
+  "inputs": [
+    {
+      "name": "elevationGrid",
+      "type": "grid",
+      "label": "高度图",
+      "description": "地形高度网格，来自cosmos_terrain_gen.elevationGrid，值范围0-1000",
+      "description-en": "Elevation grid from cosmos_terrain_gen.elevationGrid, values 0-1000."
+    },
+    {
+      "name": "temperatureGrid",
+      "type": "grid",
+      "label": "温度图",
+      "description": "地形温度网格，来自cosmos_terrain_gen.temperatureGrid，值范围0-1000",
+      "description-en": "Temperature grid from cosmos_terrain_gen.temperatureGrid, values 0-1000."
+    },
+    {
+      "name": "moistureGrid",
+      "type": "grid",
+      "label": "湿度图",
+      "description": "地形湿度网格，来自cosmos_terrain_gen.moistureGrid，值范围0-1000",
+      "description-en": "Moisture grid from cosmos_terrain_gen.moistureGrid, values 0-1000."
+    },
+    {
+      "name": "planetType",
+      "type": "string",
+      "label": "星球类型",
+      "description": "星球环境类型，决定地形映射规则",
+      "description-en": "Planet environment type, determines terrain mapping rules.",
+      "default": "lush",
+      "options": ["lush", "desert", "frozen", "volcanic", "toxic", "barren"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "terrainGridList",
+      "type": "array",
+      "label": "地形网格列表",
+      "description": "多张单值网格，每张对应一种地形；该网格在对应格子填充该地形的id（从1起），其余为0；与nameList顺序一一对应",
+      "description-en": "Multiple single-value grids, one per terrain type; each grid has the terrain id (starting from 1) at matching cells and 0 elsewhere; corresponds 1:1 with nameList."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "地形名称列表",
+      "description": "该星球所有地形类型 [{id(从1起), name, type:\"tile\", height(连续递增)}]，按高度升序，与terrainGridList顺序一一对应",
+      "description-en": "All terrain types for this planet [{id(from 1), name, type:\"tile\", height(sequential)}], sorted by height, corresponds 1:1 with terrainGridList."
+    }
+  ]
+}

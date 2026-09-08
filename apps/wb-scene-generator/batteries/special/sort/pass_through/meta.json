@@ -1,0 +1,45 @@
+{
+  "id": "pass_through",
+  "label": "透传",
+  "description": "动态多端口透传：每个 input_i 原样输出到对应 output_i，不做任何转换、校验或重编号，适合作为管线占位、调试或保持连线结构的中转节点。",
+  "description-en": "Dynamic multi-port pass-through: each input_i is emitted unchanged as output_i, without conversion, validation, or remapping. Useful as a placeholder, debug relay, or pipeline junction.",
+  "icon": "一个输入箭头穿过透明节点后变成输出箭头，中间有直通线，扁平插画风格，简洁小图标，主色为蓝色和绿色。",
+  "version": "1.0.0",
+  "tags": ["pass", "passthrough", "relay", "identity", "debug", "any"],
+  "tag_labels": ["透传", "直通", "中继", "原样", "调试", "任意类型"],
+  "inputs": [
+    {
+      "name": "input_0",
+      "type": "any",
+      "access": "tree",
+      "label": "输入0",
+      "default": null,
+      "description": "第0个任意输入值，将被原样输出到 output_0",
+      "description-en": "Any input value; it will be returned unchanged."
+    },
+    {
+      "name": "input_1",
+      "type": "any",
+      "access": "tree",
+      "label": "输入1",
+      "default": null,
+      "description": "第1个任意输入值；连接后自动追加新槽位",
+      "description-en": "Second input value; connecting it appends a new slot."
+    }
+  ],
+  "dynamicInputs": {
+    "prefix": "input_",
+    "labelTemplate": "输入$i",
+    "minCount": 2,
+    "type": "any",
+    "access": "tree"
+  },
+  "outputs": [],
+  "dynamicOutputs": {
+    "prefix": "output_",
+    "labelTemplate": "输出$i",
+    "minCount": 2,
+    "type": "any",
+    "access": "tree"
+  }
+}

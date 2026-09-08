@@ -1,0 +1,245 @@
+{
+  "furniture_categories": [
+    {
+      "category_id": "edge",
+      "items": [
+        {
+          "id": "small_square_edge0",
+          "mask": [[1], [0]],
+          "placement_edges": [0],
+          "size": "small",
+          "shape": "square"
+        },
+        {
+          "id": "small_square_edge1",
+          "mask": [[0, 1]],
+          "placement_edges": [1],
+          "size": "small",
+          "shape": "square"
+        },
+        {
+          "id": "small_square_edge2",
+          "mask": [[0], [1]],
+          "placement_edges": [2],
+          "size": "small",
+          "shape": "square"
+        },
+        {
+          "id": "small_square_edge3",
+          "mask": [[1, 0]],
+          "placement_edges": [3],
+          "size": "small",
+          "shape": "square"
+        },
+        {
+          "id": "small_rect_edge0",
+          "mask": [[1, 1], [0, 0]],
+          "placement_edges": [0],
+          "size": "small",
+          "shape": "rect"
+        },
+        {
+          "id": "small_rect_edge1",
+          "mask": [[0, 1], [0, 1]],
+          "placement_edges": [1],
+          "size": "small",
+          "shape": "rect"
+        },
+        {
+          "id": "small_rect_edge2",
+          "mask": [[0, 0], [1, 1]],
+          "placement_edges": [2],
+          "size": "small",
+          "shape": "rect"
+        },
+        {
+          "id": "small_rect_edge3",
+          "mask": [[1, 0], [1, 0]],
+          "placement_edges": [3],
+          "size": "small",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_rect_edge0",
+          "mask": [[1, 1, 1], [0, 0, 0]],
+          "placement_edges": [0],
+          "size": "medium",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_rect_edge1",
+          "mask": [[0, 1], [0, 1], [0, 1]],
+          "placement_edges": [1],
+          "size": "medium",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_rect_edge2",
+          "mask": [[0, 0, 0], [1, 1, 1]],
+          "placement_edges": [2],
+          "size": "medium",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_rect_edge3",
+          "mask": [[1, 0], [1, 0], [1, 0]],
+          "placement_edges": [3],
+          "size": "medium",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_square_edge0",
+          "mask": [[1, 1], [1, 1], [0, 0]],
+          "placement_edges": [0],
+          "size": "medium",
+          "shape": "square"
+        },
+        {
+          "id": "medium_square_edge1",
+          "mask": [[0, 1, 1], [0, 1, 1]],
+          "placement_edges": [1],
+          "size": "medium",
+          "shape": "square"
+        },
+        {
+          "id": "medium_square_edge2",
+          "mask": [[0, 0], [1, 1], [1, 1]],
+          "placement_edges": [2],
+          "size": "medium",
+          "shape": "square"
+        },
+        {
+          "id": "medium_square_edge3",
+          "mask": [[1, 1, 0], [1, 1, 0]],
+          "placement_edges": [3],
+          "size": "medium",
+          "shape": "square"
+        },
+        {
+          "id": "large_rect_edge0",
+          "mask": [[1, 1, 1], [1, 1, 1], [0, 0, 0]],
+          "placement_edges": [0],
+          "size": "large",
+          "shape": "rect"
+        },
+        {
+          "id": "large_rect_edge1",
+          "mask": [[0, 1, 1], [0, 1, 1], [0, 1, 1]],
+          "placement_edges": [1],
+          "size": "large",
+          "shape": "rect"
+        },
+        {
+          "id": "large_rect_edge2",
+          "mask": [[0, 0, 0], [1, 1, 1], [1, 1, 1]],
+          "placement_edges": [2],
+          "size": "large",
+          "shape": "rect"
+        },
+        {
+          "id": "large_rect_edge3",
+          "mask": [[1, 1, 0], [1, 1, 0], [1, 1, 0]],
+          "placement_edges": [3],
+          "size": "large",
+          "shape": "rect"
+        },
+        {
+          "id": "large_square_edge0",
+          "mask": [[1, 1, 1], [1, 1, 1], [1, 1, 1], [0, 0, 0]],
+          "placement_edges": [0],
+          "size": "large",
+          "shape": "square"
+        },
+        {
+          "id": "large_square_edge1",
+          "mask": [[0, 1, 1, 1], [0, 1, 1, 1], [0, 1, 1, 1]],
+          "placement_edges": [1],
+          "size": "large",
+          "shape": "square"
+        },
+        {
+          "id": "large_square_edge2",
+          "mask": [[0, 0, 0], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+          "placement_edges": [2],
+          "size": "large",
+          "shape": "square"
+        },
+        {
+          "id": "large_square_edge3",
+          "mask": [[1, 1, 1, 0], [1, 1, 1, 0], [1, 1, 1, 0]],
+          "placement_edges": [3],
+          "size": "large",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "category_id": "center",
+      "items": [
+        {
+          "id": "small_square",
+          "mask": [[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+          "placement_edges": [],
+          "size": "small",
+          "shape": "square"
+        },
+        {
+          "id": "small_rect_h",
+          "mask": [[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+          "placement_edges": [],
+          "size": "small",
+          "shape": "rect"
+        },
+        {
+          "id": "small_rect_v",
+          "mask": [[0, 0, 0], [0, 1, 0], [0, 1, 0], [0, 0, 0]],
+          "placement_edges": [],
+          "size": "small",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_square",
+          "mask": [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+          "placement_edges": [],
+          "size": "medium",
+          "shape": "square"
+        },
+        {
+          "id": "medium_rect_h",
+          "mask": [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]],
+          "placement_edges": [],
+          "size": "medium",
+          "shape": "rect"
+        },
+        {
+          "id": "medium_rect_v",
+          "mask": [[0, 0, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 0, 0]],
+          "placement_edges": [],
+          "size": "medium",
+          "shape": "rect"
+        },
+        {
+          "id": "large_square",
+          "mask": [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]],
+          "placement_edges": [],
+          "size": "large",
+          "shape": "square"
+        },
+        {
+          "id": "large_rect_h",
+          "mask": [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]],
+          "placement_edges": [],
+          "size": "large",
+          "shape": "rect"
+        },
+        {
+          "id": "large_rect_v",
+          "mask": [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+          "placement_edges": [],
+          "size": "large",
+          "shape": "rect"
+        }
+      ]
+    }
+  ]
+}

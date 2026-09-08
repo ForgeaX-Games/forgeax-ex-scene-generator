@@ -1,0 +1,98 @@
+{
+  "id": "image_seamless_poisson",
+  "label": "无缝贴图（Poisson 边带）",
+  "name-en": "SeamlessPoisson",
+  "description": "用 Poisson 思路的局部边带修正使贴图可无缝平铺：只对左/右、上/下接缝两侧 ±band 像素做谐波修正，让首尾像素严格连续；带内是平移式修正（保留梯度），带外完全不动。和 make_seamless_moisan 的区别：Moisan 在频域上把修正摊到全图（任何像素都被微调）；本电池把修正局限在边带内（中心区域 1 比特不改），更适合建筑、字符、含明显主体的非周期图。",
+  "description-en": "Make an image tileable via Poisson-style local boundary correction: only the ±band pixels around the seams are adjusted with a harmonic taper so opposite edges match exactly; band-interior pixels are translated (gradients preserved), and pixels outside the band are untouched. Difference vs make_seamless_moisan: Moisan spreads tiny corrections across the entire image (every pixel is modified); this battery confines the correction to the seam band, leaving the interior bit-identical. Better suited to architecture, characters, and other non-periodic content with a prominent subject.",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "texture",
+    "tile",
+    "seamless",
+    "poisson",
+    "boundary",
+    "post-process"
+  ],
+  "tag_labels": [
+    "图像",
+    "贴图",
+    "瓦片",
+    "无缝",
+    "Poisson",
+    "边界",
+    "后处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "源贴图",
+      "description": "待无缝化的图像 alias（PNG，资产库中）。可来自 image_gen、导入资产或 image_terrain_extract 等"
+    },
+    {
+      "name": "band",
+      "type": "number",
+      "access": "item",
+      "label": "边带宽度",
+      "description": "接缝两侧各修正多少像素。越大过渡越平滑、但中心区域占比越小；越小中心保留越多、但带内修正越剧烈。推荐 8~32，默认 16",
+      "default": 16,
+      "min": 1,
+      "max": 256
+    },
+    {
+      "name": "axes",
+      "type": "string",
+      "access": "item",
+      "label": "无缝方向",
+      "description": "both = 上下+左右；horizontal = 仅左右接边（横向平铺）；vertical = 仅上下接边",
+      "default": "both",
+      "options": [
+        "both",
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "process_alpha",
+      "type": "boolean",
+      "access": "item",
+      "label": "处理 Alpha 通道",
+      "default": false,
+      "description": "是否同时对 alpha 通道做边带修正。默认 false：精灵边缘的透明区域会被淡化。RGBA 全不透明贴图可开启"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "无缝贴图",
+      "description": "Poisson 边带修正后的图像 alias，写入 staging 区。要归档到 raw 请下游接 image_output"
+    },
+    {
+      "name": "info",
+      "type": "string",
+      "access": "item",
+      "label": "信息",
+      "description": "本次处理的简要信息（尺寸、通道数、边带、最大跳跃、耗时）"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串"
+    }
+  ],
+  "alg_tag": [
+    "Poisson 边带修正使首尾接边像素严格连续",
+    "余弦权重的 1D 谐波修正（带内保留原梯度）",
+    "Moisan 的局部化替代方案，中心区域 1 比特不改"
+  ]
+}

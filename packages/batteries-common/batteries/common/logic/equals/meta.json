@@ -1,0 +1,57 @@
+{
+  "id": "equals",
+  "label": "相等判断",
+  "name-en": "Equals",
+  "description": "判断「条件」是否等于「规则」：两边都转成字符串后比较，相等输出 true，否则输出 false。支持数字/字符串等任意输入（按字符串比较），支持 DataTree 批处理（多 branch 时按 lacing 逐对比较）。",
+  "description-en": "Test whether 'condition' equals 'rule': both sides are coerced to strings and compared; outputs true when equal, false otherwise. Accepts any input (compared as strings) and supports DataTree batching (per-branch pairing via lacing).",
+  "icon": "一个等号 = 居中，左右各一个输入，结果为对勾/叉，扁平几何风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "lacing": "longest",
+  "tags": [
+    "logic",
+    "compare",
+    "equals",
+    "condition",
+    "bool"
+  ],
+  "tag_labels": [
+    "逻辑",
+    "比较",
+    "相等",
+    "条件",
+    "布尔"
+  ],
+  "projectTypes": [
+    "both"
+  ],
+  "inputs": [
+    {
+      "name": "condition",
+      "type": "any",
+      "access": "item",
+      "label": "条件",
+      "default": "",
+      "description": "待判断的条件值；与「规则」按字符串比较。",
+      "description-en": "The condition value to test; compared against 'rule' as a string."
+    },
+    {
+      "name": "rule",
+      "type": "any",
+      "access": "item",
+      "label": "规则",
+      "default": "",
+      "description": "用于比对的规则值；与「条件」按字符串比较。",
+      "description-en": "The rule value to match; compared against 'condition' as a string."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "bool",
+      "access": "item",
+      "label": "结果",
+      "description": "条件等于规则时为 true，否则为 false。",
+      "description-en": "true when condition equals rule, false otherwise."
+    }
+  ]
+}

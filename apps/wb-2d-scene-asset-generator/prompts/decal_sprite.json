@@ -1,0 +1,8 @@
+{
+  "id": "decal_sprite",
+  "name": "decal_sprite",
+  "tag": "four_way_seamless",
+  "template": "## 任务\n生成一张**单个、透明背景**的**语义地面贴花（decal）**，用于覆盖在地表之上（如斑马线、车道箭头、井盖、污渍、油漆标记、大块裂纹等）。\n\n## 贴花信息\n- **画风 (style)**: [style]\n- **视角协议 (view)**: [view]（top_down 俯视 / three_quarter 斜俯视 / isometric 等距）\n- **铺设方向 (direction)**: [direction]（horizontal / vertical / nw_se / ne_sw / any）\n- **贴花描述 (description)**: [description]\n\n## ⚠️ 路由约束（必须严格遵守）\n```\n1. **平躺地面**：贴花平铺贴合在所声明的地面平面上，不是竖立的物体。\n2. **单体独立**：仅生成一个独立贴花主体，透明背景，不含地面/道路/场景底图（除非描述明确要求承托像素）。\n3. **禁止平铺**：本资产不做四方连续、不可 tileable，是一次性覆盖层。\n4. **方向一致**：条纹/标记按 [direction] 在世界空间中保持规则间距与朝向。\n5. **干净边界**：不含多余车道线、人行道、车辆、人物、建筑、UI 文字或水印。\n```\n\n## 风格与视角\n- **画风**：严格按 [style] 表现贴花的笔触、配色与磨损质感。\n- **视角**：采用 [view] 对应的正交相机平面，贴花平躺其上，无透视灭点。\n- **可去底**：透明背景；若模型无法直接透明，则使用与贴花对比强烈的纯色背景便于后续抠图。\n\n## 输出要求\n生成一张 [style] 风格、[view] 视角、沿 [direction] 方向的透明背景语义贴花，严格符合 [description]。\n\n**核心特征必须保持一致**：\n- 单个独立贴花、平躺地面 ✓\n- 透明（或高对比可去底）背景、无场景底图 ✓\n- 不可平铺、一次性覆盖层 ✓\n- 沿 [direction] 规则朝向 ✓\n- 画风/视角严格符合 [style] / [view] ✓",
+  "vars": ["style", "view", "direction", "description"],
+  "createdAt": 1782000000001
+}

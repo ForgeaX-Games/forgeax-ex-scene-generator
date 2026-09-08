@@ -1,0 +1,32 @@
+{
+  "id": "alg_region_union_all",
+  "label": "区域全并",
+  "name-en": "RegionUnionAll",
+  "description": "对一个 01 网格列表整体求并集：输出尺寸取列表内所有网格的逐维最大值；任一网格在某格非零则输出 1，全部为零（或越界）则输出 0。空列表或全无效网格时返回空。",
+  "description-en": "Aggregate union over a list of 0/1 grids. Output shape is the per-axis max of all grids in the list; a cell is 1 if any grid is non-zero there, otherwise 0. Out-of-bounds cells are treated as 0. Returns empty for an empty or fully invalid list.",
+  "icon": "深色背景上多张方形网格叠合汇聚成一张更亮的并集网格，体现把整个列表全部并起来成一张，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["region", "union", "merge", "boolean", "aggregate"],
+  "tag_labels": ["区域", "并集", "合并", "布尔", "聚合"],
+  "inputs": [
+    {
+      "name": "regions",
+      "type": "grid",
+      "access": "list",
+      "required": true,
+      "label": "区域列表",
+      "description": "一组 01 网格列表；逐格求并归一为 01。各网格尺寸可不同，越界格按 0 处理。",
+      "description-en": "A list of 0/1 grids; merged cell-wise into a normalized 0/1 union. Grids may differ in size; out-of-bounds cells are treated as 0."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "access": "item",
+      "label": "并集",
+      "description": "列表全并结果；尺寸为所有输入逐维最大值，归一为 01。",
+      "description-en": "Aggregate union of the list; shape is per-axis max, normalized to 0/1."
+    }
+  ]
+}

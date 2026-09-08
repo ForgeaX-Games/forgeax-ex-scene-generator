@@ -1,0 +1,92 @@
+{
+  "id": "maze_generation",
+  "label": "迷宫生成",
+  "description": "使用递归回溯（随机 DFS）算法生成完美迷宫，支持自定义迷宫尺寸、墙壁和通道厚度，输出 0/1 网格",
+  "description-en": "Generates a perfect maze using recursive backtracking (randomized DFS), with configurable maze size, wall and passage thickness, outputs a 0/1 grid.",
+  "icon": "俯视迷宫图案，方正的通道在规则的墙壁间蜿蜒曲折，从左上到右下隐约可见一条通路，简洁几何线条风格",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "maze",
+    "pcg",
+    "generation"
+  ],
+  "tag_labels": [
+    "算法",
+    "迷宫",
+    "PCG",
+    "生成"
+  ],
+  "inputs": [
+    {
+      "name": "cols",
+      "type": "number",
+      "label": "列数",
+      "default": 24,
+      "min": 2,
+      "max": 200,
+      "description": "迷宫列数（通道格数），决定迷宫水平方向的复杂度。输出网格宽 = cols×(通道厚度+墙壁厚度)+墙壁厚度",
+      "description-en": "Number of maze columns (passage cells); controls horizontal complexity. Output width = cols×(passageSize+wallSize)+wallSize."
+    },
+    {
+      "name": "rows",
+      "type": "number",
+      "label": "行数",
+      "default": 24,
+      "min": 2,
+      "max": 200,
+      "description": "迷宫行数（通道格数），决定迷宫垂直方向的复杂度。输出网格高 = rows×(通道厚度+墙壁厚度)+墙壁厚度",
+      "description-en": "Number of maze rows (passage cells); controls vertical complexity. Output height = rows×(passageSize+wallSize)+wallSize."
+    },
+    {
+      "name": "wallSize",
+      "type": "number",
+      "label": "墙壁厚度",
+      "default": 1,
+      "min": 1,
+      "max": 10,
+      "description": "墙壁厚度（像素），最小为 1",
+      "description-en": "Wall thickness in pixels; minimum 1."
+    },
+    {
+      "name": "passageSize",
+      "type": "number",
+      "label": "通道厚度",
+      "default": 1,
+      "min": 1,
+      "max": 20,
+      "description": "通道厚度（像素），最小为 1",
+      "description-en": "Passage width in pixels; minimum 1."
+    },
+    {
+      "name": "entrance",
+      "type": "boolean",
+      "label": "开放入口出口",
+      "default": true,
+      "description": "是否在左上角和右下角打开入口和出口",
+      "description-en": "Whether to open entrance (top-left) and exit (bottom-right)."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 使用默认种子，不同种子产生不同迷宫",
+      "description-en": "Random seed; 0 uses default seed. Different seeds produce different mazes."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "迷宫网格",
+      "description": "输出迷宫网格，通道 = 1，墙壁 = 0",
+      "description-en": "Output maze grid; passage = 1, wall = 0."
+    }
+  ],
+  "alg_tag": [
+    "基于递归回溯的完美迷宫生成",
+    "在指定大小网格内生成迷宫"
+  ]
+}

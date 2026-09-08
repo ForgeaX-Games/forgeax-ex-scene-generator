@@ -1,0 +1,29 @@
+{
+  "id": "g_floor_slab",
+  "label": "楼板",
+  "name-en": "GFloorSlab",
+  "description": "追加 floor_slab(...)：矩形楼板（size=[w,d]，thickness），可选 holes（楼梯井/竖井）。当 prompt 提到 楼板 / 地板 / 天花 / 楼梯井 / floor / slab 时使用。",
+  "description-en": "Append `floor_slab(...)` — rectangular slab (size=[w,d], thickness) with optional rectangular holes (stair/shaft wells). Use for floor, ceiling, slab, stair well.",
+  "version": "1.1.0",
+  "autoIterate": true,
+  "tags": ["geometry", "architecture", "slab", "cad"],
+  "tag_labels": ["几何", "建筑", "楼板", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry；缺省视为空", "description-en": "Upstream Geometry; empty when absent." },
+    { "name": "width", "type": "number", "label": "板宽", "default": 6, "description": "X 向尺寸（米）", "description-en": "Size along X (meters)." },
+    { "name": "depth", "type": "number", "label": "板深", "default": 4, "description": "Y 向尺寸（米）", "description-en": "Size along Y (meters)." },
+    { "name": "thickness", "type": "number", "label": "板厚", "default": 0.2, "description": "Z 向板厚（米）", "description-en": "Thickness along Z (meters)." },
+    { "name": "holes", "type": "string", "required": false, "label": "洞口", "default": "", "description": "矩形洞 JSON，每项 [x, y, w, d]，如 [[1,1,1.2,2.8]]", "description-en": "Holes JSON, each [x, y, w, d]." },
+    { "name": "beam_depth", "type": "number", "required": false, "label": "下翻梁深", "default": 0, "description": "周边下翻梁深度（Z 向下，米）；0=无", "description-en": "Perimeter downstand beam depth (below slab); 0 = none." },
+    { "name": "beam_width", "type": "number", "required": false, "label": "下翻梁宽", "default": 0, "description": "下翻梁宽度（米）；0=默认", "description-en": "Downstand beam width; 0 = default." },
+    { "name": "edge_chamfer", "type": "number", "required": false, "label": "边缘倒角", "default": 0, "description": "楼板顶缘倒角尺寸（米）；0=无", "description-en": "Top edge chamfer size; 0 = none." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "自定义 id；空 = 自动 slab{n}", "description-en": "Custom id; empty = auto slab{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加 floor_slab 行后的 Geometry", "description-en": "Geometry after appending the slab." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id", "description-en": "Id of the new shape." },
+    { "name": "error", "type": "string", "label": "错误", "description": "非致命错误信息", "description-en": "Non-fatal error string." }
+  ],
+  "projectTypes": ["asset3d"]
+}

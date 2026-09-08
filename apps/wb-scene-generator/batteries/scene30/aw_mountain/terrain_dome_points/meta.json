@@ -1,0 +1,53 @@
+{
+  "id": "terrain_dome_points",
+  "label": "穹顶中心点生成",
+  "description": "在归一化坐标空间内随机生成多个穹顶中心点，支持最小间距约束，输出 {x,y} 点列表",
+  "description-en": "Randomly generates multiple dome center points in normalized coordinate space with minimum spacing constraint, outputting a list of {x, y} points.",
+  "icon": "深色网格背景上散布数个亮色圆点，圆点之间有虚线间距标注，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["terrain", "points", "dome", "mountain", "sampler", "generator"],
+  "tag_labels": ["地形", "点列表", "穹顶", "山体", "采样", "生成器"],
+  "inputs": [
+    {
+      "name": "count",
+      "type": "number",
+      "label": "点数量",
+      "description": "要生成的穹顶中心点数量",
+      "description-en": "Number of dome center points to generate.",
+      "default": 3
+    },
+    {
+      "name": "minSpacing",
+      "type": "number",
+      "label": "最小间距",
+      "description": "任意两点间的最小距离，归一化比例（0–1），防止穹顶过度重叠",
+      "description-en": "Minimum distance between any two points, normalized (0–1), to prevent excessive dome overlap.",
+      "default": 0.25
+    },
+    {
+      "name": "margin",
+      "type": "number",
+      "label": "边缘留白",
+      "description": "点距地图边缘的最小距离，归一化比例（0–1），避免穹顶被截断",
+      "description-en": "Minimum distance from map edges, normalized (0–1), to avoid clipping domes.",
+      "default": 0.1
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，相同种子产生相同点分布；0 使用当前时间戳",
+      "description-en": "Random seed; same seed produces identical point layout. 0 uses timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "points",
+      "type": "array",
+      "label": "穹顶中心列表",
+      "description": "穹顶中心点列表，每项为 {x, y}，坐标归一化（0–1）",
+      "description-en": "List of dome center points, each as {x, y} with normalized coordinates (0–1)."
+    }
+  ]
+}

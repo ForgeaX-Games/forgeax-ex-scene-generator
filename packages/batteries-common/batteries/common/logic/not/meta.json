@@ -1,0 +1,46 @@
+{
+  "id": "not",
+  "label": "逻辑非",
+  "name-en": "Not",
+  "description": "对输入布尔值取反：true 输出 false，false 输出 true。非布尔输入按真值判断（空串/\"false\"/\"0\"/0 视为 false，其余为 true）后再取反。支持 DataTree 批处理。",
+  "description-en": "Logical NOT of a boolean: true -> false, false -> true. Non-boolean input is coerced by truthiness (empty string/\"false\"/\"0\"/0 are false, others true) then negated. Supports DataTree batching.",
+  "icon": "一个布尔开关被反转，旁边一个感叹号/非门符号，扁平几何风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "lacing": "longest",
+  "tags": [
+    "logic",
+    "not",
+    "invert",
+    "bool"
+  ],
+  "tag_labels": [
+    "逻辑",
+    "非",
+    "取反",
+    "布尔"
+  ],
+  "projectTypes": [
+    "both"
+  ],
+  "inputs": [
+    {
+      "name": "value",
+      "type": "bool",
+      "access": "item",
+      "label": "布尔值",
+      "default": false,
+      "description": "待取反的布尔值（非布尔输入按真值判断）。",
+      "description-en": "The boolean to negate (non-boolean input is coerced by truthiness)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "bool",
+      "access": "item",
+      "label": "结果",
+      "description": "输入取反后的布尔值。",
+      "description-en": "The negated boolean."
+    }
+  ]
+}

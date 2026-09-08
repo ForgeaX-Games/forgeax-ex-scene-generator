@@ -1,0 +1,143 @@
+{
+  "id": "image_atlas_compose",
+  "label": "合成 Atlas",
+  "name-en": "AtlasCompose",
+  "description": "把任意尺寸的地形纹理按 4×N 模版合成为可在 forgeax_wb_scene 渲染器下无缝平铺的 Wang/Autotile atlas（cardinal-16）。算法：先在地形上滑窗找出环绕接边差最小的 S×S 起点（S=模版宽÷4），裁出该子块再用 Moisan 周期+平滑分解做最后亚像素级对齐，得到自我可平铺的 sprite 内容；所有 atlas 格子共用这份内容，模版 alpha 决定 mask 形状，RGB 编码色调修饰。不再依赖上游 make_seamless_moisan：渲染器对每个内部格子画的是同一份 sprite 像素，关键在 sprite 自身自平铺；本电池内部已对挑选出的 S×S 子块独立 Moisan，连接任意尺寸的清洁地形都能产生无缝渲染的 atlas。",
+  "description-en": "Compose any-size terrain texture into a 4×N cardinal-16 Wang/Autotile atlas that tiles seamlessly under the forgeax_wb_scene renderer. Algorithm: slide an S×S window (S = template W/4) over the terrain, pick the offset whose wrap-around edge SSD is minimal, then apply Moisan periodic+smooth decomposition on that patch for sub-pixel alignment, producing self-tileable sprite content shared across every atlas cell. Template alpha = per-cell mask shape; RGB = per-pixel tonal modifier. No longer requires an upstream make_seamless_moisan: the renderer draws the same sprite pixels for every interior cell, so seamlessness must hold for the sprite itself; the internal best-offset + S×S Moisan guarantees that.",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "texture",
+    "atlas",
+    "autotile",
+    "wang",
+    "template",
+    "compose",
+    "processing"
+  ],
+  "tag_labels": [
+    "图像",
+    "纹理",
+    "atlas",
+    "自动平铺",
+    "Wang",
+    "模版",
+    "合成",
+    "处理"
+  ],
+  "projectTypes": [
+    "asset2d"
+  ],
+  "inputs": [
+    {
+      "name": "enable",
+      "type": "bool",
+      "access": "item",
+      "label": "开关",
+      "default": true,
+      "description": "总开关：为 true 时才进行合成加工；为 false 时跳过加工，所有输出端口返回空。默认开。",
+      "description-en": "Master switch: process only when true; when false, skip processing and all output ports return empty. Defaults to on."
+    },
+    {
+      "name": "terrain",
+      "type": "image",
+      "access": "item",
+      "required": true,
+      "label": "纹理",
+      "description": "干净的大块纹理引用（资产库 alias 或 data: URL），建议先用 image_terrain_extract。任意尺寸均可（至少 ≥ cellW × cellW，否则报错）。内部先滑窗找接边差最小的 S×S 起点，再 Moisan 自平铺化",
+      "description-en": "Clean terrain image ref (asset-library alias or data: URL; recommended source: image_terrain_extract). Any size (must be at least cellW × cellW). The battery first slides over the terrain to pick the lowest-discontinuity S×S offset, then Moisan-tiles that patch."
+    },
+    {
+      "name": "template",
+      "type": "image",
+      "access": "item",
+      "required": false,
+      "label": "模版",
+      "description": "4×N mask-atlas 模版图像引用（资产库 alias 或 data: URL；如 cardinal16_wasteland 是 4×4，新版 field 是 4×5）。要求：宽度能被 4 整除；高度是 cellW（=宽÷4）的整数倍。瓦片尺寸 = cellW × cellW（方形）；总瓦片数 = 4 × (高÷cellW)；输出 atlas 与模版同尺寸。⭐ 默认：不接此端口时自动使用内置模版 preset:tiles/tile模板.png（4×5 → 64×80，对应场景侧 common_16 规则）——做标准 tile 时无需自己找模版、无需接 image_source；只有要换其它 rule/mask 时才接自定义模版。",
+      "description-en": "Template image ref for the 4×N mask atlas (asset-library alias or data: URL; e.g. cardinal16_wasteland is 4×4, the newer field template is 4×5). Requirements: width divisible by 4; height a multiple of cellW (= W/4). Tile size = cellW × cellW (square); total tiles = 4 × (H/cellW); output atlas matches the template's exact resolution. DEFAULT: when this port is left unconnected, the shipped built-in preset:tiles/tile模板.png (4×5 → 64×80, the scene side's common_16 rule) is used automatically — no template source node needed for a standard tile. Wire a custom template only for a different rule/mask."
+    },
+    {
+      "name": "alpha_threshold",
+      "type": "number",
+      "access": "item",
+      "label": "Alpha 阈值",
+      "description": "模版 alpha 通道二值化阈值；>= 阈值视为'内部'像素（mask=1）",
+      "description-en": "Alpha threshold for the template; alpha >= threshold counts as 'inside' (mask=1).",
+      "default": 127,
+      "min": 0,
+      "max": 255
+    },
+    {
+      "name": "apply_tone",
+      "type": "boolean",
+      "access": "item",
+      "label": "应用色调修饰",
+      "description": "是否启用模版 RGB 通道编码的色调修饰（borders 暗化、interior 保持原色）。关闭时只保留 mask 形状",
+      "description-en": "Apply the template's per-pixel RGB tonal modifier (darken borders, keep interior). When off, only the mask shape is used.",
+      "default": true
+    },
+    {
+      "name": "ref_cell",
+      "type": "number",
+      "access": "item",
+      "label": "参考格索引",
+      "description": "用于计算 interior 参考色的格子索引（0 到 4×N-1，行优先）。默认 6 = (1,1,1,1) 全连通格，是 cardinal16 模版中最纯净的 interior 样本。超出范围或该格无内部像素时自动回落到首个非空格",
+      "description-en": "Cell index (0..4×N-1, row-major) used to derive the interior reference colour. Default 6 = the (1,1,1,1) all-neighbours cell, the cleanest interior sample in cardinal16 templates. Auto-falls-back to the first non-empty cell if out of range or empty.",
+      "default": 6,
+      "min": 0,
+      "max": 63
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "Atlas",
+      "description": "合成后的 atlas（PNG, RGBA），与模版同尺寸，写入资产库 staging 区"
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "Atlas 宽度（= 模版宽度）"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "Atlas 高度（= 模版高度）"
+    },
+    {
+      "name": "terrain_size",
+      "type": "number",
+      "access": "item",
+      "label": "纹理尺寸",
+      "description": "输入纹理较短边的实际像素数（用于诊断）"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "处理失败时的错误信息，成功时为空字符串"
+    }
+  ],
+  "params": [
+    {
+      "name": "suffix",
+      "type": "string",
+      "default": "_atlas",
+      "label": "alias 后缀",
+      "description": "输出 alias = 纹理原名 + 后缀；如 grass_terrain.png + _atlas → grass_terrain_atlas.png"
+    }
+  ],
+  "alg_tag": [
+    "Wang/Autotile atlas 合成",
+    "模版 alpha 通道编码 mask 形状",
+    "模版 RGB 相对参考格编码色调修饰",
+    "滑窗 + S×S Moisan 周期分解保证 sprite 自平铺"
+  ]
+}

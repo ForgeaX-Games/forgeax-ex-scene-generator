@@ -1,0 +1,41 @@
+{
+  "id": "scene_focus_children",
+  "label": "聚焦子节点",
+  "name-en": "FocusChildren",
+  "description": "把当前 scene 展开成多个 scene，每个 focus 移到 focus 节点的一个直接子节点。同一棵 tree 共享（不拷贝），仅 focus 不同。是「递归展开协议」的下钻入口——下游展开电池配合 DataTree 批量自动处理每个子节点。",
+  "description-en": "Expand a scene into a list of scenes, each focused on a child of the current focus. Trees are shared (no copy), only focus differs. The drill-down primitive of the recursive expansion protocol—downstream expander batteries process each child independently via DataTree fanout.",
+  "icon": "一个父节点向下分叉指向 N 个子节点，每个子节点上有一个聚焦光标，扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": ["scene", "focus", "children", "drilldown"],
+  "tag_labels": ["场景", "聚焦", "子节点", "下钻"],
+  "projectTypes": ["both"],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "required": true,
+      "label": "scene",
+      "description": "要展开的 scene；focus 必须指向已存在的节点",
+      "description-en": "Scene to expand; focus must point at an existing node."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scenes",
+      "type": "scene",
+      "access": "list",
+      "label": "子 scene 列表",
+      "description": "每个直接子节点对应一个 scene，focus 指向该子节点；无子节点时输出空 list",
+      "description-en": "One scene per immediate child, with focus on that child; empty list when there are no children."
+    },
+    {
+      "name": "childCount",
+      "type": "number",
+      "access": "item",
+      "label": "子节点数",
+      "description": "focus 节点的直接子节点数量",
+      "description-en": "Number of immediate children under focus."
+    }
+  ]
+}

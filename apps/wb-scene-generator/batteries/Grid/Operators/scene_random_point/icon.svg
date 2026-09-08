@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Scatter points battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <circle cx="8" cy="9" r="1.1" fill="#e7f5ee"/>
+  <circle cx="15.5" cy="7.5" r="1.1" fill="#95aa9f"/>
+  <circle cx="11" cy="13" r="1.1" fill="#95aa9f"/>
+  <circle cx="17" cy="14.5" r="1.1" fill="#e7f5ee"/>
+  <circle cx="8.5" cy="16.5" r="1.1" fill="#95aa9f"/>
+  <circle cx="13.5" cy="17" r="1.5" fill="#b7ff5a"/>
+</svg>

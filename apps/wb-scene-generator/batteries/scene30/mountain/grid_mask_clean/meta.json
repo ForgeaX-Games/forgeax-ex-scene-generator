@@ -1,0 +1,44 @@
+{
+  "id": "grid_mask_clean",
+  "label": "掩码批量清理",
+  "description": "对等高线网格列表做批量形态学清理：填充被单色包围的内部小孔洞，删除面积过小的孤立碎块。",
+  "description-en": "Batch morphological cleanup for a list of mask grids: fills small enclosed holes and removes tiny isolated islands.",
+  "icon": "网格上散落若干不规则色块，孤立小点被标记删除，内部空洞被填充合并，深色底配亮色色块，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["mask", "clean", "morphology", "filter", "grid", "island", "hole", "batch"],
+  "tag_labels": ["掩码", "清理", "形态学", "过滤", "网格", "孤立块", "孔洞", "批处理"],
+  "inputs": [
+    {
+      "name": "inputGrids",
+      "type": "array",
+      "label": "网格列表",
+      "description": "待清理的网格列表（如等高线列表），列表中每个 grid 独立处理，0 为背景。",
+      "description-en": "List of mask grids to clean (e.g. contour layers); each grid is processed independently, 0 is background."
+    },
+    {
+      "name": "minHoleSize",
+      "type": "number",
+      "label": "最大孔洞面积",
+      "description": "面积（格子数）≤ 此值且被单一颜色完全包围的 0 连通域将被填充。默认 20。",
+      "description-en": "Zero-regions with area ≤ this value that are fully enclosed by a single color will be filled. Default 20.",
+      "default": 20
+    },
+    {
+      "name": "minIslandSize",
+      "type": "number",
+      "label": "最小岛屿面积",
+      "description": "面积（格子数）< 此值的孤立非零连通域将被删除（置0）。默认 10。",
+      "description-en": "Non-zero connected regions with area < this value will be removed (set to 0). Default 10.",
+      "default": 10
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrids",
+      "type": "array",
+      "label": "清理后列表",
+      "description": "填充孔洞、删除孤立小块后的网格列表，长度与输入一致。",
+      "description-en": "Cleaned grid list after hole filling and island removal, same length as input."
+    }
+  ]
+}

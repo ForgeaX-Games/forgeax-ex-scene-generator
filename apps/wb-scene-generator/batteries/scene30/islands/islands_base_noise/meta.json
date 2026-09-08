@@ -1,0 +1,89 @@
+{
+  "id": "islands_base_noise",
+  "label": "岛屿基础噪声",
+  "description": "接受输入掩码网格，仅对非 0 格子生成岛屿高度图与湿度图和早期海岸预览网格，0 格子在所有输出中保持 0。",
+  "description-en": "Accepts an input mask grid and generates island height and moisture maps plus an early coastline preview grid only for non-zero cells; zero cells remain 0 in all outputs.",
+  "icon": "同心岛屿轮廓与两层噪声波纹，蓝绿与沙色配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["islands", "noise", "heightmap", "moisture", "terrain"],
+  "tag_labels": ["岛屿", "噪声", "高度图", "湿度", "地形"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "输入掩码网格，仅对非 0 的格子生成高度与湿度，0 格子在所有输出中保持 0。",
+      "description-en": "Input mask grid; height and moisture are generated only for non-zero cells, zero cells remain 0 in all outputs."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current time.",
+      "default": 0
+    },
+    {
+      "name": "heightOctaves",
+      "type": "number",
+      "label": "高度八度",
+      "description": "高度图叠加层数。",
+      "description-en": "Octave count for the height map.",
+      "default": 5
+    },
+    {
+      "name": "heightPersistence",
+      "type": "number",
+      "label": "高度衰减",
+      "description": "高度图每层振幅衰减系数。",
+      "description-en": "Amplitude persistence for the height map.",
+      "default": 0.55
+    },
+    {
+      "name": "moistureOctaves",
+      "type": "number",
+      "label": "湿度八度",
+      "description": "湿度图叠加层数。",
+      "description-en": "Octave count for the moisture map.",
+      "default": 4
+    },
+    {
+      "name": "moisturePersistence",
+      "type": "number",
+      "label": "湿度衰减",
+      "description": "湿度图每层振幅衰减系数。",
+      "description-en": "Amplitude persistence for the moisture map.",
+      "default": 0.5
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "预览地形",
+      "description": "按海岸阈值量化后的早期预览网格。",
+      "description-en": "Early preview grid quantized by coastline thresholds."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "预览地形对应的名称清单。",
+      "description-en": "Name list for the preview grid."
+    },
+    {
+      "name": "heightMap",
+      "type": "grid",
+      "label": "高度图",
+      "description": "0~1 浮点高度图。",
+      "description-en": "Floating-point height map in the 0-1 range."
+    },
+    {
+      "name": "moistureMap",
+      "type": "grid",
+      "label": "湿度图",
+      "description": "0~1 浮点湿度图。",
+      "description-en": "Floating-point moisture map in the 0-1 range."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "furniture_list_split",
+  "label": "家具推理结果转列表",
+  "description": "将 LLM 推理输出的原始 JSON 字符串解析为家具清单数组，每个元素为一条家具信息。",
+  "description-en": "Parses the raw JSON string from the LLM battery into an array of furniture objects.",
+  "icon": "一张写满家具名称的纸条展开成一列整齐的卡片，每张卡片上有家具图标，扁平插画风格，主色绿色和白色，背景简洁。",
+  "version": "1.1.0",
+  "tags": ["scene", "furniture", "parse", "indoor"],
+  "tag_labels": ["场景", "家具", "解析", "室内"],
+  "inputs": [
+    {
+      "name": "result",
+      "type": "string",
+      "label": "LLM推理结果",
+      "description": "LLM 电池输出的原始 JSON 字符串（result 端口），包含 furniture_list 字段",
+      "description-en": "Raw JSON string from the LLM battery (result port) containing the furniture_list field."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "list",
+      "type": "array",
+      "label": "家具清单",
+      "description": "furniture_list 中每个家具对象组成的数组",
+      "description-en": "Array of furniture objects from the furniture_list field."
+    }
+  ]
+}

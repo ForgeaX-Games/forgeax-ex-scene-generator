@@ -1,0 +1,42 @@
+{
+  "id": "g_metrics",
+  "label": "几何指标（量化评估 + 评分）",
+  "name-en": "GMetrics",
+  "description": "对 Geometry 做量化评估并给综合健康分：基本信息（parts/joints/DOF、整体 bbox 尺寸与 footprint 面积、rich vs primitive、arch/csg 计数）+ 质量指标（兄弟 part 重叠对数/体积/最大穿深/占比、可动关节休止位互穿、连通分量/悬空件/joint 缝隙、着地 min_z、丰富度、面数预算）。输出多行 report、0–100 综合 score 与分级 grade，以及各标量端口。与 g_geometry_qc 互补：QC 出布尔信号，g_metrics 出量化数值 + 评分。只读分析，不改 Geometry。",
+  "description-en": "Quantitative evaluation with an overall health score. Basic info (parts/joints/DOF, overall bbox size and footprint area, rich vs primitive, arch/csg counts) plus quality metrics (sibling AABB overlap pairs/volume/max penetration/ratio, moving-joint rest-pose interpenetration, connected components/floating links/joint gaps, grounding min_z, richness, poly budget). Emits a multiline report, a 0–100 score, a grade, and scalar ports. Complements g_geometry_qc: QC emits boolean signals, g_metrics emits quantities + a score. Read-only.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": ["geometry", "qc", "metrics", "score"],
+  "tag_labels": ["几何", "质量", "指标", "评分"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": true, "label": "几何", "description": "上游 Geometry", "description-en": "Upstream Geometry." },
+    { "name": "bake", "type": "bool", "required": false, "label": "烘焙面数（当前无效）", "default": false, "description": "占位开关，当前无效：本电池从不接 baker，传 true 也不会真的去烘，tri_count/vertex_count/over_budget 恒为 0/0/false。要拿真实面数预算，用 g_bake_part 逐件烘焙 + g_geometry_qc 读 parts.json。", "description-en": "Placeholder switch, currently a no-op: this battery never bakes, so tri_count/vertex_count/over_budget stay 0/0/false regardless. For a real poly-budget check, bake parts with g_bake_part and read parts.json via g_geometry_qc." },
+    { "name": "overlap_tol", "type": "number", "required": false, "label": "重叠容差 (m)", "default": 0.001, "description": "兄弟 part AABB 三轴最小重叠深度都超过该值才算重叠", "description-en": "Minimum per-axis overlap depth to count as interpenetration." },
+    { "name": "gap_tol", "type": "number", "required": false, "label": "缝隙/着地容差 (m)", "default": 0.02, "description": "已连接父子件间距 / 整体离地超过该值才计缝隙 / 离地", "description-en": "Connected parent-child gap / ground offset threshold." },
+    { "name": "tri_budget", "type": "number", "required": false, "label": "面数预算（当前无效）", "default": 0, "description": "占位参数，当前无效：本电池不测三角面数，这个预算永远不会被拿来比对（见 bake 输入）", "description-en": "Placeholder, currently a no-op: this battery never measures triangle count, so this budget is never actually compared (see the bake input)." },
+    { "name": "precision", "type": "number", "required": false, "label": "报告小数位", "default": 3, "description": "report 里数值的小数位数", "description-en": "Decimal places for numbers in the report." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "原样透传，便于继续接下游", "description-en": "Passthrough geometry for downstream piping." },
+    { "name": "report", "type": "string", "label": "报告", "description": "多行人类可读评估报告（基本信息 + 各质量项 pass/warn/fail 明细 + 综合分）", "description-en": "Multiline human-readable evaluation report." },
+    { "name": "score", "type": "number", "label": "综合分", "description": "0–100 综合健康分", "description-en": "0–100 overall health score." },
+    { "name": "grade", "type": "string", "label": "分级", "description": "A–F 分级", "description-en": "A–F grade." },
+    { "name": "overlap_pairs", "type": "number", "label": "重叠对数", "description": "rest pose 下相互重叠的兄弟 part 对数", "description-en": "Sibling part AABB overlap pairs." },
+    { "name": "overlap_volume", "type": "number", "label": "重叠体积 (m³)", "description": "各重叠盒体积求和", "description-en": "Sum of overlap box volumes." },
+    { "name": "max_penetration", "type": "number", "label": "最大穿深 (m)", "description": "各重叠对最小轴穿深的最大值", "description-en": "Max min-axis penetration depth over overlapping pairs." },
+    { "name": "overlap_ratio", "type": "number", "label": "重叠占比", "description": "重叠体积 / 整体包围盒体积", "description-en": "Overlap volume / overall bounding volume." },
+    { "name": "moving_joint_collisions", "type": "number", "label": "可动关节碰撞数", "description": "可动关节（revolute/prismatic/...）父子件在休止位互穿的对数（真实缺陷）", "description-en": "Moving-joint parent-child pairs interpenetrating at rest (real defect)." },
+    { "name": "islands", "type": "number", "label": "连通分量数", "description": "part 通过 joint 形成的连通分量数；>1 表示有孤岛", "description-en": "Connected components among parts via joints." },
+    { "name": "floating_links", "type": "number", "label": "悬空件数", "description": "无关节路径到根树的 part 数（运行时被 URDF 丢弃）", "description-en": "Parts with no joint path to the root tree." },
+    { "name": "joints_with_gap", "type": "number", "label": "缝隙关节数", "description": "已连接父子件 AABB 间距超过 gap_tol 的 joint 数", "description-en": "Joints whose connected parts sit farther than gap_tol apart." },
+    { "name": "max_joint_gap", "type": "number", "label": "最大关节缝隙 (m)", "description": "已连接父子件的最大 AABB 间距", "description-en": "Max AABB gap over connected parent-child pairs." },
+    { "name": "ground_offset", "type": "number", "label": "着地偏移 (m)", "description": "整体最小 Z（≈0 贴地；<0 陷入；>0 悬空）", "description-en": "Overall min Z (≈0 grounded; <0 sunk; >0 floating)." },
+    { "name": "dof", "type": "number", "label": "自由度", "description": "可动关节自由度总和（revolute/prismatic=1、planar=2、floating=6）", "description-en": "Total DOF of moving joints." },
+    { "name": "primitive_only", "type": "bool", "label": "仅裸 primitive", "description": "模型是否全为裸 primitive（无任何富几何）", "description-en": "Whether the model is entirely bare primitives." },
+    { "name": "primitive_ratio", "type": "number", "label": "裸 primitive 占比", "description": "shape 语句中裸 primitive 的比例（0–1）", "description-en": "Ratio of bare primitives among shape statements (0–1)." },
+    { "name": "tri_count", "type": "number", "label": "三角面数（恒为 0）", "description": "占位输出，恒为 0：本电池从不烘焙，测不出真实三角面数（见 bake 输入）", "description-en": "Placeholder output, always 0: this battery never bakes, so the real triangle count is never measured (see the bake input)." },
+    { "name": "vertex_count", "type": "number", "label": "顶点数（恒为 0）", "description": "占位输出，恒为 0：本电池从不烘焙，测不出真实顶点数（见 bake 输入）", "description-en": "Placeholder output, always 0: this battery never bakes, so the real vertex count is never measured (see the bake input)." },
+    { "name": "over_budget", "type": "bool", "label": "超预算（恒为 false）", "description": "占位输出，恒为 false：tri_count 从未被真正测量，这项从不参与 score 评分", "description-en": "Placeholder output, always false: tri_count is never actually measured, and this never factors into the score." }
+  ],
+  "projectTypes": ["asset3d"]
+}

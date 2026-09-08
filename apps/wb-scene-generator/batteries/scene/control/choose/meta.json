@@ -1,0 +1,17 @@
+{
+  "id": "scene_choose",
+  "label": "条件选择",
+  "name-en": "Choose",
+  "description": "选择两个已计算输入之一；仅供 Scene Script choose 内建编译结果使用。",
+  "description-en": "Select one of two already-evaluated inputs; emitted by the Scene Script choose builtin.",
+  "version": "1.0.0",
+  "tags": ["scene", "control", "compiler"],
+  "inputs": [
+    { "name": "when", "type": "boolean", "access": "item", "required": true, "label": "条件" },
+    { "name": "then", "type": "any", "access": "item", "required": true, "label": "真值" },
+    { "name": "otherwise", "type": "any", "access": "item", "required": true, "label": "假值" }
+  ],
+  "outputs": [
+    { "name": "value", "type": "any", "access": "item", "label": "结果" }
+  ]
+}

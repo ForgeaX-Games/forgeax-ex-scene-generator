@@ -1,0 +1,85 @@
+{
+  "id": "furniture_filler",
+  "label": "填充家具放置器",
+  "description": "将填充家具反复放置到室内空间网格中，每类家具持续放置直到房间占用率达到上限（贴边65%、居中80%）或连续5次找不到合法位置为止。",
+  "description-en": "Repeatedly places fill furniture into a room grid until occupancy limits are reached (65% for edge, 80% for center) or placement fails 5 consecutive times.",
+  "icon": "扁平插画风格图标。俯视房间平面图，房间内已有少量大家具，多个相同的小方块家具从四面墙边密集填入，用绿色虚线箭头表示反复填充的动作，主色调绿色和浅灰，背景白色，线条简洁。",
+  "version": "1.0.0",
+  "tags": ["scene", "furniture", "fill", "repeat", "indoor", "mask", "grid"],
+  "tag_labels": ["场景", "家具", "填充", "重复", "室内", "掩码", "网格"],
+  "inputs": [
+    {
+      "name": "roomGrid",
+      "type": "grid",
+      "label": "室内空间网格",
+      "description": "房间可用区域网格，1=可放置格，0=墙或外部",
+      "description-en": "Room interior grid: 1 = walkable cell, 0 = wall or outside."
+    },
+    {
+      "name": "maskA",
+      "type": "grid",
+      "label": "家具实体网格 (maskA)",
+      "description": "已有家具实体占用网格，通常来自单一家具放置器的输出；无旧家具时传全零网格",
+      "description-en": "Furniture body occupancy grid from a prior placement step; pass all-zero grid if none."
+    },
+    {
+      "name": "maskB",
+      "type": "grid",
+      "label": "过道预留网格 (maskB)",
+      "description": "已有过道预留网格，通常来自单一家具放置器的输出；无旧家具时传全零网格",
+      "description-en": "Aisle reservation grid from a prior placement step; pass all-zero grid if none."
+    },
+    {
+      "name": "oldFurnitureIndex",
+      "type": "array",
+      "label": "旧家具编号列表",
+      "description": "已放置家具的编号列表，每项含 rank/name/isGroup；无旧家具时传 []",
+      "description-en": "Index of already-placed furniture items (rank/name/isGroup); pass empty array if none."
+    },
+    {
+      "name": "furnitureList",
+      "type": "array",
+      "label": "填充家具清单",
+      "description": "待填充的家具列表（来自 furniture_rank_split 的 fill_list），每项含 rank/name/furniture_id/type/placement",
+      "description-en": "Fill furniture list (from furniture_rank_split fill_list output), each item with rank/name/furniture_id/type/placement."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "控制填充位置随机性的种子值，相同种子产生相同布局，默认 42",
+      "description-en": "Random seed for filling; same seed produces the same layout. Default: 42.",
+      "default": 42
+    }
+  ],
+  "outputs": [
+    {
+      "name": "newMaskA",
+      "type": "grid",
+      "label": "新家具实体网格",
+      "description": "填充完毕后的家具实体占用网格，非零值为 effectiveRank（旧最大 rank + 填充 rank）",
+      "description-en": "Updated furniture body mask after filling; non-zero values are effective rank numbers."
+    },
+    {
+      "name": "newMaskB",
+      "type": "grid",
+      "label": "新过道预留网格",
+      "description": "填充完毕后的过道预留网格，1=已预留过道",
+      "description-en": "Updated aisle reservation mask after filling; 1 = reserved aisle cell."
+    },
+    {
+      "name": "furnitureIndex",
+      "type": "array",
+      "label": "家具编号列表",
+      "description": "所有家具（旧+新）的编号列表，每项含 rank（网格中存储的编号）、name、isGroup；同类填充家具共享同一 rank",
+      "description-en": "Complete furniture index (old + new), each item with rank, name, isGroup; same-type fill furniture share the same rank."
+    },
+    {
+      "name": "diagnostics",
+      "type": "array",
+      "label": "诊断日志",
+      "description": "填充过程的诊断信息，含每次放置结果、停止原因和占用率状态",
+      "description-en": "Diagnostic log of the fill process, including each placement result, stop reason, and occupancy status."
+    }
+  ]
+}

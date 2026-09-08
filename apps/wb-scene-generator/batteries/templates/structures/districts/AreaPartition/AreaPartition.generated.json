@@ -1,0 +1,99 @@
+{
+  "id": "group_area_partition_district",
+  "name": "AreaPartition",
+  "nameEn": "AreaPartition",
+  "nodes": [
+    { "id": "ap_in", "opId": "scene_passthrough", "name": "ap_in", "position": { "x": 0, "y": 0 }, "params": {} },
+    { "id": "ap_explode", "opId": "node_explode", "name": "ap_explode", "position": { "x": 280, "y": 0 }, "params": {} },
+    { "id": "ap_rgrid", "opId": "rect_grid", "name": "ap_rgrid", "position": { "x": 560, "y": -120 }, "params": {} },
+    { "id": "ap_slice", "opId": "voxel_slice", "name": "ap_slice", "position": { "x": 840, "y": 0 }, "params": {} },
+    { "id": "ap_seed", "opId": "multi_seed", "name": "ap_seed", "position": { "x": 840, "y": 220 }, "params": {} },
+    { "id": "ap_areas", "opId": "text_panel", "name": "ap_areas", "position": { "x": 1120, "y": 640 }, "params": { "text": "[3,2,1.5,1]", "_nodeWidth": 160, "_nodeHeight": 76 } },
+    { "id": "ap_boundary", "opId": "text_panel", "name": "ap_boundary", "position": { "x": 1120, "y": 480 }, "params": { "text": "organic", "_nodeWidth": 160, "_nodeHeight": 76 } },
+    { "id": "ap_relax", "opId": "number_const", "name": "ap_relax", "position": { "x": 1400, "y": 480 }, "params": { "value": 8 } },
+    { "id": "ap_smooth", "opId": "number_const", "name": "ap_smooth", "position": { "x": 1400, "y": 640 }, "params": { "value": 12 } },
+    { "id": "ap_partition", "opId": "alg_region_area_partition", "name": "ap_partition", "position": { "x": 1120, "y": 0 }, "params": {} },
+    { "id": "ap_g2n", "opId": "grid2node", "name": "ap_g2n", "position": { "x": 1680, "y": -40 }, "params": {} },
+    { "id": "ap_tile", "opId": "__group__", "name": "TileAssetName", "position": { "x": 1960, "y": -40 }, "params": { "groupId": "group_tile_ap" } },
+    { "id": "ap_add_zones", "opId": "add_child", "name": "ap_add_zones", "position": { "x": 2260, "y": 0 }, "params": {} },
+    { "id": "ap_focus_zones", "opId": "scene_focus_path", "name": "ap_focus_zones", "position": { "x": 2540, "y": -40 }, "params": {} },
+    { "id": "ap_out_main", "opId": "scene_passthrough", "name": "ap_out_main", "position": { "x": 2820, "y": 80 }, "params": {} },
+    { "id": "ap_out_zones", "opId": "scene_passthrough", "name": "ap_out_zones", "position": { "x": 2820, "y": -40 }, "params": {} },
+    { "id": "ap_zpath", "opId": "type_string", "name": "ap_zpath", "position": { "x": 2540, "y": -120 }, "params": {} }
+  ],
+  "edges": [
+    { "id": "ap_e1", "source": { "nodeId": "ap_in", "port": "scene" }, "target": { "nodeId": "ap_explode", "port": "scene" } },
+    { "id": "ap_e2", "source": { "nodeId": "ap_explode", "port": "width" }, "target": { "nodeId": "ap_rgrid", "port": "width" } },
+    { "id": "ap_e3", "source": { "nodeId": "ap_explode", "port": "height" }, "target": { "nodeId": "ap_rgrid", "port": "height" } },
+    { "id": "ap_e4", "source": { "nodeId": "ap_explode", "port": "voxels" }, "target": { "nodeId": "ap_slice", "port": "voxels" } },
+    { "id": "ap_e5", "source": { "nodeId": "ap_rgrid", "port": "grid" }, "target": { "nodeId": "ap_slice", "port": "grid" } },
+    { "id": "ap_e6", "source": { "nodeId": "ap_slice", "port": "slice" }, "target": { "nodeId": "ap_partition", "port": "region" } },
+    { "id": "ap_e6b", "source": { "nodeId": "ap_slice", "port": "slice" }, "target": { "nodeId": "ap_seed", "port": "shape" } },
+    { "id": "ap_e7", "source": { "nodeId": "ap_boundary", "port": "output" }, "target": { "nodeId": "ap_partition", "port": "boundaryStyle" } },
+    { "id": "ap_e7b", "source": { "nodeId": "ap_relax", "port": "value" }, "target": { "nodeId": "ap_partition", "port": "relaxIterations" } },
+    { "id": "ap_e7c", "source": { "nodeId": "ap_smooth", "port": "value" }, "target": { "nodeId": "ap_partition", "port": "smoothIterations" } },
+    { "id": "ap_e8", "source": { "nodeId": "ap_areas", "port": "output" }, "target": { "nodeId": "ap_partition", "port": "areas" } },
+    { "id": "ap_e9", "source": { "nodeId": "ap_seed", "port": "seed" }, "target": { "nodeId": "ap_partition", "port": "seed" } },
+    { "id": "ap_e10", "source": { "nodeId": "ap_partition", "port": "partition" }, "target": { "nodeId": "ap_g2n", "port": "grid" } },
+    { "id": "ap_e12", "source": { "nodeId": "ap_g2n", "port": "scene" }, "target": { "nodeId": "ap_tile", "port": "in_0" } },
+    { "id": "ap_e14", "source": { "nodeId": "ap_tile", "port": "out_0" }, "target": { "nodeId": "ap_add_zones", "port": "nodes" } },
+    { "id": "ap_e15", "source": { "nodeId": "ap_in", "port": "scene" }, "target": { "nodeId": "ap_add_zones", "port": "scene" } },
+    { "id": "ap_e24", "source": { "nodeId": "ap_add_zones", "port": "scene" }, "target": { "nodeId": "ap_focus_zones", "port": "scene" } },
+    { "id": "ap_e25", "source": { "nodeId": "ap_add_zones", "port": "childPaths" }, "target": { "nodeId": "ap_focus_zones", "port": "path" } },
+    { "id": "ap_e28", "source": { "nodeId": "ap_add_zones", "port": "scene" }, "target": { "nodeId": "ap_out_main", "port": "scene" } },
+    { "id": "ap_e29", "source": { "nodeId": "ap_focus_zones", "port": "scene" }, "target": { "nodeId": "ap_out_zones", "port": "scene" } },
+    { "id": "ap_e31", "source": { "nodeId": "ap_add_zones", "port": "childPaths" }, "target": { "nodeId": "ap_zpath", "port": "value" } }
+  ],
+  "position": { "x": 0, "y": 0 },
+  "exposedInputs": [
+    { "portName": "in_0", "portType": "scene", "access": "tree", "sourceNodeId": "ap_in", "sourcePortName": "scene", "customLabelEn": "Scene" },
+    { "portName": "in_1", "portType": "point2d", "access": "list", "sourceNodeId": "ap_partition", "sourcePortName": "points", "customLabelEn": "Points" },
+    { "portName": "in_2", "portType": "number", "access": "list", "sourceNodeId": "ap_partition", "sourcePortName": "areas", "customLabelEn": "Areas" },
+    { "portName": "in_3", "portType": "string", "access": "tree", "sourceNodeId": "ap_g2n", "sourcePortName": "name", "customLabelEn": "ZoneNames" },
+    { "portName": "in_4", "portType": "string", "access": "tree", "sourceNodeId": "group_tile_ap", "sourcePortName": "in_1", "customLabelEn": "ZoneAssets" },
+    { "portName": "in_5", "portType": "number", "access": "tree", "sourceNodeId": "ap_seed", "sourcePortName": "seed", "customLabelEn": "Seed" },
+    { "portName": "in_6", "portType": "string", "access": "item", "sourceNodeId": "ap_partition", "sourcePortName": "boundaryStyle", "customLabelEn": "BoundaryStyle" },
+    { "portName": "in_7", "portType": "number", "access": "item", "sourceNodeId": "ap_partition", "sourcePortName": "relaxIterations", "customLabelEn": "RelaxIterations" },
+    { "portName": "in_8", "portType": "number", "access": "item", "sourceNodeId": "ap_partition", "sourcePortName": "smoothIterations", "customLabelEn": "SmoothIterations" },
+    { "portName": "in_10", "portType": "number", "access": "item", "sourceNodeId": "ap_rgrid", "sourcePortName": "fillValue", "hidden": true },
+    { "portName": "in_11", "portType": "number", "access": "item", "sourceNodeId": "ap_slice", "sourcePortName": "z", "hidden": true },
+    { "portName": "in_12", "portType": "string", "access": "item", "sourceNodeId": "ap_g2n", "sourcePortName": "schema", "hidden": true },
+    { "portName": "in_13", "portType": "string", "access": "item", "sourceNodeId": "ap_g2n", "sourcePortName": "token", "hidden": true },
+    { "portName": "in_14", "portType": "number", "access": "list", "sourceNodeId": "ap_g2n", "sourcePortName": "zRange", "hidden": true }
+  ],
+  "exposedOutputs": [
+    { "portName": "out_0", "portType": "scene", "access": "tree", "sourceNodeId": "ap_out_main", "sourcePortName": "scene", "order": 0, "customLabelEn": "Scene" },
+    { "portName": "out_1", "portType": "scene", "access": "tree", "sourceNodeId": "ap_out_zones", "sourcePortName": "scene", "order": 1, "customLabelEn": "Zones" },
+    { "portName": "out_2", "portType": "string", "access": "tree", "sourceNodeId": "ap_zpath", "sourcePortName": "value", "order": 2, "customLabelEn": "ZonesPath" }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_tile_ap",
+      "name": "TileAssetName",
+      "nameEn": "TileAssetName",
+      "nodes": [
+        { "id": "aptz_tp_name", "opId": "text_panel", "name": "asset_name", "position": { "x": 0, "y": 160 }, "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 } },
+        { "id": "aptz_tp_type", "opId": "text_panel", "name": "asset_type", "position": { "x": 280, "y": 160 }, "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "aptz_tp_tile", "opId": "text_panel", "name": "tile", "position": { "x": 280, "y": 320 }, "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 } },
+        { "id": "aptz_set1", "opId": "scene_set_attribute", "name": "aptz_set1", "position": { "x": 200, "y": 0 }, "params": {} },
+        { "id": "aptz_set2", "opId": "scene_set_attribute", "name": "aptz_set2", "position": { "x": 470, "y": 0 }, "params": {} },
+        { "id": "aptz_str", "opId": "type_string", "name": "aptz_str", "position": { "x": 0, "y": 40 }, "params": {} }
+      ],
+      "edges": [
+        { "id": "aptz_e1", "source": { "nodeId": "aptz_tp_name", "port": "output" }, "target": { "nodeId": "aptz_set1", "port": "key" } },
+        { "id": "aptz_e2", "source": { "nodeId": "aptz_set1", "port": "scene" }, "target": { "nodeId": "aptz_set2", "port": "scene" } },
+        { "id": "aptz_e3", "source": { "nodeId": "aptz_tp_type", "port": "output" }, "target": { "nodeId": "aptz_set2", "port": "key" } },
+        { "id": "aptz_e4", "source": { "nodeId": "aptz_tp_tile", "port": "output" }, "target": { "nodeId": "aptz_set2", "port": "value" } },
+        { "id": "aptz_e5", "source": { "nodeId": "aptz_str", "port": "value" }, "target": { "nodeId": "aptz_set1", "port": "value" } }
+      ],
+      "position": { "x": 1960, "y": -40 },
+      "exposedInputs": [
+        { "portName": "in_0", "portType": "scene", "access": "item", "sourceNodeId": "aptz_set1", "sourcePortName": "scene" },
+        { "portName": "in_1", "portType": "string", "access": "tree", "sourceNodeId": "aptz_str", "sourcePortName": "value" }
+      ],
+      "exposedOutputs": [
+        { "portName": "out_0", "portType": "scene", "access": "item", "sourceNodeId": "aptz_set2", "sourcePortName": "scene" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "random_rect_scatter",
+  "label": "随机生成矩形",
+  "name-en": "RandomRectScatter",
+  "description": "根据输入点位，在每个点周围随机生成若干矩形：随机方向 + 可控的「矩形与点的大致距离」（中心距，带随机波动）+ 随机宽高。输出一张多值网格（每个矩形递增 id）和一组 0/1 矩形网格列表。region 仅用于定义输出网格尺寸，矩形按网格边界裁剪。坐标约定：x→列、y→行。",
+  "description-en": "Scatters several rectangles around each input point: random direction + a controllable approximate point-to-rectangle distance (center distance with random jitter) + random size. Outputs one multi-value grid (each rectangle an increasing id) and a list of 0/1 rectangle grids. region only defines the output grid size; rectangles are clipped to bounds. Coordinates: x→column, y→row.",
+  "icon": "深色圆角方块底，中心一个亮色圆点，圆点四周随机散落几个大小不一的矩形，矩形与圆点保持一段距离，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["rect", "rectangle", "scatter", "random", "point", "around", "building", "cluster", "scene"],
+  "tag_labels": ["矩形", "随机", "散布", "点位", "建筑", "组群"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "输入区域",
+      "description": "区域/画布网格，仅用于定义输出网格的尺寸；生成的矩形按其行列边界裁剪。",
+      "description-en": "Region/canvas grid used only to size the output; generated rectangles are clipped to its row/column bounds."
+    },
+    {
+      "name": "points",
+      "type": "point2d",
+      "access": "list",
+      "required": true,
+      "label": "中心点集",
+      "description": "一组采样 point2d 点（整组消费），x→列、y→行；每个点周围生成若干矩形。",
+      "description-en": "A list of sampled point2d (consumed atomically); x→column, y→row. Rectangles are scattered around each point."
+    },
+    {
+      "name": "countPerPoint",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 3,
+      "label": "每点矩形数",
+      "description": "每个点周围生成的矩形数量，默认 3。",
+      "description-en": "Number of rectangles generated around each point. Default 3."
+    },
+    {
+      "name": "distance",
+      "type": "number",
+      "access": "item",
+      "min": 0,
+      "default": 6,
+      "label": "与点距离",
+      "description": "矩形与点之间的大致距离（点到矩形中心的距离），默认 6。",
+      "description-en": "Approximate distance between each rectangle and its point (point to rectangle center). Default 6."
+    },
+    {
+      "name": "distanceJitter",
+      "type": "number",
+      "access": "item",
+      "min": 0,
+      "default": 2,
+      "label": "距离波动",
+      "description": "距离的随机波动范围 ±，实际距离在 [distance-jitter, distance+jitter] 内随机，默认 2。",
+      "description-en": "Random +/- jitter on the distance; actual distance is uniform in [distance-jitter, distance+jitter]. Default 2."
+    },
+    {
+      "name": "minSize",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 2,
+      "label": "最小边长",
+      "description": "矩形最小边长（格数），默认 2。",
+      "description-en": "Minimum rectangle side length in cells. Default 2."
+    },
+    {
+      "name": "maxSize",
+      "type": "number",
+      "access": "item",
+      "min": 1,
+      "precision": 0,
+      "default": 5,
+      "label": "最大边长",
+      "description": "矩形最大边长（格数），默认 5。",
+      "description-en": "Maximum rectangle side length in cells. Default 5."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current time."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "矩形网格",
+      "description": "单张多值网格：每个矩形一个递增 id，空白处为 0；可接 grid_split_by_value 或四合院围墙电池。",
+      "description-en": "Single multi-value grid: each rectangle gets an increasing id, 0 elsewhere; pipe to grid_split_by_value or the wall-frame battery."
+    },
+    {
+      "name": "rects",
+      "type": "grid",
+      "access": "list",
+      "label": "矩形列表",
+      "description": "每个矩形一张与 region 同形状的 0/1 网格，顺序与生成顺序一致；完全越界的矩形对应全 0 网格。",
+      "description-en": "One 0/1 grid (same shape as region) per rectangle, in generation order; a fully out-of-bounds rectangle yields an all-zero grid."
+    }
+  ]
+}

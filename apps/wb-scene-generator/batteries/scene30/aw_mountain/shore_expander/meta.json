@@ -1,0 +1,52 @@
+{
+  "id": "shore_expander",
+  "label": "河岸沙滩扩张",
+  "description": "对合并后的地形+河流网格做 BFS 扩张，在河流格周围生成指定宽度的沙滩过渡带",
+  "description-en": "Applies BFS expansion on the merged terrain+river grid to generate a shore/beach transition zone around river cells.",
+  "icon": "蓝色河道两侧向外扩展出浅黄色沙滩圈层，BFS波纹扩散示意，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["shore", "beach", "river", "bfs", "transition", "terrain", "expand"],
+  "tag_labels": ["岸线", "沙滩", "河流", "BFS", "过渡", "地形", "扩张"],
+  "inputs": [
+    {
+      "name": "terrainGrid",
+      "type": "grid",
+      "label": "地形网格",
+      "description": "grid_max_merge 合并后的地形+河流网格，含河流格（riverId）和地形格",
+      "description-en": "Merged terrain+river grid from grid_max_merge, containing river cells and terrain cells."
+    },
+    {
+      "name": "shoreWidth",
+      "type": "number",
+      "label": "沙滩宽度",
+      "description": "沙滩过渡带宽度（格数），从河流格向外扩张的层数",
+      "description-en": "Shore transition width in grid cells; number of BFS expansion layers from river cells.",
+      "default": 3
+    },
+    {
+      "name": "riverId",
+      "type": "number",
+      "label": "河流格 ID",
+      "description": "河流格的标识值（与 spline_river_mask 的 riverId 一致），默认 10",
+      "description-en": "Cell value identifying river cells; must match spline_river_mask riverId.",
+      "default": 10
+    },
+    {
+      "name": "shoreId",
+      "type": "number",
+      "label": "沙滩格 ID",
+      "description": "沙滩过渡带的输出标识值，应与群系分类器的沙滩 biome ID 一致（默认 2）",
+      "description-en": "Cell value to assign to shore cells; should match beach biome ID in biome_classifier (default 2).",
+      "default": 2
+    }
+  ],
+  "outputs": [
+    {
+      "name": "terrainGrid",
+      "type": "grid",
+      "label": "带沙滩地形网格",
+      "description": "河流周围已填充沙滩过渡带的最终地形网格",
+      "description-en": "Final terrain grid with shore/beach transition zone added around river cells."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_random_rect_scatter" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e7490"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_random_rect_scatter)"/>
+
+  <rect x="4" y="4" width="16" height="16" rx="2" fill="#000"/>
+
+  <!-- -Ã¹ -->
+  <circle cx="12" cy="12" r="1.6" fill="#fde047"/>
+
+  <!-- ¹hô:c=„éb -->
+  <rect x="5.5" y="5.5" width="3.5" height="2.6" rx="0.4" fill="#67e8f9"/>
+  <rect x="15.5" y="6" width="2.8" height="3.4" rx="0.4" fill="#67e8f9"/>
+  <rect x="16" y="14.5" width="3.4" height="2.6" rx="0.4" fill="#67e8f9"/>
+  <rect x="5" y="15" width="3" height="3" rx="0.4" fill="#67e8f9"/>
+</svg>

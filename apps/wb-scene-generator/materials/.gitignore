@@ -1,0 +1,8 @@
+# 3DMesh pack binaries stay local / out-of-band — never commit.
+# Track only README.md under models/ and pbr/.
+
+models/*
+!models/README.md
+
+pbr/*
+!pbr/README.md

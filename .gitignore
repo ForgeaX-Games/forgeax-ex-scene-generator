@@ -1,0 +1,22 @@
+node_modules/
+# Bun is the repository package manager. Keep the root lockfile authoritative;
+# app-local locks are disposable and must not shadow the workspace lock.
+apps/*/bun.lock
+*.tsbuildinfo
+*.log
+
+# Build output — committed later (Phase 4) so the host can serve without a build
+# step; ignored for now during the consolidation milestone.
+dist/
+vendor/dist/
+release/
+
+.DS_Store
+
+# Build/runtime junk
+**/node-compile-cache/
+core.*
+**/.review-evidence/
+**/.scratch-repro/
+**/.scratch-parity/
+apps/wb-scene-generator/batteries/groups/test/

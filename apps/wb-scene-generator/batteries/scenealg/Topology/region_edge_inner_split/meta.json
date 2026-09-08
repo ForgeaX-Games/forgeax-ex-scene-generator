@@ -1,0 +1,65 @@
+{
+  "id": "alg_region_edge_inner_split",
+  "label": "边内拆分",
+  "name-en": "RegionEdgeInnerSplit",
+  "description": "把一个区域按「边缘格 / 内部格」拆成两张 0/1 region。对每个有效格（非零）查其 connectivity 邻接（默认 4-邻接，上下左右），若存在越界或邻格非有效则判为边缘格，否则判为内部格。edge 与 inner 互斥、二者并集等于区域全部有效格。可用于「边缘高密度、内部低密度」的两档差异填充：把 edge / inner 分别接到 region_random_fill 并配不同 density 即可复刻自然装饰里的边缘聚集效果。仅产 edge/inner 两张掩码，不含概率与语义。",
+  "description-en": "Splits a region into edge cells and inner cells as two 0/1 masks. For each valid (non-zero) cell it checks its connectivity neighbors (default 4-connectivity: up/down/left/right); if any neighbor is out of bounds or non-valid the cell is an edge cell, otherwise an inner cell. edge and inner are mutually exclusive and their union equals all valid cells of the region. Useful for two-tier differential fill (dense edges, sparse interior): wire edge / inner into region_random_fill with different densities. Emits only the edge/inner masks, no probability or semantics.",
+  "icon": "深色背景上一个填充方块，最外圈一层格子用亮色高亮表示边缘带，内部格子用较暗的另一色表示内部带，边/内分带意象，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["region", "topology", "edge", "inner", "split", "border", "morphology", "grid"],
+  "tag_labels": ["区域", "拓扑", "边缘", "内部", "拆分", "边界", "形态学", "网格"],
+  "inputs": [
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "label": "输入区域",
+      "description": "0/1（或多值）区域网格；有效格为非零格。",
+      "description-en": "0/1 (or multi-valued) region grid; valid cells are non-zero.",
+      "access": "item"
+    },
+    {
+      "name": "connectivity",
+      "type": "number",
+      "default": 4,
+      "label": "邻接度",
+      "description": "判定邻接的方向数：4=上下左右（默认，与老 fillEdge 一致），8=含对角。",
+      "description-en": "Neighbor connectivity for edge detection: 4 = up/down/left/right (default, matches legacy fillEdge), 8 = include diagonals."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "edge",
+      "type": "grid",
+      "access": "item",
+      "label": "边缘格",
+      "description": "与输入同形状的 0/1 掩码，边缘有效格=1，其余=0。",
+      "description-en": "0/1 mask matching the input shape; edge valid cells = 1, others = 0."
+    },
+    {
+      "name": "inner",
+      "type": "grid",
+      "access": "item",
+      "label": "内部格",
+      "description": "与输入同形状的 0/1 掩码，内部有效格=1，其余=0。",
+      "description-en": "0/1 mask matching the input shape; inner valid cells = 1, others = 0."
+    },
+    {
+      "name": "edgeCount",
+      "type": "number",
+      "access": "item",
+      "label": "边缘格数",
+      "description": "判定为边缘的有效格数。",
+      "description-en": "Number of valid cells classified as edge."
+    },
+    {
+      "name": "innerCount",
+      "type": "number",
+      "access": "item",
+      "label": "内部格数",
+      "description": "判定为内部的有效格数。",
+      "description-en": "Number of valid cells classified as inner."
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "g_cylinder",
+  "label": "圆柱",
+  "name-en": "GCylinder",
+  "description": "在 Geometry DSL 末尾追加 cylinder(radius, length) 一行。",
+  "description-en": "Append a `cylinder(radius, length)` line.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "geometry",
+    "primitive",
+    "cylinder",
+    "cad"
+  ],
+  "tag_labels": [
+    "几何",
+    "基础形状",
+    "圆柱",
+    "CAD"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": false,
+      "label": "几何",
+      "description": "上游 Geometry",
+      "description-en": "Upstream Geometry."
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "label": "半径",
+      "default": 0.5,
+      "description": "半径",
+      "description-en": "Radius."
+    },
+    {
+      "name": "length",
+      "type": "number",
+      "label": "长度",
+      "default": 1,
+      "description": "圆柱长度（沿默认 Z 轴）",
+      "description-en": "Cylinder length along Z."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空 = 自动 cyl{n}",
+      "description-en": "Custom id; empty = auto cyl{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加后 Geometry",
+      "description-en": "Geometry after appending."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 cylinder 的 id",
+      "description-en": "Id of the cylinder line."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

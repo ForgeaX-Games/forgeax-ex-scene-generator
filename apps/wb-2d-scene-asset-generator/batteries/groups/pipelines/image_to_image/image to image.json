@@ -1,0 +1,433 @@
+{
+  "id": "group_1781677045312_vslsl",
+  "name": "image to image",
+  "nameEn": "image to image",
+  "nodes": [
+    {
+      "id": "node-1781669289794-ux07u",
+      "opId": "text_panel",
+      "name": "node-1781669289794-ux07u",
+      "position": {
+        "x": -568.0815256672339,
+        "y": -35.3334819754748
+      },
+      "params": {
+        "text": "把图1的树种到图2的建筑周围"
+      }
+    },
+    {
+      "id": "node-1781669289794-qu7eb",
+      "opId": "image_gen",
+      "name": "node-1781669289794-qu7eb",
+      "position": {
+        "x": -299.04737106734,
+        "y": 174.86789659202924
+      },
+      "params": {
+        "_gen_image": "{\"alias\":\"ai-1-2-node-1781669289794-qu7eb-mqhlm7e5.png\",\"blobId\":\"c51bfc0c0c9be032680ff0b6fb050bdd3b7b876c85f1e0e11e5073a82047ff0b\"}",
+        "_gen_error": ""
+      }
+    },
+    {
+      "id": "node-1781669289795-9jdoa",
+      "opId": "image_pixel_fix",
+      "name": "node-1781669289795-9jdoa",
+      "position": {
+        "x": 187.72317260988405,
+        "y": 175.01873054229452
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781669289795-rqm6x",
+      "opId": "image_pixel_scale",
+      "name": "node-1781669289795-rqm6x",
+      "position": {
+        "x": 408.70900487299525,
+        "y": 173.54266079861486
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781669289795-53xtq",
+      "opId": "number_const",
+      "name": "node-1781669289795-53xtq",
+      "position": {
+        "x": 415.80330346315344,
+        "y": 498.73964035092
+      },
+      "params": {
+        "value": 100
+      }
+    },
+    {
+      "id": "node-1781669289795-0d1vi",
+      "opId": "number_const",
+      "name": "node-1781669289795-0d1vi",
+      "position": {
+        "x": 415.80330346315344,
+        "y": 565.4996123919018
+      },
+      "params": {
+        "value": 100,
+        "min": 0,
+        "max": 128,
+        "precision": 0
+      }
+    },
+    {
+      "id": "node-1781669289795-lmk43",
+      "opId": "image_output",
+      "name": "node-1781669289795-lmk43",
+      "position": {
+        "x": 887.9939537398484,
+        "y": 175.7149607862524
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781669289795-l4v6s",
+      "opId": "toggle",
+      "name": "node-1781669289795-l4v6s",
+      "position": {
+        "x": 187.72317260988405,
+        "y": 456.1438922995924
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781669289795-qxc6o",
+      "opId": "text_panel",
+      "name": "node-1781669289795-qxc6o",
+      "position": {
+        "x": 887.9939537398484,
+        "y": 317.9188205030049
+      },
+      "params": {
+        "text": "一棵松树"
+      }
+    },
+    {
+      "id": "node-1781669289796-gynmj",
+      "opId": "image_despeckle",
+      "name": "node-1781669289796-gynmj",
+      "position": {
+        "x": 643.7162575582255,
+        "y": 178.54302726221158
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781671818282",
+      "opId": "image_source",
+      "name": "node-1781671818282",
+      "position": {
+        "x": -794.181287755874,
+        "y": 93.52031568062273
+      },
+      "params": {
+        "image": "{\"alias\":\"ai-ai-1-4-node-1781665714978-b4v5o-mqhhvqke_nobg-image_remove_bg-mqhhvroi.png\",\"blobId\":\"ce059b17253c251c04fd945ce019bbb98c6b9643f76a8e1302da53f815eafe2e\"}",
+        "alias": "ai-ai-1-4-node-1781665714978-b4v5o-mqhhvqke_nobg-image_remove_bg-mqhhvroi.png"
+      }
+    },
+    {
+      "id": "node-1781671889671",
+      "opId": "image_source",
+      "name": "node-1781671889671",
+      "position": {
+        "x": -568.0815256672339,
+        "y": 406.8413370712882
+      },
+      "params": {
+        "image": "{\"alias\":\"ai-2-node-1781664258365-mqhh1ojn.png\",\"blobId\":\"147f1fc959ecdc2ba6be83a61b6be553a2dd3d73d4404842fb9844029eb57d68\"}",
+        "alias": "ai-2-node-1781664258365-mqhh1ojn.png"
+      }
+    },
+    {
+      "id": "node-1781671903811",
+      "opId": "tree_merge",
+      "name": "node-1781671903811",
+      "position": {
+        "x": -514.3125352508187,
+        "y": 222.31572902449398
+      },
+      "params": {
+        "inferredAccess": "item",
+        "inferredType": "image",
+        "portCount": 3
+      }
+    },
+    {
+      "id": "node-1781672090189",
+      "opId": "image_resize",
+      "name": "node-1781672090189",
+      "position": {
+        "x": -35.75467051331462,
+        "y": 233.8632446477783
+      },
+      "params": {
+        "mode": "smart"
+      }
+    },
+    {
+      "id": "node-1781672236339-ihu3x",
+      "opId": "number_const",
+      "name": "node-1781672236339-ihu3x",
+      "position": {
+        "x": -248.79422025157527,
+        "y": 572.3067818739372
+      },
+      "params": {
+        "value": 500,
+        "min": 0,
+        "max": 500,
+        "precision": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-node-1781669289795-9jdoa-image-node-1781669289795-rqm6x-image",
+      "source": {
+        "nodeId": "node-1781669289795-9jdoa",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-rqm6x",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781669289795-rqm6x-image-node-1781669289796-gynmj-image",
+      "source": {
+        "nodeId": "node-1781669289795-rqm6x",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781669289796-gynmj",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781669289795-l4v6s-value-node-1781669289795-rqm6x-lock_aspect",
+      "source": {
+        "nodeId": "node-1781669289795-l4v6s",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-rqm6x",
+        "port": "lock_aspect"
+      }
+    },
+    {
+      "id": "e-node-1781669289795-53xtq-value-node-1781669289795-rqm6x-width",
+      "source": {
+        "nodeId": "node-1781669289795-53xtq",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-rqm6x",
+        "port": "width"
+      }
+    },
+    {
+      "id": "e-node-1781669289795-0d1vi-value-node-1781669289795-rqm6x-height",
+      "source": {
+        "nodeId": "node-1781669289795-0d1vi",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-rqm6x",
+        "port": "height"
+      }
+    },
+    {
+      "id": "e-node-1781669289795-qxc6o-output-node-1781669289795-lmk43-name",
+      "source": {
+        "nodeId": "node-1781669289795-qxc6o",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-lmk43",
+        "port": "name"
+      }
+    },
+    {
+      "id": "e-node-1781669289794-ux07u-output-node-1781669289794-qu7eb-prompt",
+      "source": {
+        "nodeId": "node-1781669289794-ux07u",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781669289794-qu7eb",
+        "port": "prompt"
+      }
+    },
+    {
+      "id": "e-node-1781671818282-image-node-1781671903811-item_0",
+      "source": {
+        "nodeId": "node-1781671818282",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781671903811",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "e-node-1781671889671-image-node-1781671903811-item_1",
+      "source": {
+        "nodeId": "node-1781671889671",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781671903811",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "e-node-1781671903811-tree-node-1781669289794-qu7eb-image",
+      "source": {
+        "nodeId": "node-1781671903811",
+        "port": "tree"
+      },
+      "target": {
+        "nodeId": "node-1781669289794-qu7eb",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781669289794-qu7eb-image-node-1781672090189-image",
+      "source": {
+        "nodeId": "node-1781669289794-qu7eb",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781672090189",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781672236339-ihu3x-value-node-1781672090189-width",
+      "source": {
+        "nodeId": "node-1781672236339-ihu3x",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781672090189",
+        "port": "width"
+      }
+    },
+    {
+      "id": "e-node-1781672236339-ihu3x-value-node-1781672090189-height",
+      "source": {
+        "nodeId": "node-1781672236339-ihu3x",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781672090189",
+        "port": "height"
+      }
+    },
+    {
+      "id": "e-node-1781672090189-image-node-1781669289795-9jdoa-image",
+      "source": {
+        "nodeId": "node-1781672090189",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-9jdoa",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781669289796-gynmj-image-node-1781669289795-lmk43-image",
+      "source": {
+        "nodeId": "node-1781669289796-gynmj",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781669289795-lmk43",
+        "port": "image"
+      }
+    }
+  ],
+  "position": {
+    "x": 67.14753239224011,
+    "y": 280.6335445232978
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781669289795-9jdoa",
+      "sourcePortName": "k_colors"
+    },
+    {
+      "portName": "in_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781669289795-9jdoa",
+      "sourcePortName": "square_grid"
+    },
+    {
+      "portName": "in_2",
+      "portType": "string",
+      "access": "list",
+      "sourceNodeId": "node-1781669289795-lmk43",
+      "sourcePortName": "tags"
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781669289796-gynmj",
+      "sourcePortName": "sat_threshold"
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781669289796-gynmj",
+      "sourcePortName": "value_min"
+    },
+    {
+      "portName": "in_5",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781669289796-gynmj",
+      "sourcePortName": "outlier_threshold"
+    },
+    {
+      "portName": "in_6",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781669289796-gynmj",
+      "sourcePortName": "max_speck_size"
+    },
+    {
+      "portName": "in_7",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781672090189",
+      "sourcePortName": "mode"
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781669289795-lmk43",
+      "sourcePortName": "alias"
+    },
+    {
+      "portName": "out_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781669289795-lmk43",
+      "sourcePortName": "ok"
+    }
+  ]
+}

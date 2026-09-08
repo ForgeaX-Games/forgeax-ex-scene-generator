@@ -1,0 +1,155 @@
+{
+  "id": "g_joint_planar",
+  "label": "平面关节",
+  "name-en": "GJointPlanar",
+  "description": "平面关节：child 在 joint 平面内相对 parent 平移/旋转。axis 是平面法线。何时用：贴面内的 2D 自由滑动（XY 工作台）。⚠️ parent/child 必须是 g_part 的 id，且所有 part 要连成单一根树，否则会被 URDF 丢弃。",
+  "description-en": "Planar joint. The child moves in the joint plane relative to the parent; axis is the plane normal. Use when: 2D in-plane sliding (XY stage). WARNING: parent/child must be g_part ids; every part must be joined into one rooted tree or it is dropped from the URDF.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "geometry",
+    "joint",
+    "planar",
+    "assembly",
+    "urdf"
+  ],
+  "tag_labels": [
+    "几何",
+    "关节",
+    "平面",
+    "装配",
+    "URDF"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry",
+      "description-en": "Upstream Geometry."
+    },
+    {
+      "name": "parent_id",
+      "type": "string",
+      "required": true,
+      "label": "父部件 id",
+      "description": "父 part id（g_part 的 id 输出——是 PART id，不是 shape id）",
+      "description-en": "Parent PART id — the `id` output of an upstream g_part (a part id, not a shape id)."
+    },
+    {
+      "name": "child_id",
+      "type": "string",
+      "required": true,
+      "label": "子部件 id",
+      "description": "子 part id（g_part 的 id 输出）",
+      "description-en": "Child PART id — the `id` output of an upstream g_part."
+    },
+    {
+      "name": "ax",
+      "type": "number",
+      "label": "法线 X",
+      "default": 0,
+      "description": "平面法线 X",
+      "description-en": "Plane normal X."
+    },
+    {
+      "name": "ay",
+      "type": "number",
+      "label": "法线 Y",
+      "default": 0,
+      "description": "平面法线 Y",
+      "description-en": "Plane normal Y."
+    },
+    {
+      "name": "az",
+      "type": "number",
+      "label": "法线 Z",
+      "default": 1,
+      "description": "平面法线 Z",
+      "description-en": "Plane normal Z."
+    },
+    {
+      "name": "ox",
+      "type": "number",
+      "label": "原点 X",
+      "default": 0,
+      "description": "joint 原点 X",
+      "description-en": "Joint origin X."
+    },
+    {
+      "name": "oy",
+      "type": "number",
+      "label": "原点 Y",
+      "default": 0,
+      "description": "joint 原点 Y",
+      "description-en": "Joint origin Y."
+    },
+    {
+      "name": "oz",
+      "type": "number",
+      "label": "原点 Z",
+      "default": 0,
+      "description": "joint 原点 Z",
+      "description-en": "Joint origin Z."
+    },
+    {
+      "name": "rr",
+      "type": "number",
+      "label": "roll",
+      "default": 0,
+      "description": "roll 弧度",
+      "description-en": "Roll radians."
+    },
+    {
+      "name": "rp",
+      "type": "number",
+      "label": "pitch",
+      "default": 0,
+      "description": "pitch 弧度",
+      "description-en": "Pitch radians."
+    },
+    {
+      "name": "ry",
+      "type": "number",
+      "label": "yaw",
+      "default": 0,
+      "description": "yaw 弧度",
+      "description-en": "Yaw radians."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空 = 自动 jpla{n}",
+      "description-en": "Custom id; empty = auto jpla{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加后 Geometry",
+      "description-en": "Geometry after appending."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 joint 的 id",
+      "description-en": "Id of the new joint."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "非致命错误信息（校验失败时返回，几何原样透传）",
+      "description-en": "Non-fatal error string (returned on validation failure; geometry passes through unchanged)."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

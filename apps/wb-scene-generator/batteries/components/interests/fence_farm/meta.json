@@ -1,0 +1,102 @@
+{
+  "id": "fence_farm",
+  "label": "栅栏农场",
+  "description": "在单张区域掩码上生成农场栅栏布局，支持外围围栏、分区围栏、独立围栏三种形式，含栅栏门，输出单张多值网格（1=内部地面，2=栅栏，3=栅栏门）。网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Generate a farm fence layout on a single region mask. Supports border enclosure, section dividers, and individual plot fences with gates. Outputs one multi-value grid (1=interior, 2=fence, 3=gate). Grid lists are handled per-item by the DataTree engine.",
+  "icon": "扁平插画风格小图标。俯视农场围栏图，深棕色矩形边框组成栅栏，左右各有一处小缺口表示栅栏门，内部为浅绿色地面，主色2种。",
+  "version": "2.0.0",
+  "tags": ["fence", "farm", "gate", "enclosure", "procedural", "datatree"],
+  "tag_labels": ["栅栏", "农场", "栅栏门", "围栏", "程序化", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "区域掩码",
+      "description": "单张可用区域掩码网格（每非零单元格视为有效区域）；网格列表由引擎逐张 fanout。",
+      "description-en": "Single region mask grid (non-zero cells treated as valid area). The engine fans out a grid list one-by-one."
+    },
+    {
+      "name": "fenceMode",
+      "type": "string",
+      "access": "item",
+      "label": "栅栏形式",
+      "description": "栅栏布局算法：border=外围围栏，sections=分区围栏，plots=独立围栏",
+      "description-en": "Fence layout: border=single outer enclosure, sections=divider fences, plots=individual enclosures.",
+      "default": "border",
+      "options": ["border", "sections", "plots"]
+    },
+    {
+      "name": "gateCount",
+      "type": "number",
+      "access": "item",
+      "label": "栅栏门数量",
+      "description": "外围栏模式有效：1~4，按顺时针（上/右/下/左）各侧中心各加一扇门",
+      "description-en": "For border mode: 1–4 gates placed clockwise at the center of each side.",
+      "default": 2
+    },
+    {
+      "name": "sectionCount",
+      "type": "number",
+      "access": "item",
+      "label": "分区数量",
+      "description": "分区围栏模式有效：将区域分割为 N 个水平区段（最少2段）",
+      "description-en": "For sections mode: number of horizontal sections (minimum 2).",
+      "default": 3
+    },
+    {
+      "name": "gateWidth",
+      "type": "number",
+      "access": "item",
+      "label": "栅栏门宽度",
+      "description": "分区围栏模式有效：每道分隔栅栏中央门洞的格数",
+      "description-en": "For sections mode: width in cells of the gate opening in each divider.",
+      "default": 2
+    },
+    {
+      "name": "plotWidth",
+      "type": "number",
+      "access": "item",
+      "label": "围栏地块宽度",
+      "description": "独立围栏模式有效：每个围栏地块的列数（最少2格）",
+      "description-en": "For plots mode: width in columns of each fenced enclosure (minimum 2).",
+      "default": 8
+    },
+    {
+      "name": "plotHeight",
+      "type": "number",
+      "access": "item",
+      "label": "围栏地块高度",
+      "description": "独立围栏模式有效：每个围栏地块的行数（最少2格）",
+      "description-en": "For plots mode: height in rows of each fenced enclosure (minimum 2).",
+      "default": 8
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "控制分区围栏模式横纵方向随机结果，0表示每次随机",
+      "description-en": "Seed for random orientation in sections mode. 0 = random each run.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "栅栏网格",
+      "description": "单张多值网格：1=内部地面，2=栅栏，3=栅栏门；可接 grid_split_by_value 按语义拆分。",
+      "description-en": "Single multi-value grid: 1=interior, 2=fence, 3=gate; pipe to grid_split_by_value to separate semantics."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "栅栏名称清单",
+      "description": "名称清单，仅含网格中实际出现的 id，格式 [{id, name, type}]；栅栏门 type=\"asset\"，其余 type=\"tile\"",
+      "description-en": "Name list with only ids actually present, format [{id, name, type}]; gate entries type=\"asset\", others type=\"tile\"."
+    }
+  ]
+}

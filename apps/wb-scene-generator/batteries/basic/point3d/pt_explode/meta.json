@@ -1,0 +1,44 @@
+{
+  "id": "pt_explode",
+  "label": "展开点",
+  "name-en": "PtExplode",
+  "description": "把一个 point3d 拆成 x/y/z 三个数值输出。",
+  "description-en": "Split a point3d into its x/y/z number outputs.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["point3d", "basic", "explode"],
+  "tag_labels": ["三维点", "基础", "展开"],
+  "inputs": [
+    {
+      "name": "point",
+      "type": "point3d",
+      "required": true,
+      "label": "point",
+      "description": "待解构的三维点",
+      "description-en": "Point3D to deconstruct."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "x",
+      "type": "number",
+      "label": "x",
+      "description": "X 分量",
+      "description-en": "X component."
+    },
+    {
+      "name": "y",
+      "type": "number",
+      "label": "y",
+      "description": "Y 分量",
+      "description-en": "Y component."
+    },
+    {
+      "name": "z",
+      "type": "number",
+      "label": "z",
+      "description": "Z 分量",
+      "description-en": "Z component."
+    }
+  ]
+}

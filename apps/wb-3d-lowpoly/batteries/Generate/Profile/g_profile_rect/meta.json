@@ -1,0 +1,22 @@
+{
+  "id": "g_profile_rect",
+  "label": "矩形 Profile",
+  "name-en": "GProfileRect",
+  "description": "创建位于 XY 平面的矩形 profile。",
+  "description-en": "Create a rectangular profile in the XY plane.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "profile", "csg", "cad"],
+  "tag_labels": ["几何", "Profile", "CSG", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "w", "type": "number", "label": "宽", "default": 1 },
+    { "name": "d", "type": "number", "label": "深", "default": 1 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

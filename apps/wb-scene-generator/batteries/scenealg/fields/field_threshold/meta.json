@@ -1,0 +1,58 @@
+{
+  "id": "alg_field_threshold",
+  "label": "场阈值二分",
+  "name-en": "FieldThreshold",
+  "description": "按阈值把标量场切成「近/远」两个 0/1 子区域掩码。给定标量场 field（如距离场）与限定有效范围的 region 掩码，以 threshold 为界把 region 内的有效格二分：near = 有效格且 0<=field<=threshold（靠近源、距离小），far = 有效格且非 near（field>threshold，或 BFS 不可达的 -1）。两份并起来恰好等于 region 的有效格、互不重叠，适合内/外、浅/深、海岸/内陆之类的划分。约定（与距离场电池对齐）：field 中无效格=0、源格=0、不可达=-1，仅凭 field 无法区分无效格 0 与源格 0，故必须用 region 限定有效范围。",
+  "description-en": "Splits a scalar field into 'near'/'far' 0/1 sub-region masks by a threshold. Given a scalar field (e.g. a distance field) and a region mask bounding the valid cells, it partitions the region's valid cells at threshold: near = valid cells with 0<=field<=threshold (close to the sources, small distance), far = valid cells that are not near (field>threshold, or BFS-unreachable -1). The two masks together equal the region's valid cells and never overlap, ideal for inner/outer, shallow/deep, coast/inland splits. Convention (aligned with the distance batteries): in field, invalid cells=0, source cells=0, unreachable=-1; field alone cannot tell invalid 0 from source 0, so a region mask is required to bound the valid cells.",
+  "icon": "深色背景上一片区域被一条阈值等值线分成内外两块、分别用两种主色填充，体现按数值场二分子区域，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["field", "threshold", "segment", "region", "mask", "grid", "scenealg"],
+  "tag_labels": ["场", "阈值", "分割", "区域", "掩码", "网格", "场景算法"],
+  "inputs": [
+    {
+      "name": "field",
+      "type": "grid",
+      "required": true,
+      "access": "item",
+      "label": "标量场",
+      "description": "待阈值化的标量场 number[][]（如距离场）。约定：无效格 0、源格 0、不可达 -1。",
+      "description-en": "The scalar field number[][] to threshold (e.g. a distance field). Convention: invalid cells 0, source cells 0, unreachable -1."
+    },
+    {
+      "name": "region",
+      "type": "grid",
+      "required": true,
+      "access": "item",
+      "label": "有效范围",
+      "description": "限定有效范围的掩码，非零格为有效格。只有有效格会被分入 near/far，二者并集 = 有效格。",
+      "description-en": "Mask bounding the valid cells; non-zero cells are valid. Only valid cells are split into near/far, whose union equals the valid cells."
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "default": 1,
+      "label": "阈值",
+      "description": "近/远分界值（含界归入 near）。raw 距离场用整数（如 3 表示 3 格内为近）；归一化场用 [0,1] 小数（如 0.3）。",
+      "description-en": "Near/far boundary value (inclusive goes to near). For a raw distance field use an integer (e.g. 3 = within 3 cells is near); for a normalized field use a [0,1] decimal (e.g. 0.3)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "near",
+      "type": "grid",
+      "access": "item",
+      "label": "近处区域",
+      "description": "0/1 掩码：有效格且 0<=field<=threshold（靠近源/边界）。海洋用例=浅海，岛屿用例=海岸线。",
+      "description-en": "0/1 mask: valid cells with 0<=field<=threshold (close to sources/boundary). Ocean use case = shallow sea, island use case = coastline."
+    },
+    {
+      "name": "far",
+      "type": "grid",
+      "access": "item",
+      "label": "远处区域",
+      "description": "0/1 掩码：有效格中非 near 的部分（field>threshold 或不可达）。海洋用例=深海，岛屿用例=内陆。",
+      "description-en": "0/1 mask: valid cells not in near (field>threshold or unreachable). Ocean use case = deep sea, island use case = inland."
+    }
+  ]
+}

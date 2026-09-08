@@ -1,0 +1,29 @@
+{
+  "id": "gta_airport_roads",
+  "label": "GTA 机场道路",
+  "description": "在机场轮廓内生成独立跑道、滑行/服务道路，并从机场入口连接到现有城市道路。",
+  "description-en": "Generates a standalone runway, taxi/service roads, and an entrance road that connects the airport to the existing city road grid.",
+  "icon": "长跑道、平行滑行道和一条入口道路连接到城市主路。",
+  "version": "1.0.0",
+  "tags": ["gta", "airport", "runway", "road", "entrance"],
+  "tag_labels": ["GTA", "机场", "跑道", "道路", "入口"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "airportMask", "type": "grid", "label": "机场掩码" },
+    { "name": "airportSite", "type": "object", "label": "机场站点参数" },
+    { "name": "cityRoadGrid", "type": "grid", "label": "城市道路网格" },
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "heightMap", "type": "grid", "label": "高度图" },
+    { "name": "runwayWidth", "type": "number", "label": "跑道宽度", "default": 10, "min": 3, "max": 32 },
+    { "name": "taxiwayWidth", "type": "number", "label": "滑行道宽度", "default": 4, "min": 1, "max": 16 },
+    { "name": "entranceWidth", "type": "number", "label": "入口道路宽度", "default": 2, "min": 1, "max": 10 }
+  ],
+  "outputs": [
+    { "name": "roadGrid", "type": "grid", "label": "城市+机场道路" },
+    { "name": "runwayGrid", "type": "grid", "label": "机场跑道" },
+    { "name": "entranceRoadGrid", "type": "grid", "label": "机场入口道路" },
+    { "name": "serviceRoadGrid", "type": "grid", "label": "机场服务道路" },
+    { "name": "outputGrid", "type": "grid", "label": "机场道路预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

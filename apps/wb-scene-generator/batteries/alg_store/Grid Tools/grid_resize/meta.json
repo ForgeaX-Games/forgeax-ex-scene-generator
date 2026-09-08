@@ -1,0 +1,76 @@
+{
+  "id": "grid_resize",
+  "label": "网格缩放",
+  "description": "将输入网格缩放到指定尺寸，支持最近邻、双线性和双三次插值",
+  "description-en": "Resizes an input grid to the specified dimensions. Supports nearest-neighbor, bilinear, and bicubic interpolation methods.",
+  "icon": "左侧一个小的粗糙方格网格，通过箭头指向右侧一个大的精细方格网格，表示放大插值，简洁几何风格",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "basic",
+    "resize",
+    "scale",
+    "grid"
+  ],
+  "tag_labels": [
+    "基础",
+    "缩放",
+    "缩放",
+    "网格"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "待缩放的输入网格",
+      "description-en": "Input grid to be resized."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "label": "目标宽度",
+      "default": 256,
+      "min": 1,
+      "max": 2048,
+      "description": "输出网格的宽度",
+      "description-en": "Width of the output grid."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "目标高度",
+      "default": 256,
+      "min": 1,
+      "max": 2048,
+      "description": "输出网格的高度",
+      "description-en": "Height of the output grid."
+    },
+    {
+      "name": "method",
+      "type": "string",
+      "label": "插值方法",
+      "default": "bilinear",
+      "description": "插值方法：nearest=最近邻（锐利/像素风）, bilinear=双线性（平滑）, bicubic=双三次（更平滑，保留更多细节）",
+      "description-en": "Interpolation method: nearest, bilinear, or bicubic.",
+      "options": [
+        "nearest",
+        "bilinear",
+        "bicubic"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "缩放后的网格",
+      "description-en": "Resized output grid."
+    }
+  ],
+  "alg_tag": [
+    "将网格缩放到指定大小",
+    "网格插值"
+  ]
+}

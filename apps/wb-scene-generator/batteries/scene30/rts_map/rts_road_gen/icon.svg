@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_rts_road_gen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#935df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_rts_road_gen)"/>
+
+  <path fill="#fff" d="M12,4 C7.58,4,4,7.58,4,12 C4,16.42,7.58,20,12,20 C16.42,20,20,16.42,20,12 C20,7.58,16.42,4,12,4 Z M12,18 C8.69,18,6,15.31,6,12 C6,8.69,8.69,6,12,6 C15.31,6,18,8.69,18,12 C18,15.31,15.31,18,12,18 Z"/>
+  <rect x="2" y="2" width="3" height="3" fill="rgba(0,0,0,0.55)"/>
+  <rect x="19" y="2" width="3" height="3" fill="rgba(0,0,0,0.55)"/>
+  <rect x="2" y="19" width="3" height="3" fill="rgba(0,0,0,0.55)"/>
+  <rect x="19" y="19" width="3" height="3" fill="rgba(0,0,0,0.55)"/>
+  <line x1="6.5" y1="6.5" x2="10" y2="10" stroke="#fff" stroke-width="1"/>
+  <line x1="14" y1="10" x2="17.5" y2="6.5" stroke="#fff" stroke-width="1"/>
+  <line x1="6.5" y1="17.5" x2="10" y2="14" stroke="#fff" stroke-width="1"/>
+  <line x1="14" y1="14" x2="17.5" y2="17.5" stroke="#fff" stroke-width="1"/>
+
+</svg>

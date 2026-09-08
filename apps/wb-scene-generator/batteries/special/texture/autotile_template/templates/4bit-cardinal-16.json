@@ -1,0 +1,53 @@
+{
+  "type": "4bit-cardinal-16",
+  "name": "4bit-cardinal-16",
+  "remarks": "标准 4-bit 四方向自动贴图（4列 x 4~5行图集）",
+  "sprites": [
+    { "name": "Sprite 1", "x": 0, "y": 0, "width": 16, "height": 16 },
+    { "name": "Sprite 2", "x": 16, "y": 0, "width": 16, "height": 16 },
+    { "name": "Sprite 3", "x": 32, "y": 0, "width": 16, "height": 16 },
+    { "name": "Sprite 4", "x": 48, "y": 0, "width": 16, "height": 16 },
+    { "name": "Sprite 5", "x": 0, "y": 16, "width": 16, "height": 16 },
+    { "name": "Sprite 6", "x": 16, "y": 16, "width": 16, "height": 16 },
+    { "name": "Sprite 7", "x": 32, "y": 16, "width": 16, "height": 16 },
+    { "name": "Sprite 8", "x": 48, "y": 16, "width": 16, "height": 16 },
+    { "name": "Sprite 9", "x": 0, "y": 32, "width": 16, "height": 16 },
+    { "name": "Sprite 10", "x": 16, "y": 32, "width": 16, "height": 16 },
+    { "name": "Sprite 11", "x": 32, "y": 32, "width": 16, "height": 16 },
+    { "name": "Sprite 12", "x": 48, "y": 32, "width": 16, "height": 16 },
+    { "name": "Sprite 13", "x": 0, "y": 48, "width": 16, "height": 16 },
+    { "name": "Sprite 14", "x": 16, "y": 48, "width": 16, "height": 16 },
+    { "name": "Sprite 15", "x": 32, "y": 48, "width": 16, "height": 16 },
+    { "name": "Sprite 16", "x": 48, "y": 48, "width": 16, "height": 16 },
+    { "name": "Sprite 17", "x": 0, "y": 64, "width": 16, "height": 16 },
+    { "name": "Sprite 18", "x": 16, "y": 64, "width": 16, "height": 16 },
+    { "name": "Sprite 19", "x": 32, "y": 64, "width": 16, "height": 16 },
+    { "name": "Sprite 20", "x": 48, "y": 64, "width": 16, "height": 16 }
+  ],
+  "base_pieces": 16,
+  "total_pieces": 20,
+  "map": {
+    "0,1,0,0": 0,
+    "0,1,0,1": 1,
+    "0,1,1,1": 2,
+    "0,1,1,0": 3,
+    "1,1,0,0": 4,
+    "1,1,0,1": 5,
+    "1,1,1,1": 6,
+    "1,1,1,0": 7,
+    "1,0,0,0": 8,
+    "1,0,0,1": 9,
+    "1,0,1,1": 10,
+    "1,0,1,0": 11,
+    "0,0,0,0": 12,
+    "0,0,0,1": 13,
+    "0,0,1,1": 14,
+    "0,0,1,0": 15
+  },
+  "randomRules": [
+    {
+      "tileId": 6,
+      "keepProbability": 0.6
+    }
+  ]
+}

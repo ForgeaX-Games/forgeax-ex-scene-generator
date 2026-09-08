@@ -1,0 +1,114 @@
+{
+  "id": "g_texture",
+  "label": "贴图",
+  "name-en": "GTexture",
+  "description": "在 Geometry DSL 末尾追加 texture(image=.., repeat=[u,v], offset=[u,v], rotation=..) 一行；image 是相对工程 assets/textures/ 目录的路径，文件需手动放好。接到 g_material 的 texture 输入即可让烘焙的 GLB 贴图（仅 g_bake_object 产线，需要真实 OCCT 面才能精确算 UV）。",
+  "description-en": "Append a `texture(image=.., repeat=[u,v], offset=[u,v], rotation=..)` line. `image` is a path relative to the project's assets/textures/ directory (place the file there manually). Wire into g_material's texture input to texture-map baked GLBs (g_bake_object pipeline only; needs real OCCT faces for accurate UVs).",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "geometry",
+    "material",
+    "texture",
+    "cad"
+  ],
+  "tag_labels": [
+    "几何",
+    "材质",
+    "贴图",
+    "CAD"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": false,
+      "label": "几何",
+      "description": "上游 Geometry",
+      "description-en": "Upstream Geometry."
+    },
+    {
+      "name": "image",
+      "type": "string",
+      "required": true,
+      "label": "贴图路径",
+      "description": "相对工程 assets/textures/ 的贴图文件路径（如 \"wood.png\"）",
+      "description-en": "Texture file path relative to assets/textures/ (e.g. \"wood.png\")."
+    },
+    {
+      "name": "repeat_u",
+      "type": "number",
+      "label": "重复 U",
+      "default": 1,
+      "description": "U 方向重复次数",
+      "description-en": "Repeat count along U."
+    },
+    {
+      "name": "repeat_v",
+      "type": "number",
+      "label": "重复 V",
+      "default": 1,
+      "description": "V 方向重复次数",
+      "description-en": "Repeat count along V."
+    },
+    {
+      "name": "offset_u",
+      "type": "number",
+      "label": "偏移 U",
+      "default": 0,
+      "description": "U 方向偏移",
+      "description-en": "Offset along U."
+    },
+    {
+      "name": "offset_v",
+      "type": "number",
+      "label": "偏移 V",
+      "default": 0,
+      "description": "V 方向偏移",
+      "description-en": "Offset along V."
+    },
+    {
+      "name": "rotation",
+      "type": "number",
+      "label": "旋转",
+      "default": 0,
+      "description": "UV 旋转（弧度）",
+      "description-en": "UV rotation in radians."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空 = 自动 tex{n}",
+      "description-en": "Custom id; empty = auto tex{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加后 Geometry",
+      "description-en": "Geometry after appending."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 texture 的 id（供 g_material 的 texture_id 引用）",
+      "description-en": "Id of the texture line (feed into g_material's texture_id)."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "非致命错误信息（校验失败时返回，几何原样透传）",
+      "description-en": "Non-fatal error string (returned on validation failure; geometry passes through unchanged)."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

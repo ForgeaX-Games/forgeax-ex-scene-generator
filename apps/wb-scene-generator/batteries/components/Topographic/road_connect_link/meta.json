@@ -1,0 +1,85 @@
+{
+  "id": "road_connect_link",
+  "label": "道路连接连连看",
+  "name-en": "RoadConnectLink",
+  "description": "把单张 POI 网格里的连接点用连连看式折线路径（最多 maxTurns 次转弯，0转弯=直线、1转弯=L形、2转弯=Z/S形）在障碍约束下全部连通成一张道路拓扑；连连看找不到通道时降级 A* 兜底。输入/输出都是单张 grid（item），网格列表由引擎按 DataTree 自动逐张 fanout。coverPoi=false 时输出会扣掉 POI 格点。",
+  "description-en": "Connects the points in a single POI grid into one road topology using link-game style paths (at most maxTurns turns: 0=straight, 1=L-shape, 2=Z/S-shape) under obstacle constraints, falling back to A* when no link route exists. Input/output are single grids (item); the engine fans out a DataTree of grids one-by-one. When coverPoi is false the POI cells are removed from the output.",
+  "icon": "俯视地图上若干圆点被两段折线连通，路径呈L形或Z形，线条干净笔直，深色底配亮白折线，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "autoIterate": true,
+  "tags": ["road", "path", "connect", "link", "lianliankan", "orthogonal", "countryside", "poi", "datatree"],
+  "tag_labels": ["道路", "路径", "连接", "连连看", "折线", "正交", "田园", "兴趣点", "数据树"],
+  "inputs": [
+    {
+      "name": "poiGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "POI 网格",
+      "description": "单张 POI 网格，自动取值最大的格子坐标作为连接点（保留网格尺寸）。网格列表由引擎按 DataTree 自动逐张 fanout。",
+      "description-en": "A single POI grid; cells with the maximum value are extracted as connection points (grid size preserved). The engine fans out a DataTree of grids one-by-one."
+    },
+    {
+      "name": "obstacle",
+      "type": "grid",
+      "access": "item",
+      "label": "障碍场",
+      "description": "障碍物网格，非零格不可通行。不传时按 poiGrid 尺寸建空白障碍。",
+      "description-en": "Obstacle grid; non-zero cells are impassable. If omitted, an empty obstacle of poiGrid size is used."
+    },
+    {
+      "name": "roadWidth",
+      "type": "number",
+      "access": "item",
+      "default": 1,
+      "label": "道路宽度",
+      "description": "道路宽度（格），通过膨胀实现。默认 1。",
+      "description-en": "Road width in cells via dilation. Default 1."
+    },
+    {
+      "name": "roadValue",
+      "type": "number",
+      "access": "item",
+      "default": 1,
+      "label": "道路值",
+      "description": "道路格写入的数值，默认 1。",
+      "description-en": "Value written to road cells. Default 1."
+    },
+    {
+      "name": "maxTurns",
+      "type": "number",
+      "access": "item",
+      "default": 2,
+      "label": "最大转弯次数",
+      "description": "连连看寻路最大转弯次数。0=仅直线；1=允许 L 形；2=允许 Z/S 形。默认 2。",
+      "description-en": "Max turns for link-game routing. 0 = straight only; 1 = allow L-shape; 2 = allow Z/S-shape. Default 2."
+    },
+    {
+      "name": "coverPoi",
+      "type": "boolean",
+      "access": "item",
+      "default": false,
+      "label": "覆盖格点",
+      "description": "是否在输出道路中保留 POI 格点。true：道路包含 POI 格点；false：从道路中扣掉 POI 格点（POI 所在位置置 0）。默认 false。",
+      "description-en": "Whether to keep POI cells in the output road. true: road includes POI cells; false: POI cells are removed from the output (set to 0). Default false."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "access": "item",
+      "label": "道路拓扑",
+      "description": "道路线网 0/roadValue grid，道路格=roadValue，其余=0。",
+      "description-en": "Road topology grid (0/roadValue); road cells = roadValue, others = 0."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "名称清单，格式 [{id, name, type}]，包含道路项。",
+      "description-en": "Name list [{id, name, type}] with the road entry."
+    }
+  ]
+}

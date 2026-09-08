@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_furniture_name_collapse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#7f81f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_furniture_name_collapse)"/>
+
+  <path fill="#fff" d="M12 2L4 7V9L12 14L20 9V7L12 2Z" />
+  <rect x="7" y="15" width="10" height="1" fill="#fff" />
+  <rect x="7" y="17" width="10" height="1" fill="#fff" />
+  <rect x="7" y="19" width="10" height="1" fill="#fff" />
+  <path fill="rgba(0,0,0,0.55)" d="M12 14L4 9V11L12 16L20 11V9L12 14Z" />
+
+</svg>

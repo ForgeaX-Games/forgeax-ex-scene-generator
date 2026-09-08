@@ -1,0 +1,23 @@
+{
+  "id": "g_revolve",
+  "label": "Revolve",
+  "name-en": "GRevolve",
+  "description": "将 [r,z] profile 绕 Z 轴旋转为实体 shape。何时用：生成回转体（瓶/碗/灯罩/旋钮帽/喷嘴），不要用一摞圆柱去近似曲线轮廓。",
+  "description-en": "Revolve an [r,z] profile around Z into a solid shape. Use when: making bodies of revolution (bottle/bowl/shade/cap/nozzle) — do not approximate a curved profile with stacked cylinders.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "profile", "revolve", "cad"],
+  "tag_labels": ["几何", "Profile", "Revolve", "CAD"],
+  "principal": "geometry",
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何", "description": "上游 Geometry（必须含 profile_id 所指 [r,z] profile）", "description-en": "Upstream Geometry; must contain the [r,z] profile referenced by profile_id." },
+    { "name": "profile_id", "type": "string", "label": "Profile id", "default": "", "description": "要旋转的 [r,z] profile id；从上游 Profile 节点的 id 输出连入", "description-en": "Id of the [r,z] profile to revolve. Feed from an upstream Profile node's `id` output." },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "", "description": "本结果的自定义 id；空 = 自动 rev{n}", "description-en": "Custom id; empty = auto rev{n}." }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何", "description": "追加回转体后的 Geometry", "description-en": "Geometry after appending the revolved solid." },
+    { "name": "id", "type": "string", "label": "id", "description": "本行 shape 的 id（供下游引用）；引用失败时为空串", "description-en": "Id of the new shape (for downstream refs). Empty string when the ref failed." },
+    { "name": "error", "type": "string", "label": "错误", "description": "profile_id 缺失或找不到时的原因；非空表示未追加任何几何，批次仍可能报 ok，务必读取", "description-en": "Reason when profile_id is missing or not found. Non-empty means nothing was appended even though the batch may report ok — always read it." }
+  ],
+  "projectTypes": ["asset3d"]
+}

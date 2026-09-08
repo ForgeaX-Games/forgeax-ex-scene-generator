@@ -1,0 +1,38 @@
+{
+  "id": "image_reader",
+  "label": "图像读取",
+  "description": "从本地文件系统读取一张图片，上传到资产库并输出图像别名，供下游 image 节点使用",
+  "description-en": "Load a local image file, upload to the asset library, and output an image alias for downstream image nodes.",
+  "icon": "一个打开的文件夹图标上方浮着一张图片，图片有简洁的山景缩略图，扁平插画风格，主色青绿色与深色背景，小尺寸可辨，主色2种。",
+  "version": "2.0.0",
+  "tags": [
+    "image",
+    "read",
+    "load",
+    "file",
+    "basic",
+    "asset"
+  ],
+  "tag_labels": [
+    "图像",
+    "读取",
+    "加载",
+    "文件",
+    "基础",
+    "资产"
+  ],
+  "frontend": {
+    "nodeType": "image_reader"
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "图像",
+      "description": "上传到资产库的图片别名，可连接到任何接收 image 的下游节点",
+      "description-en": "Alias of the uploaded image in the asset library, connectable to any downstream image input."
+    }
+  ]
+}

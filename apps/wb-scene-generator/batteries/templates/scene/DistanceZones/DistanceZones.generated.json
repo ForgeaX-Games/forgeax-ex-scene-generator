@@ -1,0 +1,670 @@
+{
+  "id": "group_1783200020000_dzone",
+  "name": "DistanceZones",
+  "nameEn": "DistanceZones",
+  "nodes": [
+    {
+      "id": "node-dz-pass-in",
+      "opId": "scene_passthrough",
+      "name": "SceneIn",
+      "position": { "x": -1200, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-explode",
+      "opId": "node_explode",
+      "name": "Explode",
+      "position": { "x": -950, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-rect",
+      "opId": "rect_grid",
+      "name": "RectGrid",
+      "position": { "x": -700, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-slice",
+      "opId": "voxel_slice",
+      "name": "VoxelSlice",
+      "position": { "x": -450, "y": 0 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-field",
+      "opId": "alg_field_inner_distance",
+      "name": "InnerDistance",
+      "position": { "x": -180, "y": 40 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-threshold",
+      "opId": "alg_field_threshold",
+      "name": "Threshold",
+      "position": { "x": 80, "y": 60 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-g2n-near",
+      "opId": "grid2node",
+      "name": "NearNode",
+      "position": { "x": 340, "y": -60 },
+      "params": {}
+    },
+    {
+      "id": "group_1783200020000_tanear",
+      "opId": "__group__",
+      "name": "NearAssetName",
+      "position": { "x": 600, "y": -80 },
+      "params": { "groupId": "group_1783200020000_tanear" }
+    },
+    {
+      "id": "node-dz-addchild-near",
+      "opId": "add_child",
+      "name": "AddNear",
+      "position": { "x": 860, "y": -20 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-g2n-far",
+      "opId": "grid2node",
+      "name": "FarNode",
+      "position": { "x": 340, "y": 200 },
+      "params": {}
+    },
+    {
+      "id": "group_1783200020000_tafar",
+      "opId": "__group__",
+      "name": "FarAssetName",
+      "position": { "x": 600, "y": 180 },
+      "params": { "groupId": "group_1783200020000_tafar" }
+    },
+    {
+      "id": "node-dz-addchild-far",
+      "opId": "add_child",
+      "name": "AddFar",
+      "position": { "x": 860, "y": 220 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-merge",
+      "opId": "scene_merge_subtrees",
+      "name": "Merge",
+      "position": { "x": 1120, "y": 100 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-focus-near",
+      "opId": "scene_focus_path",
+      "name": "FocusNear",
+      "position": { "x": 1380, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-focus-far",
+      "opId": "scene_focus_path",
+      "name": "FocusFar",
+      "position": { "x": 1380, "y": 200 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-pass-near",
+      "opId": "scene_passthrough",
+      "name": "NearOut",
+      "position": { "x": 1640, "y": -40 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-pass-far",
+      "opId": "scene_passthrough",
+      "name": "FarOut",
+      "position": { "x": 1640, "y": 200 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-pass-scene",
+      "opId": "scene_passthrough",
+      "name": "SceneOut",
+      "position": { "x": 1640, "y": 80 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-type-nearpath",
+      "opId": "type_string",
+      "name": "NearPath",
+      "position": { "x": 1640, "y": -140 },
+      "params": {}
+    },
+    {
+      "id": "node-dz-type-farpath",
+      "opId": "type_string",
+      "name": "FarPath",
+      "position": { "x": 1640, "y": 300 },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-dz-passin-explode",
+      "source": { "nodeId": "node-dz-pass-in", "port": "scene" },
+      "target": { "nodeId": "node-dz-explode", "port": "scene" }
+    },
+    {
+      "id": "e-dz-explode-rect-w",
+      "source": { "nodeId": "node-dz-explode", "port": "width" },
+      "target": { "nodeId": "node-dz-rect", "port": "width" }
+    },
+    {
+      "id": "e-dz-explode-rect-h",
+      "source": { "nodeId": "node-dz-explode", "port": "height" },
+      "target": { "nodeId": "node-dz-rect", "port": "height" }
+    },
+    {
+      "id": "e-dz-explode-slice-vox",
+      "source": { "nodeId": "node-dz-explode", "port": "voxels" },
+      "target": { "nodeId": "node-dz-slice", "port": "voxels" }
+    },
+    {
+      "id": "e-dz-rect-slice-grid",
+      "source": { "nodeId": "node-dz-rect", "port": "grid" },
+      "target": { "nodeId": "node-dz-slice", "port": "grid" }
+    },
+    {
+      "id": "e-dz-slice-field-region",
+      "source": { "nodeId": "node-dz-slice", "port": "slice" },
+      "target": { "nodeId": "node-dz-field", "port": "region" }
+    },
+    {
+      "id": "e-dz-slice-thr-region",
+      "source": { "nodeId": "node-dz-slice", "port": "slice" },
+      "target": { "nodeId": "node-dz-threshold", "port": "region" }
+    },
+    {
+      "id": "e-dz-field-thr-field",
+      "source": { "nodeId": "node-dz-field", "port": "field" },
+      "target": { "nodeId": "node-dz-threshold", "port": "field" }
+    },
+    {
+      "id": "e-dz-thr-g2nnear",
+      "source": { "nodeId": "node-dz-threshold", "port": "near" },
+      "target": { "nodeId": "node-dz-g2n-near", "port": "grid" }
+    },
+    {
+      "id": "e-dz-thr-g2nfar",
+      "source": { "nodeId": "node-dz-threshold", "port": "far" },
+      "target": { "nodeId": "node-dz-g2n-far", "port": "grid" }
+    },
+    {
+      "id": "e-dz-g2nnear-asset",
+      "source": { "nodeId": "node-dz-g2n-near", "port": "scene" },
+      "target": { "nodeId": "group_1783200020000_tanear", "port": "in_0" }
+    },
+    {
+      "id": "e-dz-asset-addnear",
+      "source": { "nodeId": "group_1783200020000_tanear", "port": "out_0" },
+      "target": { "nodeId": "node-dz-addchild-near", "port": "nodes" }
+    },
+    {
+      "id": "e-dz-passin-addnear",
+      "source": { "nodeId": "node-dz-pass-in", "port": "scene" },
+      "target": { "nodeId": "node-dz-addchild-near", "port": "scene" }
+    },
+    {
+      "id": "e-dz-g2nfar-asset",
+      "source": { "nodeId": "node-dz-g2n-far", "port": "scene" },
+      "target": { "nodeId": "group_1783200020000_tafar", "port": "in_0" }
+    },
+    {
+      "id": "e-dz-asset-addfar",
+      "source": { "nodeId": "group_1783200020000_tafar", "port": "out_0" },
+      "target": { "nodeId": "node-dz-addchild-far", "port": "nodes" }
+    },
+    {
+      "id": "e-dz-addnear-addfar",
+      "source": { "nodeId": "node-dz-addchild-near", "port": "scene" },
+      "target": { "nodeId": "node-dz-addchild-far", "port": "scene" }
+    },
+    {
+      "id": "e-dz-addfar-merge",
+      "source": { "nodeId": "node-dz-addchild-far", "port": "scene" },
+      "target": { "nodeId": "node-dz-merge", "port": "scenes" }
+    },
+    {
+      "id": "e-dz-merge-focusnear",
+      "source": { "nodeId": "node-dz-merge", "port": "scene" },
+      "target": { "nodeId": "node-dz-focus-near", "port": "scene" }
+    },
+    {
+      "id": "e-dz-addnear-focusnear",
+      "source": { "nodeId": "node-dz-addchild-near", "port": "childPaths" },
+      "target": { "nodeId": "node-dz-focus-near", "port": "path" }
+    },
+    {
+      "id": "e-dz-focusnear-passnear",
+      "source": { "nodeId": "node-dz-focus-near", "port": "scene" },
+      "target": { "nodeId": "node-dz-pass-near", "port": "scene" }
+    },
+    {
+      "id": "e-dz-merge-focusfar",
+      "source": { "nodeId": "node-dz-merge", "port": "scene" },
+      "target": { "nodeId": "node-dz-focus-far", "port": "scene" }
+    },
+    {
+      "id": "e-dz-addfar-focusfar",
+      "source": { "nodeId": "node-dz-addchild-far", "port": "childPaths" },
+      "target": { "nodeId": "node-dz-focus-far", "port": "path" }
+    },
+    {
+      "id": "e-dz-focusfar-passfar",
+      "source": { "nodeId": "node-dz-focus-far", "port": "scene" },
+      "target": { "nodeId": "node-dz-pass-far", "port": "scene" }
+    },
+    {
+      "id": "e-dz-merge-passscene",
+      "source": { "nodeId": "node-dz-merge", "port": "scene" },
+      "target": { "nodeId": "node-dz-pass-scene", "port": "scene" }
+    },
+    {
+      "id": "e-dz-addnear-nearpath",
+      "source": { "nodeId": "node-dz-addchild-near", "port": "childPaths" },
+      "target": { "nodeId": "node-dz-type-nearpath", "port": "value" }
+    },
+    {
+      "id": "e-dz-addfar-farpath",
+      "source": { "nodeId": "node-dz-addchild-far", "port": "childPaths" },
+      "target": { "nodeId": "node-dz-type-farpath", "port": "value" }
+    }
+  ],
+  "position": { "x": -700, "y": 2400 },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-dz-pass-in",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "in_1",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-dz-threshold",
+      "sourcePortName": "threshold",
+      "order": 1,
+      "customLabelEn": "Threshold"
+    },
+    {
+      "portName": "in_2",
+      "portType": "bool",
+      "access": "item",
+      "sourceNodeId": "node-dz-field",
+      "sourcePortName": "includeOuterBoundary",
+      "order": 2,
+      "customLabelEn": "IncludeOuterBoundary"
+    },
+    {
+      "portName": "in_3",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-dz-g2n-near",
+      "sourcePortName": "name",
+      "order": 3,
+      "customLabelEn": "NearName"
+    },
+    {
+      "portName": "in_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "group_1783200020000_tanear",
+      "sourcePortName": "in_1",
+      "order": 4,
+      "customLabelEn": "NearAsset"
+    },
+    {
+      "portName": "in_5",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-dz-g2n-far",
+      "sourcePortName": "name",
+      "order": 5,
+      "customLabelEn": "FarName"
+    },
+    {
+      "portName": "in_6",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "group_1783200020000_tafar",
+      "sourcePortName": "in_1",
+      "order": 6,
+      "customLabelEn": "FarAsset"
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-dz-field",
+      "sourcePortName": "connectivity",
+      "hidden": true,
+      "order": 7
+    },
+    {
+      "portName": "in_8",
+      "portType": "bool",
+      "access": "item",
+      "sourceNodeId": "node-dz-field",
+      "sourcePortName": "normalize",
+      "hidden": true,
+      "order": 8
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-dz-slice",
+      "sourcePortName": "z",
+      "hidden": true,
+      "order": 9
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-dz-rect",
+      "sourcePortName": "fillValue",
+      "hidden": true,
+      "order": 10
+    },
+    {
+      "portName": "in_11",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-dz-g2n-near",
+      "sourcePortName": "schema",
+      "hidden": true,
+      "order": 11
+    },
+    {
+      "portName": "in_12",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-dz-g2n-near",
+      "sourcePortName": "token",
+      "hidden": true,
+      "order": 12
+    },
+    {
+      "portName": "in_13",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "node-dz-g2n-near",
+      "sourcePortName": "zRange",
+      "hidden": true,
+      "order": 13
+    },
+    {
+      "portName": "in_14",
+      "portType": "number",
+      "access": "list",
+      "sourceNodeId": "node-dz-g2n-far",
+      "sourcePortName": "zRange",
+      "hidden": true,
+      "order": 14
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-dz-pass-scene",
+      "sourcePortName": "scene",
+      "order": 0,
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "out_1",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-dz-pass-near",
+      "sourcePortName": "scene",
+      "order": 1,
+      "customLabelEn": "Near"
+    },
+    {
+      "portName": "out_2",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-dz-pass-far",
+      "sourcePortName": "scene",
+      "order": 2,
+      "customLabelEn": "Far"
+    },
+    {
+      "portName": "out_3",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-dz-type-nearpath",
+      "sourcePortName": "value",
+      "order": 3,
+      "customLabelEn": "NearPath"
+    },
+    {
+      "portName": "out_4",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-dz-type-farpath",
+      "sourcePortName": "value",
+      "order": 4,
+      "customLabelEn": "FarPath"
+    }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_1783200020000_tanear",
+      "name": "NearAssetName",
+      "nameEn": "NearAssetName",
+      "nodes": [
+        {
+          "id": "node-dz-tanear-name",
+          "opId": "text_panel",
+          "name": "asset_name_key",
+          "position": { "x": 1823, "y": 320 },
+          "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 }
+        },
+        {
+          "id": "node-dz-tanear-type",
+          "opId": "text_panel",
+          "name": "asset_type_key",
+          "position": { "x": 2101, "y": 317 },
+          "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "node-dz-tanear-tile",
+          "opId": "text_panel",
+          "name": "tile_value",
+          "position": { "x": 2101, "y": 486 },
+          "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "node-dz-tanear-set1",
+          "opId": "scene_set_attribute",
+          "name": "set_asset_name",
+          "position": { "x": 2003, "y": 159 },
+          "params": {}
+        },
+        {
+          "id": "node-dz-tanear-set2",
+          "opId": "scene_set_attribute",
+          "name": "set_asset_type",
+          "position": { "x": 2273, "y": 167 },
+          "params": {}
+        },
+        {
+          "id": "node-dz-tanear-str",
+          "opId": "type_string",
+          "name": "asset_name_value",
+          "position": { "x": 1795, "y": 219 },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "e-dz-tanear-name-set1",
+          "source": { "nodeId": "node-dz-tanear-name", "port": "output" },
+          "target": { "nodeId": "node-dz-tanear-set1", "port": "key" }
+        },
+        {
+          "id": "e-dz-tanear-set1-set2",
+          "source": { "nodeId": "node-dz-tanear-set1", "port": "scene" },
+          "target": { "nodeId": "node-dz-tanear-set2", "port": "scene" }
+        },
+        {
+          "id": "e-dz-tanear-type-set2",
+          "source": { "nodeId": "node-dz-tanear-type", "port": "output" },
+          "target": { "nodeId": "node-dz-tanear-set2", "port": "key" }
+        },
+        {
+          "id": "e-dz-tanear-tile-set2",
+          "source": { "nodeId": "node-dz-tanear-tile", "port": "output" },
+          "target": { "nodeId": "node-dz-tanear-set2", "port": "value" }
+        },
+        {
+          "id": "e-dz-tanear-str-set1",
+          "source": { "nodeId": "node-dz-tanear-str", "port": "value" },
+          "target": { "nodeId": "node-dz-tanear-set1", "port": "value" }
+        }
+      ],
+      "position": { "x": 600, "y": -80 },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-dz-tanear-set1",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-dz-tanear-str",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-dz-tanear-set2",
+          "sourcePortName": "scene"
+        }
+      ]
+    },
+    {
+      "id": "group_1783200020000_tafar",
+      "name": "FarAssetName",
+      "nameEn": "FarAssetName",
+      "nodes": [
+        {
+          "id": "node-dz-tafar-name",
+          "opId": "text_panel",
+          "name": "asset_name_key",
+          "position": { "x": 1823, "y": 820 },
+          "params": { "text": "asset_name", "_nodeWidth": 180, "_nodeHeight": 67 }
+        },
+        {
+          "id": "node-dz-tafar-type",
+          "opId": "text_panel",
+          "name": "asset_type_key",
+          "position": { "x": 2101, "y": 817 },
+          "params": { "text": "asset_type", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "node-dz-tafar-tile",
+          "opId": "text_panel",
+          "name": "tile_value",
+          "position": { "x": 2101, "y": 986 },
+          "params": { "text": "tile", "_nodeWidth": 181, "_nodeHeight": 60 }
+        },
+        {
+          "id": "node-dz-tafar-set1",
+          "opId": "scene_set_attribute",
+          "name": "set_asset_name",
+          "position": { "x": 2003, "y": 659 },
+          "params": {}
+        },
+        {
+          "id": "node-dz-tafar-set2",
+          "opId": "scene_set_attribute",
+          "name": "set_asset_type",
+          "position": { "x": 2273, "y": 667 },
+          "params": {}
+        },
+        {
+          "id": "node-dz-tafar-str",
+          "opId": "type_string",
+          "name": "asset_name_value",
+          "position": { "x": 1795, "y": 719 },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "e-dz-tafar-name-set1",
+          "source": { "nodeId": "node-dz-tafar-name", "port": "output" },
+          "target": { "nodeId": "node-dz-tafar-set1", "port": "key" }
+        },
+        {
+          "id": "e-dz-tafar-set1-set2",
+          "source": { "nodeId": "node-dz-tafar-set1", "port": "scene" },
+          "target": { "nodeId": "node-dz-tafar-set2", "port": "scene" }
+        },
+        {
+          "id": "e-dz-tafar-type-set2",
+          "source": { "nodeId": "node-dz-tafar-type", "port": "output" },
+          "target": { "nodeId": "node-dz-tafar-set2", "port": "key" }
+        },
+        {
+          "id": "e-dz-tafar-tile-set2",
+          "source": { "nodeId": "node-dz-tafar-tile", "port": "output" },
+          "target": { "nodeId": "node-dz-tafar-set2", "port": "value" }
+        },
+        {
+          "id": "e-dz-tafar-str-set1",
+          "source": { "nodeId": "node-dz-tafar-str", "port": "value" },
+          "target": { "nodeId": "node-dz-tafar-set1", "port": "value" }
+        }
+      ],
+      "position": { "x": 600, "y": 180 },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-dz-tafar-set1",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-dz-tafar-str",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-dz-tafar-set2",
+          "sourcePortName": "scene"
+        }
+      ]
+    }
+  ]
+}

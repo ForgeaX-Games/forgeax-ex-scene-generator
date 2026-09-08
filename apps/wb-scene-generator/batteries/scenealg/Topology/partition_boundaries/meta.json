@@ -1,0 +1,42 @@
+{
+  "id": "alg_partition_boundaries",
+  "label": "分块边界",
+  "name-en": "PartitionBoundaries",
+  "description": "从分块列表中提取相邻分量之间的边界格，输出单张拓扑 grid。一个格被标为边界，当且仅当它自身或其 8-邻接格里出现 ≥2 个不同的分量编号。可用于把 BSP 分块还原为切分线（含十字路口角点）、或可视化拓扑切区的分块边界。",
+  "description-en": "Extracts inter-partition boundary cells from a list of partition grids. A cell is marked as boundary iff itself or any of its 8-neighbors are covered by ≥2 different partitions. Useful for recovering BSP split lines (including cross-intersection corners) or visualizing topology-split borders.",
+  "icon": "深色背景上几个色块拼贴在一起，相邻色块之间高亮的细线表示边界，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "partition",
+    "topology",
+    "boundary",
+    "edge"
+  ],
+  "tag_labels": [
+    "分块",
+    "拓扑",
+    "边界",
+    "边"
+  ],
+  "inputs": [
+    {
+      "name": "partition",
+      "type": "grid",
+      "required": true,
+      "label": "分块列表",
+      "description": "一组同形状 0/1 网格，每张代表一个分量。",
+      "description-en": "List of same-shape 0/1 grids, one per partition cell.",
+      "access": "list"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "topology",
+      "type": "grid",
+      "label": "边界拓扑",
+      "description": "0/1 边界拓扑 grid，与输入分量同形状。",
+      "description-en": "0/1 boundary topology grid, same shape as input partition cells."
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": "g_place_local",
+  "label": "相对父件摆放",
+  "name-en": "GPlaceLocal",
+  "description": "把 child 按「相对 parent 的局部位姿」摆好：child.origin = parent.origin + R(parent.rpy)·offset，child.rpy = parent.rpy ∘ rpy。复合在编译期完成并用绝对位姿写回 child part，不生成 joint —— 静态路（无 joint）的建筑就靠它表达窗嵌墙洞 / 门框嵌墙洞 / 门扇挂门框这类只能相对父件表达的位置。链式可用：先把门框摆到墙上，再把门扇摆到门框上。要做真正可开合的门窗才写 joint(type=\"revolute\")，那会让整栋楼回到 URDF 路。",
+  "description-en": "Place a child at a pose expressed RELATIVE to its parent: child.origin = parent.origin + R(parent.rpy)·offset and child.rpy = parent.rpy ∘ rpy. The composition happens at compile time and is written back as the child's absolute pose — no joint is created, so the model stays on the static path. This is how jointless buildings express the poses that can only be stated relative to a parent (window in a wall opening, door frame in a wall opening, door leaf on a frame). Chains work: place the frame on the wall, then the leaf on the frame. Use joint(type=\"revolute\") only when the door/window must actually open — that puts the whole building back on the URDF path.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "placement",
+    "assembly",
+    "static"
+  ],
+  "tag_labels": [
+    "几何",
+    "放置",
+    "装配",
+    "静态"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry（必须含 parent 与 child 两件）",
+      "description-en": "Upstream Geometry containing both parts."
+    },
+    {
+      "name": "parent_id",
+      "type": "string",
+      "required": true,
+      "label": "父部件 id",
+      "description": "父 part id（读它的 origin/rpy 作为参考系）；也可填 shape id，没有 part 包它时自动补一行",
+      "description-en": "Parent part id (its origin/rpy is the reference frame); a shape id is also accepted and auto-wrapped."
+    },
+    {
+      "name": "child_id",
+      "type": "string",
+      "required": true,
+      "label": "子部件 id",
+      "description": "子 part id；其 origin/rpy 会被改写成复合后的绝对位姿",
+      "description-en": "Child part id; its origin/rpy is rewritten to the composed absolute pose."
+    },
+    {
+      "name": "ox",
+      "type": "number",
+      "label": "局部偏移 X",
+      "default": 0,
+      "description": "相对父件坐标系的偏移 X（米）",
+      "description-en": "Offset X in the parent's frame (m)."
+    },
+    {
+      "name": "oy",
+      "type": "number",
+      "label": "局部偏移 Y",
+      "default": 0,
+      "description": "相对父件坐标系的偏移 Y（米）",
+      "description-en": "Offset Y in the parent's frame (m)."
+    },
+    {
+      "name": "oz",
+      "type": "number",
+      "label": "局部偏移 Z",
+      "default": 0,
+      "description": "相对父件坐标系的偏移 Z（米）",
+      "description-en": "Offset Z in the parent's frame (m)."
+    },
+    {
+      "name": "rr",
+      "type": "number",
+      "label": "局部 roll",
+      "default": 0,
+      "description": "相对父件的 roll（弧度）",
+      "description-en": "Roll relative to the parent (rad)."
+    },
+    {
+      "name": "rp",
+      "type": "number",
+      "label": "局部 pitch",
+      "default": 0,
+      "description": "相对父件的 pitch（弧度）",
+      "description-en": "Pitch relative to the parent (rad)."
+    },
+    {
+      "name": "ry",
+      "type": "number",
+      "label": "局部 yaw",
+      "default": 0,
+      "description": "相对父件的 yaw（弧度）",
+      "description-en": "Yaw relative to the parent (rad)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "改写过 child.origin/rpy 后的新 Geometry，可直接接下一条 place_local / QC / 导出",
+      "description-en": "New Geometry with the child's origin/rpy rewritten; chain straight into another place_local / QC / export."
+    },
+    {
+      "name": "origin",
+      "type": "array",
+      "label": "世界原点",
+      "description": "写回 child 的绝对 origin [x,y,z]（米）",
+      "description-en": "Absolute origin [x,y,z] (m) written back to the child."
+    },
+    {
+      "name": "rpy",
+      "type": "array",
+      "label": "世界 rpy",
+      "description": "写回 child 的绝对 rpy [r,p,y]（弧度）",
+      "description-en": "Absolute rpy [r,p,y] (rad) written back to the child."
+    },
+    {
+      "name": "note",
+      "type": "string",
+      "label": "提示",
+      "description": "非致命提示（例如同一 Geometry 里还有 joint，说明两套装配写法混用了）",
+      "description-en": "Non-fatal note (e.g. the same geometry also has joints, i.e. two assembly styles are mixed)."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "缺件 / 非法参数 / 自我摆放时的错误说明",
+      "description-en": "Error message for a missing part, a bad argument, or placing a part onto itself."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

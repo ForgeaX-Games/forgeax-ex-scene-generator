@@ -1,0 +1,122 @@
+{
+  "id": "building_footprint_mask",
+  "label": "建筑占地掩码",
+  "name-en": "BuildingFootprintMask",
+  "description": "从 focus 建筑 scene 节点提取占地掩码 grid：遍历子树体素，按最小包围盒裁剪输出 0/1/2 grid（0=空，1=占地，2=门）。门默认取自子节点名 outer_door；输出尺寸为体素并集包围盒，不使用节点 bounds 画布尺寸。",
+  "description-en": "Extract a footprint mask grid from the focused building scene node: walk the subtree voxels and output a bbox-cropped 0/1/2 grid (0=empty, 1=occupied, 2=door). Doors default to the outer_door child; output size is the voxel union bounding box, not the node bounds canvas.",
+  "icon": "一栋简化建筑的俯视占地轮廓，内部格子分空/实/门三色块，外侧虚线框标出裁剪包围盒，扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": [
+    "scene",
+    "building",
+    "footprint",
+    "mask",
+    "grid",
+    "query",
+    "analysis"
+  ],
+  "tag_labels": [
+    "场景",
+    "建筑",
+    "占地",
+    "掩码",
+    "网格",
+    "查询",
+    "分析"
+  ],
+  "projectTypes": ["both"],
+  "inputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "required": true,
+      "label": "scene",
+      "description": "focus 指向单栋建筑节点（或该建筑子树根）的 scene 端口；常接 scene_focus_children 扇出后的子 scene",
+      "description-en": "Scene port with focus on a single building node (or its subtree root); typically fed from scene_focus_children fanout."
+    },
+    {
+      "name": "z",
+      "type": "number",
+      "access": "item",
+      "label": "z 切片",
+      "description": "可选：仅统计 voxel.z 等于该值的体素；缺省则按列投影（任意 z 的 (x,y) 均计入占地）",
+      "description-en": "Optional: only count voxels with voxel.z equal to z; when omitted, column-project all z levels onto (x,y)."
+    },
+    {
+      "name": "doorNames",
+      "type": "string",
+      "access": "item",
+      "label": "门子节点名",
+      "description": "视为门的直接子节点名，逗号分隔；默认 outer_door",
+      "description-en": "Direct child node names treated as doors, comma-separated; default outer_door.",
+      "default": "outer_door"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "exists",
+      "type": "bool",
+      "access": "item",
+      "label": "exists",
+      "description": "focus 存在且子树至少有一个体素",
+      "description-en": "Focus exists and the subtree has at least one voxel."
+    },
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "label": "占地掩码",
+      "description": "裁剪后的 0/1/2 grid：0=空，1=占地，2=门（门覆盖占地）",
+      "description-en": "Bbox-cropped 0/1/2 grid: 0=empty, 1=occupied, 2=door (door overwrites occupied)."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "access": "item",
+      "label": "宽度",
+      "description": "输出 grid 列数（包围盒宽）",
+      "description-en": "Output grid column count (bbox width)."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "access": "item",
+      "label": "高度",
+      "description": "输出 grid 行数（包围盒高）",
+      "description-en": "Output grid row count (bbox height)."
+    },
+    {
+      "name": "originX",
+      "type": "number",
+      "access": "item",
+      "label": "originX",
+      "description": "包围盒左上角在父网格坐标系中的列索引（minC）",
+      "description-en": "Bounding-box min column in parent grid coordinates."
+    },
+    {
+      "name": "originY",
+      "type": "number",
+      "access": "item",
+      "label": "originY",
+      "description": "包围盒左上角在父网格坐标系中的行索引（minR）",
+      "description-en": "Bounding-box min row in parent grid coordinates."
+    },
+    {
+      "name": "cellCount",
+      "type": "number",
+      "access": "item",
+      "label": "非空格数",
+      "description": "grid 中值非 0 的格子总数",
+      "description-en": "Total non-zero cells in the grid."
+    },
+    {
+      "name": "doorCount",
+      "type": "number",
+      "access": "item",
+      "label": "门格数",
+      "description": "grid 中值为 2 的格子数",
+      "description-en": "Number of cells with value 2 (doors)."
+    }
+  ]
+}

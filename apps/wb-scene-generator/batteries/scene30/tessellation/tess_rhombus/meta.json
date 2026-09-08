@@ -1,0 +1,53 @@
+{
+  "id": "tess_rhombus",
+  "label": "菱形镶嵌格",
+  "description": "使用斜坐标系将平面分割为完全相同的菱形单元格，60° 角时产生经典的三维立方体叠加视觉效果。",
+  "description-en": "Uses oblique coordinates to divide the plane into identical rhombus (parallelogram) cells. At 60° angle produces the classic 3D cube stack illusion.",
+  "icon": "俯视视角的菱形镶嵌图案，多个等边菱形紧密排列形成三维立方体错觉，三组平行线交叉，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["tessellation", "rhombus", "diamond", "oblique", "isometric", "grid", "pcg"],
+  "tag_labels": ["镶嵌", "菱形", "斜格", "等轴", "网格", "PCG"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "description": "输出网格宽度（格），默认 80",
+      "description-en": "Output grid width in cells. Default 80.",
+      "default": 80
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "description": "输出网格高度（格），默认 80",
+      "description-en": "Output grid height in cells. Default 80.",
+      "default": 80
+    },
+    {
+      "name": "sideLen",
+      "type": "number",
+      "label": "边长",
+      "description": "菱形的边长（格），控制格子大小，默认 12",
+      "description-en": "Side length of each rhombus in cells. Default 12.",
+      "default": 12
+    },
+    {
+      "name": "angle",
+      "type": "number",
+      "label": "倾斜角度",
+      "description": "菱形的锐角角度（度），60°=等边菱形/立方体叠加效果，45°=正方形菱形，范围 20~160，默认 60",
+      "description-en": "Acute angle of rhombus in degrees. 60=equilateral/cube stack, 45=square diamond. Range 20-160. Default 60.",
+      "default": 60
+    }
+  ],
+  "outputs": [
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "菱形 ID 网格",
+      "description": "每格存储所属菱形单元的 1-based ID，所有菱形形状完全相同",
+      "description-en": "Each cell stores the 1-based ID of its enclosing rhombus. All rhombuses are identical in shape."
+    }
+  ]
+}

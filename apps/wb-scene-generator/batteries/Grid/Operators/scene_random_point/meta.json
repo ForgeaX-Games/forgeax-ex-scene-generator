@@ -1,0 +1,55 @@
+{
+  "id": "scene_random_point",
+  "label": "随机选点",
+  "name-en": "ScatterPoints",
+  "description": "在网格中随机填充指定数量的点，支持自定义填充值和随机种子。",
+  "description-en": "Randomly fills a specified number of points in the grid with a given fill value.",
+  "icon": "一个二维网格图，网格中散落若干高亮圆点，圆点颜色为亮蓝色，背景为深灰色网格，扁平插画风格，简洁小图标。",
+  "version": "1.1.1",
+  "tags": ["grid", "random", "point", "scatter", "scene"],
+  "tag_labels": ["网格", "随机", "点位", "散点", "场景"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "输入的二维整数网格",
+      "description-en": "Input 2D integer grid."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "点位数量",
+      "description": "要随机填充的点的数量",
+      "description-en": "Number of points to randomly fill.",
+      "default": 10
+    },
+    {
+      "name": "fillValue",
+      "type": "number",
+      "label": "填充值",
+      "description": "填充到选中格子的值",
+      "description-en": "Value to fill into the selected cells.",
+      "default": 1
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 表示使用系统随机数（每次不同）",
+      "description-en": "Random seed; 0 uses system random (different each run).",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "随机填充点后的输出网格",
+      "description-en": "Output grid with randomly filled points."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "seamless_edge_check",
+  "label": "无缝边缘检查",
+  "name-en": "SeamlessEdgeCheck",
+  "description": "检查图像左右、上下边界的平均色差，透传图像并输出四方连续检查报告。",
+  "description-en": "Check average color deltas across left/right and top/bottom image borders, pass the image through, and emit a seamlessness report.",
+  "version": "1.0.0",
+  "tags": ["image", "four-way", "seamless", "quality"],
+  "tag_labels": ["图像", "四方连续", "无缝", "质量检查"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "image", "type": "image", "access": "item", "required": true, "label": "图像" },
+    { "name": "threshold", "type": "number", "access": "item", "label": "通过阈值", "default": 18, "min": 0, "max": 255 }
+  ],
+  "outputs": [
+    { "name": "image", "type": "image", "access": "item", "label": "透传图像" },
+    { "name": "left_right_max_delta", "type": "number", "access": "item", "label": "左右边界差异" },
+    { "name": "top_bottom_max_delta", "type": "number", "access": "item", "label": "上下边界差异" },
+    { "name": "passed", "type": "boolean", "access": "item", "label": "是否通过" },
+    { "name": "report", "type": "string", "access": "item", "label": "报告 JSON" },
+    { "name": "error", "type": "string", "access": "item", "label": "错误信息" }
+  ],
+  "params": [
+    { "name": "suffix", "type": "string", "default": "_edgecheck", "label": "alias 后缀" }
+  ],
+  "alg_tag": ["四方连续检查", "边缘差异"]
+}

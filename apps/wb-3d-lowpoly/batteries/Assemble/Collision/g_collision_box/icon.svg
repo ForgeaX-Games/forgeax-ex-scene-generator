@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Collision box util battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <circle cx="12" cy="12" r="3.6" fill="#b7ff5a" fill-opacity=".2" stroke="#e7f5ee" stroke-width="1.5"/>
+  <rect x="5.5" y="5.5" width="13" height="13" rx="1" fill="none" stroke="#b7ff5a" stroke-width="1.5" stroke-dasharray="2.4 2"/>
+</svg>

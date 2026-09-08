@@ -1,0 +1,98 @@
+{
+  "id": "alg_random_rect_zone_gen",
+  "label": "随机矩形区域生成",
+  "name-en": "RandomRectZoneGen",
+  "description": "在输入网格的目标区域内随机摆放若干互不重叠的轴对齐矩形地块，每个地块输出为一张独立的 0/1 网格（1 表示地块覆盖的格子）。targetValue=0 时把'非零格'视为有效区域（即把 1 当作区域特征函数）；非 0 时精确匹配该掩码 ID。",
+  "description-en": "Randomly places non-overlapping axis-aligned rectangles within a target region of the input grid. Each rectangle is emitted as a separate 0/1 grid (1 marks the cells covered by that rectangle). When targetValue=0, any non-zero cell is treated as valid (i.e. 1 acts as the region's characteristic function); a non-zero targetValue requires exact mask-ID match.",
+  "icon": "深色网格底面上散落若干大小不一的白色实心矩形块，矩形严格对齐网格且只出现在有效区域内，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["rect", "zone", "placement", "pcg", "grid", "partition", "tile"],
+  "tag_labels": ["矩形", "区域", "放置", "PCG", "网格", "分区", "地块"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "required": true,
+      "label": "输入网格",
+      "description": "输入二维网格；矩形只能落在有效区域格内。",
+      "description-en": "Input 2D grid; rectangles are placed only on valid cells."
+    },
+    {
+      "name": "targetValue",
+      "type": "number",
+      "default": 0,
+      "label": "目标区域值",
+      "description": "矩形只能放在等于该值的格内。0 表示任意非零格（把 1 视为区域特征函数，二值模式）；非 0 时精确匹配该掩码 ID（适用于异形/多值区域）。",
+      "description-en": "Rectangles are placed only on cells equal to this value. 0 treats any non-zero cell as valid (1 as the region's characteristic function, binary mode); a non-zero value requires exact mask-ID match (for irregular / multi-valued regions)."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "default": 5,
+      "label": "矩形数量",
+      "description": "想要放置的矩形总数；若空间不足，实际数量可能小于此值。",
+      "description-en": "Target number of rectangles to place; the actual count may be smaller if space is insufficient."
+    },
+    {
+      "name": "minSize",
+      "type": "number",
+      "default": 13,
+      "label": "最小宽高",
+      "description": "矩形宽和高的最小值（格数），宽高各自独立随机，共用此下限。",
+      "description-en": "Minimum size for both width and height (in cells); width and height are sampled independently within [minSize, maxSize]."
+    },
+    {
+      "name": "maxSize",
+      "type": "number",
+      "default": 19,
+      "label": "最大宽高",
+      "description": "矩形宽和高的最大值（格数）。",
+      "description-en": "Maximum size for both width and height (in cells)."
+    },
+    {
+      "name": "minDistance",
+      "type": "number",
+      "default": 2,
+      "min": 0,
+      "max": 20,
+      "precision": 0,
+      "label": "最小距离",
+      "description": "相邻矩形最近边之间的最小格数间距，0 表示允许紧靠（但仍不重叠）。",
+      "description-en": "Minimum gap (in cells) between the nearest edges of any two placed rectangles; 0 allows touching."
+    },
+    {
+      "name": "dispersion",
+      "type": "number",
+      "default": 0.6,
+      "label": "离散程度",
+      "description": "0=随机集中，1=尽量分散。值越大，新矩形越倾向放置在远离已有矩形的位置；非重叠规则始终生效。",
+      "description-en": "0 = random/clustered, 1 = maximally dispersed. Higher values bias new rectangles toward positions far from existing ones; the non-overlap rule always applies."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "default": 0,
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current timestamp."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGridList",
+      "type": "grid",
+      "access": "list",
+      "label": "地块网格列表",
+      "description": "每个成功放置的矩形对应一张独立的 0/1 网格（地块覆盖的格子=1，其余=0），与输入网格同形状。",
+      "description-en": "One 0/1 grid per successfully placed rectangle (1 marks the cells covered by that tile, 0 elsewhere); shape matches the input grid."
+    },
+    {
+      "name": "placedCount",
+      "type": "number",
+      "label": "实际放置数量",
+      "description": "成功放置的矩形数量（可能小于目标数量）。",
+      "description-en": "Number of rectangles successfully placed (may be less than count)."
+    }
+  ]
+}

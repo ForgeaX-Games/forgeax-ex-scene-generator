@@ -1,0 +1,35 @@
+{
+  "id": "walkable_grid_builder",
+  "label": "可通行网格构建器",
+  "description": "合并地形网格和装饰物列表，生成用于碰撞检测的布尔型可通行网格（0=阻挡，1=可通行）。",
+  "description-en": "Merges terrain grid and decoration list to produce a boolean walkability grid for collision detection (0=blocked, 1=walkable).",
+  "icon": "扁平插画风格小图标，二维网格中大多数格子为绿色可通行，少数格子为红色阻挡，阻挡格上叠加小树或石块符号，简洁现代，主色绿色和红色。",
+  "version": "1.0.0",
+  "tags": ["walkable", "collision", "grid", "field", "physics"],
+  "tag_labels": ["可通行", "碰撞", "网格", "野外", "物理"],
+  "inputs": [
+    {
+      "name": "terrainGrid",
+      "type": "grid",
+      "label": "地形网格",
+      "description": "平滑后的地形网格，1=水系，2=沙滩，3=草地",
+      "description-en": "Terrain grid: 1=water, 2=sand, 3=grass."
+    },
+    {
+      "name": "decorationGrid",
+      "type": "grid",
+      "label": "装饰物网格",
+      "description": "装饰物网格，0=空，1=树木（阻挡），2=灌木（阻挡），3=岩石（阻挡），4=小花（可通行）",
+      "description-en": "Decoration grid: 0=empty, 1=tree (blocked), 2=bush (blocked), 3=rock (blocked), 4=flower (walkable)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "walkableGrid",
+      "type": "grid",
+      "label": "可通行网格",
+      "description": "布尔型碰撞网格，0=阻挡，1=可通行",
+      "description-en": "Boolean walkability grid: 0=blocked, 1=walkable."
+    }
+  ]
+}

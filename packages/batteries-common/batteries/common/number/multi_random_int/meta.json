@@ -1,0 +1,64 @@
+{
+  "id": "multi_random_int",
+  "label": "多路随机整数",
+  "name-en": "MultiRandomInt",
+  "description": "借用输入对象的 DataTree 形状（仅取 branch 拓扑/paths，忽略具体 value），对每个 branch 按 (基种子, 分支path) 做确定性哈希派生一个随机数，并映射到 [0, count) 的整数，输出一棵与输入完全同形状的整数树。典型用法：DataTree 多分支 fanout 时为每个分支（如每个地块）随机挑一个 [0,count) 的下标（如随机挑一种作物），各分支各异且可复现，无需改动下游电池。",
+  "description-en": "Borrow the input object's DataTree shape (branch topology / paths only, values ignored) and emit a same-shaped DataTree<number> where each branch gets an integer in [0, count) derived deterministically from hash(baseSeed, branchPath). Typical use: pick a per-branch index in [0,count) on DataTree fanout (e.g. choose one crop per land parcel), distinct per branch and reproducible, with no change to downstream batteries.",
+  "version": "1.0.0",
+  "tags": [
+    "number",
+    "random",
+    "int",
+    "index",
+    "datatree"
+  ],
+  "tag_labels": [
+    "数值",
+    "随机",
+    "整数",
+    "下标",
+    "数据树"
+  ],
+  "projectTypes": [
+    "both"
+  ],
+  "inputs": [
+    {
+      "name": "shape",
+      "type": "any",
+      "access": "tree",
+      "label": "形状",
+      "required": true,
+      "description": "任意对象的 DataTree；仅借用其形状（branch 拓扑/paths）来确定输出分支结构，忽略其具体 value。",
+      "description-en": "Any object's DataTree; only its shape (branch topology / paths) is used to determine the output structure. Values are ignored."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "tree",
+      "label": "基种子",
+      "default": 0,
+      "description": "全局基种子；0 表示用当前时间戳作为基种子（每次结果不同），非零值产生确定可复现的整数树。",
+      "description-en": "Global base seed; 0 uses the current timestamp (different each run), any non-zero value yields a deterministic, reproducible integer tree."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "tree",
+      "label": "上界",
+      "default": 4,
+      "description": "随机整数的上界（不含）；每个 branch 输出一个 [0, count) 的整数。count<=0 时兜底输出 0。",
+      "description-en": "Exclusive upper bound; each branch outputs an integer in [0, count). Falls back to 0 when count <= 0."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "value",
+      "type": "number",
+      "access": "item",
+      "label": "随机整数",
+      "description": "与输入 shape 同形状的整数树，每个 branch 一个各异且确定的 [0, count) 整数。",
+      "description-en": "An integer tree with the same shape as the input, where each branch holds a distinct, deterministic integer in [0, count)."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "g_array_radial",
+  "label": "径向阵列",
+  "name-en": "GArrayRadial",
+  "description": "绕指定轴旋转复制 shape 并合成一个 compound。",
+  "description-en": "Copy a shape by rotating it around an axis into a compound.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["geometry", "csg", "array", "cad"],
+  "tag_labels": ["几何", "CSG", "阵列", "CAD"],
+  "inputs": [
+    { "name": "geometry", "type": "geometry", "required": false, "label": "几何" },
+    { "name": "shape_id", "type": "string", "label": "Shape id", "default": "" },
+    { "name": "count", "type": "number", "label": "数量", "default": 6 },
+    { "name": "angle_deg", "type": "number", "label": "总角度", "default": 360 },
+    { "name": "ax", "type": "number", "label": "轴 X", "default": 0 },
+    { "name": "ay", "type": "number", "label": "轴 Y", "default": 0 },
+    { "name": "az", "type": "number", "label": "轴 Z", "default": 1 },
+    { "name": "ox", "type": "number", "label": "原点 X", "default": 0 },
+    { "name": "oy", "type": "number", "label": "原点 Y", "default": 0 },
+    { "name": "oz", "type": "number", "label": "原点 Z", "default": 0 },
+    { "name": "id", "type": "string", "required": false, "label": "id", "default": "" }
+  ],
+  "outputs": [
+    { "name": "geometry", "type": "geometry", "label": "几何" },
+    { "name": "id", "type": "string", "label": "id" }
+  ],
+  "projectTypes": ["asset3d"]
+}

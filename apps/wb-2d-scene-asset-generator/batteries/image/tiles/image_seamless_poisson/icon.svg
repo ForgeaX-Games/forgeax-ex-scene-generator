@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_seamless_poisson" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="band_seamless_poisson_h" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.65"/>
+      <stop offset="50%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0.65"/>
+    </linearGradient>
+    <linearGradient id="band_seamless_poisson_v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.65"/>
+      <stop offset="50%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0.65"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_seamless_poisson)"/>
+
+  <!-- -Ã:ß («î9): žÃ}réb -->
+  <rect x="8" y="8" width="8" height="8" fill="rgba(255,255,255,0.25)" stroke="#fff" stroke-width="0.5"/>
+
+  <!-- *¹& (æ/ó¥¹îc): Ø}& -->
+  <rect x="2.5" y="8" width="5.5" height="8" fill="url(#band_seamless_poisson_h)"/>
+  <rect x="16" y="8" width="5.5" height="8" fill="url(#band_seamless_poisson_h)"/>
+
+  <!-- µ¹& (
+/¥¹îc): Ø}& -->
+  <rect x="8" y="2.5" width="8" height="5.5" fill="url(#band_seamless_poisson_v)"/>
+  <rect x="8" y="16" width="8" height="5.5" fill="url(#band_seamless_poisson_v)"/>
+
+  <!-- Ûa¥¹}¿ (:"%<–>ø¥") -->
+  <line x1="2.5" y1="12" x2="21.5" y2="12" stroke="#fff" stroke-width="0.4" stroke-dasharray="1.5 1"/>
+  <line x1="12" y1="2.5" x2="12" y2="21.5" stroke="#fff" stroke-width="0.4" stroke-dasharray="1.5 1"/>
+</svg>

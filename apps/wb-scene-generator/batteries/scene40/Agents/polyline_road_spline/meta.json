@@ -1,0 +1,113 @@
+{
+  "id": "polyline_road_spline",
+  "label": "控制点道路样条",
+  "name-en": "PolylineRoadSpline",
+  "description": "把一串开放折线控制点用向心参数化的 C2 自然三次样条插值成平滑曲线（曲线严格穿过每一个控制点，不做任何随机扰动；曲率连续，弯曲摊到相邻段而非挤在控制点上），再用圆笔刷按道路宽度光栅化为纯道路掩码。输出与基准网格同形状，只含道路（其余为 0），可直接接 grid_split_by_value 建节点、或作 alg_region_subtract 的减数求剩余空地。",
+  "description-en": "Interpolates an open polyline of control points with a centripetal, C2-continuous natural cubic spline (the curve passes exactly through every control point with no random perturbation; curvature is continuous, so bends spread across neighbouring segments instead of piling up at the control points), then rasterizes it with a circular brush at the given road width into a pure road mask. The output matches the base grid's shape and contains only the road (0 elsewhere), ready for grid_split_by_value or as the subtrahend of alg_region_subtract.",
+  "icon": "扁平插画风格小图标。深色背景上一条平滑弯曲的浅色道路带穿过三个白色圆形控制点，道路有明显宽度，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "principal": "grid",
+  "tags": ["road", "path", "spline", "natural-cubic", "c2", "control-points", "curve", "rasterize", "grid", "deterministic"],
+  "tag_labels": ["道路", "路径", "样条", "自然三次样条", "曲率连续", "控制点", "曲线", "光栅化", "网格", "确定性"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "基准网格",
+      "description": "单张二维网格，决定输出掩码的形状；非零格视为可铺路足迹（配合 clipToFootprint 裁剪）。网格列表由引擎逐张 fanout。",
+      "description-en": "Single 2D grid determining the output mask shape; non-zero cells are the pavable footprint (used when clipToFootprint is on). Grid lists are fanned out per item by the engine."
+    },
+    {
+      "name": "points",
+      "type": "point2d",
+      "access": "list",
+      "required": true,
+      "label": "控制点",
+      "description": "道路控制点，整组一次消费：可由多个 pt2_construct 经 tree_merge 汇成点集，也可直接给 [[col,row],...] / [{x,y},...] 或其 JSON 字符串；至少 2 个，道路依次严格穿过每一个点。",
+      "description-en": "Road control points consumed as one whole list: either several pt2_construct nodes merged via tree_merge, or a literal [[col,row],...] / [{x,y},...] (JSON string accepted). At least 2, and the road passes exactly through each in order."
+    },
+    {
+      "name": "roadWidth",
+      "type": "number",
+      "access": "item",
+      "label": "道路宽度",
+      "description": "道路宽度（格），即光栅化圆笔刷直径；小于 1 时仍保证画出一条 8-连通的单格路。",
+      "description-en": "Road width in grid cells (circular brush diameter); values below 1 still yield an 8-connected single-cell road.",
+      "default": 2
+    },
+    {
+      "name": "tension",
+      "type": "number",
+      "access": "item",
+      "label": "曲线张力",
+      "description": "张力 [0,1]：0 保留完整样条曲率（最平滑），1 收紧切线退化为直折线；无论取值曲线都穿过控制点。",
+      "description-en": "Tension [0,1]: 0 keeps the full spline curvature (smoothest), 1 tightens tangents into straight segments; the curve passes through the control points either way.",
+      "default": 0
+    },
+    {
+      "name": "roundness",
+      "type": "number",
+      "access": "item",
+      "label": "圆滑增益",
+      "description": "结点切线幅度增益 [0,2.5]：1 为标准自然样条，>1 会拓宽回折处的转弯半径（道路可能小幅越出控制点连线，更像真实道路的大半径过渡），内部按弦长夹持防止自交成环。越大越容易越出上游足迹而被 clipToFootprint 裁断。",
+      "description-en": "Knot tangent gain [0,2.5]: 1 is the plain natural spline, values above 1 widen the turning radius at hairpins (the road may swing slightly outside the control polygon, like a real large-radius transition); magnitudes are clamped against chord lengths to prevent self-intersecting loops. Larger values are more likely to swing outside the upstream footprint and be clipped.",
+      "default": 1.3
+    },
+    {
+      "name": "samplesPerSegment",
+      "type": "number",
+      "access": "item",
+      "label": "每段采样数",
+      "description": "相邻控制点之间的样条采样点数，越大曲线越细腻；光栅化时还会按 0.5 格步长补插，不会因取值小而断线。",
+      "description-en": "Spline samples between adjacent control points; larger is smoother. Rasterization additionally walks segments at 0.5-cell steps, so small values never break the road.",
+      "default": 24
+    },
+    {
+      "name": "clipToFootprint",
+      "type": "boolean",
+      "access": "item",
+      "label": "裁剪到足迹",
+      "description": "开启时只在 inputGrid 非零格落笔，道路不会溢出上游区域；关闭时在整张网格范围内自由落笔。",
+      "description-en": "When on, paint only on non-zero cells of inputGrid so the road never spills outside the upstream region; when off, paint anywhere within the grid bounds.",
+      "default": true
+    },
+    {
+      "name": "reinforceJoints",
+      "type": "boolean",
+      "access": "item",
+      "label": "接缝加固",
+      "description": "开启时（默认）在道路换向的台阶处补格：2×2 窗口只缺 1 格且缺口两侧直路段至少持续 2 格时补上那一格，台阶两侧各补一格，接缝宽度与路面一致，不再出现只靠一格搭接的薄弱处。连续 45° 斜路每格都在错位，不视为换向，不会被加粗。补格受 clipToFootprint 约束，Rest 仍与道路严格互补。",
+      "description-en": "When on (default), fills the notches at direction-change steps: if a 2x2 window is missing exactly one cell and the straight runs on both sides of the notch persist for at least 2 cells, that cell is filled, so the joint is as wide as the road instead of hinging on a single cell. Continuous 45-degree diagonals step every cell and are not treated as joints, so they are never thickened. Filled cells honour clipToFootprint, and Rest stays exactly complementary.",
+      "default": true
+    },
+    {
+      "name": "fillValue",
+      "type": "number",
+      "access": "item",
+      "label": "道路填充值",
+      "description": "道路格写入的整数值，其余格为 0。",
+      "description-en": "Integer value written to road cells; all other cells are 0.",
+      "default": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "道路掩码",
+      "description": "与 inputGrid 同形状的道路掩码：道路格为 fillValue，其余为 0。",
+      "description-en": "Road mask with the same shape as inputGrid: road cells are fillValue, all others 0."
+    },
+    {
+      "name": "cellCount",
+      "type": "number",
+      "access": "item",
+      "label": "道路格数",
+      "description": "掩码中被填充的格子数；0 表示道路完全落在足迹外或网格外，可直接用于验证。",
+      "description-en": "Number of filled cells; 0 means the road fell entirely outside the footprint or grid bounds, which is handy for verification."
+    }
+  ]
+}

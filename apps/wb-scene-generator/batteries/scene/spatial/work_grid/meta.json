@@ -1,0 +1,16 @@
+{
+  "id": "work_grid",
+  "label": "作业网格",
+  "name-en": "WorkGrid",
+  "description": "Sample a Plane at a cell size. Changing cellSize does not move Control metres.",
+  "description-en": "Sample a Plane at a cell size. Changing cellSize does not move Control metres.",
+  "version": "1.0.0",
+  "tags": ["scene", "spatial", "grid"],
+  "inputs": [
+    { "name": "plane", "type": "any", "access": "item", "required": true, "label": "平面" },
+    { "name": "cellSize", "type": "number", "access": "item", "default": 1, "label": "格尺寸" }
+  ],
+  "outputs": [
+    { "name": "grid", "type": "any", "access": "item", "label": "网格" }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "id": "group_1781159332862_zfuu1",
+  "name": "TileAssetName",
+  "nameEn": "TileAssetName",
+  "nodes": [
+    {
+      "id": "node-1781094591109",
+      "opId": "text_panel",
+      "name": "node-1781094591109",
+      "position": {
+        "x": 1823.2161694202596,
+        "y": 320.5333437440952
+      },
+      "params": {
+        "text": "asset_name",
+        "_nodeWidth": 180,
+        "_nodeHeight": 67
+      }
+    },
+    {
+      "id": "node-1781094625955-ysok9",
+      "opId": "text_panel",
+      "name": "node-1781094625955-ysok9",
+      "position": {
+        "x": 2101.219750353309,
+        "y": 317.34099784790226
+      },
+      "params": {
+        "text": "asset_type",
+        "_nodeWidth": 181,
+        "_nodeHeight": 60
+      }
+    },
+    {
+      "id": "node-1781094635614-mu6fs",
+      "opId": "text_panel",
+      "name": "node-1781094635614-mu6fs",
+      "position": {
+        "x": 2101.219750353309,
+        "y": 486.1257362686896
+      },
+      "params": {
+        "text": "tile",
+        "_nodeWidth": 181,
+        "_nodeHeight": 60
+      }
+    },
+    {
+      "id": "node-1781097305549",
+      "opId": "scene_set_attribute",
+      "name": "node-1781097305549",
+      "position": {
+        "x": 2003.1308341299732,
+        "y": 159.02072612717268
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781097326596-22xx1",
+      "opId": "scene_set_attribute",
+      "name": "node-1781097326596-22xx1",
+      "position": {
+        "x": 2273.5984614822623,
+        "y": 167.27027591857814
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781159302096",
+      "opId": "type_string",
+      "name": "字符串",
+      "position": {
+        "x": 1795.2161694202596,
+        "y": 219.59964172770196
+      },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-node-1781094591109-output-node-1781097305549-key",
+      "source": {
+        "nodeId": "node-1781094591109",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781097305549",
+        "port": "key"
+      }
+    },
+    {
+      "id": "e-node-1781097305549-scene-node-1781097326596-22xx1-scene",
+      "source": {
+        "nodeId": "node-1781097305549",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1781097326596-22xx1",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "e-node-1781094625955-ysok9-output-node-1781097326596-22xx1-key",
+      "source": {
+        "nodeId": "node-1781094625955-ysok9",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781097326596-22xx1",
+        "port": "key"
+      }
+    },
+    {
+      "id": "e-node-1781094635614-mu6fs-output-node-1781097326596-22xx1-value",
+      "source": {
+        "nodeId": "node-1781094635614-mu6fs",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1781097326596-22xx1",
+        "port": "value"
+      }
+    },
+    {
+      "id": "e-node-1781159302096-value-node-1781097305549-value",
+      "source": {
+        "nodeId": "node-1781159302096",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781097305549",
+        "port": "value"
+      }
+    }
+  ],
+  "position": {
+    "x": 2016.2668558598955,
+    "y": 278.31512027235664
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "scene",
+      "portLabel": "scene",
+      "portLabelEn": "Scene",
+      "sourceNodeId": "node-1781097305549",
+      "sourcePortName": "scene"
+    },
+    {
+      "portName": "in_1",
+      "portType": "string",
+      "portLabel": "值",
+      "portLabelEn": "Value",
+      "sourceNodeId": "node-1781159302096",
+      "sourcePortName": "value"
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "portLabel": "scene",
+      "portLabelEn": "Scene",
+      "sourceNodeId": "node-1781097326596-22xx1",
+      "sourcePortName": "scene"
+    }
+  ]
+}

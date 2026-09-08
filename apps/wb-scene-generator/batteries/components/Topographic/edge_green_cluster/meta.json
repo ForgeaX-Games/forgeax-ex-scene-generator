@@ -1,0 +1,95 @@
+{
+  "id": "edge_green_cluster",
+  "label": "边缘绿簇",
+  "name-en": "EdgeGreenCluster",
+  "description": "在指定区域（targetValue 掩码）的边缘处生成若干形状不规则的绿簇：沿区域外轮廓取边缘种子，每个种子向区域内部有机生长成一团不规则像素块，粘附在内缘上。可控簇数量、大小、大小方差与形状破碎度。",
+  "description-en": "Generate irregularly shaped green clusters along the edge of a target region (targetValue mask): seeds are sampled along the region's outer contour, and each grows an organic blob inward, hugging the inner edge. Controls cluster count, size, size variance, and shape irregularity.",
+  "icon": "扁平插画风格小图标。一块浅色地块的边缘上粘附着几团深绿色不规则小斑块，斑块边缘呈有机锯齿状，主色2种。",
+  "version": "1.0.0",
+  "tags": ["terrain", "edge", "cluster", "vegetation", "green", "scatter", "organic", "procedural", "datatree"],
+  "tag_labels": ["地形", "边缘", "簇", "植被", "绿", "散布", "有机", "程序生成", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "输入网格",
+      "description": "单张二维网格（grid[y][x]）；在其 targetValue 区域的边缘生成绿簇。网格列表由引擎按 DataTree 自动逐张 fanout。",
+      "description-en": "A single 2D grid (grid[y][x]); clusters are generated along the edge of its targetValue region. The engine fans out a DataTree of grids one-by-one."
+    },
+    {
+      "name": "targetValue",
+      "type": "number",
+      "access": "item",
+      "label": "目标区域值",
+      "description": "要沿其边缘生成绿簇的区域掩码值",
+      "description-en": "Mask value of the region whose edge gets clusters.",
+      "default": 1
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "簇数量",
+      "description": "沿边缘生成的绿簇数量（沿轮廓等距分布并带抖动）",
+      "description-en": "Number of clusters along the edge (evenly spaced along the contour with jitter).",
+      "default": 12
+    },
+    {
+      "name": "clusterSize",
+      "type": "number",
+      "access": "item",
+      "label": "簇大小",
+      "description": "每个绿簇的平均像素数（实际受 sizeVariance 浮动）",
+      "description-en": "Average cell count per cluster (varied by sizeVariance).",
+      "default": 18
+    },
+    {
+      "name": "sizeVariance",
+      "type": "number",
+      "access": "item",
+      "label": "大小方差",
+      "description": "簇大小的随机浮动比例 0~1，0=全等大，1=±100%",
+      "description-en": "Random size variation 0~1; 0 = uniform, 1 = ±100%.",
+      "default": 0.4
+    },
+    {
+      "name": "irregularity",
+      "type": "number",
+      "access": "item",
+      "label": "形状破碎度",
+      "description": "簇形状的不规则/破碎程度 0~1，0=较圆整，1=极不规则有触须",
+      "description-en": "Shape irregularity 0~1; 0 = rounder, 1 = very ragged with tendrils.",
+      "default": 0.6
+    },
+    {
+      "name": "outputValue",
+      "type": "number",
+      "access": "item",
+      "label": "输出码值",
+      "description": "写入绿簇像素的网格值（背景为 0）",
+      "description-en": "Grid value written for cluster cells (background is 0).",
+      "default": 1
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间戳",
+      "description-en": "Random seed; 0 uses timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "与输入同形状的绿簇掩码网格（背景 0，簇 = outputValue）；可直接喂 grid2node 转场景。",
+      "description-en": "Cluster mask grid with the same shape as the input (background 0, clusters = outputValue); feed into grid2node."
+    }
+  ]
+}

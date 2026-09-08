@@ -1,0 +1,27 @@
+{
+  "id": "worldmap_roads",
+  "label": "世界地图道路",
+  "description": "基于城市点位生成自然曲线道路，陆地段为道路，跨海段单独输出为海底隧道图层。",
+  "description-en": "Generates natural curved inter-city roads, with land segments as roads and sea crossings as a separate tunnel layer.",
+  "icon": "世界地图城市之间有棕色道路网络连接，并在城市周围形成十字街道。",
+  "version": "1.0.0",
+  "tags": ["worldmap", "road", "city road", "mst", "network"],
+  "tag_labels": ["世界地图", "道路", "城市道路", "最小生成树", "网络"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "cityPoints", "type": "array", "label": "城市点位" },
+    { "name": "heightMap", "type": "grid", "label": "高度图" },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 20260533 },
+    { "name": "roadWidth", "type": "number", "label": "主路宽度", "default": 0, "min": 0, "max": 5 },
+    { "name": "maxOcean", "type": "number", "label": "额外边最大穿海比例", "default": 0.45, "min": 0, "max": 1 },
+    { "name": "extraEdges", "type": "number", "label": "额外近邻边", "default": 5, "min": 0, "max": 60 },
+    { "name": "localStreetSize", "type": "number", "label": "城市道路尺寸", "default": 0, "min": 0, "max": 10 }
+  ],
+  "outputs": [
+    { "name": "roadGrid", "type": "grid", "label": "陆地道路网格" },
+    { "name": "tunnelGrid", "type": "grid", "label": "海底隧道网格" },
+    { "name": "outputGrid", "type": "grid", "label": "道路+隧道预览" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

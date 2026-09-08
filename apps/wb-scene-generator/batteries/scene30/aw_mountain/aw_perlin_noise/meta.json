@@ -1,0 +1,36 @@
+{
+  "id": "aw_perlin_noise",
+  "label": "山地柏林噪声",
+  "description": "山地场景专用极简 Perlin 噪声生成器，仅需网格尺寸和随机种子，其余参数内置默认。",
+  "description-en": "Minimal Perlin noise generator for mountain scenes; only requires grid size and seed, all other parameters are fixed internally.",
+  "icon": "有机波浪状等高线纹理，层层嵌套的起伏曲线，绿色调，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["terrain", "noise", "perlin", "mountain", "pcg"],
+  "tag_labels": ["地形", "噪声", "Perlin", "山地", "PCG"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "参考网格",
+      "description": "参考网格，仅用于推算输出噪声的行列数；网格中的数值不参与计算",
+      "description-en": "Reference grid used only to determine output dimensions; cell values are ignored."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，不同种子产生不同的噪声图案",
+      "description-en": "Random seed; different seeds produce different noise patterns.",
+      "default": 42
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "噪声网格",
+      "description": "输出噪声网格，值域 0–1（连续浮点值）",
+      "description-en": "Output noise grid with values in 0–1 (continuous floats)."
+    }
+  ]
+}

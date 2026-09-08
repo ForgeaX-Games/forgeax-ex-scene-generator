@@ -1,0 +1,43 @@
+{
+  "id": "tpl_fourway_material_seamless",
+  "name": "FourWayMaterialSeamless",
+  "nameEn": "FourWay Material Seamless",
+  "author": "zyw",
+  "nodes": [
+    { "id": "fw_subject", "opId": "text_panel", "name": "subject", "position": { "x": -900, "y": 0 }, "params": { "text": "grass dirt stone asphalt water material" } },
+    { "id": "fw_style", "opId": "text_panel", "name": "style", "position": { "x": -900, "y": 140 }, "params": { "text": "top-down orthographic 2D game texture, clean readable style" } },
+    { "id": "fw_usage", "opId": "text_panel", "name": "usage", "position": { "x": -900, "y": 280 }, "params": { "text": "non semantic seamless ground material" } },
+    { "id": "fw_route", "opId": "fourway_route_classifier", "name": "route", "position": { "x": -560, "y": 120 }, "params": { } },
+    { "id": "fw_prompt", "opId": "fourway_prompt_builder", "name": "prompt", "position": { "x": -220, "y": 80 }, "params": { } },
+    { "id": "fw_gen", "opId": "image_gen", "name": "ImageGen", "position": { "x": 140, "y": 80 }, "params": { } },
+    { "id": "fw_seam", "opId": "make_seamless_moisan", "name": "MakeSeamless", "position": { "x": 500, "y": 80 }, "params": { } },
+    { "id": "fw_edge", "opId": "seamless_edge_check", "name": "EdgeCheck", "position": { "x": 840, "y": 80 }, "params": { } },
+    { "id": "fw_meta", "opId": "fourway_metadata_pack", "name": "metadata", "position": { "x": 1180, "y": 240 }, "params": { } },
+    { "id": "fw_name", "opId": "text_panel", "name": "asset name", "position": { "x": 1180, "y": -80 }, "params": { "text": "fourway material" } },
+    { "id": "fw_out", "opId": "image_output", "name": "output", "position": { "x": 1520, "y": 80 }, "params": { } }
+  ],
+  "edges": [
+    { "id": "e_fw_usage", "source": { "nodeId": "fw_usage", "port": "output" }, "target": { "nodeId": "fw_route", "port": "usage" } },
+    { "id": "e_fw_subject", "source": { "nodeId": "fw_subject", "port": "output" }, "target": { "nodeId": "fw_prompt", "port": "subject" } },
+    { "id": "e_fw_style", "source": { "nodeId": "fw_style", "port": "output" }, "target": { "nodeId": "fw_prompt", "port": "style" } },
+    { "id": "e_fw_route", "source": { "nodeId": "fw_route", "port": "route" }, "target": { "nodeId": "fw_prompt", "port": "route" } },
+    { "id": "e_fw_view", "source": { "nodeId": "fw_route", "port": "view" }, "target": { "nodeId": "fw_prompt", "port": "view" } },
+    { "id": "e_fw_ground", "source": { "nodeId": "fw_route", "port": "groundPlane" }, "target": { "nodeId": "fw_prompt", "port": "groundPlane" } },
+    { "id": "e_fw_prompt", "source": { "nodeId": "fw_prompt", "port": "prompt" }, "target": { "nodeId": "fw_gen", "port": "prompt" } },
+    { "id": "e_fw_gen_seam", "source": { "nodeId": "fw_gen", "port": "image" }, "target": { "nodeId": "fw_seam", "port": "image" } },
+    { "id": "e_fw_seam_edge", "source": { "nodeId": "fw_seam", "port": "image" }, "target": { "nodeId": "fw_edge", "port": "image" } },
+    { "id": "e_fw_edge_out", "source": { "nodeId": "fw_edge", "port": "image" }, "target": { "nodeId": "fw_out", "port": "image" } },
+    { "id": "e_fw_name", "source": { "nodeId": "fw_name", "port": "output" }, "target": { "nodeId": "fw_out", "port": "name" } },
+    { "id": "e_fw_meta_route", "source": { "nodeId": "fw_route", "port": "route" }, "target": { "nodeId": "fw_meta", "port": "route" } },
+    { "id": "e_fw_meta_view", "source": { "nodeId": "fw_route", "port": "view" }, "target": { "nodeId": "fw_meta", "port": "view" } },
+    { "id": "e_fw_meta_ground", "source": { "nodeId": "fw_route", "port": "groundPlane" }, "target": { "nodeId": "fw_meta", "port": "groundPlane" } },
+    { "id": "e_fw_meta_blocking", "source": { "nodeId": "fw_route", "port": "blocking" }, "target": { "nodeId": "fw_meta", "port": "blocking" } },
+    { "id": "e_fw_meta_report", "source": { "nodeId": "fw_edge", "port": "report" }, "target": { "nodeId": "fw_meta", "port": "edgeReport" } }
+  ],
+  "position": { "x": 200, "y": 200 },
+  "exposedInputs": [],
+  "exposedOutputs": [
+    { "portName": "out:fw_out:alias", "portType": "string", "access": "item", "sourceNodeId": "fw_out", "sourcePortName": "alias" },
+    { "portName": "out:fw_meta:metadata", "portType": "string", "access": "item", "sourceNodeId": "fw_meta", "sourcePortName": "metadata" }
+  ]
+}

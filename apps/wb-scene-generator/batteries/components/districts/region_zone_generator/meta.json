@@ -1,0 +1,84 @@
+{
+  "id": "region_zone_generator",
+  "label": "区域分区生成器",
+  "description": "在单张掩码网格上，根据区域列表（面积权重、九宫格方位）把可用区域切成若干不重叠的不规则分区，输出一张多值网格（每个分区一个递增 ID）。网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Partition the usable area of a single mask grid into non-overlapping irregular zones from a region list (area ratio, 1-9 grid position). Outputs one multi-value grid (each zone gets an ascending ID). Grid lists are fanned out one-by-one as a DataTree.",
+  "icon": "俯视分区地图，多个不规则彩色多边形紧密拼接填满矩形区域，每块有不同深浅色，扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["zone", "partition", "region", "layout", "voronoi", "procedural", "pcg", "datatree"],
+  "tag_labels": ["分区", "地块", "区域", "布局", "Voronoi", "程序生成", "PCG", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "输入网格",
+      "description": "单张二维网格（grid[y][x]）；非零像素为可用区域，零像素为不可用区域。网格列表由引擎逐张 fanout。",
+      "description-en": "A single 2D grid (grid[y][x]); non-zero cells are usable area, zero cells are unavailable. The engine fans out a grid list one-by-one."
+    },
+    {
+      "name": "regions",
+      "type": "array",
+      "label": "区域列表",
+      "description": "区域描述数组，支持直接连入 JSON 字符串。每项格式为 [面积值, 九宫格方位] 或 [名称, 面积值, 九宫格方位]（名称仅作可读注释，不影响输出）。面积值以「满铺基准」为分母：加和 < 基准时仅占据 加和/基准 的比例（其余留空），加和 ≥ 基准时按比例瓜分铺满。方位=1-9（1=左上,2=上中,3=右上,4=左中,5=中央,6=右中,7=左下,8=下中,9=右下）。",
+      "description-en": "Region descriptor array or JSON string. Each item: [area, position(1-9)] or [name, area, position] (name is a readable comment only). Area is measured against areaScale: if the sum < areaScale the zones only cover sum/areaScale of the area (rest left empty); if >= areaScale they split the whole area proportionally."
+    },
+    {
+      "name": "areaScale",
+      "type": "number",
+      "access": "item",
+      "label": "满铺基准",
+      "description": "面积满铺基准（分母）。区域面积加和达到该值即铺满整张可用区域；不足则按 加和/基准 的比例只占据一部分，其余留空。例如 [[3,8],[1,4]] 加和=4、基准=10 → 约占 40%。",
+      "description-en": "Full-coverage denominator. When the sum of region areas reaches this value the zones fill the whole usable area; otherwise they cover sum/areaScale and leave the rest empty.",
+      "default": 10
+    },
+    {
+      "name": "boundaryStyle",
+      "type": "string",
+      "access": "item",
+      "label": "边界风格",
+      "description": "边界后处理风格：organic=有机自然形状（CA平滑），smooth=更强的圆滑处理，rectilinear=矩形化，voronoi=保持原始Voronoi边界",
+      "description-en": "Boundary post-processing style: organic, smooth, rectilinear, or voronoi.",
+      "default": "rectilinear",
+      "options": ["organic", "smooth", "rectilinear", "voronoi"]
+    },
+    {
+      "name": "relaxIterations",
+      "type": "number",
+      "access": "item",
+      "label": "松弛迭代次数",
+      "description": "Lloyd松弛迭代次数，值越大区域分布越均匀，但计算量也越大，推荐3-8",
+      "description-en": "Lloyd relaxation iterations. More iterations = more uniform distribution. Recommended: 3-8.",
+      "default": 5
+    },
+    {
+      "name": "smoothIterations",
+      "type": "number",
+      "access": "item",
+      "label": "平滑迭代次数",
+      "description": "边界平滑的CA迭代次数，仅在 organic/smooth 风格下生效，推荐3-10",
+      "description-en": "CA smoothing iterations for organic/smooth styles. Recommended: 3-10.",
+      "default": 5
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0表示使用当前时间（每次结果不同）",
+      "description-en": "Random seed; 0 uses current timestamp for a different result each run.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "单张多值网格，每个分区写入一个递增 ID（1,2,3,...），未分配像素为 0；可直接喂 grid2node 转场景节点。",
+      "description-en": "A single multi-value grid; each zone is written with an ascending ID (1,2,3,...), unassigned cells are 0. Feed into grid2node."
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "rule_indoor_room_slice",
+  "label": "房间切割",
+  "description": "将走廊间的区域沿长边垂直方向递归切割为独立房间，分配唯一ID",
+  "description-en": "Recursively slices room zones perpendicular to their long axis, assigning unique room IDs.",
+  "icon": "矩形区域内有多条平行切割线将空间分割为大小不一的房间块，深灰底配白色分割线，扁平插画风格简洁小图标主色2种",
+  "version": "1.0.0",
+  "tags": ["rule_indoor", "room", "slice", "partition"],
+  "tag_labels": ["规则室内", "房间", "切割", "分区"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "0=外部/墙, 1=走廊, 2=房间区",
+      "description-en": "Grid: 0=exterior/wall, 1=corridor, 2=room zone."
+    },
+    {
+      "name": "minRoomSize",
+      "type": "number",
+      "label": "最小房间尺寸",
+      "description": "房间最小边长（格），低于此值不再切割",
+      "description-en": "Minimum room dimension in cells.",
+      "default": 8
+    },
+    {
+      "name": "maxRoomSize",
+      "type": "number",
+      "label": "最大房间尺寸",
+      "description": "房间最大边长（格），超过此值继续切割",
+      "description-en": "Maximum room dimension before further slicing.",
+      "default": 25
+    },
+    {
+      "name": "wallThickness",
+      "type": "number",
+      "label": "内墙厚度",
+      "description": "房间分隔墙的厚度（1-2格）",
+      "description-en": "Interior wall thickness (1-2 cells).",
+      "default": 1
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "0=墙, 1=走廊, 10+=各房间ID",
+      "description-en": "0=wall, 1=corridor, 10+=room IDs."
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "id": "json2voxels",
+  "label": "JSON→体素列表",
+  "name-en": "JSON2Voxels",
+  "description": "将 JSON 体素坐标列表解析为 point3d 列表（voxels）与并行 tokens。支持扁平数组、`{ voxels: [...] }`、或分层 `{ root, nodes:[{ name, cells }] }` 格式。",
+  "description-en": "Parse a JSON voxel coordinate list into point3d voxels and parallel tokens. Supports flat arrays, `{ voxels: [...] }`, or hierarchical `{ root, nodes:[{ name, cells }] }`.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "json", "voxel", "parse"],
+  "tag_labels": ["场景", "桥接", "JSON", "体素", "解析"],
+  "inputs": [
+    {
+      "name": "json",
+      "type": "string",
+      "access": "item",
+      "required": true,
+      "label": "JSON",
+      "description": "体素 JSON 字符串（见 README 格式）",
+      "description-en": "Voxel JSON string (see supported formats in description)."
+    },
+    {
+      "name": "str",
+      "type": "string",
+      "access": "item",
+      "label": "str（兼容）",
+      "description": "与 json 口等价，便于接 text_panel.output",
+      "description-en": "Alias of json; useful when wired from text_panel.output."
+    },
+    {
+      "name": "defaultToken",
+      "type": "string",
+      "access": "item",
+      "label": "默认 token",
+      "description": "cell 未写 token 时的默认值",
+      "description-en": "Default token when a cell omits token.",
+      "default": "cell"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "voxels",
+      "type": "point3d",
+      "access": "list",
+      "label": "voxels",
+      "description": "体素坐标列表 { x, y, z }",
+      "description-en": "Voxel positions { x, y, z }."
+    },
+    {
+      "name": "tokens",
+      "type": "string",
+      "access": "list",
+      "label": "tokens",
+      "description": "与 voxels 一一对应的语义 token",
+      "description-en": "Semantic token per voxel."
+    },
+    {
+      "name": "nodes",
+      "type": "array",
+      "access": "item",
+      "label": "nodes",
+      "description": "分层 nodes 描述（仅当 JSON 含 nodes[] 时有值）",
+      "description-en": "Hierarchical node specs when JSON includes nodes[]."
+    },
+    {
+      "name": "root",
+      "type": "string",
+      "access": "item",
+      "label": "root",
+      "description": "JSON 内指定的根节点名",
+      "description-en": "Root node name from JSON when provided."
+    },
+    {
+      "name": "schema",
+      "type": "string",
+      "access": "item",
+      "label": "schema",
+      "description": "JSON 内指定的 schema",
+      "description-en": "Schema tag from JSON when provided."
+    },
+    {
+      "name": "voxelCount",
+      "type": "number",
+      "access": "item",
+      "label": "体素数",
+      "description": "解析出的体素数量",
+      "description-en": "Number of parsed voxels."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "error",
+      "description": "解析失败时的错误信息",
+      "description-en": "Error message when parsing fails."
+    }
+  ]
+}

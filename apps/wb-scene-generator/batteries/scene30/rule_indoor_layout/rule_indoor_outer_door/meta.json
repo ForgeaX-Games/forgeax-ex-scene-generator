@@ -1,0 +1,67 @@
+{
+  "id": "rule_indoor_outer_door",
+  "label": "外墙开门",
+  "description": "在建筑外墙上开门，门洞位于走廊与外墙交汇处，连通室内走廊与外部",
+  "description-en": "Opens doors in the building outer wall where corridors meet the perimeter, connecting interior corridors to the exterior.",
+  "icon": "建筑外墙轮廓上有一个缺口，走廊从内部延伸到外部，深灰底配白色墙体与亮色门洞，扁平插画风格简洁小图标主色2种",
+  "version": "1.0.0",
+  "tags": ["rule_indoor", "outer_wall", "door", "entrance"],
+  "tag_labels": ["规则室内", "外墙", "门洞", "入口"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "处理后的室内网格（0=墙/外部, 1=走廊, 10+=房间）",
+      "description-en": "Processed indoor grid: 0=wall/exterior, 1=corridor, 10+=rooms."
+    },
+    {
+      "name": "footprintGrid",
+      "type": "grid",
+      "label": "建筑轮廓网格",
+      "description": "原始建筑轮廓（非零=建筑内部），用于区分外墙和外部空间",
+      "description-en": "Original building footprint (non-zero = interior), distinguishes outer wall from exterior."
+    },
+    {
+      "name": "doorWidth",
+      "type": "number",
+      "label": "门洞宽度",
+      "description": "外墙门洞宽度（格）",
+      "description-en": "Outer wall door width in cells.",
+      "default": 3
+    },
+    {
+      "name": "maxDoors",
+      "type": "number",
+      "label": "最多门数",
+      "description": "外墙上最多开几个门",
+      "description-en": "Maximum number of outer wall doors.",
+      "default": 8
+    },
+    {
+      "name": "maxWallDepth",
+      "type": "number",
+      "label": "最大墙厚搜索",
+      "description": "从走廊向外搜索的最大墙体厚度",
+      "description-en": "Maximum wall thickness to search through from corridor to exterior.",
+      "default": 6
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "外墙开门后的网格",
+      "description-en": "Grid with outer wall doors opened."
+    }
+  ]
+}

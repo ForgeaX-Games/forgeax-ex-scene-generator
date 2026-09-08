@@ -1,0 +1,96 @@
+{
+  "id": "g_auto_collision",
+  "label": "自动碰撞体（全部 part）",
+  "name-en": "GAutoCollision",
+  "description": "为 Geometry 里所有 part 从 visual 自动派生 <collision>。原生 primitive 精确复制：box→box、cylinder→cylinder(沿Z)、sphere→sphere；其余（CSG/Parts/mesh/transform）用 AABB box 兜底；无法解析 AABB 的（mesh/未注册 op）跳过。已有显式 collision 的 part 默认跳过，replace=true 时先清空所有 collision。当 prompt 提到 碰撞体 / 碰撞 / collision / 物理 / 仿真 且希望一次性自动生成时使用。",
+  "description-en": "Auto-derive <collision> for every part from its visual. Native primitives are copied exactly: box→box, cylinder→cylinder(along Z), sphere→sphere; everything else (CSG/Parts/mesh/transform) falls back to an AABB box; parts whose AABB cannot be resolved (mesh/unregistered op) are skipped. Parts with explicit collisions are skipped by default; replace=true clears all collisions first.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "geometry",
+    "collision",
+    "physics",
+    "urdf"
+  ],
+  "tag_labels": [
+    "几何",
+    "碰撞",
+    "物理",
+    "URDF"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry（含 part 及其引用的 shape）",
+      "description-en": "Upstream Geometry containing parts and their referenced shapes."
+    },
+    {
+      "name": "primitive_exact",
+      "type": "bool",
+      "label": "primitive 精确复制",
+      "default": true,
+      "description": "true = box/cylinder/sphere 用同形精确 collision；false = 全部 part 都用 AABB box",
+      "description-en": "true = copy box/cylinder/sphere exactly; false = AABB-box every part."
+    },
+    {
+      "name": "padding",
+      "type": "number",
+      "label": "外扩 (m)",
+      "default": 0,
+      "description": "碰撞体各向同性外扩量（米）",
+      "description-en": "Isotropic collision padding (meters)."
+    },
+    {
+      "name": "min_size",
+      "type": "number",
+      "label": "最小尺寸 (m)",
+      "default": 0.0001,
+      "description": "碰撞体最小尺寸，防止薄板退化为零体积",
+      "description-en": "Minimum collision extent to avoid zero-volume collisions."
+    },
+    {
+      "name": "replace",
+      "type": "bool",
+      "label": "替换现有 collision",
+      "default": false,
+      "description": "true → 先删除所有现有 collision 语句再重新派生",
+      "description-en": "When true, drop all existing collision statements before re-deriving."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加 collision 后的 Geometry",
+      "description-en": "Geometry after appending collisions."
+    },
+    {
+      "name": "added",
+      "type": "number",
+      "label": "新增数",
+      "description": "新增的 collision 语句数",
+      "description-en": "Number of collision statements added."
+    },
+    {
+      "name": "skipped",
+      "type": "number",
+      "label": "跳过数",
+      "description": "因已有 collision / 无法解析 AABB 而跳过的 part 数",
+      "description-en": "Parts skipped due to existing collisions or unresolved AABB."
+    },
+    {
+      "name": "report",
+      "type": "string",
+      "label": "报告",
+      "description": "跳过原因等说明（多行）",
+      "description-en": "Notes such as skip reasons (multiline)."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

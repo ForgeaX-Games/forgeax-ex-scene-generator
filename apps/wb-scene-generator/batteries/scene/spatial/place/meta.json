@@ -1,0 +1,20 @@
+{
+  "id": "place",
+  "label": "放置子模块",
+  "name-en": "Place",
+  "description": "Graft a child scene at parent-local metres. SetParam write-back stays in child metres.",
+  "version": "1.0.0",
+  "tags": ["scene", "spatial", "place"],
+  "inputs": [
+    { "name": "scene", "type": "scene", "access": "item", "required": true },
+    { "name": "child", "type": "scene", "access": "item", "required": true },
+    { "name": "name", "type": "string", "access": "item", "default": "placed" },
+    { "name": "x", "type": "number", "access": "item", "default": 0 },
+    { "name": "y", "type": "number", "access": "item", "default": 0 },
+    { "name": "z", "type": "number", "access": "item", "default": 0 }
+  ],
+  "outputs": [
+    { "name": "scene", "type": "scene", "access": "item" },
+    { "name": "localOrigin", "type": "point2d", "access": "item" }
+  ]
+}

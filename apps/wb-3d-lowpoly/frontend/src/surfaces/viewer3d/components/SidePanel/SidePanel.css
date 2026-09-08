@@ -1,0 +1,231 @@
+/* 💡 右侧关节面板样式：分段折叠 + 关节滑块行 */
+
+.viewer-sidepanel {
+  width: var(--sidepanel-width);
+  flex-shrink: 0;
+  background-color: var(--color-bg-secondary);
+  border-left: 1px solid var(--color-border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-sidepanel-section {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.viewer-sidepanel-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--color-bg-titlebar);
+  border: none;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-align: left;
+  user-select: none;
+}
+
+.viewer-sidepanel-header > svg {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.viewer-sidepanel-header:hover > svg {
+  color: var(--color-accent);
+}
+
+.viewer-sidepanel-badge {
+  margin-left: 4px;
+  padding: 0 6px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  background: rgba(var(--color-accent-rgb), 0.15);
+  color: var(--color-accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.viewer-sidepanel-tag {
+  margin-left: auto;
+  padding: 0 6px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--color-info);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.viewer-sidepanel-reset {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.viewer-sidepanel-reset:hover {
+  background: var(--color-accent-hover);
+  color: var(--color-accent);
+}
+
+.viewer-sidepanel-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.viewer-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.viewer-info-row {
+  display: flex;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+}
+
+.viewer-info-label {
+  flex-shrink: 0;
+  width: 70px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10px;
+  font-weight: 600;
+  padding-top: 2px;
+}
+
+.viewer-info-value {
+  flex: 1;
+  color: var(--color-text-primary);
+  word-break: break-word;
+  font-family: var(--font-mono);
+}
+
+.viewer-info-empty {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  padding: 6px 0;
+  font-style: italic;
+}
+
+/* 关节行 */
+
+.viewer-joint-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.viewer-joint-row-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.viewer-joint-name {
+  flex: 1;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer-joint-type {
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.viewer-joint-type-revolute,
+.viewer-joint-type-continuous {
+  background: rgba(56, 189, 248, 0.18);
+  color: var(--color-info);
+}
+
+.viewer-joint-type-prismatic {
+  background: rgba(62, 207, 107, 0.20);
+  color: var(--color-success);
+}
+
+.viewer-joint-row-mid {
+  display: flex;
+}
+
+.viewer-joint-row-mid input[type="range"] {
+  flex: 1;
+  height: 18px;
+  cursor: pointer;
+}
+
+.viewer-joint-row-mid input[type="range"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.viewer-joint-row-bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  gap: 6px;
+}
+
+.viewer-joint-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.viewer-joint-range-fallback {
+  color: var(--color-warning);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.viewer-joint-value {
+  color: var(--color-text-secondary);
+  text-align: right;
+  font-feature-settings: 'tnum';
+}

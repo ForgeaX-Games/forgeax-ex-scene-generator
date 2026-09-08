@@ -1,0 +1,43 @@
+{
+  "id": "urdf_preview",
+  "label": "URDF 预览",
+  "name-en": "UrdfPreview",
+  "description": "把 URDF XML 文本推送到内嵌 URDF Viewer 面板进行可视化。常见上游：g_to_urdf 或 文本节点。urdf 端口透传，便于继续连接其他文本/导出节点。",
+  "description-en": "Forward a URDF XML string to the embedded URDF Viewer panel. Typical upstream: g_to_urdf or a text node. The urdf port is pass-through for chaining.",
+  "version": "1.0.0",
+  "autoIterate": false,
+  "tags": [
+    "urdf",
+    "preview",
+    "viewer",
+    "io"
+  ],
+  "tag_labels": [
+    "URDF",
+    "预览",
+    "可视化",
+    "IO"
+  ],
+  "inputs": [
+    {
+      "name": "urdf",
+      "type": "string",
+      "required": true,
+      "label": "URDF",
+      "description": "URDF XML 字符串（接 g_to_urdf 输出或任意文本源）",
+      "description-en": "URDF XML string."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "urdf",
+      "type": "string",
+      "label": "URDF",
+      "description": "原 URDF 透传输出",
+      "description-en": "Pass-through URDF string."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

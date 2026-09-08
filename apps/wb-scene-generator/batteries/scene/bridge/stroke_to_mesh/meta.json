@@ -1,0 +1,65 @@
+{
+  "id": "stroke_to_mesh",
+  "label": "笔刷→路带",
+  "name-en": "StrokeToMesh",
+  "description": "把道路掩码挤成贴地的浅色条带 mesh。可选高度场让路带跟着山坡走。接到 polyline_road_spline.outputGrid。",
+  "description-en": "Extrude a road mask into a light ground-hugging strip mesh. Optional height field makes the strip follow the hillside. Wire polyline_road_spline.outputGrid.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "mesh", "road", "stroke"],
+  "tag_labels": ["场景", "桥接", "网格", "道路", "笔刷"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "道路掩码",
+      "description": "道路占用 grid（非零格成为路带）。",
+      "description-en": "Road occupancy grid. Non-zero cells become the strip."
+    },
+    {
+      "name": "heightGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "高度场",
+      "description": "可选。格值是层高，路带贴着它走；未接线时路带贴在掩码自身高度。",
+      "description-en": "Optional elevation grid. The strip follows these heights; unwired uses the mask values."
+    },
+    {
+      "name": "cellSize",
+      "type": "number",
+      "access": "item",
+      "label": "格尺寸",
+      "description": "每格世界尺寸（米）。默认 1。",
+      "description-en": "World size of one cell in metres. Default 1.",
+      "default": 1
+    },
+    {
+      "name": "lift",
+      "type": "number",
+      "access": "item",
+      "label": "抬升",
+      "description": "沿法向抬一点避免与地形 z-fight。默认 0.08。",
+      "description-en": "Small Z lift so the strip sits on the terrain. Default 0.08.",
+      "default": 0.08
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mesh",
+      "type": "mesh",
+      "access": "item",
+      "label": "mesh",
+      "description": "浅色路带三角网（role=road）。接到 mesh_to_node 或 Default Road。",
+      "description-en": "Light road-strip triangles (role=road). Wire to mesh_to_node or Default Road."
+    },
+    {
+      "name": "triangleCount",
+      "type": "number",
+      "access": "item",
+      "label": "三角形数",
+      "description": "生成的三角形数量",
+      "description-en": "Number of triangles in the mesh."
+    }
+  ]
+}

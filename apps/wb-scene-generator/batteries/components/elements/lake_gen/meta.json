@@ -1,0 +1,101 @@
+{
+  "id": "lake_gen",
+  "label": "湖泊生成",
+  "description": "在单张掩码网格的指定区域内随机生成有机形态的湖泊，每个湖泊分配唯一掩码ID，输出一张多值网格和名称清单。网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Generate organic lakes inside a designated area of a single mask grid. Each lake receives a unique ID; outputs one multi-value grid and a name list. Grid lists are handled per-item by the DataTree engine.",
+  "icon": "扁平插画风格小图标。俯视视角，深蓝色底面上分布着两三个不规则的浅蓝色湖泊形状，边缘略带锯齿感，简洁有机，主色2种。",
+  "version": "2.0.0",
+  "tags": ["lake", "water", "terrain", "procedural", "mask", "datatree"],
+  "tag_labels": ["湖泊", "水体", "地形", "程序生成", "掩码", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "单张源掩码网格（number[][]），湖泊将在 targetId 指定区域内生成；网格列表由引擎逐张 fanout。",
+      "description-en": "Single source mask grid (number[][]); lakes are placed in cells whose value equals targetId. The engine fans out a grid list one-by-one."
+    },
+    {
+      "name": "targetId",
+      "type": "number",
+      "access": "item",
+      "label": "目标区域ID",
+      "description": "允许放置湖泊的单元格掩码值",
+      "description-en": "Cell value marking the valid area for lake placement.",
+      "default": 1
+    },
+    {
+      "name": "lakeCount",
+      "type": "number",
+      "access": "item",
+      "label": "湖泊数量",
+      "description": "要生成的湖泊数量",
+      "description-en": "Number of lakes to generate.",
+      "default": 3
+    },
+    {
+      "name": "lakeSize",
+      "type": "number",
+      "access": "item",
+      "label": "湖泊大小",
+      "description": "每个湖泊的目标单元格数量",
+      "description-en": "Target size of each lake in grid cells.",
+      "default": 50
+    },
+    {
+      "name": "sizeVariance",
+      "type": "number",
+      "access": "item",
+      "label": "大小随机性",
+      "description": "湖泊大小的随机浮动比例（0=完全一致，1=±100%浮动），推荐 0.1–0.5",
+      "description-en": "Size randomness factor (0 = all same size, 1 = ±100% variance). Recommended 0.1–0.5.",
+      "default": 0.3
+    },
+    {
+      "name": "minSpacing",
+      "type": "number",
+      "access": "item",
+      "label": "最小间距",
+      "description": "湖泊之间的最小间隔（单元格数），防止湖泊紧贴或重叠",
+      "description-en": "Minimum gap in cells between any two lakes.",
+      "default": 3
+    },
+    {
+      "name": "lakeBaseId",
+      "type": "number",
+      "access": "item",
+      "label": "起始掩码ID",
+      "description": "湖泊掩码ID的起始值；0 表示自动（网格现有最大ID + 1）",
+      "description-en": "Starting mask ID for lakes; 0 = auto (max existing grid value + 1).",
+      "default": 0
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 表示使用当前时间（每次结果不同）",
+      "description-en": "Random seed; 0 uses the current timestamp for a different result each run.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "湖泊网格",
+      "description": "单张多值网格：每个湖泊一个递增 id，0=空白；可接 grid_split_by_value 拆分为独立湖泊",
+      "description-en": "Single multi-value grid: each lake gets an increasing id, 0 elsewhere; pipe to grid_split_by_value to separate lakes."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "湖泊清单",
+      "description": "湖泊名称清单，格式 [{id, name, type}]，与网格中的 id 一一对应",
+      "description-en": "Lake name list [{id, name, type}] aligned with the ids in the grid."
+    }
+  ]
+}

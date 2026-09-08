@@ -1,0 +1,41 @@
+{
+  "id": "grid_to_json",
+  "label": "Grid 转 JSON",
+  "name-en": "GridToJson",
+  "description": "把二维整数 grid 序列化为 JSON 字符串。专用于「整栋建筑贴图」链路：Scene 侧 `building_footprint_mask` → 本电池 → 2D `house_template.spec`（日常结构化场景构图用不到）。",
+  "description-en": "Serialize a 2D integer grid to JSON. For the whole-building texture pipeline only: building_footprint_mask → this → house_template.spec (not used in normal structured scene composition).",
+  "icon": "一个方格网格通过箭头连到一个 JSON 花括号字符串，扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": ["grid", "json", "string", "transform", "bridge"],
+  "tag_labels": ["网格", "JSON", "字符串", "转换", "桥接"],
+  "projectTypes": ["both"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "输入网格",
+      "description": "二维整数 grid（如 building_footprint_mask 输出的 0/1/2 掩码）",
+      "description-en": "2D integer grid (e.g. 0/1/2 mask from building_footprint_mask)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "json",
+      "type": "string",
+      "access": "item",
+      "label": "JSON 字符串",
+      "description": "grid 的 JSON.stringify 结果，可直接连 house_template.spec / grid_json_to_size.json",
+      "description-en": "JSON.stringify(grid); connect to house_template.spec or grid_json_to_size.json."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "错误信息",
+      "description": "输入非法时的错误；成功为空字符串",
+      "description-en": "Error when input is invalid; empty string on success."
+    }
+  ]
+}

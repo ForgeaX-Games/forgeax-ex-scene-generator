@@ -1,0 +1,26 @@
+{
+  "id": "sidescroller_metadata_pack",
+  "label": "横版元数据打包",
+  "name-en": "SidescrollerMetadata",
+  "description": "输出横版场景资产的 runtime metadata，避免 coding 从文件名或图片尺寸猜测层级、尺寸和放置语义。",
+  "description-en": "Emit runtime metadata for side-scroller scene assets so coding does not infer layer, dimensions, or placement from filenames.",
+  "version": "1.0.0",
+  "tags": ["image", "sidescroller", "metadata", "manifest"],
+  "tag_labels": ["图像", "横版", "元数据", "清单"],
+  "projectTypes": ["asset2d"],
+  "inputs": [
+    { "name": "layer_role", "type": "string", "access": "item", "label": "层角色" },
+    { "name": "texture_width", "type": "number", "access": "item", "label": "纹理宽度", "default": 1920 },
+    { "name": "texture_height", "type": "number", "access": "item", "label": "纹理高度", "default": 360 },
+    { "name": "logical_tile_width", "type": "number", "access": "item", "label": "逻辑 tile 宽度", "default": 640 },
+    { "name": "logical_tile_height", "type": "number", "access": "item", "label": "逻辑 tile 高度", "default": 360 },
+    { "name": "placement", "type": "string", "access": "item", "label": "放置规则", "default": "parallax_background" },
+    { "name": "qualityReport", "type": "string", "access": "item", "label": "质量报告 JSON" }
+  ],
+  "outputs": [
+    { "name": "metadata", "type": "string", "access": "item", "label": "元数据 JSON" },
+    { "name": "layer_role", "type": "string", "access": "item", "label": "层角色" },
+    { "name": "ready", "type": "boolean", "access": "item", "label": "是否就绪" }
+  ],
+  "alg_tag": ["横版场景元数据", "runtime manifest"]
+}

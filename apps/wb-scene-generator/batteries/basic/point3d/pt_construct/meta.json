@@ -1,0 +1,46 @@
+{
+  "id": "pt_construct",
+  "label": "构造点",
+  "name-en": "PtConstruct",
+  "description": "把三个数值组合成一个 point3d 端口值。",
+  "description-en": "Compose three numbers into a point3d port value.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["point3d", "basic", "construct"],
+  "tag_labels": ["三维点", "基础", "构造"],
+  "inputs": [
+    {
+      "name": "x",
+      "type": "number",
+      "label": "x",
+      "description": "X 分量",
+      "description-en": "X component.",
+      "default": 0
+    },
+    {
+      "name": "y",
+      "type": "number",
+      "label": "y",
+      "description": "Y 分量",
+      "description-en": "Y component.",
+      "default": 0
+    },
+    {
+      "name": "z",
+      "type": "number",
+      "label": "z",
+      "description": "Z 分量",
+      "description-en": "Z component.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "point",
+      "type": "point3d",
+      "label": "point",
+      "description": "组合而成的三维点",
+      "description-en": "Composed 3D point."
+    }
+  ]
+}

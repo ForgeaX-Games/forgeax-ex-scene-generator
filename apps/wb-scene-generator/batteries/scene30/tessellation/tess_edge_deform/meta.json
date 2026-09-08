@@ -1,0 +1,60 @@
+{
+  "id": "tess_edge_deform",
+  "label": "镶嵌格边界变形",
+  "description": "对任意镶嵌格 ID 网格施加 FBM 位移场，将笔直的单元格边界变形为有机曲线，不破坏镶嵌拓扑结构。",
+  "description-en": "Applies an FBM displacement field to any tessellation region grid, warping straight cell boundaries into organic curves without breaking the tessellation topology.",
+  "icon": "一张六边形格网在右侧被扭曲变形为有机曲线边界，左规则右有机，渐变过渡，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["tessellation", "deform", "warp", "fbm", "noise", "organic", "grid"],
+  "tag_labels": ["镶嵌", "变形", "位移场", "FBM", "噪声", "有机", "网格"],
+  "inputs": [
+    {
+      "name": "regionGrid",
+      "type": "grid",
+      "label": "镶嵌格 ID 网格",
+      "description": "来自 tess_hex_grid / tess_tri_grid 或其他 regionGrid 的 ID 网格",
+      "description-en": "Region ID grid from tess_hex_grid, tess_tri_grid, or any other source."
+    },
+    {
+      "name": "warpScale",
+      "type": "number",
+      "label": "变形幅度",
+      "description": "位移场的最大像素偏移量，越大边界变形越剧烈，建议 1~10，默认 3",
+      "description-en": "Max pixel displacement. Larger = more deformation. Recommended 1-10. Default 3.",
+      "default": 3
+    },
+    {
+      "name": "warpFreq",
+      "type": "number",
+      "label": "变形频率",
+      "description": "位移场的空间频率，越大波纹越密，建议 0.05~0.3，默认 0.1",
+      "description-en": "Spatial frequency of the displacement field. Larger = denser ripples. Recommended 0.05-0.3. Default 0.1.",
+      "default": 0.1
+    },
+    {
+      "name": "octaves",
+      "type": "number",
+      "label": "FBM 层数",
+      "description": "FBM 噪声叠加层数（1~6），层数越多细节越丰富，默认 3",
+      "description-en": "Number of FBM octaves (1-6). More = richer detail. Default 3.",
+      "default": 3
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0=每次不同，默认 0",
+      "description-en": "Random seed; 0 = random each time. Default 0.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "warpedGrid",
+      "type": "grid",
+      "label": "变形后 ID 网格",
+      "description": "边界经过 FBM 位移场扭曲后的镶嵌格 ID 网格，单元 ID 与输入一致",
+      "description-en": "Tessellation region grid with organically warped boundaries. Cell IDs are preserved from input."
+    }
+  ]
+}

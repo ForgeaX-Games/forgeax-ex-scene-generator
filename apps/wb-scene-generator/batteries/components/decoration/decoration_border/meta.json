@@ -1,0 +1,112 @@
+{
+  "id": "decoration_border",
+  "label": "规则装饰物",
+  "name-en": "DecorationBorder",
+  "description": "在单张基准网格的周围按规则摆放 1×1 装饰物，支持随机、间距随机、等距、顺序填充，以及正负偏移距离。多种装饰物各占一个递增填充值（从 max+1 起），输出单张多值装饰物网格和名称清单。网格列表由引擎按 DataTree 自动逐张 fanout。",
+  "description-en": "Place 1×1 decoration stamps around the border of a single base grid with configurable fill mode (random, spaced random, equidistant, sequential) and signed offset distance. Each decoration type gets an ascending fill value (from max+1); outputs one multi-value decoration grid and a name list. The engine fans out a DataTree of grids one-by-one.",
+  "icon": "扁平插画风格小图标。方形区域外围环绕一圈均匀分布的小装饰块，内部为浅色填充区域，外圈小块为深色，主色2种。",
+  "version": "3.0.0",
+  "tags": ["decoration", "border", "stamp", "placement", "procedural", "datatree"],
+  "tag_labels": ["装饰", "边框", "印章", "摆放", "程序化", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "基准网格",
+      "description": "单张二维整数网格（grid[y][x]），非零区域作为参考边界。网格列表由引擎按 DataTree 自动逐张 fanout。",
+      "description-en": "A single 2D integer grid (grid[y][x]); non-zero cells define the reference region boundary. The engine fans out a DataTree of grids one-by-one."
+    },
+    {
+      "name": "decorationName",
+      "type": "string",
+      "label": "装饰物名称",
+      "description": "装饰物规格：单名称 '树木'；多名称 '树木，小草，花朵'（逗号/顿号/分号/换行/竖线分隔，按 count 均匀轮转）；或对象数组 [{\"树木\":3},{\"小草\":5}]（每种按自身数量独立放置）",
+      "description-en": "Decoration spec: single name '树木'; multi-name '树木，小草' (split by comma/semicolon/newline/pipe, evenly cycled by count); or object array [{\"树木\":3}] (each placed by its own count).",
+      "default": ""
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "access": "item",
+      "label": "填充数量",
+      "description": "摆放装饰物的数量，超出可用位置时取全部",
+      "description-en": "Number of decoration stamps to place; clamped to available border positions.",
+      "default": 20
+    },
+    {
+      "name": "rotate",
+      "type": "bool",
+      "access": "item",
+      "label": "是否旋转",
+      "description": "保留参数（1×1 装饰物旋转无效果）",
+      "description-en": "Reserved parameter (has no effect for 1×1 stamps).",
+      "default": false
+    },
+    {
+      "name": "fillMode",
+      "type": "string",
+      "access": "item",
+      "label": "填充方式",
+      "description": "random=完全随机；spaced_random=随机但保证装饰物之间至少1格间距；equidistant=按角度等距分布；sequential=从随机起点顺序等距填充",
+      "description-en": "random=fully random; spaced_random=random with min 1-cell gap; equidistant=angular equidistant; sequential=sequential from random start points.",
+      "default": "random",
+      "options": ["random", "spaced_random", "equidistant", "sequential"]
+    },
+    {
+      "name": "offset",
+      "type": "number",
+      "access": "item",
+      "label": "偏移距离",
+      "description": "装饰物边缘与基准网格边界的间距格数：正数=外围留空，0=紧贴边界，负数=嵌入内部",
+      "description-en": "Gap in cells between the stamp edge and the base grid boundary: positive=outside gap, 0=touching boundary, negative=overlapping inside.",
+      "default": 1
+    },
+    {
+      "name": "startCount",
+      "type": "number",
+      "access": "item",
+      "label": "起点数量",
+      "description": "sequential 模式专用：随机选取的起始点数量，每个起点独立向前填充",
+      "description-en": "sequential mode only: number of random starting points; each start fills forward independently.",
+      "default": 4
+    },
+    {
+      "name": "itemSpacing",
+      "type": "number",
+      "access": "item",
+      "label": "物品间距",
+      "description": "sequential 模式专用：相邻两个装饰物边缘之间的格数间距",
+      "description-en": "sequential mode only: cell gap between consecutive stamp edges along the ring.",
+      "default": 8
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "仅含装饰物的单张多值网格，每种装饰物一个递增填充值（从基准网格最大值+1起）；可配合按值拆分喂下游。输入为网格列表时引擎逐张产出对应的 DataTree。",
+      "description-en": "A single multi-value grid containing only decoration stamps; each type uses an ascending fill value (from max(grid)+1). With a grid-list input the engine emits one per branch as a DataTree."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "装饰物名称清单，格式为 [{id, name, type}]，包含本次分配的装饰物填充值与名称",
+      "description-en": "Decoration name list in [{id, name, type}] format, containing the assigned fill values and names."
+    }
+  ]
+}

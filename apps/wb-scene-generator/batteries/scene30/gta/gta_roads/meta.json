@@ -1,0 +1,30 @@
+{
+  "id": "gta_roads",
+  "label": "GTA 路网",
+  "description": "基于国家/陆地形状生成 GTA 风格城市路网：海岸内缩可建设区、中心环路、主干路和分区网格街道。",
+  "description-en": "Generates a GTA-style urban road network from country/land shapes: coastal inset buildable zones, ring roads, arterials, and district street grids.",
+  "icon": "俯视城市岛屿上有环路、放射主干路与街区网格道路。",
+  "version": "1.0.0",
+  "tags": ["gta", "road", "street", "city"],
+  "tag_labels": ["GTA", "路网", "街道", "城市"],
+  "projectTypes": ["scene", "both"],
+  "inputs": [
+    { "name": "landGrid", "type": "grid", "label": "陆地掩码" },
+    { "name": "countryGrid", "type": "grid", "label": "国家网格" },
+    { "name": "heightMap", "type": "grid", "label": "高度图", "description": "可选。接入后道路会少穿越高地。" },
+    { "name": "seed", "type": "number", "label": "随机种子", "default": 20260601 },
+    { "name": "districtCount", "type": "number", "label": "街区片区数", "default": 12, "min": 2, "max": 40 },
+    { "name": "localSpacing", "type": "number", "label": "街区道路间距", "default": 34, "min": 4, "max": 80 },
+    { "name": "districtRadius", "type": "number", "label": "片区半径", "default": 95, "min": 12, "max": 240 },
+    { "name": "coastInset", "type": "number", "label": "海岸内缩", "default": 10, "min": 0, "max": 60 },
+    { "name": "arterialWidth", "type": "number", "label": "主路宽度", "default": 1, "min": 1, "max": 5 },
+    { "name": "streetWidth", "type": "number", "label": "街道宽度", "default": 1, "min": 1, "max": 3 },
+    { "name": "largestCountryOnly", "type": "boolean", "label": "仅最大国家", "default": false }
+  ],
+  "outputs": [
+    { "name": "roadGrid", "type": "grid", "label": "GTA 路网" },
+    { "name": "roadCenters", "type": "array", "label": "片区中心" },
+    { "name": "outputGrid", "type": "grid", "label": "GTA 路网" },
+    { "name": "outputNameList", "type": "array", "label": "名称清单" }
+  ]
+}

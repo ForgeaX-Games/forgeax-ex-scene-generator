@@ -1,0 +1,47 @@
+{
+  "id": "image_preview",
+  "label": "图像预览",
+  "description": "在画布上直接预览来自上游的图像（资产库 alias 或 data URL），并将其原样透传到下游，方便做可视化调试",
+  "description-en": "Preview an upstream image (library alias or data URL) directly on the canvas and pass it through to downstream as an inline visual inspector.",
+  "icon": "一个深色相框中央嵌入一个山景图片缩略图，画框右下角有一只显眼的眼睛符号，扁平插画风格，主色青绿色与深背景，小尺寸可辨，主色2种。",
+  "version": "1.0.0",
+  "tags": [
+    "image",
+    "preview",
+    "inspect",
+    "debug",
+    "visualization",
+    "asset"
+  ],
+  "tag_labels": [
+    "图像",
+    "预览",
+    "查看",
+    "调试",
+    "可视化",
+    "资产"
+  ],
+  "frontend": {
+    "nodeType": "image_preview"
+  },
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "图像",
+      "description": "上游传入的图像 alias 或 data URL，将在节点上展示",
+      "description-en": "Upstream image alias or data URL to display on the node."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "access": "item",
+      "label": "图像",
+      "description": "与输入完全一致的图像（透传），可继续连接到任何接收 image 的节点",
+      "description-en": "Identical passthrough of the input image; can be connected to any image-consuming node."
+    }
+  ]
+}

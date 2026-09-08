@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Linear array transform battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <rect x="4.5" y="9" width="5" height="6" fill="#b7ff5a" fill-opacity=".2" stroke="#e7f5ee" stroke-width="1.5"/>
+  <rect x="11" y="9" width="5" height="6" fill="none" stroke="#e7f5ee" stroke-width="1.5"/>
+  <rect x="17.5" y="9" width="2" height="6" fill="none" stroke="#e7f5ee" stroke-width="1.5"/>
+</svg>

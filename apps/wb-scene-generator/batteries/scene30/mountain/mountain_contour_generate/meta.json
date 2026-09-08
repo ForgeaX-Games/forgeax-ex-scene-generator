@@ -1,0 +1,98 @@
+{
+  "id": "mountain_contour_generate",
+  "label": "山地等高线生成",
+  "description": "接受输入掩码网格，仅对非 0 格子用 FBM 噪声+山峰高斯增益生成高度场，输出每层等高线轮廓 mask 列表（网格列表）和连续高度场，0 格子在所有输出中保持 0。",
+  "description-en": "Accepts an input mask grid and generates a height field via FBM noise + Gaussian peak boosts only for non-zero cells, outputting each contour level as a separate mask grid plus a continuous height field; zero cells remain 0 in all outputs.",
+  "icon": "山地俯视等高线，多圈闭合曲线从山峰向外扩散，棕色与米色渐变配色。扁平插画风格，简洁小图标，主色2种。",
+  "version": "2.0.0",
+  "tags": ["mountain", "contour", "topography", "terrain", "heightmap", "noise"],
+  "tag_labels": ["山地", "等高线", "地形图", "地形", "高度场", "噪声"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "输入掩码网格，仅对非 0 的格子生成等高线，0 格子在所有输出中保持 0。",
+      "description-en": "Input mask grid; contours are generated only for non-zero cells, zero cells remain 0 in all outputs."
+    },
+    {
+      "name": "peakCount",
+      "type": "number",
+      "label": "山头数量",
+      "description": "山头个数，多个山头各自产生高斯增益并融入噪声地形，自然形成鞍部和复合等高线。",
+      "description-en": "Number of peaks; each adds a Gaussian boost into the noise terrain, naturally forming saddles.",
+      "default": 3
+    },
+    {
+      "name": "contourLevels",
+      "type": "number",
+      "label": "等高线层数",
+      "description": "等高线层数，决定输出网格列表的长度，数值越大，高度切分越细密。",
+      "description-en": "Number of contour levels, determines the length of the output grid list.",
+      "default": 8
+    },
+    {
+      "name": "peakRadius",
+      "type": "number",
+      "label": "山头半径",
+      "description": "每个山峰的影响半径，归一化坐标（0~1），越大山体越宽缓。",
+      "description-en": "Gaussian peak influence radius in normalized coords (0-1); larger = broader mountain.",
+      "default": 0.14
+    },
+    {
+      "name": "peakStrength",
+      "type": "number",
+      "label": "山头强度",
+      "description": "山峰增益的最大强度，越大山头越突出，等高线越密集。",
+      "description-en": "Peak boost intensity; higher values make peaks more prominent with denser contours.",
+      "default": 0.9
+    },
+    {
+      "name": "noiseScale",
+      "type": "number",
+      "label": "噪声缩放",
+      "description": "FBM 底层噪声的频率缩放系数，越大地形起伏越细碎。",
+      "description-en": "FBM base noise frequency scale; higher = more fragmented terrain.",
+      "default": 2.2
+    },
+    {
+      "name": "warpStrength",
+      "type": "number",
+      "label": "域扭曲强度",
+      "description": "控制等高线形状的有机程度。0=圆形山峰，1.2=参考图流动感，2以上=极度扭曲。",
+      "description-en": "Domain warp strength: 0=round peaks, 1.2=organic flow like topographic maps, 2+=extreme distortion.",
+      "default": 1.2
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。",
+      "description-en": "Random seed; 0 uses current time.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "contourLayers",
+      "type": "array",
+      "label": "等高线列表",
+      "description": "网格列表，共 contourLevels 个元素；每个 grid 对应一个海拔段，属于该段的所有格子填充为层序号，其余为 0，整张地图无空洞。",
+      "description-en": "Grid list of length contourLevels; each grid covers one elevation band with all cells filled (value = band index), no empty areas."
+    },
+    {
+      "name": "heightGrid",
+      "type": "grid",
+      "label": "高度场",
+      "description": "0~100 的连续高度场，可接 biome 分类或地形渲染。",
+      "description-en": "Continuous 0-100 height field for downstream biome classification or terrain rendering."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "各层名称清单（等高线1, 等高线2, …），与 contourLayers 下标对应。",
+      "description-en": "Name list for each contour layer, aligned with contourLayers indices."
+    }
+  ]
+}

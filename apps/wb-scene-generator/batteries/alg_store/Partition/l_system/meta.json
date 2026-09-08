@@ -1,0 +1,176 @@
+{
+  "id": "l_system",
+  "label": "L-System 分形",
+  "description": "基于 Lindenmayer 系统的分形/分支结构生成器，通过文法规则迭代重写和海龟绘图解释，在网格上生成道路网络、河流水系、有机分支、空间填充曲线等拓扑结构",
+  "description-en": "Lindenmayer system fractal/branching generator: iteratively rewrites a grammar string then interprets it as turtle-graphics commands to produce road networks, river deltas, organic branches, space-filling curves, and other topological structures on a grid.",
+  "icon": "从一点向上生长的分支树状结构，主干分出多个分支，分支再递归分出更小的分支，形成分形图案，扁平插画风格，简洁小图标，主色2种",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "l_system",
+    "fractal",
+    "branching",
+    "turtle_graphics",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "L-System",
+    "分形",
+    "分支",
+    "海龟绘图",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "输入掩码网格，非零区域为绘制区域，L-System 图形将自动缩放到此区域内",
+      "description-en": "Input mask grid; non-zero cells define the drawing area. The L-system output is auto-scaled to fit within this region."
+    },
+    {
+      "name": "preset",
+      "type": "string",
+      "label": "预设模式",
+      "default": "none",
+      "options": [
+        "none",
+        "organic_branch",
+        "river_delta",
+        "road_network",
+        "fractal_tree",
+        "dragon_curve",
+        "hilbert_curve"
+      ],
+      "description": "预设配置：none=自定义, organic_branch=有机分支（洞穴/根系）, river_delta=河流三角洲, road_network=正交道路网络, fractal_tree=分形树, dragon_curve=龙曲线, hilbert_curve=希尔伯特空间填充曲线。选择预设后公理、规则、迭代次数、角度、朝向、衰减参数自动锁定为预设值；线条宽度、角度抖动、内边距等仍可自由调节",
+      "description-en": "Preset: none=custom, organic_branch, river_delta, road_network, fractal_tree, dragon_curve, hilbert_curve. When a preset is active, core L-system params (axiom, rules, iterations, angle, startAngle, widthDecay, lengthDecay) are locked to preset values; drawing params (lineWidth, angleJitter, padding, etc.) remain freely adjustable."
+    },
+    {
+      "name": "axiom",
+      "type": "string",
+      "label": "公理",
+      "default": "X",
+      "description": "L-System 的初始字符串（公理）。选择预设后此项被忽略，由预设自动配置；仅 preset=none 时生效",
+      "description-en": "Initial axiom string. Ignored when a preset is active (preset provides its own axiom); only effective when preset=none."
+    },
+    {
+      "name": "rules",
+      "type": "string",
+      "label": "产生规则",
+      "default": "X=F-[[X]+X]+F[+FX]-X;F=FF",
+      "description": "产生规则，格式：\"符号=替换\" 用分号分隔多条规则。支持随机规则：用 | 分隔多个备选项，可选 :权重 后缀。例：\"F=F[+F]F[-F]F\" 或 \"F=FF:2|F[+F]:1;X=FX\"。选择预设后此项被忽略",
+      "description-en": "Production rules: \"symbol=replacement\" separated by \";\". Stochastic: separate alternatives with \"|\", optional \":weight\" suffix. Ignored when a preset is active."
+    },
+    {
+      "name": "iterations",
+      "type": "number",
+      "label": "迭代次数",
+      "default": 5,
+      "min": 1,
+      "max": 15,
+      "description": "规则重写迭代次数，每次迭代将所有可匹配符号替换为其规则产物。值越大结构越复杂、越密集",
+      "description-en": "Number of rule-rewriting iterations. Each pass replaces all matching symbols. Higher values produce more complex structures."
+    },
+    {
+      "name": "angle",
+      "type": "number",
+      "label": "转向角度",
+      "default": 22.5,
+      "min": 0.1,
+      "max": 180,
+      "description": "海龟遇到 + 或 - 时的转向角度（度）。90°产生正交结构，22~30°产生自然分支，60°/120°产生雪花/三角形",
+      "description-en": "Turtle turn angle in degrees for + and - commands. 90° → orthogonal; 22-30° → natural branching; 60°/120° → snowflake/triangular."
+    },
+    {
+      "name": "startAngle",
+      "type": "number",
+      "label": "初始朝向",
+      "default": 0,
+      "min": 0,
+      "max": 360,
+      "description": "海龟初始朝向角度：0=向上, 90=向右, 180=向下, 270=向左",
+      "description-en": "Initial turtle heading: 0=up, 90=right, 180=down, 270=left."
+    },
+    {
+      "name": "lineWidth",
+      "type": "number",
+      "label": "线条宽度",
+      "default": 2,
+      "min": 1,
+      "max": 20,
+      "description": "基础线条宽度（像素）。分支深层的实际宽度 = lineWidth × width（受 widthDecay 衰减）",
+      "description-en": "Base line width in pixels. Actual branch width = lineWidth × accumulated widthDecay."
+    },
+    {
+      "name": "widthDecay",
+      "type": "number",
+      "label": "宽度衰减",
+      "default": 0.75,
+      "min": 0.1,
+      "max": 1,
+      "description": "每次进入分支 [ 时线条宽度的衰减因子（0~1）。0.7=分支明显变细, 1.0=不衰减",
+      "description-en": "Width decay factor per branch push [. 0.7 = branches noticeably thinner; 1.0 = no decay."
+    },
+    {
+      "name": "lengthDecay",
+      "type": "number",
+      "label": "长度衰减",
+      "default": 0.8,
+      "min": 0.1,
+      "max": 1,
+      "description": "每次进入分支 [ 时步长的衰减因子（0~1）。0.7=分支段明显缩短, 1.0=不衰减",
+      "description-en": "Step-length decay factor per branch push [. 0.7 = branch segments much shorter; 1.0 = no decay."
+    },
+    {
+      "name": "angleJitter",
+      "type": "number",
+      "label": "角度抖动",
+      "default": 3,
+      "min": 0,
+      "max": 45,
+      "description": "每次转向时叠加的随机扰动范围（±度），打破对称性使结构更自然，也使随机种子产生可见差异。0=完全确定性（种子无效）, 3=微妙自然, 5~15=明显有机感, >20=高度随机",
+      "description-en": "Random angle perturbation range (±degrees) per turn, breaking symmetry and making the seed produce visible variation. 0=fully deterministic (seed has no effect), 3=subtle, 5-15=moderate organic, >20=highly random."
+    },
+    {
+      "name": "padding",
+      "type": "number",
+      "label": "内边距",
+      "default": 2,
+      "min": 0,
+      "max": 20,
+      "description": "L-System 图形与掩码边界之间的内边距（像素），防止图形紧贴边缘",
+      "description-en": "Inner padding in pixels between the L-system output and mask boundary."
+    },
+    {
+      "name": "constrainToMask",
+      "type": "boolean",
+      "label": "约束到掩码",
+      "default": true,
+      "description": "是否将绘制限制在掩码非零区域内。开启时掩码外的像素不会被绘制",
+      "description-en": "Constrain drawing to non-zero mask cells. When enabled, pixels outside the mask are not drawn."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，影响角度抖动和随机规则选择。0=使用当前时间戳自动生成。注意：当 angleJitter=0 且规则为确定性时，种子不产生任何效果",
+      "description-en": "Random seed for angle jitter and stochastic rules. 0 uses the current timestamp. Note: seed has no effect when angleJitter=0 and rules are deterministic."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "L-System 网格",
+      "description": "输出网格：L-System 结构区域值为 1，其余为 0",
+      "description-en": "Output grid: L-system structure cells = 1, all others = 0."
+    }
+  ],
+  "alg_tag": [
+    "基于文法规则的分形/分支结构生成",
+    "可用于道路、河流、植被、迷宫路径等拓扑网络"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "flow_field",
+  "label": "流场",
+  "description": "对单/多目标点构造代价图与方向图（Flow Field），每格指出朝目标移动该走哪个方向，是 RTS 群体寻路与 AI 导航的核心数据结构。",
+  "description-en": "Builds a cost map and direction field toward one or more targets. Each cell indicates which neighbor leads to the closest target—core data for RTS group pathfinding and AI navigation.",
+  "icon": "网格上每个格子里有一个小箭头，所有箭头都朝向地图中心的目标点形成放射状汇聚图案，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["algorithm", "graph", "flow_field", "navigation", "rts"],
+  "tag_labels": ["算法", "图论", "流场", "导航", "RTS"],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "可通行网格",
+      "description": "等于 obstacleValue 的格子视为墙，其它格子为可通行（值大表示通过更费力，作为代价权重）。",
+      "description-en": "Cells equal to obstacleValue are walls; other cell values act as traversal cost weights."
+    },
+    {
+      "name": "targets",
+      "type": "number",
+      "label": "目标点",
+      "default": [],
+      "description": "目标点坐标 [[x,y], ...]。所有目标共享同一流场，每格朝最近目标聚集。（外层 rank=2：N 个点 × [x,y]；同时兼容老字符串格式 \"x1,y1; x2,y2\"）",
+      "description-en": "Target coordinates [[x,y], ...]. All targets share one field; every cell flows toward the closest target (rank=2; legacy string also accepted)."
+    },
+    {
+      "name": "obstacleValue",
+      "type": "number",
+      "label": "障碍值",
+      "default": 0,
+      "description": "等于此值的格子视为墙。",
+      "description-en": "Cells equal to this value are walls."
+    },
+    {
+      "name": "diagonal",
+      "type": "boolean",
+      "label": "允许对角",
+      "default": true,
+      "description": "是否允许 8 方向。",
+      "description-en": "Allow 8-directional movement."
+    },
+    {
+      "name": "useCellWeight",
+      "type": "boolean",
+      "label": "使用格子权重",
+      "default": false,
+      "description": "true 时把 grid 中非障碍格子的值作为通过代价；false 时所有可通行格子代价都为 1。",
+      "description-en": "If true, use grid values as traversal cost; otherwise all passable cells cost 1."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "costGrid",
+      "type": "grid",
+      "label": "代价图",
+      "description": "每格到最近目标的最短累计代价（不可达 = -1）。",
+      "description-en": "Shortest cost from each cell to its nearest target. Unreachable = -1."
+    },
+    {
+      "name": "directionGrid",
+      "type": "grid",
+      "label": "方向图",
+      "description": "每格朝最近目标移动的方向编码 1~8（0=已在目标 / 不可达）。",
+      "description-en": "Per-cell direction code 1~8 toward the closest target (0 = at target or unreachable)."
+    },
+    {
+      "name": "vectorField",
+      "type": "number",
+      "label": "向量场",
+      "description": "三维数组 [h][w][2] 每格 [vx,vy]，为方向编码对应的单位向量；目标格与不可达格为 [0,0]。（外层 rank=3：H × W × [vx,vy]）",
+      "description-en": "3D array [h][w][2] of [vx,vy] unit vectors per cell; target/unreachable cells are [0,0] (rank=3: H × W × [vx,vy])."
+    }
+  ],
+  "alg_tag": [
+    "RTS 群体寻路",
+    "玩家朝向 POI 的 AI 导航",
+    "向场可视化"
+  ]
+}

@@ -1,0 +1,610 @@
+{
+  "id": "group_1781804994775_356am",
+  "name": "(pixel)ui_item_gen",
+  "nameEn": "(pixel)ui_item_gen",
+  "author": "zyw",
+  "nodes": [
+    {
+      "id": "node-1781805456475-rzlv4",
+      "opId": "number_const",
+      "name": "node-1781677872043",
+      "position": {
+        "x": -1718.4079134953292,
+        "y": 245.07347594484145
+      },
+      "params": {
+        "value": 13
+      }
+    },
+    {
+      "id": "node-1781805456475-ab6bo",
+      "opId": "image_remove_bg",
+      "name": "node-1781677922519",
+      "position": {
+        "x": -1468.3997935486836,
+        "y": -120.6675720276321
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-0a1oz",
+      "opId": "prompt_template",
+      "name": "node-1781680871056",
+      "position": {
+        "x": -2024.0571287359767,
+        "y": -139.73033463244155
+      },
+      "params": {
+        "template": "## 物品信息\n- **名称**: [name]\n- **类别**: [label]\n- **等级**: [level]\n- **描述**: [tooltip]\n- **背景设定**: [background]\n- **视觉设计**: [visual]\n\n## ⚠️ 核心特征约束（所有图标必须严格遵守）\n\n### CRITICAL REQUIREMENTS（绝对不可改变）\n```\n1. **居中布局**：物品主体必须严格居中显示在64×64画布中\n2. **背景颜色**：纯白色背景 (#FFFFFF)，无任何纹理、渐变或图案\n3. **边缘描边**：物品轮廓使用纯黑色 (#000000) 描边，宽度1-2像素\n4. **像素风格**：像素艺术风格，每个像素块宽度为3px（即64px画布中约21-22个像素块）\n5. **像素对齐**：所有元素必须严格对齐到3px像素网格，确保像素颗粒度一致\n6. **无阴影**：绝对不使用任何阴影效果（无投影、无内阴影、无渐变阴影）\n7. **平铺光照**：使用平铺光照，无光照渐变效果\n8. **有限色彩**：使用6-12种颜色的有限调色板，保持像素艺术经典风格\n```\n\n### 尺寸与格式\n- **尺寸**：64像素 × 64像素（正方形）\n- **用途**：游戏背包系统中的物品图标\n- **视角**：正面视角，物品清晰可见\n\n### 视觉风格要求\n- **像素艺术风格**：采用像素风格绘制，每个像素块的实际宽度为3px\n- **表意清晰**：图标需要清晰表达物品的特征和用途，即使在小尺寸下也能快速识别\n- **风格统一**：所有图标必须保持相同的视觉风格和像素颗粒度，确保在背包界面中风格一致\n\n### 设计参考（根据物品类别调整内容，但保持核心特征不变）\n- **材料类物品**：简洁明了，突出材质特征，居中显示\n- **植物类物品**：展现植物的形态和生长特征，居中显示\n- **种子类物品**：小巧精致，体现种子的形态，居中显示\n- **药水类物品**：瓶装容器，体现液体的透明感和颜色，居中显示\n- **装备类物品**：展现装备的结构和功能特征，居中显示\n- **道具类物品**：突出道具的独特性和用途，居中显示\n\n### 技术规范（必须严格遵守）\n- **像素网格对齐**：所有元素必须对齐到3px的像素网格，确保像素颗粒度完全一致\n- **轮廓线**：使用1-2像素宽的纯黑色 (#000000) 轮廓线，确保所有图标边缘风格统一\n- **背景要求**：背景必须完全为纯白色 (#FFFFFF)，没有任何其他颜色、图案或渐变效果\n- **色彩限制**：使用6-12种颜色的有限调色板，保持像素艺术的经典风格\n- **细节处理**：在64px尺寸下，重点突出物品的核心特征，避免过度细节\n- **居中要求**：物品主体必须居中显示，左右和上下对称\n\n### 输出要求\n生成一个清晰、简洁、符合像素艺术风格的64px×64px物品图标，能够准确传达物品的类别、等级和特征。\n\n**核心特征必须保持一致**：\n- 居中布局 ✓\n- 纯白色背景 (#FFFFFF) ✓\n- 黑色轮廓线 (#000000) ✓\n- 3px像素颗粒度 ✓\n- 无阴影效果 ✓\n- 有限色彩调色板 ✓",
+        "_promptName": "背包物品图标（64px 像素）",
+        "_promptVars": [
+          "name",
+          "label",
+          "level",
+          "tooltip",
+          "background",
+          "visual"
+        ]
+      }
+    },
+    {
+      "id": "node-1781805456475-o0iyi",
+      "opId": "image_gen",
+      "name": "node-1781680876446",
+      "position": {
+        "x": -1718.4079134953292,
+        "y": -136.9301504953894
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-ditbs",
+      "opId": "image_pixel_fix",
+      "name": "node-1781681034407",
+      "position": {
+        "x": -1218.0111547757297,
+        "y": -97.98406397139365
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-nzzjx",
+      "opId": "image_output",
+      "name": "node-1781681076482",
+      "position": {
+        "x": -467.41003059456426,
+        "y": 16.861368120350107
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-gzgi7",
+      "opId": "passthrough",
+      "name": "node-1781804667235",
+      "position": {
+        "x": -2239.907867963716,
+        "y": 68.79486891771103
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-gvt2w",
+      "opId": "passthrough",
+      "name": "node-1781804669528-3x1fj",
+      "position": {
+        "x": -2246.009749214648,
+        "y": 189.30886252121297
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-kdvl0",
+      "opId": "tree_merge",
+      "name": "node-1781804672041",
+      "position": {
+        "x": -2008.4487041995126,
+        "y": 111.86562339900502
+      },
+      "params": {
+        "inferredAccess": "tree",
+        "inferredType": "any",
+        "portCount": 3
+      }
+    },
+    {
+      "id": "node-1781805456475-9h3hq",
+      "opId": "image_despeckle",
+      "name": "node-1781804852545",
+      "position": {
+        "x": -733.732928816642,
+        "y": -58.80163908416381
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-ry5le",
+      "opId": "image_pixel_scale",
+      "name": "node-1781804862434",
+      "position": {
+        "x": -983.5150691603101,
+        "y": -52.204329088123984
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-uin2g",
+      "opId": "number_const",
+      "name": "node-1781804931415",
+      "position": {
+        "x": -1218.0111547757297,
+        "y": 104.64419720527388
+      },
+      "params": {
+        "value": 30
+      }
+    },
+    {
+      "id": "node-1781805456475-4pkcz",
+      "opId": "passthrough",
+      "name": "node-1781804943721",
+      "position": {
+        "x": -243.27106984503249,
+        "y": -93.08727780362506
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-b5jhs",
+      "opId": "passthrough",
+      "name": "node-1781804962320-paoki",
+      "position": {
+        "x": -2307.029625658734,
+        "y": -155.4526610462063
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781805456475-ei0jz",
+      "opId": "tree_merge",
+      "name": "node-1781804974402",
+      "position": {
+        "x": -243.27106984503249,
+        "y": 92.08490885210358
+      },
+      "params": {
+        "inferredAccess": "item",
+        "inferredType": "string",
+        "portCount": 6
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1781805456475-b9j9i",
+      "source": {
+        "nodeId": "node-1781805456475-rzlv4",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ab6bo",
+        "port": "lab_tolerance"
+      }
+    },
+    {
+      "id": "edge-1781805456475-oja7a",
+      "source": {
+        "nodeId": "node-1781805456475-0a1oz",
+        "port": "prompt"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-o0iyi",
+        "port": "prompt"
+      }
+    },
+    {
+      "id": "edge-1781805456475-s28hs",
+      "source": {
+        "nodeId": "node-1781805456475-o0iyi",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ab6bo",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781805456475-q24g0",
+      "source": {
+        "nodeId": "node-1781805456475-ab6bo",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ditbs",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781805456475-0a7gt",
+      "source": {
+        "nodeId": "node-1781805456475-gzgi7",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-kdvl0",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "edge-1781805456475-ekvr0",
+      "source": {
+        "nodeId": "node-1781805456475-gvt2w",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-kdvl0",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "edge-1781805456475-dbddi",
+      "source": {
+        "nodeId": "node-1781805456475-kdvl0",
+        "port": "tree"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-o0iyi",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781805456475-zn21o",
+      "source": {
+        "nodeId": "node-1781805456475-9h3hq",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-nzzjx",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781805456475-w3t91",
+      "source": {
+        "nodeId": "node-1781805456475-ditbs",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ry5le",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781805456475-mo811",
+      "source": {
+        "nodeId": "node-1781805456475-ry5le",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-9h3hq",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781805456475-3fzr0",
+      "source": {
+        "nodeId": "node-1781805456475-uin2g",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ry5le",
+        "port": "width"
+      }
+    },
+    {
+      "id": "edge-1781805456475-1e0uu",
+      "source": {
+        "nodeId": "node-1781805456475-9h3hq",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-4pkcz",
+        "port": "value"
+      }
+    },
+    {
+      "id": "edge-1781805456475-uc9sv",
+      "source": {
+        "nodeId": "node-1781805456475-b5jhs",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-0a1oz",
+        "port": "name"
+      }
+    },
+    {
+      "id": "edge-1781805456475-lmjoe",
+      "source": {
+        "nodeId": "node-1781805456475-b5jhs",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-nzzjx",
+        "port": "name"
+      }
+    },
+    {
+      "id": "edge-1781805456475-5izwl",
+      "source": {
+        "nodeId": "node-1781805456475-o0iyi",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ei0jz",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "edge-1781805456475-ocx0z",
+      "source": {
+        "nodeId": "node-1781805456475-ab6bo",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ei0jz",
+        "port": "item_1"
+      }
+    },
+    {
+      "id": "edge-1781805456475-o5xmd",
+      "source": {
+        "nodeId": "node-1781805456475-ditbs",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ei0jz",
+        "port": "item_2"
+      }
+    },
+    {
+      "id": "edge-1781805456475-g9rii",
+      "source": {
+        "nodeId": "node-1781805456475-ry5le",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ei0jz",
+        "port": "item_3"
+      }
+    },
+    {
+      "id": "edge-1781805456475-ndwma",
+      "source": {
+        "nodeId": "node-1781805456475-9h3hq",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781805456475-ei0jz",
+        "port": "item_4"
+      }
+    }
+  ],
+  "position": {
+    "x": -1712.590217921966,
+    "y": 9.582880229134489
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ab6bo",
+      "sourcePortName": "bg_grow_tolerance",
+      "hidden": true,
+      "order": 0
+    },
+    {
+      "portName": "in_1",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ab6bo",
+      "sourcePortName": "sample_points",
+      "hidden": true,
+      "order": 1
+    },
+    {
+      "portName": "in_2",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ab6bo",
+      "sourcePortName": "crop",
+      "hidden": true,
+      "order": 2
+    },
+    {
+      "portName": "in_3",
+      "portType": "string",
+      "sourceNodeId": "node-1781805456475-o0iyi",
+      "sourcePortName": "imageSize",
+      "hidden": true,
+      "order": 20
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ditbs",
+      "sourcePortName": "k_colors",
+      "hidden": true,
+      "order": 4
+    },
+    {
+      "portName": "in_5",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ditbs",
+      "sourcePortName": "square_grid",
+      "hidden": true,
+      "order": 5
+    },
+    {
+      "portName": "in_6",
+      "portType": "string",
+      "access": "list",
+      "sourceNodeId": "node-1781805456475-nzzjx",
+      "sourcePortName": "tags",
+      "hidden": true,
+      "order": 6
+    },
+    {
+      "portName": "in_7",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781805456475-gzgi7",
+      "sourcePortName": "value",
+      "order": 18,
+      "customLabelEn": "reference1"
+    },
+    {
+      "portName": "in_8",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781805456475-gvt2w",
+      "sourcePortName": "value",
+      "order": 19,
+      "customLabelEn": "reference2"
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-9h3hq",
+      "sourcePortName": "sat_threshold",
+      "hidden": true,
+      "order": 7
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-9h3hq",
+      "sourcePortName": "value_min",
+      "hidden": true,
+      "order": 8
+    },
+    {
+      "portName": "in_11",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-9h3hq",
+      "sourcePortName": "outlier_threshold",
+      "hidden": true,
+      "order": 9
+    },
+    {
+      "portName": "in_12",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-9h3hq",
+      "sourcePortName": "max_speck_size",
+      "hidden": true,
+      "order": 10
+    },
+    {
+      "portName": "in_13",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ry5le",
+      "sourcePortName": "height",
+      "hidden": true,
+      "order": 11
+    },
+    {
+      "portName": "in_14",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-ry5le",
+      "sourcePortName": "lock_aspect",
+      "hidden": true,
+      "order": 12
+    },
+    {
+      "portName": "in_15",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781805456475-b5jhs",
+      "sourcePortName": "value",
+      "order": 3,
+      "customLabelEn": "name"
+    },
+    {
+      "portName": "in_16",
+      "portType": "string",
+      "sourceNodeId": "node-1781805456475-0a1oz",
+      "sourcePortName": "label",
+      "order": 13
+    },
+    {
+      "portName": "in_17",
+      "portType": "string",
+      "sourceNodeId": "node-1781805456475-0a1oz",
+      "sourcePortName": "level",
+      "order": 14
+    },
+    {
+      "portName": "in_18",
+      "portType": "string",
+      "sourceNodeId": "node-1781805456475-0a1oz",
+      "sourcePortName": "tooltip",
+      "order": 15
+    },
+    {
+      "portName": "in_19",
+      "portType": "string",
+      "sourceNodeId": "node-1781805456475-0a1oz",
+      "sourcePortName": "background",
+      "order": 16
+    },
+    {
+      "portName": "in_20",
+      "portType": "string",
+      "sourceNodeId": "node-1781805456475-0a1oz",
+      "sourcePortName": "visual",
+      "order": 17
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-nzzjx",
+      "sourcePortName": "alias",
+      "hidden": true
+    },
+    {
+      "portName": "out_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781805456475-nzzjx",
+      "sourcePortName": "ok",
+      "hidden": true
+    },
+    {
+      "portName": "out_2",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781805456475-4pkcz",
+      "sourcePortName": "value",
+      "customLabelEn": "image"
+    },
+    {
+      "portName": "out_3",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781805456475-ei0jz",
+      "sourcePortName": "tree",
+      "customLabelEn": "error"
+    }
+  ]
+}

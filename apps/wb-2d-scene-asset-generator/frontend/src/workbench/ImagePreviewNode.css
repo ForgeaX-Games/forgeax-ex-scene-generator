@@ -1,0 +1,145 @@
+/* ImgPreview node: the preview pane is part of the battery's own glowing shell,
+   not a detached box hanging beneath it. The outer wrapper owns the battery
+   border / radius / glow (mirrors .battery-node from the kernel), the inner
+   <BatteryNode> renders transparently (header + ports only), and the preview
+   fills the bottom of the same shell. */
+.asset2d-image-preview-node {
+  --node-color: var(--color-accent);
+  --node-rgb: var(--color-accent-rgb);
+  border-radius: var(--radius-md);
+  background-color: rgba(var(--node-rgb), 0.15);
+  border: 1px solid var(--node-color);
+  box-shadow: var(--shadow-lg),
+              inset 0 0 0 1px rgba(var(--node-rgb), 0.72),
+              0 0 0 1px rgba(var(--node-rgb), 0.22),
+              0 0 16px rgba(var(--node-rgb), 0.26),
+              0 0 30px rgba(var(--node-rgb), 0.1);
+  /* No overflow:hidden — it would clip the kernel ports (handles sit half outside
+     the edge) into half-moons. Top corners are rounded by the inner header's own
+     radius (below) and the bottom by the preview pane, so the shell needs no clip. */
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+
+.asset2d-image-preview-node:hover {
+  background-color: rgba(var(--node-rgb), 0.18);
+  box-shadow: var(--shadow-lg),
+              inset 0 0 0 1px rgba(var(--node-rgb), 0.82),
+              0 0 0 1px rgba(var(--node-rgb), 0.3),
+              0 0 18px rgba(var(--node-rgb), 0.34),
+              0 0 34px rgba(var(--node-rgb), 0.14);
+}
+
+/* Sync the selected glow with the inner BatteryNode's selected state. */
+.asset2d-image-preview-node:has(.battery-node.selected) {
+  background-color: rgba(var(--node-rgb), 0.24);
+  border-color: var(--node-color);
+  outline: 2px solid var(--node-color);
+  box-shadow: var(--shadow-lg),
+              inset 0 0 0 2px rgba(var(--node-rgb), 0.98),
+              0 0 0 2px rgba(var(--node-rgb), 0.42),
+              0 0 20px rgba(var(--node-rgb), 0.58),
+              0 0 42px rgba(var(--node-rgb), 0.24);
+}
+
+/* Inner battery renders flush inside the shell: drop its own frame/glow so the
+   header + ports read as the top half of one continuous card. */
+.asset2d-image-preview-node .battery-node {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  min-width: 0;
+}
+
+.asset2d-image-preview-node .battery-node .node-header {
+  border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+}
+
+/* Preview occupies the bottom of the same shell, separated only by a hairline.
+   Owns the bottom corner radius itself (the shell no longer clips with
+   overflow:hidden, which used to slice the side ports into half-moons). */
+.ip-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  min-height: 96px;
+  border-top: 1px solid rgba(var(--node-rgb), 0.28);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 88%, #000 12%);
+}
+
+/* Multi-image: switch the pane to a thumbnail grid (mirrors ImageBatteryNode's
+   multi-output preview), one labelled tile per upstream image. */
+.ip-preview.is-multi {
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.ip-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 6px;
+  width: 100%;
+}
+
+.ip-preview__item {
+  margin: 0;
+  min-width: 0;
+}
+
+.ip-preview__caption {
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ip-preview__img {
+  display: block;
+  max-width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  image-rendering: pixelated;
+  background:
+    linear-gradient(45deg, rgba(148, 163, 184, 0.12) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(148, 163, 184, 0.12) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.12) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(148, 163, 184, 0.12) 75%);
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  background-size: 12px 12px;
+}
+
+.ip-preview__item .ip-preview__img {
+  width: 100%;
+  height: 72px;
+  max-height: none;
+}
+
+.ip-preview__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+}
+
+.ip-preview__icon {
+  width: 28px;
+  height: 28px;
+  opacity: 0.6;
+}
+
+.ip-preview__hint {
+  font-size: 11px;
+  line-height: 1.2;
+}

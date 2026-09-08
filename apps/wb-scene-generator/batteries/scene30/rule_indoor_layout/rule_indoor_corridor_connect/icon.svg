@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_rule_indoor_corridor_connect" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c2410c"/>
+      <stop offset="100%" stop-color="#cc6337"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_rule_indoor_corridor_connect)"/>
+
+  <rect x="4" y="4" width="16" height="16" rx="2" fill="rgba(0,0,0,0.55)"/>
+  <rect x="6" y="6" width="12" height="12" rx="1" fill="#fff"/>
+  <line x1="8" y1="8" x2="16" y2="8" stroke="#000" stroke-width="1"/>
+  <line x1="8" y1="12" x2="16" y2="12" stroke="#000" stroke-width="1"/>
+  <line x1="8" y1="16" x2="16" y2="16" stroke="#000" stroke-width="1"/>
+
+</svg>

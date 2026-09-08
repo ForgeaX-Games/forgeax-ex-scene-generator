@@ -1,0 +1,114 @@
+{
+  "id": "zone_nesting_riverbank",
+  "label": "区域嵌套（河岸侵蚀）",
+  "name-en": "ZoneNestingRiverbank",
+  "description": "区域嵌套的河岸式变体：用低频噪声场驱动每段边界的侵蚀深度——深处大幅退入（宽）、浅处几乎贴边（窄），让内边界形成深浅不一、忽宽忽窄的自然河岸波动，而非与外轮廓平行的等距内缩。",
+  "description-en": "Riverbank variant of zone nesting: a low-frequency noise field drives the erosion depth per boundary segment — deep where the noise is high (wide cut-in), shallow where it is low (narrow) — so the inner boundary fluctuates like a natural riverbank instead of paralleling the outer contour as a uniform offset.",
+  "icon": "扁平插画风格小图标。俯视一块地块，外缘平直、内缘呈忽深忽浅的波浪状河岸线，深色水/背景咬入浅色地块形成不规则海湾，主色2种。",
+  "version": "1.0.0",
+  "tags": ["terrain", "zone", "erosion", "riverbank", "organic", "spline", "nested", "procedural", "datatree"],
+  "tag_labels": ["地形", "区域", "侵蚀", "河岸", "有机", "样条", "嵌套", "程序生成", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "输入网格",
+      "description": "单张二维网格（grid[y][x]）；目标区域被变深度河岸式侵蚀后再样条平滑。网格列表由引擎按 DataTree 自动逐张 fanout。",
+      "description-en": "A single 2D grid (grid[y][x]); its target region is eroded with variable riverbank depth then spline-smoothed. The engine fans out a DataTree of grids one-by-one."
+    },
+    {
+      "name": "targetValue",
+      "type": "number",
+      "access": "item",
+      "label": "目标区域值",
+      "description": "要处理的区域掩码值",
+      "description-en": "Mask value of the target region.",
+      "default": 1
+    },
+    {
+      "name": "erosionStrength",
+      "type": "number",
+      "access": "item",
+      "label": "平均侵蚀强度",
+      "description": "内边界的平均侵蚀深度比例：大于 1 时按 0~100 百分点（默认 54）；≤1 时按 0~1 归一化。深度在此均值上下按 waviness 波动。",
+      "description-en": "Mean erosion-depth fraction of the inner boundary. If >1, percent 0–100 (default 54); if ≤1, normalized 0–1. Depth fluctuates around this mean by 'waviness'.",
+      "default": 54
+    },
+    {
+      "name": "maxDepth",
+      "type": "number",
+      "access": "item",
+      "label": "最大侵蚀深度",
+      "description": "侵蚀深度上限（格数）。深度场 = clamp(强度 ± 波动, 0~1) × 本值，决定河岸最深能咬入多少格。",
+      "description-en": "Maximum erosion depth in cells. Depth field = clamp(strength ± waviness, 0..1) × this value, capping how far the riverbank can cut in.",
+      "default": 16
+    },
+    {
+      "name": "waviness",
+      "type": "number",
+      "access": "item",
+      "label": "波动幅度",
+      "description": "内边界深浅起伏的幅度：0=接近均匀偏移，越大越忽宽忽窄。推荐 0.5~1.2。",
+      "description-en": "Amplitude of the depth fluctuation: 0 ≈ uniform offset, larger = more uneven (wide/narrow). Recommended 0.5–1.2.",
+      "default": 0.8
+    },
+    {
+      "name": "featureScale",
+      "type": "number",
+      "access": "item",
+      "label": "波动频率",
+      "description": "噪声场空间频率，越小波浪越长（大尺度海湾），越大越细碎。推荐 0.03~0.12。",
+      "description-en": "Spatial frequency of the noise field; smaller = longer waves (large bays), larger = finer. Recommended 0.03–0.12.",
+      "default": 0.06
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "侵蚀深度场随机种子，0 使用当前时间戳",
+      "description-en": "Seed for the erosion depth field; 0 uses timestamp.",
+      "default": 0
+    },
+    {
+      "name": "splineAlgorithm",
+      "type": "string",
+      "access": "item",
+      "label": "样条算法",
+      "description": "bezier=贝塞尔(Chaikin)；cubic_spline=三次样条；moving_avg=移动平均；gaussian=高斯；polyline_perturb=折线扰动",
+      "description-en": "Closed-loop spline algorithm (same family as edge_spline).",
+      "default": "gaussian",
+      "options": ["bezier", "cubic_spline", "moving_avg", "gaussian", "polyline_perturb"]
+    },
+    {
+      "name": "splineSmoothness",
+      "type": "number",
+      "access": "item",
+      "label": "样条平滑强度",
+      "description": "1~20，与边缘样条化电池含义一致",
+      "description-en": "Spline intensity (1–20), same as edge_spline smoothness.",
+      "default": 5
+    },
+    {
+      "name": "splineSeed",
+      "type": "number",
+      "access": "item",
+      "label": "样条随机种子",
+      "description": "仅 polyline_perturb 使用；0 表示每次随机",
+      "description-en": "Seed for polyline_perturb; 0 uses timestamp.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输出网格",
+      "description": "河岸式变深度侵蚀并样条平滑后的单张网格；输入为网格列表时引擎逐张产出对应的 DataTree。",
+      "description-en": "A single grid after riverbank variable-depth erosion and spline; with a grid-list input the engine emits one per branch as a DataTree."
+    }
+  ]
+}

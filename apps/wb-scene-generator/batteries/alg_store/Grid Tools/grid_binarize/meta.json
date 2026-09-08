@@ -1,0 +1,50 @@
+{
+  "id": "grid_binarize",
+  "label": "网格二值化",
+  "description": "将网格按阈值二值化，大于阈值的格子变为 1，否则变为 0",
+  "description-en": "Binarizes a grid by threshold; cells above the threshold become 1, others become 0.",
+  "icon": "方格网格被一条对角线分为两半，一半为实心填充方格，另一半为空心方格，表示二值化的清晰分界，简洁几何风格",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "basic",
+    "binarize",
+    "threshold",
+    "grid"
+  ],
+  "tag_labels": [
+    "基础",
+    "二值化",
+    "阈值",
+    "网格"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "待二值化的输入网格",
+      "description-en": "Input grid to binarize."
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "label": "阈值",
+      "default": 0.5,
+      "description": "二值化阈值，格子值 > 阈值 → 1，否则 → 0（0~1）",
+      "description-en": "Binarization threshold; cell value > threshold → 1, otherwise → 0 (0~1)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "二值网格",
+      "description": "二值化后的网格，值仅为 0 或 1",
+      "description-en": "Binarized output grid with values 0 or 1 only."
+    }
+  ],
+  "alg_tag": [
+    "按照阈值划分得到值为0和1的网格"
+  ]
+}

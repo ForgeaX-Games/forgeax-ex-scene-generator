@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Center scatter points">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#1a2a1a" stroke="#4a7a4a" stroke-width="1.2"/>
+  <circle cx="12" cy="12" r="2" fill="#b7ff5a"/>
+  <circle cx="8" cy="9" r="1" fill="#6fbf6f"/>
+  <circle cx="15" cy="10" r="1" fill="#6fbf6f"/>
+  <circle cx="10" cy="15" r="1" fill="#6fbf6f"/>
+  <circle cx="14" cy="14" r="1" fill="#6fbf6f"/>
+  <circle cx="12" cy="12" r="7" fill="none" stroke="#4a7a4a" stroke-width="0.8" stroke-dasharray="2 2"/>
+</svg>

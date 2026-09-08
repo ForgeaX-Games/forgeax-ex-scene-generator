@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Image passthrough battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <rect x="6" y="7" width="12" height="10" rx="1.4" fill="none" stroke="#95aa9f" stroke-width="1.4"/>
+  <path d="M6.6 15.4l3.2-3.4 2.4 2.4 2.2-2.6 2.8 3.2" fill="none" stroke="#95aa9f" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="9.4" cy="10" r="1.5" fill="#b7ff5a"/>
+</svg>

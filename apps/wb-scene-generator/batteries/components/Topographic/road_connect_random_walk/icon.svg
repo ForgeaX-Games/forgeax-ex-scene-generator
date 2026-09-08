@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_road_connect" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#7f81f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_road_connect)"/>
+
+  <rect x="4" y="4" width="4" height="4" fill="rgba(0,0,0,0.55)" />
+  <rect x="16" y="4" width="4" height="4" fill="rgba(0,0,0,0.55)" />
+  <rect x="4" y="16" width="4" height="4" fill="rgba(0,0,0,0.55)" />
+  <rect x="16" y="16" width="4" height="4" fill="rgba(0,0,0,0.55)" />
+  <path d="M6,12 H18" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+  <path d="M12,6 V18" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+  <circle cx="12" cy="12" r="2" fill="#fff" />
+
+</svg>

@@ -1,0 +1,123 @@
+{
+  "id": "force_directed_graph",
+  "label": "力导向图布局",
+  "description": "基于 DST 物理仿真的力导向图布局算法，通过库仑斥力与胡克弹簧引力迭代计算节点坐标，输出可视化网格",
+  "description-en": "DST-style force-directed graph layout using Coulomb repulsion and Hooke attraction. Iteratively simulates node positions and outputs a visualization grid.",
+  "icon": "若干圆形节点由线段连接形成网状图结构，节点分散均匀分布，线段为浅灰色，节点为亮蓝色，扁平插画风格，简洁小图标，主色2种",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "algorithm",
+    "graph",
+    "force_directed",
+    "layout",
+    "pcg"
+  ],
+  "tag_labels": [
+    "算法",
+    "图",
+    "力导向",
+    "布局",
+    "PCG"
+  ],
+  "inputs": [
+    {
+      "name": "nodeCount",
+      "type": "number",
+      "label": "节点数量",
+      "default": 10,
+      "description": "图中节点的数量 N（1~500）",
+      "description-en": "Number of nodes N in the graph (1~500)."
+    },
+    {
+      "name": "edges",
+      "type": "number",
+      "label": "边列表",
+      "description": "节点连接关系，二维数组如 [[0,1],[2,3]]，每个元素为 [源节点索引, 目标节点索引]（0-based）（外层 rank=2：M 条边 × [src,dst]）",
+      "description-en": "Edge list as 2D array e.g. [[0,1],[2,3]], each element is [srcIndex, dstIndex] (0-based) (rank=2: M edges × [src,dst])."
+    },
+    {
+      "name": "positions",
+      "type": "number",
+      "label": "初始坐标",
+      "description": "节点初始坐标列表 [[x,y], ...]，不输入则使用 Fermat 螺旋随机初始化（外层 rank=2：N 个点 × [x,y]）",
+      "description-en": "Initial node positions [[x,y], ...]; if empty, uses Fermat spiral random initialization (rank=2: N points × [x,y])."
+    },
+    {
+      "name": "gridWidth",
+      "type": "number",
+      "label": "网格宽度",
+      "default": 50,
+      "description": "输出网格的宽度（8~512）",
+      "description-en": "Output grid width (8~512)."
+    },
+    {
+      "name": "gridHeight",
+      "type": "number",
+      "label": "网格高度",
+      "default": 50,
+      "description": "输出网格的高度（8~512）",
+      "description-en": "Output grid height (8~512)."
+    },
+    {
+      "name": "repulsion",
+      "type": "number",
+      "label": "斥力系数",
+      "default": 5000,
+      "description": "库仑斥力强度，值越大节点间距越远",
+      "description-en": "Coulomb repulsion strength; larger values push nodes further apart."
+    },
+    {
+      "name": "attraction",
+      "type": "number",
+      "label": "引力系数",
+      "default": 0.008,
+      "description": "胡克弹簧引力强度，值越大连接的节点越靠近",
+      "description-en": "Hooke spring attraction strength; larger values pull connected nodes closer."
+    },
+    {
+      "name": "damping",
+      "type": "number",
+      "label": "阻尼系数",
+      "default": 0.9,
+      "description": "速度阻尼系数（0.01~1），每次迭代后速度乘以此值，越小收敛越快",
+      "description-en": "Velocity damping factor (0.01~1); velocity is multiplied by this each iteration."
+    },
+    {
+      "name": "iterations",
+      "type": "number",
+      "label": "迭代次数",
+      "default": 300,
+      "description": "物理仿真迭代次数（1~2000），越多布局越稳定",
+      "description-en": "Number of simulation iterations (1~2000); more iterations yield a more stable layout."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "default": 0,
+      "description": "随机种子，0 使用默认种子，不同种子产生不同初始布局",
+      "description-en": "Random seed; 0 uses default seed. Different seeds produce different initial layouts."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "可视化网格",
+      "description": "输出网格，节点位置值为 1，其余为 0",
+      "description-en": "Output grid where node positions = 1, all others = 0."
+    },
+    {
+      "name": "nodePositions",
+      "type": "number",
+      "label": "节点坐标列表",
+      "description": "所有节点在网格上的最终坐标 [[x,y], ...]（外层 rank=2：N 个点 × [x,y]）",
+      "description-en": "Final grid coordinates for all nodes as [[x,y], ...] (rank=2: N points × [x,y])."
+    }
+  ],
+  "alg_tag": [
+    "基于图结构和仿真的布局生成",
+    "输入指定的图结构和初始点坐标经过仿真得到最终的点布局"
+  ]
+}

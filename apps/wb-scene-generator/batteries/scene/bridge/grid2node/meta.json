@@ -1,0 +1,120 @@
+{
+  "id": "grid2node",
+  "label": "网格→场景节点",
+  "name-en": "Grid2Node",
+  "description": "占用/分区叠加：非零格子变成体素，不是地形。地貌请用 heightfieldMesh → meshSceneNode。",
+  "description-en": "Occupancy overlay: non-zero grid cells become voxels. Not terrain. For landforms use heightfieldMesh → meshSceneNode.",
+  "version": "1.0.0",
+  "tags": [
+    "scene",
+    "bridge",
+    "grid",
+    "node",
+    "source"
+  ],
+  "tag_labels": [
+    "场景",
+    "桥接",
+    "网格",
+    "节点",
+    "源"
+  ],
+  "inputs": [
+    {
+      "name": "name",
+      "type": "string",
+      "access": "item",
+      "required": true,
+      "label": "节点名",
+      "description": "新节点名（不含 /）",
+      "description-en": "Name of the node (no '/')."
+    },
+    {
+      "name": "grid",
+      "type": "grid",
+      "access": "item",
+      "required": true,
+      "label": "grid",
+      "description": "输入二维 grid（grid[y][x]）；非零值写入对应 (x,y,zBase) 体素",
+      "description-en": "Input 2D grid (grid[y][x]); non-zero cells become voxels at (x,y,zBase)."
+    },
+    {
+      "name": "schema",
+      "type": "string",
+      "access": "item",
+      "label": "schema",
+      "description": "节点几何 schema 标签",
+      "description-en": "Schema tag for the node geometry.",
+      "default": "voxel-mass"
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "access": "item",
+      "label": "token",
+      "description": "每个体素的语义标签",
+      "description-en": "Semantic token for each voxel.",
+      "default": "cell"
+    },
+    {
+      "name": "z",
+      "type": "number",
+      "access": "item",
+      "label": "高度层索引",
+      "description": "可选。等高线/高度场分层时接层号（0、1、2…）。未显式接 zRange 时，按 [0..z] 实心柱生成体素（避免互斥分区全落在 z=0）。",
+      "description-en": "Optional elevation-tier index (0,1,2…). When zRange is not wired, emits a solid column of voxels at z=0..z — required for mutually exclusive contour partitions."
+    },
+    {
+      "name": "zRange",
+      "type": "number",
+      "access": "list",
+      "label": "z 层",
+      "description": "体素 z 坐标列表；每个非零格在列表中每一层各生成一个体素。默认 [0] 表示单层平铺。若同时接了 z 且本口未接线，则以 z 的 [0..z] 实心柱为准。",
+      "description-en": "List of z values; each non-zero cell emits one voxel per z in this list. Default [0] = single flat layer. Ignored when unset and `z` is provided (fill 0..z).",
+      "default": [0]
+    },
+    {
+      "name": "stateGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "标签 grid",
+      "description": "可选。与 grid 同尺寸的逐格标签网格；非零值经 stateValues 映射后写入体素的 state[stateKey]。autotile 规则用 face.variants 的 when.stateEquals 消费（如 bridge_25 区分端头长条横/竖）。",
+      "description-en": "Optional per-cell tag grid (same size as grid). Non-zero values are mapped through stateValues and written to voxel state[stateKey], consumed by autotile rules via face.variants when.stateEquals."
+    },
+    {
+      "name": "stateKey",
+      "type": "string",
+      "access": "item",
+      "label": "标签键名",
+      "description": "stateGrid 写入体素 state 时使用的键名。",
+      "description-en": "Key under which stateGrid values are written into each voxel's state.",
+      "default": "tag"
+    },
+    {
+      "name": "stateValues",
+      "type": "string",
+      "access": "list",
+      "label": "标签取值表",
+      "description": "stateGrid 数值 → 标签字符串的映射表，按下标取（值 1 取第 2 项，依此类推）；缺项则直接用数字的字符串形式。",
+      "description-en": "Lookup table mapping stateGrid numbers to tag strings by index (value 1 → item at index 1). Missing entries fall back to the number as a string."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "scene",
+      "description": "单节点 scene，focus 指向新节点；可直接喂下游 add_child / set_transform / node_explode",
+      "description-en": "One-node scene with focus on the new node; feed into add_child / set_transform / node_explode."
+    },
+    {
+      "name": "voxelCount",
+      "type": "number",
+      "access": "item",
+      "label": "体素数",
+      "description": "写入的体素数量",
+      "description-en": "Number of voxels written."
+    }
+  ]
+}

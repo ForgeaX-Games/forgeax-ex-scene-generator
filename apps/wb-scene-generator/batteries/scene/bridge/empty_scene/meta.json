@@ -1,0 +1,33 @@
+{
+  "id": "empty_scene",
+  "label": "空场景",
+  "name-en": "EmptyScene",
+  "description": "无任何输入，输出一个空场景：只含一个空的根节点（children 为空）的 scene DataTree。用作管线起点、占位源或在其下挂接子节点构建完整 scene 树。",
+  "description-en": "No inputs; emits an empty scene: a scene DataTree containing only one empty root node (no children). Useful as a pipeline source, placeholder, or a root to graft child nodes onto.",
+  "version": "1.0.0",
+  "tags": [
+    "scene",
+    "bridge",
+    "source",
+    "empty",
+    "root"
+  ],
+  "tag_labels": [
+    "场景",
+    "桥接",
+    "源",
+    "空",
+    "根节点"
+  ],
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "tree",
+      "label": "scene",
+      "description": "空场景：只有一个空根节点（children 为空）的 DataTree，focus 指向根 '/'",
+      "description-en": "Empty scene: a DataTree with a single empty root node (no children), focus on root '/'."
+    }
+  ]
+}

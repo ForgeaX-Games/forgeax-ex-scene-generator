@@ -1,0 +1,139 @@
+{
+  "id": "g_part",
+  "label": "部件",
+  "name-en": "GPart",
+  "description": "把一个 shape 包成可装配的 part（URDF link），可选 material/origin/rpy/mass。何时用：任何要成为 URDF link 的形状（多零件物体、可动部件）都先经此包裹，再用 g_joint_* 连接。⚠️ 每个 part 必须通过 joint 连入单一根树，否则会被 URDF 丢弃（g_geometry_qc 报 islands>1）；不动的零件用 g_joint_fixed 连上。",
+  "description-en": "Wrap a shape into an assemblable part (URDF link). Use when: any shape that should become a URDF link (multi-part objects, movable parts) — wrap here, then connect with g_joint_*. WARNING: every part must be joined into ONE rooted tree or it is dropped from the URDF (g_geometry_qc reports islands>1); attach non-moving parts with g_joint_fixed.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "geometry",
+    "part",
+    "link",
+    "assembly"
+  ],
+  "tag_labels": [
+    "几何",
+    "部件",
+    "Link",
+    "装配"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": true,
+      "label": "几何",
+      "description": "上游 Geometry（必须含 shape_id 所指条目）",
+      "description-en": "Upstream Geometry; must contain shape_id."
+    },
+    {
+      "name": "shape_id",
+      "type": "string",
+      "required": true,
+      "label": "形状 id",
+      "description": "上游 shape 的 id（从 g_box / g_cylinder / CSG / Parts 等的 id 输出端口连入，或填该 shape 的 id 参数）",
+      "description-en": "Id of the upstream shape this link wraps. Feed from an upstream shape's `id` output (g_box / g_cylinder / CSG / Parts), or set/pass that shape's `id`."
+    },
+    {
+      "name": "material_id",
+      "type": "string",
+      "required": false,
+      "label": "材质 id",
+      "default": "",
+      "description": "可选 material id",
+      "description-en": "Optional material id."
+    },
+    {
+      "name": "ox",
+      "type": "number",
+      "label": "偏移 X",
+      "default": 0,
+      "description": "可视偏移 X",
+      "description-en": "Visual offset X."
+    },
+    {
+      "name": "oy",
+      "type": "number",
+      "label": "偏移 Y",
+      "default": 0,
+      "description": "可视偏移 Y",
+      "description-en": "Visual offset Y."
+    },
+    {
+      "name": "oz",
+      "type": "number",
+      "label": "偏移 Z",
+      "default": 0,
+      "description": "可视偏移 Z",
+      "description-en": "Visual offset Z."
+    },
+    {
+      "name": "rr",
+      "type": "number",
+      "label": "翻滚 roll",
+      "default": 0,
+      "description": "可视旋转 roll（弧度）",
+      "description-en": "Visual roll in radians."
+    },
+    {
+      "name": "rp",
+      "type": "number",
+      "label": "俯仰 pitch",
+      "default": 0,
+      "description": "可视旋转 pitch",
+      "description-en": "Visual pitch."
+    },
+    {
+      "name": "ry",
+      "type": "number",
+      "label": "偏航 yaw",
+      "default": 0,
+      "description": "可视旋转 yaw",
+      "description-en": "Visual yaw."
+    },
+    {
+      "name": "mass",
+      "type": "number",
+      "label": "质量",
+      "default": 0,
+      "description": "惯性质量；0 = 不写",
+      "description-en": "Inertial mass; 0 = omit."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空 = 自动 part{n}",
+      "description-en": "Custom id; empty = auto part{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加后 Geometry",
+      "description-en": "Geometry after appending."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 part 的 id（供下游 joint 引用）",
+      "description-en": "Id of the new part line."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "label": "错误",
+      "description": "非致命错误信息（校验失败时返回，几何原样透传）",
+      "description-en": "Non-fatal error string (returned on validation failure; geometry passes through unchanged)."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

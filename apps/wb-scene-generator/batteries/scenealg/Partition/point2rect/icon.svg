@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Point to rect in region battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#101a26" stroke="#4f6172" stroke-width="1.2"/>
+  <path d="M5.5 9c2-2.5 5-2.6 7.5-1.5 2.4 1 4.4 1 5.6-0.2v9.4c-1.4 1.2-3.6 1.4-6.2 0.4-2.4-0.9-4.8-0.7-6.9 0.6z" fill="#27384a" stroke="#6f8aa3" stroke-width="1.1" stroke-linejoin="round"/>
+  <rect x="9.5" y="9.5" width="6" height="5" rx="0.6" fill="none" stroke="#7cc4ff" stroke-width="1.5"/>
+  <circle cx="12.5" cy="12" r="1.5" fill="#c4b5fd"/>
+</svg>

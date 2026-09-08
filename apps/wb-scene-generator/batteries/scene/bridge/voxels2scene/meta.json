@@ -1,0 +1,115 @@
+{
+  "id": "voxels2scene",
+  "label": "体素列表→场景",
+  "name-en": "Voxels2Scene",
+  "description": "由 point3d 体素列表构造 scene 树。支持 flat 单节点、groupBy=z/token 自动分层，或直接传入 json2voxels 的 nodes[] 做多子节点（多层建筑/区域划分）。",
+  "description-en": "Build a scene tree from point3d voxels. Supports a flat single node, groupBy=z|token auto layering, or hierarchical nodes[] from json2voxels.",
+  "version": "1.0.0",
+  "tags": ["scene", "bridge", "voxel", "node", "source"],
+  "tag_labels": ["场景", "桥接", "体素", "节点", "源"],
+  "inputs": [
+    {
+      "name": "voxels",
+      "type": "point3d",
+      "access": "list",
+      "label": "voxels",
+      "description": "体素坐标列表（通常来自 json2voxels.voxels）",
+      "description-en": "Voxel positions (typically from json2voxels.voxels)."
+    },
+    {
+      "name": "tokens",
+      "type": "string",
+      "access": "list",
+      "label": "tokens",
+      "description": "与 voxels 对齐的 token 列表（可选）",
+      "description-en": "Optional tokens aligned with voxels."
+    },
+    {
+      "name": "nodes",
+      "type": "array",
+      "access": "item",
+      "label": "nodes",
+      "description": "分层 nodes（json2voxels.nodes）；提供时优先于 voxels+groupBy",
+      "description-en": "Hierarchical nodes from json2voxels.nodes; takes precedence over voxels+groupBy."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "access": "item",
+      "label": "根节点名",
+      "description": "根节点或单节点名（不含 /）",
+      "description-en": "Root or single node name (no '/').",
+      "default": "Voxels"
+    },
+    {
+      "name": "root",
+      "type": "string",
+      "access": "item",
+      "label": "root（别名）",
+      "description": "与 name 等价，可接 json2voxels.root",
+      "description-en": "Alias of name; wire from json2voxels.root."
+    },
+    {
+      "name": "schema",
+      "type": "string",
+      "access": "item",
+      "label": "schema",
+      "description": "节点几何 schema",
+      "description-en": "Node geometry schema tag.",
+      "default": "voxel-mass"
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "access": "item",
+      "label": "默认 token",
+      "description": "未提供 tokens 列表时的默认 token",
+      "description-en": "Default token when tokens list is omitted.",
+      "default": "cell"
+    },
+    {
+      "name": "groupBy",
+      "type": "string",
+      "access": "item",
+      "label": "分组",
+      "description": "none | z | token — 自动按 z 层或 token 拆子节点",
+      "description-en": "none | z | token — auto split into child nodes.",
+      "default": "none",
+      "options": ["none", "z", "token"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "scene",
+      "description": "构造出的 scene（focus 指向根节点）",
+      "description-en": "Constructed scene with focus on the root node."
+    },
+    {
+      "name": "voxelCount",
+      "type": "number",
+      "access": "item",
+      "label": "体素数",
+      "description": "写入的体素总数",
+      "description-en": "Total voxels written."
+    },
+    {
+      "name": "nodeCount",
+      "type": "number",
+      "access": "item",
+      "label": "节点数",
+      "description": "写入的 scene 子节点数量",
+      "description-en": "Number of scene nodes written."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "access": "item",
+      "label": "error",
+      "description": "失败时的错误信息",
+      "description-en": "Error message on failure."
+    }
+  ]
+}

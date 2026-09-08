@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Mountain contour field">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#2a1f14" stroke="#8b6914" stroke-width="1.2"/>
+  <path d="M4 18 Q8 14 12 10 T20 6" fill="none" stroke="#c4a574" stroke-width="1"/>
+  <path d="M4 16 Q8 12 12 8 T20 4" fill="none" stroke="#a08050" stroke-width="1"/>
+  <path d="M4 14 Q8 10 12 6 T20 2" fill="none" stroke="#806040" stroke-width="1"/>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_str_to_list" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#935df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_str_to_list)"/>
+
+  <path fill="#fff" d="M3 12h5v-1h-5v1zM3 13h5v-1h-5v1zM3 14h5v-1h-5v1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M8 11h1v3h-1z"/>
+  <path fill="#fff" d="M9 11h1v3h-1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M10 12h1v1h-1z"/>
+  <path fill="#fff" d="M11 12h1v1h-1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M12 11h1v3h-1z"/>
+  <path fill="#fff" d="M13 11h1v3h-1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M14 12h1v1h-1z"/>
+  <path fill="#fff" d="M15 12h1v1h-1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M16 11h1v3h-1z"/>
+  <path fill="#fff" d="M17 11h1v3h-1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M18 12h1v1h-1z"/>
+  <path fill="#fff" d="M19 12h1v1h-1z"/>
+  <path fill="rgba(0,0,0,0.55)" d="M20 11h1v3h-1z"/>
+  <path fill="#fff" d="M21 11h1v3h-1z"/>
+
+</svg>

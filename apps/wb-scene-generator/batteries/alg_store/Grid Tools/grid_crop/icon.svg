@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="bg_grid_crop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#be185d"/>
+      <stop offset="100%" stop-color="#c9417a"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" ry="4" fill="url(#bg_grid_crop)"/>
+
+  <path fill="rgba(0,0,0,0.55)" d="M2 2h20v20H2z M4 4h16v16H4z"/>
+  <rect x="6" y="6" width="12" height="12" fill="#fff"/>
+  <rect x="7" y="7" width="10" height="10" stroke="rgba(255,255,255,0.35)" stroke-width="1" stroke-dasharray="2,2" fill="none"/>
+
+</svg>

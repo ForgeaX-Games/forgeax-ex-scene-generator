@@ -1,0 +1,41 @@
+{
+  "id": "scene_merge_subtrees",
+  "label": "合并子树",
+  "name-en": "MergeSubtrees",
+  "description": "把多个 scene 在各自 focus 下展开的子树合并成一棵 master scene。算法：取第一个 scene 作为基底，把每个 scene 在 focus 下的子节点逐个保序 graft 到 master（各自分配递增 version，保持 z-order）；多个 scene 合并到同一 focus 时串接其子节点，同名子节点保留先到者；输出 focus 固定为根节点 /。「递归展开协议」每层 fanout 的收束步骤。",
+  "description-en": "Merge multiple scenes (each with a subtree expanded under its own focus) into one master scene. Algorithm: take the first scene as base, then graft each scene's focus children one by one in order (each assigned an increasing version to preserve z-order); when multiple scenes merge under the same focus their children are concatenated, and duplicate-named children keep the first arrival; output focus is fixed to the root \"/\". The convergence step of each fanout level in the recursive expansion protocol.",
+  "icon": "多个不同的子树枝条汇聚成一棵主树，主树根部有十字光标，扁平插画风格，主色2种。",
+  "version": "1.0.0",
+  "tags": ["scene", "merge", "convergence", "recurse"],
+  "tag_labels": ["场景", "合并", "收束", "递归"],
+  "projectTypes": ["both"],
+  "inputs": [
+    {
+      "name": "scenes",
+      "type": "scene",
+      "access": "list",
+      "required": true,
+      "label": "scene 列表",
+      "description": "一组 scene；每个的 focus 子树是该 branch 独立展开的结果",
+      "description-en": "List of scenes; each has its focus subtree independently expanded by its branch."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scene",
+      "type": "scene",
+      "access": "item",
+      "label": "合并后 scene",
+      "description": "包含所有 branch 子树展开结果的 master scene；focus = 根节点 /",
+      "description-en": "Master scene containing every branch's expanded subtree; focus = root \"/\"."
+    },
+    {
+      "name": "mergedCount",
+      "type": "number",
+      "access": "item",
+      "label": "合并数量",
+      "description": "实际参与合并的 scene 数量（focus='/' 或 focus 节点不存在的 scene 不计）",
+      "description-en": "Number of scenes that actually contributed to the merge (scenes with focus='/' or a missing focus node are not counted)."
+    }
+  ]
+}

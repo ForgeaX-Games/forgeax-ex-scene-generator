@@ -1,0 +1,140 @@
+/* Project-switch / renderer-load progress panel above the zoom controls in the
+   renderer pane (`.scene-pane` is position:relative). */
+
+.load-status {
+  position: absolute;
+  bottom: 46px;
+  left: 8px;
+  z-index: 20;
+  max-width: min(280px, calc(100% - 20px));
+  font-size: 12px;
+  color: var(--color-text-primary, #e6e8ef);
+  background: color-mix(in srgb, var(--color-bg-primary, #14161a) 88%, transparent);
+  border: 1px solid var(--color-border, #2a2e36);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  animation: load-status-in 0.15s ease-out;
+}
+
+@keyframes load-status-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.load-status__summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 7px 9px;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.load-status__spinner {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border, #2a2e36);
+  border-top-color: var(--color-accent, #d4ff48);
+  animation: load-status-spin 0.7s linear infinite;
+}
+
+.load-status__spinner--done {
+  border-color: var(--color-accent, #d4ff48);
+  border-top-color: var(--color-accent, #d4ff48);
+  animation: none;
+}
+
+@keyframes load-status-spin {
+  to { transform: rotate(360deg); }
+}
+
+.load-status__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.load-status__count {
+  flex: none;
+  color: var(--color-text-secondary, #8b90a0);
+  font-variant-numeric: tabular-nums;
+}
+
+.load-status__chevron {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid var(--color-text-secondary, #8b90a0);
+  border-bottom: 1.5px solid var(--color-text-secondary, #8b90a0);
+  transform: rotate(-45deg);
+  margin: 0 1px 0 -2px;
+  transition: transform 0.12s ease;
+}
+
+.load-status__chevron--open {
+  transform: rotate(45deg);
+}
+
+.load-status__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 9px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--color-border, #2a2e36);
+  padding-top: 6px;
+}
+
+.load-status__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary, #8b90a0);
+}
+
+.load-status__item--done {
+  color: var(--color-text-primary, #e6e8ef);
+}
+
+.load-status__icon {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-secondary, #8b90a0);
+}
+
+.load-status__item--active .load-status__icon {
+  background: var(--color-accent, #d4ff48);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent, #d4ff48) 25%, transparent);
+}
+
+.load-status__item--done .load-status__icon {
+  background: var(--color-accent, #d4ff48);
+}
+
+.load-status__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.load-status__detail {
+  flex: none;
+  color: var(--color-text-secondary, #8b90a0);
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,58 @@
+{
+  "id": "furniture_name_collapse",
+  "label": "家具名称折叠",
+  "description": "将逐房间家具索引和实体网格按名称折叠：同名家具的所有像素值统一映射为同一新 id，输出重映射后的网格和去重名称清单。",
+  "description-en": "Collapses per-room furniture index and mask grid by name: merges all pixel values of same-name furniture into one new id, outputs remapped grid and deduplicated name list.",
+  "icon": "多行重复家具列表经漏斗压缩为少量唯一条目，右侧网格像素同步重新着色，橙色漏斗配蓝色网格，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "tags": ["furniture", "namelist", "collapse", "deduplicate", "remap", "indoor", "grid"],
+  "tag_labels": ["家具", "名称清单", "折叠", "去重", "重映射", "室内", "网格"],
+  "inputs": [
+    {
+      "name": "list",
+      "type": "array",
+      "label": "家具索引",
+      "description": "家具索引列表，每项含 rank、name 字段（来自 per_room_furniture_placer 或 adaptive_room_furniture_placer 的 furnitureIndex 输出）",
+      "description-en": "Furniture index list with rank and name fields, from per_room or adaptive_room placer furnitureIndex output."
+    },
+    {
+      "name": "maskA",
+      "type": "grid",
+      "label": "家具实体网格",
+      "description": "家具实体网格，像素值为 rank（来自放置器的 newMaskA 输出）",
+      "description-en": "Furniture mask grid where pixel values equal rank, from placer newMaskA output."
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "label": "图层类型",
+      "description": "输出名称清单的 type 字段值",
+      "description-en": "The type field value for output name list entries.",
+      "default": "asset",
+      "options": ["asset", "tile"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "折叠后家具网格",
+      "description": "重映射后的家具网格，像素值为新连续 id（从1起），与 nameList 一一对应",
+      "description-en": "Remapped furniture grid with consecutive ids starting from 1, aligned with nameList."
+    },
+    {
+      "name": "nameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "按名称去重后的名称清单 [{id, name, type}]，id 从 1 起连续编号",
+      "description-en": "Deduplicated name list [{id, name, type}] with consecutive ids starting from 1."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "label": "唯一家具种数",
+      "description": "去重后的唯一家具名称数量",
+      "description-en": "Number of unique furniture names after deduplication."
+    }
+  ]
+}

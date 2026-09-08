@@ -1,0 +1,55 @@
+{
+  "id": "point_zone_gen",
+  "label": "点生区域",
+  "description": "从给定点位按目标面积生长出有机区域，所有区域写入一张多值网格（每个区域一个递增 id）；高度字段透传到名称清单的 height 上，由渲染器自动作立面化处理。",
+  "description-en": "Grows organic zones from given seed points with target area each; all zones are written into one multi-value grid (each zone an increasing id), with the height field passed through to the name list for renderer cliff/elevation processing.",
+  "icon": "扁平插画风格小图标。深色网格底面散落几块不规则有机斑块，每块从中心点向外放射性生长，浅色斑块配深色网格底，主色2种。",
+  "version": "2.0.0",
+  "tags": ["zone", "district", "point", "grow", "organic", "procedural", "pcg", "datatree"],
+  "tag_labels": ["区域", "分区", "点位", "生长", "有机", "程序生成", "PCG", "数据树"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "输入网格",
+      "description": "单张输入网格，仅用于确定输出网格的尺寸（行/列数）以及推断起始 ID（取网格最大值 + 1 作为第一个区域 ID）；网格列表由 DataTree 引擎自动逐张处理。",
+      "description-en": "Single input grid; used only to determine output size and starting mask ID (grid max + 1). Grid lists are handled per-item by the DataTree engine."
+    },
+    {
+      "name": "regions",
+      "type": "string",
+      "label": "区域定义",
+      "description": "区域描述 JSON 字符串或数组，每项为 [x, y, area, height]：x/y 是种子点（列/行），area 是目标面积（格数），height 是立面高度（透传到名称清单 height 字段，由渲染器自动处理）",
+      "description-en": "Region descriptors as JSON string or array. Each item: [x, y, area, height]. x/y = seed point (col/row), area = target cell count, height = elevation passed through to nameList.height for renderer auto-processing.",
+      "default": "[]"
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "access": "item",
+      "label": "随机种子",
+      "description": "随机种子，0 使用当前时间。每个区域基于此种子加质数偏移以保证形态各异",
+      "description-en": "Random seed; 0 uses current timestamp. Each zone derives its own seed offset.",
+      "default": 0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "access": "item",
+      "label": "区域网格",
+      "description": "单张多值网格：每个区域一个递增 id，0=空白；可接 grid_split_by_value 拆分为独立区域",
+      "description-en": "Single multi-value grid: each zone gets an increasing id, 0 elsewhere; pipe to grid_split_by_value to separate zones."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "access": "item",
+      "label": "名称清单",
+      "description": "名称清单，格式 [{id, name: '区域 N', type: 'tile', height}]，与网格中的 id 一一对应",
+      "description-en": "Name list as [{id, name: '区域 N', type: 'tile', height}], aligned with the ids in the grid."
+    }
+  ]
+}

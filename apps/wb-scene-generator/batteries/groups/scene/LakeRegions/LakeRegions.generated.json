@@ -1,0 +1,1360 @@
+{
+  "id": "group_1782133925585_686y2",
+  "name": "LakeRegions",
+  "nameEn": "LakeRegions",
+  "nodes": [
+    {
+      "id": "node-1782131359609-sx6f4",
+      "opId": "scene_passthrough",
+      "name": "node-1781195086749-tmrnd",
+      "position": {
+        "x": -5952.317167292798,
+        "y": 3188.3600330863583
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-o2et8",
+      "opId": "node_explode",
+      "name": "node-1781195086751-18hzj",
+      "position": {
+        "x": -5581.388319979268,
+        "y": 3181.9104646799315
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-1hz2x",
+      "opId": "rect_grid",
+      "name": "node-1781195086752-rl289",
+      "position": {
+        "x": -5329.752498080117,
+        "y": 3181.786575330196
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-isd22",
+      "opId": "voxel_slice",
+      "name": "node-1781195086753-lprq9",
+      "position": {
+        "x": -5041.1945737812575,
+        "y": 3284.1290170787106
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-49eti",
+      "opId": "alg_points_scatter",
+      "name": "node-1781196067660",
+      "position": {
+        "x": -4729.753998512862,
+        "y": 3404.0135525008463
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-jv8ko",
+      "opId": "alg_region_flood_grow",
+      "name": "node-1781196193164",
+      "position": {
+        "x": -4361.237460240925,
+        "y": 3334.067243936476
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-9qory",
+      "opId": "grid2node",
+      "name": "node-1781196357317-p09mn",
+      "position": {
+        "x": -3505.640020751941,
+        "y": 3388.6640509231747
+      },
+      "params": {}
+    },
+    {
+      "id": "group_1782131359609_2zptk",
+      "opId": "__group__",
+      "name": "MultiNames",
+      "position": {
+        "x": -3628.223695762552,
+        "y": 3209.8806759818217
+      },
+      "params": {
+        "groupId": "group_1782131359609_2zptk"
+      }
+    },
+    {
+      "id": "group_1782131359609_wszan",
+      "opId": "__group__",
+      "name": "TileAssetName",
+      "position": {
+        "x": -3239.3569663873113,
+        "y": 3349.2961574127075
+      },
+      "params": {
+        "groupId": "group_1782131359609_wszan"
+      }
+    },
+    {
+      "id": "node-1782131359609-dbvbi",
+      "opId": "add_child",
+      "name": "node-1781196524935-1n9ci",
+      "position": {
+        "x": -2828.953690841791,
+        "y": 3375.0437198726186
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-okeg8",
+      "opId": "scene_merge_subtrees",
+      "name": "node-1781196524936-fwqpu",
+      "position": {
+        "x": -2621.495449254648,
+        "y": 3308.4512024438845
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-phl7u",
+      "opId": "scene_focus_path",
+      "name": "node-1781196524937-pz7vk",
+      "position": {
+        "x": -2335.8625907922383,
+        "y": 3381.092506234955
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-2p8qc",
+      "opId": "scene_passthrough",
+      "name": "node-1781196524938-1gejd",
+      "position": {
+        "x": -2110.1259673376776,
+        "y": 3279.1613962647607
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-26jsa",
+      "opId": "add_child",
+      "name": "node-1781196524938-x6l38",
+      "position": {
+        "x": -2703.601623418513,
+        "y": 3700.4089095005866
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-k8c24",
+      "opId": "scene_focus_path",
+      "name": "node-1781196524939-ha9qx",
+      "position": {
+        "x": -2335.8625907922383,
+        "y": 3694.3337398757767
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-kjan9",
+      "opId": "scene_passthrough",
+      "name": "node-1781196524940-5z8b3",
+      "position": {
+        "x": -2110.1259673376776,
+        "y": 3389.271590643527
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-ghrgu",
+      "opId": "scene_passthrough",
+      "name": "node-1781196524940-y8gid",
+      "position": {
+        "x": -2110.1259673376776,
+        "y": 3705.6819739999364
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-l427s",
+      "opId": "alg_region_subtract",
+      "name": "node-1781196534055-ydsjh",
+      "position": {
+        "x": -3546.5233213354422,
+        "y": 3658.5761562315893
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-32iqx",
+      "opId": "grid2node",
+      "name": "node-1781196534057-5e8c1",
+      "position": {
+        "x": -3119.44356481851,
+        "y": 3707.9594490705094
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-ykrkl",
+      "opId": "text_panel",
+      "name": "node-1781196534058-ork8p",
+      "position": {
+        "x": -3317.95179358703,
+        "y": 3599.551801709016
+      },
+      "params": {
+        "text": "rest",
+        "_nodeWidth": 172,
+        "_nodeHeight": 69
+      }
+    },
+    {
+      "id": "node-1782131359609-8swac",
+      "opId": "alg_region_union_all",
+      "name": "node-1781196557844",
+      "position": {
+        "x": -3945.550258271679,
+        "y": 3735.5142858662166
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-d727o",
+      "opId": "number_const",
+      "name": "node-1781197086189-poa0d",
+      "position": {
+        "x": -5054.526607346732,
+        "y": 3470.489311713508
+      },
+      "params": {
+        "value": 3
+      }
+    },
+    {
+      "id": "node-1782131359609-b4dds",
+      "opId": "number_const",
+      "name": "node-1781197190501-sy5n7",
+      "position": {
+        "x": -4591.6133026704965,
+        "y": 3478.1217868069753
+      },
+      "params": {
+        "value": 50
+      }
+    },
+    {
+      "id": "node-1782131359609-55hn2",
+      "opId": "type_string",
+      "name": "node-1781238278026",
+      "position": {
+        "x": -2110.1259673376776,
+        "y": 3491.1788549051917
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-9kma1",
+      "opId": "type_string",
+      "name": "node-1781238286100-4naph",
+      "position": {
+        "x": -2107.1803179530666,
+        "y": 3807.810752449148
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131359609-thp72",
+      "opId": "multi_seed",
+      "name": "node-1781238323504",
+      "position": {
+        "x": -4944.677850354899,
+        "y": 3617.6097248960195
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782131680512-h78ck",
+      "opId": "voxel_range",
+      "name": "node-1782131680512-h78ck",
+      "position": {
+        "x": -5041.1945737812575,
+        "y": 3116.5199227452827
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782132974315-uwxy5",
+      "opId": "alg_points2rects",
+      "name": "node-1782132974315-uwxy5",
+      "position": {
+        "x": -4864.570722212846,
+        "y": 3741.247287630752
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782133201818",
+      "opId": "alg_region_union_all",
+      "name": "node-1782133201818",
+      "position": {
+        "x": -4595.6133026704965,
+        "y": 3682.021771220083
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1782133215383",
+      "opId": "number_const",
+      "name": "node-1782133215383",
+      "position": {
+        "x": -5156.147841539041,
+        "y": 3838.5762435532374
+      },
+      "params": {
+        "value": 1
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1782131359609-petrg",
+      "source": {
+        "nodeId": "node-1782131359609-o2et8",
+        "port": "width"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-1hz2x",
+        "port": "width"
+      }
+    },
+    {
+      "id": "edge-1782131359609-oltlj",
+      "source": {
+        "nodeId": "node-1782131359609-o2et8",
+        "port": "height"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-1hz2x",
+        "port": "height"
+      }
+    },
+    {
+      "id": "edge-1782131359609-wp2hq",
+      "source": {
+        "nodeId": "node-1782131359609-o2et8",
+        "port": "voxels"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "voxels"
+      }
+    },
+    {
+      "id": "edge-1782131359609-i4yqe",
+      "source": {
+        "nodeId": "node-1782131359609-1hz2x",
+        "port": "grid"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "edge-1782131359609-eniib",
+      "source": {
+        "nodeId": "node-1782131359609-sx6f4",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-o2et8",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-p4996",
+      "source": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-49eti",
+        "port": "region"
+      }
+    },
+    {
+      "id": "edge-1782131359609-8zeuh",
+      "source": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "region"
+      }
+    },
+    {
+      "id": "edge-1782131359609-9hh7s",
+      "source": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "count"
+      },
+      "target": {
+        "nodeId": "group_1782131359609_2zptk",
+        "port": "in_1"
+      }
+    },
+    {
+      "id": "edge-1782131359609-5mhg5",
+      "source": {
+        "nodeId": "group_1782131359609_2zptk",
+        "port": "out_1"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-9qory",
+        "port": "name"
+      }
+    },
+    {
+      "id": "edge-1782131359609-ftxtt",
+      "source": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "partition"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-9qory",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "edge-1782131359609-n7eie",
+      "source": {
+        "nodeId": "node-1782131359609-9qory",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "group_1782131359609_wszan",
+        "port": "in_0"
+      }
+    },
+    {
+      "id": "edge-1782131359609-6h24g",
+      "source": {
+        "nodeId": "node-1782131359609-dbvbi",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-phl7u",
+        "port": "path"
+      }
+    },
+    {
+      "id": "edge-1782131359609-caqax",
+      "source": {
+        "nodeId": "node-1782131359609-okeg8",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-phl7u",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-wnrzb",
+      "source": {
+        "nodeId": "node-1782131359609-okeg8",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-2p8qc",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-2kcup",
+      "source": {
+        "nodeId": "node-1782131359609-dbvbi",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-26jsa",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-nmm3g",
+      "source": {
+        "nodeId": "node-1782131359609-26jsa",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-okeg8",
+        "port": "scenes"
+      }
+    },
+    {
+      "id": "edge-1782131359609-lnx6t",
+      "source": {
+        "nodeId": "node-1782131359609-26jsa",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-k8c24",
+        "port": "path"
+      }
+    },
+    {
+      "id": "edge-1782131359609-jn7nv",
+      "source": {
+        "nodeId": "node-1782131359609-okeg8",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-k8c24",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-l08wp",
+      "source": {
+        "nodeId": "node-1782131359609-phl7u",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-kjan9",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-hx74z",
+      "source": {
+        "nodeId": "node-1782131359609-k8c24",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-ghrgu",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-xcpfw",
+      "source": {
+        "nodeId": "node-1782131359609-ykrkl",
+        "port": "output"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-32iqx",
+        "port": "name"
+      }
+    },
+    {
+      "id": "edge-1782131359609-uixpv",
+      "source": {
+        "nodeId": "node-1782131359609-l427s",
+        "port": "region"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-32iqx",
+        "port": "grid"
+      }
+    },
+    {
+      "id": "edge-1782131359609-0mxuj",
+      "source": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "partition"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-8swac",
+        "port": "regions"
+      }
+    },
+    {
+      "id": "edge-1782131359609-bnntk",
+      "source": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-l427s",
+        "port": "a"
+      }
+    },
+    {
+      "id": "edge-1782131359609-w1l65",
+      "source": {
+        "nodeId": "node-1782131359609-8swac",
+        "port": "region"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-l427s",
+        "port": "b"
+      }
+    },
+    {
+      "id": "edge-1782131359609-tx0ku",
+      "source": {
+        "nodeId": "group_1782131359609_wszan",
+        "port": "out_0"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-dbvbi",
+        "port": "nodes"
+      }
+    },
+    {
+      "id": "edge-1782131359609-l27bn",
+      "source": {
+        "nodeId": "node-1782131359609-sx6f4",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-dbvbi",
+        "port": "scene"
+      }
+    },
+    {
+      "id": "edge-1782131359609-7es08",
+      "source": {
+        "nodeId": "node-1782131359609-32iqx",
+        "port": "scene"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-26jsa",
+        "port": "nodes"
+      }
+    },
+    {
+      "id": "edge-1782131359609-ahj03",
+      "source": {
+        "nodeId": "node-1782131359609-d727o",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-49eti",
+        "port": "minSpacing"
+      }
+    },
+    {
+      "id": "edge-1782131359609-ofn3o",
+      "source": {
+        "nodeId": "node-1782131359609-b4dds",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "size"
+      }
+    },
+    {
+      "id": "edge-1782131359609-313eb",
+      "source": {
+        "nodeId": "node-1782131359609-dbvbi",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-55hn2",
+        "port": "value"
+      }
+    },
+    {
+      "id": "edge-1782131359609-0h7bv",
+      "source": {
+        "nodeId": "node-1782131359609-26jsa",
+        "port": "childPaths"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-9kma1",
+        "port": "value"
+      }
+    },
+    {
+      "id": "edge-1782131359609-rc0ku",
+      "source": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-thp72",
+        "port": "shape"
+      }
+    },
+    {
+      "id": "edge-1782131359609-cgq5n",
+      "source": {
+        "nodeId": "node-1782131359609-thp72",
+        "port": "seed"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-49eti",
+        "port": "seed"
+      }
+    },
+    {
+      "id": "edge-1782131359609-yt1bh",
+      "source": {
+        "nodeId": "node-1782131359609-thp72",
+        "port": "seed"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "seed"
+      }
+    },
+    {
+      "id": "e-node-1782131359609-o2et8-voxels-node-1782131680512-h78ck-voxels",
+      "source": {
+        "nodeId": "node-1782131359609-o2et8",
+        "port": "voxels"
+      },
+      "target": {
+        "nodeId": "node-1782131680512-h78ck",
+        "port": "voxels"
+      }
+    },
+    {
+      "id": "e-node-1782131680512-h78ck-zRange-node-1782131359609-32iqx-zRange",
+      "source": {
+        "nodeId": "node-1782131680512-h78ck",
+        "port": "zRange"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-32iqx",
+        "port": "zRange"
+      }
+    },
+    {
+      "id": "e-node-1782131359609-isd22-z-node-1782131359609-9qory-zRange",
+      "source": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "z"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-9qory",
+        "port": "zRange"
+      }
+    },
+    {
+      "id": "e-node-1782131359609-isd22-slice-node-1782132974315-uwxy5-region",
+      "source": {
+        "nodeId": "node-1782131359609-isd22",
+        "port": "slice"
+      },
+      "target": {
+        "nodeId": "node-1782132974315-uwxy5",
+        "port": "region"
+      }
+    },
+    {
+      "id": "e-node-1782133215383-value-node-1782132974315-uwxy5-widths",
+      "source": {
+        "nodeId": "node-1782133215383",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1782132974315-uwxy5",
+        "port": "widths"
+      }
+    },
+    {
+      "id": "e-node-1782133215383-value-node-1782132974315-uwxy5-heights",
+      "source": {
+        "nodeId": "node-1782133215383",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1782132974315-uwxy5",
+        "port": "heights"
+      }
+    },
+    {
+      "id": "e-node-1782132974315-uwxy5-rects-node-1782133201818-regions",
+      "source": {
+        "nodeId": "node-1782132974315-uwxy5",
+        "port": "rects"
+      },
+      "target": {
+        "nodeId": "node-1782133201818",
+        "port": "regions"
+      }
+    },
+    {
+      "id": "e-node-1782133201818-region-node-1782131359609-jv8ko-points",
+      "source": {
+        "nodeId": "node-1782133201818",
+        "port": "region"
+      },
+      "target": {
+        "nodeId": "node-1782131359609-jv8ko",
+        "port": "points"
+      }
+    }
+  ],
+  "position": {
+    "x": -3764.0045990593553,
+    "y": 3476.69100528546
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_1",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-sx6f4",
+      "sourcePortName": "scene",
+      "customLabelEn": "Scene"
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-1hz2x",
+      "sourcePortName": "fillValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-isd22",
+      "sourcePortName": "z",
+      "hidden": true
+    },
+    {
+      "portName": "in_5",
+      "portType": "string",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "mode",
+      "hidden": true
+    },
+    {
+      "portName": "in_6",
+      "portType": "string",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "countMode",
+      "hidden": true
+    },
+    {
+      "portName": "in_7",
+      "portType": "number",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "density",
+      "hidden": true
+    },
+    {
+      "portName": "in_8",
+      "portType": "number",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "count",
+      "hidden": true
+    },
+    {
+      "portName": "in_9",
+      "portType": "number",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "targetValue",
+      "hidden": true
+    },
+    {
+      "portName": "in_10",
+      "portType": "number",
+      "sourceNodeId": "node-1782131359609-jv8ko",
+      "sourcePortName": "sizeVariance",
+      "hidden": true
+    },
+    {
+      "portName": "in_11",
+      "portType": "number",
+      "sourceNodeId": "node-1782131359609-jv8ko",
+      "sourcePortName": "spacingDilate",
+      "hidden": true
+    },
+    {
+      "portName": "in_12",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-9qory",
+      "sourcePortName": "schema",
+      "hidden": true
+    },
+    {
+      "portName": "in_13",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-9qory",
+      "sourcePortName": "token",
+      "hidden": true
+    },
+    {
+      "portName": "in_0",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "group_1782131359609_2zptk",
+      "sourcePortName": "in_3",
+      "customLabelEn": "NamePrefix"
+    },
+    {
+      "portName": "in_14",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "group_1782131359609_wszan",
+      "sourcePortName": "in_1",
+      "customLabelEn": "AssetName"
+    },
+    {
+      "portName": "in_15",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-32iqx",
+      "sourcePortName": "schema",
+      "hidden": true
+    },
+    {
+      "portName": "in_16",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-32iqx",
+      "sourcePortName": "token",
+      "hidden": true
+    },
+    {
+      "portName": "in_2",
+      "portType": "point2d",
+      "access": "list",
+      "sourceNodeId": "node-1782132974315-uwxy5",
+      "sourcePortName": "points",
+      "customLabelEn": "Points"
+    },
+    {
+      "portName": "in_17",
+      "portType": "number",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-thp72",
+      "sourcePortName": "seed"
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_1",
+      "portType": "grid",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "points",
+      "hidden": true,
+      "order": 0
+    },
+    {
+      "portName": "out_2",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1782131359609-49eti",
+      "sourcePortName": "count",
+      "hidden": true,
+      "order": 1
+    },
+    {
+      "portName": "out_3",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-2p8qc",
+      "sourcePortName": "scene",
+      "customLabelEn": "Scene",
+      "order": 2
+    },
+    {
+      "portName": "out_4",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-kjan9",
+      "sourcePortName": "scene",
+      "customLabelEn": "Lake",
+      "order": 3
+    },
+    {
+      "portName": "out_5",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-55hn2",
+      "sourcePortName": "value",
+      "customLabelEn": "LakePath",
+      "order": 4
+    },
+    {
+      "portName": "out_0",
+      "portType": "scene",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-ghrgu",
+      "sourcePortName": "scene",
+      "customLabelEn": "Rest",
+      "order": 5
+    },
+    {
+      "portName": "out_6",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1782131359609-9kma1",
+      "sourcePortName": "value",
+      "customLabelEn": "RestPath",
+      "order": 6
+    }
+  ],
+  "_nestedGroups": [
+    {
+      "id": "group_1782131359609_2zptk",
+      "name": "MultiNames",
+      "nameEn": "MultiNames",
+      "nodes": [
+        {
+          "id": "node-1782131359609-omr0e",
+          "opId": "number_const",
+          "name": "数值",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 108.01685495642711
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1782131359609-u3dxn",
+          "opId": "number_const",
+          "name": "数值",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 221.28108876692943
+          },
+          "params": {
+            "value": 1
+          }
+        },
+        {
+          "id": "node-1782131359609-j52qp",
+          "opId": "basic_math_op",
+          "name": "数学",
+          "position": {
+            "x": 2981.8326151083947,
+            "y": 138.56331665977086
+          },
+          "params": {
+            "op": "-"
+          }
+        },
+        {
+          "id": "node-1782131359609-gywdf",
+          "opId": "type_number",
+          "name": "数值",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 142.41093776070238
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1782131359609-to5xz",
+          "opId": "range_list",
+          "name": "数列",
+          "position": {
+            "x": 3231.2967396093886,
+            "y": 115.47226699649377
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1782131359609-3q1gh",
+          "opId": "type_string",
+          "name": "字符串",
+          "position": {
+            "x": 2763.8003372398834,
+            "y": 277.3822303033402
+          },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-1782131359609-nqmp5",
+          "source": {
+            "nodeId": "node-1782131359609-u3dxn",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-j52qp",
+            "port": "b"
+          }
+        },
+        {
+          "id": "edge-1782131359609-qqdgj",
+          "source": {
+            "nodeId": "node-1782131359609-gywdf",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-j52qp",
+            "port": "a"
+          }
+        },
+        {
+          "id": "edge-1782131359609-hy1gn",
+          "source": {
+            "nodeId": "node-1782131359609-omr0e",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-to5xz",
+            "port": "start"
+          }
+        },
+        {
+          "id": "edge-1782131359609-7a6cj",
+          "source": {
+            "nodeId": "node-1782131359609-j52qp",
+            "port": "result"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-to5xz",
+            "port": "end"
+          }
+        },
+        {
+          "id": "edge-1782131359609-px7pi",
+          "source": {
+            "nodeId": "node-1782131359609-3q1gh",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-to5xz",
+            "port": "prefix"
+          }
+        }
+      ],
+      "position": {
+        "x": -3628.223695762552,
+        "y": 3209.8806759818217
+      },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-1782131359609-j52qp",
+          "sourcePortName": "op",
+          "hidden": true
+        },
+        {
+          "portName": "in_1",
+          "portType": "number",
+          "access": "tree",
+          "sourceNodeId": "node-1782131359609-gywdf",
+          "sourcePortName": "value",
+          "customLabelEn": "Count"
+        },
+        {
+          "portName": "in_2",
+          "portType": "number",
+          "access": "item",
+          "sourceNodeId": "node-1782131359609-to5xz",
+          "sourcePortName": "step",
+          "hidden": true
+        },
+        {
+          "portName": "in_3",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-1782131359609-3q1gh",
+          "sourcePortName": "value",
+          "customLabelEn": "Prefix"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "number",
+          "access": "list",
+          "sourceNodeId": "node-1782131359609-to5xz",
+          "sourcePortName": "list",
+          "hidden": true
+        },
+        {
+          "portName": "out_1",
+          "portType": "string",
+          "access": "list",
+          "sourceNodeId": "node-1782131359609-to5xz",
+          "sourcePortName": "stringList",
+          "customLabelEn": "Names"
+        },
+        {
+          "portName": "out_2",
+          "portType": "number",
+          "access": "item",
+          "sourceNodeId": "node-1782131359609-to5xz",
+          "sourcePortName": "count"
+        }
+      ]
+    },
+    {
+      "id": "group_1782131359609_wszan",
+      "name": "TileAssetName",
+      "nodes": [
+        {
+          "id": "node-1782131359609-h7k8n",
+          "opId": "text_panel",
+          "name": "node-1781094591109",
+          "position": {
+            "x": 1823.2161694202596,
+            "y": 320.5333437440952
+          },
+          "params": {
+            "text": "asset_name",
+            "_nodeWidth": 180,
+            "_nodeHeight": 67
+          }
+        },
+        {
+          "id": "node-1782131359609-afu19",
+          "opId": "text_panel",
+          "name": "node-1781094625955-ysok9",
+          "position": {
+            "x": 2101.219750353309,
+            "y": 317.34099784790226
+          },
+          "params": {
+            "text": "asset_type",
+            "_nodeWidth": 181,
+            "_nodeHeight": 60
+          }
+        },
+        {
+          "id": "node-1782131359609-e7eau",
+          "opId": "text_panel",
+          "name": "node-1781094635614-mu6fs",
+          "position": {
+            "x": 2101.219750353309,
+            "y": 486.1257362686896
+          },
+          "params": {
+            "text": "tile",
+            "_nodeWidth": 181,
+            "_nodeHeight": 60
+          }
+        },
+        {
+          "id": "node-1782131359609-q6rfx",
+          "opId": "scene_set_attribute",
+          "name": "node-1781097305549",
+          "position": {
+            "x": 2003.1308341299732,
+            "y": 159.02072612717268
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1782131359609-av90h",
+          "opId": "scene_set_attribute",
+          "name": "node-1781097326596-22xx1",
+          "position": {
+            "x": 2273.5984614822623,
+            "y": 167.27027591857814
+          },
+          "params": {}
+        },
+        {
+          "id": "node-1782131359609-q6gtv",
+          "opId": "type_string",
+          "name": "node-1781159302096",
+          "position": {
+            "x": 1795.2161694202596,
+            "y": 219.59964172770196
+          },
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-1782131359609-ymobd",
+          "source": {
+            "nodeId": "node-1782131359609-h7k8n",
+            "port": "output"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-q6rfx",
+            "port": "key"
+          }
+        },
+        {
+          "id": "edge-1782131359609-u3iwj",
+          "source": {
+            "nodeId": "node-1782131359609-q6rfx",
+            "port": "scene"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-av90h",
+            "port": "scene"
+          }
+        },
+        {
+          "id": "edge-1782131359609-rfy7l",
+          "source": {
+            "nodeId": "node-1782131359609-afu19",
+            "port": "output"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-av90h",
+            "port": "key"
+          }
+        },
+        {
+          "id": "edge-1782131359609-1xc40",
+          "source": {
+            "nodeId": "node-1782131359609-e7eau",
+            "port": "output"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-av90h",
+            "port": "value"
+          }
+        },
+        {
+          "id": "edge-1782131359609-tytn8",
+          "source": {
+            "nodeId": "node-1782131359609-q6gtv",
+            "port": "value"
+          },
+          "target": {
+            "nodeId": "node-1782131359609-q6rfx",
+            "port": "value"
+          }
+        }
+      ],
+      "position": {
+        "x": -3239.3569663873113,
+        "y": 3349.2961574127075
+      },
+      "exposedInputs": [
+        {
+          "portName": "in_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-1782131359609-q6rfx",
+          "sourcePortName": "scene"
+        },
+        {
+          "portName": "in_1",
+          "portType": "string",
+          "access": "tree",
+          "sourceNodeId": "node-1782131359609-q6gtv",
+          "sourcePortName": "value"
+        }
+      ],
+      "exposedOutputs": [
+        {
+          "portName": "out_0",
+          "portType": "scene",
+          "access": "item",
+          "sourceNodeId": "node-1782131359609-av90h",
+          "sourcePortName": "scene"
+        }
+      ]
+    }
+  ]
+}

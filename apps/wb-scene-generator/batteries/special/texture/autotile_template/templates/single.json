@@ -1,0 +1,10 @@
+{
+  "type": "single",
+  "name": "single",
+  "remarks": "整图直出，不进行裁剪与邻域匹配",
+  "sprites": [],
+  "base_pieces": 1,
+  "total_pieces": 1,
+  "map": {},
+  "randomRules": []
+}

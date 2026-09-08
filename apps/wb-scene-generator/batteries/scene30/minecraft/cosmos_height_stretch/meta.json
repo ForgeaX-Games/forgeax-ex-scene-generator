@@ -1,0 +1,37 @@
+{
+  "id": "cosmos_height_stretch",
+  "label": "高度图拉伸",
+  "description": "将高度图每个格子的值乘以拉伸系数，等比例放大或压缩高度信息",
+  "description-en": "Multiplies every cell of a height grid by a stretch factor, scaling height values proportionally.",
+  "icon": "左右两张网格对比，左侧矮平，右侧被竖向拉伸成高峰，中间一个向上箭头，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.1.0",
+  "tags": ["cosmos", "height", "stretch", "scale", "terrain"],
+  "tag_labels": ["宇宙", "高度", "拉伸", "缩放", "地形"],
+  "inputs": [
+    {
+      "name": "inputGrid",
+      "type": "grid",
+      "label": "高度图",
+      "description": "输入高度图（接 cosmos_terrain_gen.elevationGrid）",
+      "description-en": "Input height map (from cosmos_terrain_gen.elevationGrid).",
+      "default": []
+    },
+    {
+      "name": "stretchFactor",
+      "type": "number",
+      "label": "拉伸系数",
+      "description": "高度值等比例缩放系数，正数；大于1放大，小于1压缩，等于1原样输出",
+      "description-en": "Proportional scale factor for height values; >1 amplifies, <1 compresses, 1 = passthrough.",
+      "default": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出高度图",
+      "description": "拉伸后的整数高度网格，每格值为原值乘以拉伸系数后四舍五入",
+      "description-en": "Stretched integer height grid; each cell is the original value multiplied by stretchFactor, rounded."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@forgeax/scene-authoring",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Restricted Scene Script parser, contracts, compiler, and source mapping",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@forgeax/node-runtime": "workspace:*",
+    "typescript": "^5.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

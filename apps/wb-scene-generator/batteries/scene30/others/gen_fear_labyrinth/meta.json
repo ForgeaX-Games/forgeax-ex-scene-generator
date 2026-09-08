@@ -1,0 +1,76 @@
+{
+  "id": "gen_fear_labyrinth",
+  "label": "恐惧迷宫生成",
+  "description": "DFS完美迷宫算法，生成带恐惧房间、血脉墙体和晶体的黑暗恐怖迷宫。出生点、传送门、装饰物均以掩码形式写入网格。",
+  "description-en": "DFS perfect maze generator with fear chambers, vein-textured walls, and blood crystals for horror dungeon scenes. Spawn, portal and decors are encoded as mask IDs in the grid.",
+  "icon": "扁平插画风格小图标。黑暗迷宫俯视图，红色细线迷宫通道蜿蜒其中，扩大的恐惧房间点缀其间，血红色晶体散布，主色2种。",
+  "version": "2.0.0",
+  "tags": ["chaos", "labyrinth", "maze", "dfs", "horror"],
+  "tag_labels": ["混沌", "迷宫", "迷路", "DFS", "恐怖"],
+  "inputs": [
+    {
+      "name": "width",
+      "type": "number",
+      "label": "网格宽度",
+      "description": "网格列数，最小11，自动转为奇数",
+      "description-en": "Grid column count, minimum 11; automatically forced to odd.",
+      "default": 65
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "网格高度",
+      "description": "网格行数，最小11，自动转为奇数",
+      "description-en": "Grid row count, minimum 11; automatically forced to odd.",
+      "default": 65
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "label": "随机种子",
+      "description": "随机种子，0使用当前时间戳",
+      "description-en": "Random seed; 0 uses current timestamp.",
+      "default": 0
+    },
+    {
+      "name": "chamberChance",
+      "type": "number",
+      "label": "恐惧房间概率",
+      "description": "路口扩展为恐惧房间的概率，0-1",
+      "description-en": "Probability of widening maze intersections into fear chambers, 0-1.",
+      "default": 0.2
+    },
+    {
+      "name": "veinChance",
+      "type": "number",
+      "label": "血脉墙概率",
+      "description": "紧邻通道的墙格变为血脉格的概率，0-1",
+      "description-en": "Probability of wall tiles adjacent to floor becoming vein tiles, 0-1.",
+      "default": 0.08
+    },
+    {
+      "name": "crystalChance",
+      "type": "number",
+      "label": "晶体生成概率",
+      "description": "恐惧房间内生成血晶的概率，0-1",
+      "description-en": "Probability of generating blood crystals inside fear chambers, 0-1.",
+      "default": 0.15
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outputGrid",
+      "type": "grid",
+      "label": "输出网格",
+      "description": "恐惧迷宫网格：1=墙体,2=通道,3=血渍,4=恐惧房间,5=血晶,6=传送门,7=出生点,8=骷髅装饰,9=恐惧之眼（单点POI）",
+      "description-en": "Fear labyrinth grid: 1=wall, 2=floor, 3=blood stain, 4=chamber, 5=crystal, 6=portal, 7=spawn, 8=skull decor, 9=fear eye (single POI)."
+    },
+    {
+      "name": "outputNameList",
+      "type": "array",
+      "label": "名称清单",
+      "description": "各掩码ID与中文名称的映射列表（仅含网格中实际出现的ID）",
+      "description-en": "Mask ID to Chinese name mapping list (only IDs that appear in the grid)."
+    }
+  ]
+}

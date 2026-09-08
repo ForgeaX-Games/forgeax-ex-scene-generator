@@ -1,0 +1,65 @@
+{
+  "id": "connected_components",
+  "label": "连通分量标记",
+  "description": "对网格中所有非零区域进行连通分量标记，每个连通分量赋予唯一ID",
+  "description-en": "Label connected components of non-zero regions in a grid, assigning each a unique ID.",
+  "icon": "一个方格网格中散布几块不同颜色的连通区域，每块区域内部颜色一致，扁平插画风格，简洁小图标，主色2种",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "basic",
+    "grid",
+    "connected",
+    "component",
+    "label",
+    "flood-fill"
+  ],
+  "tag_labels": [
+    "基础",
+    "网格",
+    "连通",
+    "分量",
+    "标记",
+    "洪水填充"
+  ],
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "输入网格",
+      "description": "待标记的二维网格，非零格子视为前景",
+      "description-en": "Input 2D grid; non-zero cells are treated as foreground."
+    },
+    {
+      "name": "connectivity",
+      "type": "string",
+      "label": "连通方式",
+      "default": "4",
+      "options": [
+        "4",
+        "8"
+      ],
+      "description": "连通判定方式：4=上下左右四邻域，8=含对角线八邻域",
+      "description-en": "Connectivity mode: 4-connected (cardinal) or 8-connected (with diagonals)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grid",
+      "type": "grid",
+      "label": "标记网格",
+      "description": "标记后的网格，每个连通分量为唯一正整数ID，背景为0",
+      "description-en": "Labeled grid: each connected component gets a unique positive integer ID; background is 0."
+    },
+    {
+      "name": "numComponents",
+      "type": "number",
+      "label": "分量数量",
+      "description": "检测到的连通分量总数",
+      "description-en": "Total number of connected components found."
+    }
+  ],
+  "alg_tag": [
+    "标记网格非零区域的连通分量"
+  ]
+}

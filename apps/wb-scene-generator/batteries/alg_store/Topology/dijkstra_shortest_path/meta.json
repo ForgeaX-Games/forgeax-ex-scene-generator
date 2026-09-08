@@ -1,0 +1,96 @@
+{
+  "id": "dijkstra_shortest_path",
+  "label": "Dijkstra 最短路",
+  "description": "在带权代价网格上求多源/多终点最短路。输出距离图、前驱方向图，以及到指定终点的路径并集网格。",
+  "description-en": "Multi-source / multi-target Dijkstra on a weighted cost grid. Outputs a distance map, a predecessor direction map, and a union path mask for given targets.",
+  "icon": "网格地图上多个起点向四周辐射出渐变色等距线，距离越远颜色越深，扁平插画风格，简洁小图标，主色2种。",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": ["algorithm", "graph", "shortest_path", "dijkstra", "pathfinding"],
+  "tag_labels": ["算法", "图论", "最短路", "Dijkstra", "寻路"],
+  "inputs": [
+    {
+      "name": "costGrid",
+      "type": "grid",
+      "label": "代价网格",
+      "description": "通过代价网格。obstacleValue 视为障碍，其它格子的值即通过该格的代价（>0），未提供则视为全 1。",
+      "description-en": "Cost grid. Cells equal to obstacleValue are walls; other cell values are traversal costs (>0). If not provided, all cells default to cost 1."
+    },
+    {
+      "name": "sources",
+      "type": "number",
+      "label": "起点列表",
+      "default": [],
+      "description": "起点坐标 [[x,y], ...]。留空则视所有非障碍格子为源（通常用于纯距离图）。（外层 rank=2：N 个点 × [x,y]；同时兼容老字符串格式 \"x1,y1; x2,y2\"）",
+      "description-en": "Source coordinates [[x,y], ...]. Empty = treat every passable cell as a source (rank=2; legacy string also accepted)."
+    },
+    {
+      "name": "targets",
+      "type": "number",
+      "label": "终点列表",
+      "default": [],
+      "description": "终点坐标 [[x,y], ...]，格式同 sources。留空则只输出距离图，不计算路径。（外层 rank=2：N 个点 × [x,y]；同时兼容老字符串格式 \"x1,y1; x2,y2\"）",
+      "description-en": "Target coordinates [[x,y], ...]. Empty = compute distance map only (rank=2; legacy string also accepted)."
+    },
+    {
+      "name": "diagonal",
+      "type": "boolean",
+      "label": "允许对角",
+      "default": false,
+      "description": "是否允许 8 方向移动（对角代价乘 √2）。",
+      "description-en": "Allow 8-directional movement (diagonal cost multiplied by √2)."
+    },
+    {
+      "name": "obstacleValue",
+      "type": "number",
+      "label": "障碍值",
+      "default": 0,
+      "description": "代价网格中等于该值的格子视为墙。",
+      "description-en": "Cells in costGrid equal to this value are treated as walls."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "label": "宽度",
+      "default": 64,
+      "description": "未提供 costGrid 时，输出网格宽度。",
+      "description-en": "Output width when costGrid is not provided."
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "label": "高度",
+      "default": 64,
+      "description": "未提供 costGrid 时，输出网格高度。",
+      "description-en": "Output height when costGrid is not provided."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "distanceGrid",
+      "type": "grid",
+      "label": "距离图",
+      "description": "每个格子到最近起点的最短累计代价；不可达格子为 -1。",
+      "description-en": "Shortest cumulative cost from any source; unreachable cells are -1."
+    },
+    {
+      "name": "pathGrid",
+      "type": "grid",
+      "label": "路径并集",
+      "description": "终点回溯到起点的路径并集，1=路径，0=空。targets 为空时全 0。",
+      "description-en": "Union of back-traced paths from each target to its closest source. 1=path, 0=empty. All zeros when targets is empty."
+    },
+    {
+      "name": "parentGrid",
+      "type": "grid",
+      "label": "前驱方向图",
+      "description": "每个格子指向其前驱方向的编码 1~8（-1=源点或不可达）。",
+      "description-en": "Per-cell predecessor direction code 1~8 (-1 = source or unreachable)."
+    }
+  ],
+  "alg_tag": [
+    "带权最短路",
+    "多源多终点距离场",
+    "村庄/POI 间最短路径"
+  ]
+}

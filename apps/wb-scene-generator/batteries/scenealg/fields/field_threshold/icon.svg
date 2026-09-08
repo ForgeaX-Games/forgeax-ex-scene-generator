@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Field threshold battery">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M6 6 H18 V18 H6 Z" fill="none" stroke="#2c4339" stroke-width="1.2"/>
+  <path d="M6 6 Q12 11 18 7 V18 H6 Z" fill="#1f6e8c" opacity="0.55"/>
+  <path d="M6 6 Q12 11 18 7" fill="none" stroke="#b7ff5a" stroke-width="1.4"/>
+</svg>

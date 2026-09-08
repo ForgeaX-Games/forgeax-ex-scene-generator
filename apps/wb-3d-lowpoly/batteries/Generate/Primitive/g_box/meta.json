@@ -1,0 +1,83 @@
+{
+  "id": "g_box",
+  "label": "立方体",
+  "name-en": "GBox",
+  "description": "在 Geometry DSL 末尾追加 box(size=[w,d,h]) 一行，产出一个立方体形状定义。",
+  "description-en": "Append a `box(size=[w,d,h])` line to the Geometry DSL.",
+  "version": "1.0.0",
+  "autoIterate": true,
+  "tags": [
+    "geometry",
+    "primitive",
+    "box",
+    "cad"
+  ],
+  "tag_labels": [
+    "几何",
+    "基础形状",
+    "立方体",
+    "CAD"
+  ],
+  "inputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "required": false,
+      "label": "几何",
+      "description": "上游 Geometry；缺省视为空 geometry",
+      "description-en": "Upstream Geometry; empty if absent."
+    },
+    {
+      "name": "w",
+      "type": "number",
+      "label": "宽 w",
+      "default": 1,
+      "description": "X 方向宽度",
+      "description-en": "Width along X."
+    },
+    {
+      "name": "d",
+      "type": "number",
+      "label": "深 d",
+      "default": 1,
+      "description": "Y 方向深度",
+      "description-en": "Depth along Y."
+    },
+    {
+      "name": "h",
+      "type": "number",
+      "label": "高 h",
+      "default": 1,
+      "description": "Z 方向高度",
+      "description-en": "Height along Z."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": false,
+      "label": "id",
+      "default": "",
+      "description": "自定义 id；空表示自动生成 box{n}",
+      "description-en": "Custom id; empty = auto box{n}."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "geometry",
+      "type": "geometry",
+      "label": "几何",
+      "description": "追加 box 行后的 Geometry",
+      "description-en": "Geometry after appending the box line."
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "label": "id",
+      "description": "本行 box 的 id（供下游 part 引用）",
+      "description-en": "Id of the newly appended box line."
+    }
+  ],
+  "projectTypes": [
+    "asset3d"
+  ]
+}

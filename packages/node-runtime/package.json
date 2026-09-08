@@ -1,0 +1,64 @@
+{
+  "name": "@forgeax/node-runtime",
+  "version": "0.3.1",
+  "description": "Headless node runtime + stable editing API for ForgeaX node-programming plugins",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./layer1": {
+      "source": "./src/layer1/index.ts",
+      "types": "./dist/layer1/index.d.ts",
+      "import": "./dist/layer1/index.js"
+    },
+    "./layer2": {
+      "source": "./src/layer2/index.ts",
+      "types": "./dist/layer2/index.d.ts",
+      "import": "./dist/layer2/index.js"
+    },
+    "./derive-group-ports": {
+      "source": "./src/layer2/derive-group-ports.ts",
+      "types": "./dist/layer2/derive-group-ports.d.ts",
+      "import": "./dist/layer2/derive-group-ports.js"
+    },
+    "./diff-pipeline": {
+      "source": "./src/layer2/diff-pipeline.ts",
+      "types": "./dist/layer2/diff-pipeline.d.ts",
+      "import": "./dist/layer2/diff-pipeline.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.0",
+    "pino": "^9.0.0",
+    "pino-pretty": "^11.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

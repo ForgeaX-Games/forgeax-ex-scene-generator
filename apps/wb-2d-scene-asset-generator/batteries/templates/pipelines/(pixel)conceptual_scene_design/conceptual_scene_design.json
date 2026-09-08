@@ -1,0 +1,453 @@
+{
+  "id": "group_1781798838720_2imr6",
+  "name": "conceptual_scene_design",
+  "nameEn": "conceptual_scene_design",
+  "author": "zyw",
+  "nodes": [
+    {
+      "id": "node-1781798089338-8hjml",
+      "opId": "image_pixel_fix",
+      "name": "node-1781681034407",
+      "position": {
+        "x": -1838.2460819283772,
+        "y": -22.238829821561637
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-id9b2",
+      "opId": "image_output",
+      "name": "node-1781681076482",
+      "position": {
+        "x": -1283.713798743445,
+        "y": 11.190690861891312
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-rhwvp",
+      "opId": "image_gen",
+      "name": "node-1781768776812",
+      "position": {
+        "x": -2098.2986246502805,
+        "y": -23.909291601557015
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-01bti",
+      "opId": "passthrough",
+      "name": "node-1781769629213-l6uun",
+      "position": {
+        "x": -2699.8645529985693,
+        "y": 174.1317952232631
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-ulqq3",
+      "opId": "passthrough",
+      "name": "node-1781769630837-vtyao",
+      "position": {
+        "x": -2699.8645529985693,
+        "y": 60.13237849988366
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-n9qak",
+      "opId": "passthrough",
+      "name": "node-1781769636529-hb5yk",
+      "position": {
+        "x": -2699.8645529985693,
+        "y": -80.92268499194893
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-rxszu",
+      "opId": "image_pixel_scale",
+      "name": "node-1781769791253",
+      "position": {
+        "x": -1550.9768450252427,
+        "y": 13.112436624734073
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-0cku0",
+      "opId": "toggle",
+      "name": "node-1781770882133",
+      "position": {
+        "x": -1806.3268217699795,
+        "y": 199.79231941096282
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-q404p",
+      "opId": "passthrough",
+      "name": "node-1781771067187-kvylm",
+      "position": {
+        "x": -2699.8645529985693,
+        "y": 380.469356207362
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798089338-6ig5e",
+      "opId": "tree_merge",
+      "name": "node-1781771181784",
+      "position": {
+        "x": -1283.713798743445,
+        "y": 189.21489656155006
+      },
+      "params": {
+        "inferredAccess": "item",
+        "inferredType": "string",
+        "portCount": 8
+      }
+    },
+    {
+      "id": "node-1781798478663-21cqw",
+      "opId": "passthrough",
+      "name": "node-1781798478663-21cqw",
+      "position": {
+        "x": -2699.8645529985693,
+        "y": 267.8961420720998
+      },
+      "params": {}
+    },
+    {
+      "id": "node-1781798709761",
+      "opId": "prompt_template",
+      "name": "node-1781798709761",
+      "position": {
+        "x": -2409.8548808708324,
+        "y": -70.05091212234817
+      },
+      "params": {
+        "template": "## 任务\n生成一张**丰富、完整**的**像素风格游戏场景实景图**，用于**指导后续美术资产生成与对齐**（其他 agent 将以此图为基准统一像素颗粒度、配色基调、光照与透视）。\n\n## 场景信息\n- **场景名称 (scene name)**: [scene name]\n- **构图 (composition)**: [composition]\n- **风格 (style)**: [style]\n- **宽度 (px)**: [width]\n- **高度 (px)**: [height]\n\n## 构图要求\n- **严格遵守构图描述**：按 [composition] 安排各区域元素的**相对位置、朝向与占比**（例如「右下方有一条小溪、浓密茂盛的草地、中间有营火、右侧有城镇聚集地」等空间关系必须如实呈现）。\n- **区域分明、可识别**：地形（地面/草地/水域/路径）、植被、建筑/聚集地、道具与特效等各区域**边界清晰**，便于后续逐一拆解为独立资产。\n- **空间合理**：各元素之间的连接（道路通向城镇、溪流走向、草地过渡）自然连贯，符合俯视/斜俯视游戏场景的空间逻辑。\n\n## 风格要求\n- **严格遵守风格描述**：按 [style] 确定整体美术基调（如**星露谷物语风格**等），保持统一的像素块尺寸与颗粒度。\n- **像素艺术风格**：使用一致的像素块尺寸绘制，避免抗锯齿造成的模糊边缘。\n- **配色**：使用契合 [style] 的有限调色板，统一全图的明度与饱和度基调。\n- **光照**：全图统一的光照方向与明暗表现，作为后续资产光照对齐的基准。\n- **透视**：统一的俯视/斜俯视视角，作为后续资产透视与接地方式对齐的基准。\n\n## 尺寸要求\n- **尺寸锁定**：画布整体尺寸严格符合 [width]×[height] 像素，不得拉伸变形。\n- **铺满画布**：场景内容铺满整张画布，无大面积空白或纯色边框（除非构图明确要求）。\n\n## 输出要求\n生成一张 [width]×[height] 像素、[style] 风格的**丰富游戏场景实景图「[scene name]」**，构图严格符合 [composition]。\n\n**核心特征必须保持一致**：\n- 构图严格符合 [composition] ✓\n- 风格严格符合 [style] ✓\n- 尺寸严格符合 [width]×[height] 像素 ✓\n- 像素风格、统一像素颗粒度 ✓\n- 全图光照/透视/配色统一，可作为后续资产生成的对齐基准 ✓",
+        "_promptName": "scene_layout_pixel",
+        "_promptVars": [
+          "scene name",
+          "composition",
+          "style",
+          "width",
+          "height"
+        ]
+      }
+    },
+    {
+      "id": "node-1781798830525-bcyet",
+      "opId": "passthrough",
+      "name": "node-1781798830525-bcyet",
+      "position": {
+        "x": -1037.9421046438747,
+        "y": 24.815901829367533
+      },
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1781798089338-tajfu",
+      "source": {
+        "nodeId": "node-1781798089338-n9qak",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-id9b2",
+        "port": "name"
+      }
+    },
+    {
+      "id": "edge-1781798089338-qypjy",
+      "source": {
+        "nodeId": "node-1781798089338-8hjml",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "image"
+      }
+    },
+    {
+      "id": "edge-1781798089338-4r7j2",
+      "source": {
+        "nodeId": "node-1781798089338-ulqq3",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "width"
+      }
+    },
+    {
+      "id": "edge-1781798089338-hfwkj",
+      "source": {
+        "nodeId": "node-1781798089338-01bti",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "height"
+      }
+    },
+    {
+      "id": "edge-1781798089338-6gs4q",
+      "source": {
+        "nodeId": "node-1781798089338-0cku0",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "lock_aspect"
+      }
+    },
+    {
+      "id": "edge-1781798089338-nfrwv",
+      "source": {
+        "nodeId": "node-1781798089338-q404p",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rhwvp",
+        "port": "imageSize"
+      }
+    },
+    {
+      "id": "edge-1781798089338-983ma",
+      "source": {
+        "nodeId": "node-1781798089338-rhwvp",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-6ig5e",
+        "port": "item_0"
+      }
+    },
+    {
+      "id": "edge-1781798089338-24wrv",
+      "source": {
+        "nodeId": "node-1781798089338-8hjml",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-6ig5e",
+        "port": "item_4"
+      }
+    },
+    {
+      "id": "edge-1781798089338-ob3mj",
+      "source": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "error"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-6ig5e",
+        "port": "item_6"
+      }
+    },
+    {
+      "id": "e-node-1781798089338-rhwvp-image-node-1781798089338-8hjml-image",
+      "source": {
+        "nodeId": "node-1781798089338-rhwvp",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-8hjml",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781798478663-21cqw-value-node-1781798089338-rhwvp-image",
+      "source": {
+        "nodeId": "node-1781798478663-21cqw",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rhwvp",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781798089338-n9qak-value-node-1781798709761-scene name",
+      "source": {
+        "nodeId": "node-1781798089338-n9qak",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798709761",
+        "port": "scene name"
+      }
+    },
+    {
+      "id": "e-node-1781798709761-prompt-node-1781798089338-rhwvp-prompt",
+      "source": {
+        "nodeId": "node-1781798709761",
+        "port": "prompt"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-rhwvp",
+        "port": "prompt"
+      }
+    },
+    {
+      "id": "e-node-1781798089338-ulqq3-value-node-1781798709761-width",
+      "source": {
+        "nodeId": "node-1781798089338-ulqq3",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798709761",
+        "port": "width"
+      }
+    },
+    {
+      "id": "e-node-1781798089338-01bti-value-node-1781798709761-height",
+      "source": {
+        "nodeId": "node-1781798089338-01bti",
+        "port": "value"
+      },
+      "target": {
+        "nodeId": "node-1781798709761",
+        "port": "height"
+      }
+    },
+    {
+      "id": "e-node-1781798089338-rxszu-image-node-1781798089338-id9b2-image",
+      "source": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781798089338-id9b2",
+        "port": "image"
+      }
+    },
+    {
+      "id": "e-node-1781798089338-rxszu-image-node-1781798830525-bcyet-value",
+      "source": {
+        "nodeId": "node-1781798089338-rxszu",
+        "port": "image"
+      },
+      "target": {
+        "nodeId": "node-1781798830525-bcyet",
+        "port": "value"
+      }
+    }
+  ],
+  "position": {
+    "x": -2062.184286259102,
+    "y": 86.43339990413067
+  },
+  "exposedInputs": [
+    {
+      "portName": "in_0",
+      "portType": "number",
+      "access": "item",
+      "sourceNodeId": "node-1781798089338-8hjml",
+      "sourcePortName": "k_colors",
+      "hidden": true,
+      "order": 0
+    },
+    {
+      "portName": "in_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781798089338-8hjml",
+      "sourcePortName": "square_grid",
+      "hidden": true,
+      "order": 1
+    },
+    {
+      "portName": "in_2",
+      "portType": "string",
+      "access": "list",
+      "sourceNodeId": "node-1781798089338-id9b2",
+      "sourcePortName": "tags",
+      "hidden": true,
+      "order": 2
+    },
+    {
+      "portName": "in_3",
+      "portType": "number",
+      "access": "tree",
+      "sourceNodeId": "node-1781798089338-01bti",
+      "sourcePortName": "value",
+      "customLabelEn": "height",
+      "order": 5
+    },
+    {
+      "portName": "in_4",
+      "portType": "number",
+      "access": "tree",
+      "sourceNodeId": "node-1781798089338-ulqq3",
+      "sourcePortName": "value",
+      "customLabelEn": "width",
+      "order": 4
+    },
+    {
+      "portName": "in_5",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781798089338-n9qak",
+      "sourcePortName": "value",
+      "customLabelEn": "scene_name",
+      "order": 3
+    },
+    {
+      "portName": "in_6",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781798089338-q404p",
+      "sourcePortName": "value",
+      "customLabelEn": "image_size",
+      "order": 7
+    },
+    {
+      "portName": "in_7",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781798478663-21cqw",
+      "sourcePortName": "value",
+      "customLabelEn": "referenced_image",
+      "order": 6
+    }
+  ],
+  "exposedOutputs": [
+    {
+      "portName": "out_0",
+      "portType": "string",
+      "access": "item",
+      "sourceNodeId": "node-1781798089338-id9b2",
+      "sourcePortName": "alias",
+      "hidden": true
+    },
+    {
+      "portName": "out_1",
+      "portType": "boolean",
+      "access": "item",
+      "sourceNodeId": "node-1781798089338-id9b2",
+      "sourcePortName": "ok",
+      "hidden": true
+    },
+    {
+      "portName": "out_2",
+      "portType": "string",
+      "access": "tree",
+      "sourceNodeId": "node-1781798089338-6ig5e",
+      "sourcePortName": "tree",
+      "customLabelEn": "error"
+    },
+    {
+      "portName": "out_3",
+      "portType": "image",
+      "access": "tree",
+      "sourceNodeId": "node-1781798830525-bcyet",
+      "sourcePortName": "value",
+      "customLabelEn": "image"
+    }
+  ]
+}
