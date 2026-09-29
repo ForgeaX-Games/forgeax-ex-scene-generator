@@ -6,15 +6,7 @@
 export * from './layer1/index.js'
 export * from './layer2/index.js'
 
-// Both layers export an `executeNode`: Layer 1's low-level single-node primitive
-// and Layer 2's graph walker. The Layer 2 walker is the public API, so it wins at
-// the root barrel; Layer 1's remains available via the '/layer1' subpath.
-export { executeNode } from './layer2/index.js'
-
-// Execution result/handle/request types — re-exported explicitly so consumers
-// can `import type { ExecutionResult } from '@forgeax/node-runtime'`.
-export type {
-  ExecutionResult,
-  ExecutionHandle,
-  ExecuteNodeRequest,
-} from './layer2/execute-node.js'
+// Layer 1 `executeNode` is the single-op dispatcher (battery tests). There is no
+// Layer 2 graph walker. Scene execution is runSceneModule; `ExecutionResult` is
+// the hydrate shape after that run.
+export type { ExecutionResult } from './layer2/execution-result.js'

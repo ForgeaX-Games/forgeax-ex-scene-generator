@@ -89,11 +89,16 @@ interface TemplateDetailTarget {
   name: string
 }
 
-function BatteryBar() {
+function BatteryBar({ paletteAllowOpIds }: { paletteAllowOpIds?: readonly string[] } = {}) {
   // Selected field-by-field — `usePipelineStore()` with no selector would
   // re-render this (potentially long) battery palette list on every unrelated
   // pipeline update (e.g. every streamed nodeOutputs tick while running).
   const batteries = usePipelineStore((s) => s.batteries)
+  const allowedOpIds = paletteAllowOpIds ? new Set(paletteAllowOpIds) : null
+  const inPalette = useCallback(
+    (b: Battery) => !allowedOpIds || allowedOpIds.has(b.id),
+    [allowedOpIds],
+  )
   const categories = usePipelineStore((s) => s.categories)
   const batteryOrder = usePipelineStore((s) => s.batteryOrder)
   const saveBatteryOrder = usePipelineStore((s) => s.saveBatteryOrder)
@@ -352,7 +357,7 @@ function BatteryBar() {
     const seenTs = new Set<string>()
     const seenOther = new Set<string>()
 
-    const matchesType = (b: Battery): boolean => matchesProjectType(b, activeProjectType)
+    const matchesType = (b: Battery): boolean => matchesProjectType(b, activeProjectType) && inPalette(b)
 
     if (categories.length > 0) {
       const visibleBigTags = new Set(
@@ -387,7 +392,7 @@ function BatteryBar() {
     })
 
     return [FAVORITES_BIG, PRESETS_BIG, ...tsTags.sort(compareBigLabel), ...otherTags.sort(compareBigLabel)]
-  }, [batteries, categories, activeProjectType, batteryFilterMode, templateCategories])
+  }, [batteries, categories, activeProjectType, batteryFilterMode, templateCategories, inPalette])
 
   // 应用持久化排序后的大标签列表（用于渲染），收藏 + 预设始终钉顶
   const bigLabels = useMemo(() => {
@@ -444,14 +449,14 @@ function BatteryBar() {
   }, [activeViewLabels])
 
   const visibleBatteries = useMemo(() => {
-    let result = batteries.filter(b => !b.paletteHidden)
+    let result = batteries.filter(b => !b.paletteHidden && inPalette(b))
     if (batteryFilterMode === 'templates') {
       result = result.filter(b => isTemplateBattery(b))
     } else {
       result = result.filter(b => !isTemplateBattery(b))
     }
     return result.filter(b => matchesProjectType(b, activeProjectType))
-  }, [activeProjectType, batteries, batteryFilterMode])
+  }, [activeProjectType, batteries, batteryFilterMode, inPalette])
 
   const searchBatteries = useMemo(
     () => visibleBatteries.filter(b => fuzzyMatchBattery(b, searchQuery)),

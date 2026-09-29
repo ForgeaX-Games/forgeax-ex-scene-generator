@@ -129,4 +129,29 @@ describe('NumberSliderNode drag throttling', () => {
     // The LAST write must be the released value (30), guaranteeing SSOT lands on it.
     expect(writes.at(-1)).toEqual(['sl-1', 'value', 30])
   })
+
+  it('initializes missing max to twice the current value and integer precision', () => {
+    const updateSpy = vi.fn()
+    usePipelineStore.setState({
+      currentPipeline: {
+        ...pipelineWithSlider(),
+        nodes: [{ id: 'sl-2', batteryId: 'number_const', name: '数值', position: { x: 0, y: 0 }, params: { value: 1200 } }],
+      },
+      updateNodeParam: updateSpy,
+    })
+    const { container } = render(
+      <ReactFlowProvider>
+        <NumberSliderNode
+          id="sl-2"
+          data={{ battery: sliderBattery, params: { value: 1200 } }}
+          selected={false}
+          dragging={false}
+        />
+      </ReactFlowProvider>,
+    )
+    expect(container.querySelector('.ns-val')?.textContent).toBe('1200')
+    expect(container.querySelectorAll('.ns-bound')[1]?.textContent).toBe('2400')
+    expect(updateSpy).toHaveBeenCalledWith('sl-2', 'max', 2400, true)
+    expect(updateSpy).toHaveBeenCalledWith('sl-2', 'precision', 0, true)
+  })
 })

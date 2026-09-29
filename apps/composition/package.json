@@ -1,0 +1,42 @@
+{
+  "name": "@forgeax/scene-generator-composition",
+  "version": "0.4.3",
+  "private": true,
+  "description": "Scene Generator — ForgeaX node-programming plugin built on @forgeax/node-runtime",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForgeaX-Games/forgeax-ex-scene-generator.git"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "packageManager": "bun@1.3.14",
+  "scripts": {
+    "lint": "bun run hygiene",
+    "test:serve": "node --test scripts/serve-dist.test.mjs",
+    "hygiene": "node ../../scripts/hygiene-check.mjs",
+    "build:vendor": "node scripts/build-vendor.mjs",
+    "smoke:batteries": "bun scripts/smoke-batteries.mjs",
+    "lint:battery-purity": "node scripts/lint-battery-purity.mjs",
+    "smoke:render": "tsx scripts/smoke-render.mjs",
+    "smoke:assets": "tsx scripts/smoke-assets.mjs",
+    "lint:scene-contract-coverage": "tsx scripts/lint-contract-coverage.mts",
+    "acceptance:scene": "tsx scripts/scene-acceptance/run.mts",
+    "test:scene-acceptance": "tsx --test scripts/scene-acceptance/runner.test.mjs",
+    "verify:scene-script": "bun run lint && bun run lint:scene-contract-coverage",
+    "crop-screenshot": "tsx scripts/crop-to-content.mjs",
+    "dev": "node scripts/dev.mjs",
+    "serve": "node scripts/serve-dist.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "playwright": "1.60.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1"
+  }
+}

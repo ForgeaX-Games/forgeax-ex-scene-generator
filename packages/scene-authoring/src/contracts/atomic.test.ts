@@ -1,7 +1,9 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import {
+  contractToOpSpec,
   defineAtomic,
+  parseBatteryContractSpec,
   resolveAtomicContract,
   SceneContractRegistry,
   type AtomicNodeFunctionContract,
@@ -73,6 +75,81 @@ describe('defineAtomic', () => {
         opId: '  ',
       }),
     ).toThrow('defineAtomic requires a non-empty opId')
+  })
+})
+
+describe('contractToOpSpec', () => {
+  it('maps identity, defaults, and palette titles from the contract', () => {
+    const spec = contractToOpSpec(defineAtomic({
+      ...definition,
+      label: '中点位移',
+      nameEn: 'GridMidpoint',
+      inputs: [
+        {
+          name: 'power',
+          type: 'number',
+          access: 'item',
+          defaultValue: 6,
+          mode: 'parameter',
+          label: '幂次',
+          options: ['a', 'b'],
+        },
+      ],
+    }))
+
+    expect(spec.id).toBe('sample_atomic')
+    expect(spec.name).toBe('中点位移')
+    expect(spec.nameEn).toBe('GridMidpoint')
+    expect(spec.params).toEqual([])
+    expect(spec.inputs).toEqual([
+      expect.objectContaining({
+        name: 'power',
+        type: 'number',
+        required: true,
+        default: 6,
+        label: '幂次',
+        options: ['a', 'b'],
+        access: 'item',
+      }),
+    ])
+    expect(spec.manualTrigger).toBe(false)
+  })
+
+  it('falls back to functionName when no label is set', () => {
+    expect(contractToOpSpec(defineAtomic(definition)).name).toBe('sampleAtomic')
+  })
+
+  it('marks ai_battery canvas nodes as manual trigger', () => {
+    const spec = contractToOpSpec(defineAtomic({
+      ...definition,
+      canvas: { nodeType: 'ai_battery', hideOutputs: true },
+    }))
+    expect(spec.manualTrigger).toBe(true)
+  })
+
+  it('parseBatteryContractSpec reads a static defineAtomic source', () => {
+    const spec = parseBatteryContractSpec(
+      '/tmp/perlin_noise',
+      `import { defineAtomic } from '@forgeax/scene-authoring'
+
+export default defineAtomic({
+  functionName: 'perlinNoise',
+  contractVersion: '1.0.0',
+  opId: 'perlin_noise',
+  label: 'Perlin 噪声',
+  nameEn: 'PerlinNoise',
+  inputs: [{ name: 'fractal', type: 'string', access: 'item', defaultValue: 'none', options: ['none', 'fbm'] }],
+  outputs: [{ name: 'grid', type: 'grid', access: 'item' }],
+})
+`,
+    )
+    expect(spec.id).toBe('perlin_noise')
+    expect(spec.name).toBe('Perlin 噪声')
+    expect(spec.inputs[0]).toEqual(expect.objectContaining({
+      name: 'fractal',
+      default: 'none',
+      options: ['none', 'fbm'],
+    }))
   })
 })
 

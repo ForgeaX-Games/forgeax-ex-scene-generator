@@ -51,7 +51,7 @@ function toBatteryPort(p: { name: string; type: string; label?: string; descript
 
 /**
  * Project a kernel OpSpec into the editor's Battery catalog entry. The op id is
- * namespaced (e.g. 'wb-scene.csg.union'); the segment before the first dot is
+ * namespaced (e.g. 'scene.csg.union'); the segment before the first dot is
  * used as the default category when the spec carries no explicit grouping.
  */
 export function opSpecToBattery(spec: OpSpec): Battery {

@@ -360,10 +360,16 @@ export class EditorApiAdapter {
 
   /**
    * Persist a desired pipeline state: diff against the current kernel snapshot
-   * and submit the minimal Op[] through applyBatch. A graph:applied event is
-   * announced by the kernel, driving the live-sync refetch.
+   * and submit the minimal Op[] through applyBatch. `extraOps` are prepended so
+   * a slider settle can still commit `updateNode` after ephemeral ticks already
+   * made the graph match (diff would otherwise be empty).
    */
-  async updatePipeline(desired: Pipeline, actor = 'editor', batchId?: string): Promise<ApplyResult> {
+  async updatePipeline(
+    desired: Pipeline,
+    actor = 'editor',
+    batchId?: string,
+    extraOps: readonly Op[] = [],
+  ): Promise<ApplyResult> {
     const current = await this.client.getPipeline()
     // Group exposed-port overlay (hide/reorder/rename) is persisted on the
     // kernel group, not in the node/edge snapshot, so the diff needs the live
@@ -377,7 +383,7 @@ export class EditorApiAdapter {
       : false
     const currentGroups =
       (desired.groups?.length ?? 0) > 0 || kernelHasGroups ? await this.safeListGroups() : undefined
-    const ops = diffPipelineToOps(desired, current, currentGroups)
+    const ops = [...extraOps, ...diffPipelineToOps(desired, current, currentGroups)]
     reportInconsistentBatch(ops, current, desired)
     if (ops.length === 0) return { status: 'ok', newHash: current?.hash }
     return this.applyOps(ops, actor, undefined, batchId)
@@ -392,8 +398,11 @@ export class EditorApiAdapter {
    *   - `ephemeral: true` → the kernel persists graph.json + invalidates the
    *     output cache + emits graph:applied EXACTLY like a normal batch (so the
    *     backend stays SSOT and the next execute computes with the new value),
-   *     but writes NO history audit line. The settled value on pointer-up is
-   *     committed by a normal updatePipeline, which records the single audit row.
+   *     but writes NO history audit line and Scene Script is not rewritten.
+   *     After the drag settles, `param-edit-settle` sends the same updateNode
+   *     through applyOps (extraOps only) so the value is committed even when the
+   *     graph already matches (a whole-graph diff would otherwise be empty or
+   *     replay dirty sibling params).
    *
    * Generic: works for any node/any param. Returns the kernel ApplyResult so the
    * caller can correlate the graph:applied self-echo via the supplied batchId.

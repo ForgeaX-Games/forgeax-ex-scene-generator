@@ -1,7 +1,7 @@
 // Battery loader — integration test against a real filesystem tree under tmp.
 //
 // Spins up a minimal `materials/batteries/test/echo` directory with
-// meta.json + index.ts, points the loader at it, scans, then verifies the
+// scene.contract.ts + index.ts, points the loader at it, scans, then verifies the
 // op was registered and runs.
 
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
@@ -15,6 +15,9 @@ import {
   executeNode,
   type ExecutionContext,
   type GraphNode,
+  type OpInput,
+  type OpOutput,
+  type OpSpec,
 } from '../layer1/index.js'
 
 let scratchDir: string
@@ -36,31 +39,72 @@ function makeCtx(): ExecutionContext {
   }
 }
 
+function parseSpec(_dir: string, source: string): Omit<OpSpec, 'execute'> {
+  const raw = source.replace(/^\s*export default defineAtomic\(/, '').replace(/\)\s*$/, '')
+  const def = JSON.parse(raw) as {
+    opId?: string
+    functionName?: string
+    label?: string
+    inputs?: Array<{ name: string; type: string; access?: OpInput['access']; defaultValue?: unknown }>
+    outputs?: Array<{ name: string; type: string; access?: OpOutput['access'] }>
+  }
+  if (!def.opId) throw new Error('missing opId')
+  return {
+    id: def.opId,
+    name: def.label ?? def.functionName ?? def.opId,
+    description: '',
+    inputs: (def.inputs ?? []).map((port) => ({
+      name: port.name,
+      type: port.type,
+      required: true,
+      default: port.defaultValue as OpInput['default'],
+      access: port.access,
+      description: '',
+    })),
+    outputs: (def.outputs ?? []).map((port) => ({
+      name: port.name,
+      type: port.type,
+      access: port.access,
+      description: '',
+    })),
+    params: [],
+    lacing: 'longest',
+  }
+}
+
+function writeContract(
+  dir: string,
+  def: {
+    opId: string
+    functionName: string
+    inputs?: Array<{ name: string; type: string; access?: string }>
+    outputs?: Array<{ name: string; type: string; access?: string }>
+  },
+): void {
+  writeFileSync(join(dir, 'scene.contract.ts'), `export default defineAtomic(${JSON.stringify(def, null, 2)})\n`)
+}
+
+function loaderConfig(scanDirs: string[]) {
+  return { pluginId: 'plugin', scanDirs, parseSpec }
+}
+
 describe('battery loader', () => {
   it('discovers a battery folder and registers an op', async () => {
-    // Layout: <scratchDir>/data/echo/{meta.json,index.ts}
     const opDir = join(scratchDir, 'data', 'echo')
     mkdirSync(opDir, { recursive: true })
-    writeFileSync(
-      join(opDir, 'meta.json'),
-      JSON.stringify({
-        id: 'plugin.echo',
-        name: 'echo',
-        inputs: [{ name: 'value', type: 'string', access: 'item' }],
-        outputs: [{ name: 'echo', type: 'string', access: 'item' }],
-        params: [],
-      }),
-    )
+    writeContract(opDir, {
+      opId: 'plugin.echo',
+      functionName: 'echo',
+      inputs: [{ name: 'value', type: 'string', access: 'item' }],
+      outputs: [{ name: 'echo', type: 'string', access: 'item' }],
+    })
     writeFileSync(
       join(opDir, 'index.ts'),
       `export function echo(input) { return { echo: input.value }; }\n`,
     )
 
     const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, {
-      pluginId: 'plugin',
-      scanDirs: [join(scratchDir, 'data')],
-    })
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
 
     const result = await loader.scan()
     expect(result.errors).toEqual([])
@@ -68,7 +112,6 @@ describe('battery loader', () => {
     expect(loader.list()).toContain('plugin.echo')
     expect(registry.has('plugin.echo')).toBe(true)
 
-    // Run the op via the executor; verify the dispatcher wires it correctly.
     const node: GraphNode = {
       id: 'n1',
       opId: 'plugin.echo',
@@ -82,30 +125,22 @@ describe('battery loader', () => {
   })
 
   it('reports per-folder errors but continues scanning other folders', async () => {
-    // bad: meta.json present but malformed JSON
     const badDir = join(scratchDir, 'data', 'bad')
     mkdirSync(badDir, { recursive: true })
-    writeFileSync(join(badDir, 'meta.json'), '{ this is not json')
+    writeFileSync(join(badDir, 'scene.contract.ts'), '{ this is not a contract')
 
-    // good: a sibling that should still load
     const goodDir = join(scratchDir, 'data', 'good')
     mkdirSync(goodDir, { recursive: true })
-    writeFileSync(
-      join(goodDir, 'meta.json'),
-      JSON.stringify({
-        id: 'plugin.good',
-        inputs: [],
-        outputs: [{ name: 'tag', type: 'string', access: 'item' }],
-        params: [],
-      }),
-    )
+    writeContract(goodDir, {
+      opId: 'plugin.good',
+      functionName: 'good',
+      inputs: [],
+      outputs: [{ name: 'tag', type: 'string', access: 'item' }],
+    })
     writeFileSync(join(goodDir, 'index.ts'), `export function good() { return { tag: 'ok' }; }\n`)
 
     const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, {
-      pluginId: 'plugin',
-      scanDirs: [join(scratchDir, 'data')],
-    })
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
 
     const result = await loader.scan()
     expect(result.errors.length).toBeGreaterThan(0)
@@ -114,33 +149,54 @@ describe('battery loader', () => {
     expect(registry.has('plugin.good')).toBe(true)
   })
 
+  it('does not discover a folder that has no scene.contract.ts', async () => {
+    const missing = join(scratchDir, 'data', 'missing')
+    mkdirSync(missing, { recursive: true })
+    writeFileSync(join(missing, 'index.ts'), `export function missing() { return { tag: 'no' }; }\n`)
+
+    const goodDir = join(scratchDir, 'data', 'good')
+    mkdirSync(goodDir, { recursive: true })
+    writeContract(goodDir, {
+      opId: 'plugin.good',
+      functionName: 'good',
+      inputs: [],
+      outputs: [{ name: 'tag', type: 'string', access: 'item' }],
+    })
+    writeFileSync(join(goodDir, 'index.ts'), `export function good() { return { tag: 'ok' }; }\n`)
+
+    const registry = new OpRegistry()
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
+    const result = await loader.scan()
+    expect(result.errors).toEqual([])
+    expect(result.added).toBe(1)
+    expect(registry.has('plugin.good')).toBe(true)
+    expect(registry.has('plugin.missing')).toBe(false)
+  })
+
   it('deduplicates a clashing op id deterministically: first sorted dir wins, later is skipped + reported', async () => {
-    // Two directories claim the SAME meta id. The walk is sorted, so the
-    // alphabetically-first dir ('aaa') must win; 'zzz' must be skipped and
-    // reported — never a silent filesystem-order overwrite.
     for (const [name, value] of [['zzz', 'from-zzz'], ['aaa', 'from-aaa']] as const) {
       const d = join(scratchDir, 'data', name)
       mkdirSync(d, { recursive: true })
-      writeFileSync(
-        join(d, 'meta.json'),
-        JSON.stringify({ id: 'plugin.dup', inputs: [], outputs: [{ name: 'tag', type: 'string', access: 'item' }], params: [] }),
-      )
+      writeContract(d, {
+        opId: 'plugin.dup',
+        functionName: 'dup',
+        inputs: [],
+        outputs: [{ name: 'tag', type: 'string', access: 'item' }],
+      })
       writeFileSync(join(d, 'index.ts'), `export function dup() { return { tag: '${value}' }; }\n`)
     }
 
     const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, { pluginId: 'plugin', scanDirs: [join(scratchDir, 'data')] })
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
 
     const result = await loader.scan()
-    // Exactly one registration; the duplicate is reported, not silently dropped.
     expect(result.added).toBe(1)
     expect(loader.list().filter((id) => id === 'plugin.dup')).toEqual(['plugin.dup'])
     const dupError = result.errors.find((e) => e.reason.includes('duplicate op id'))
     expect(dupError).toBeDefined()
-    expect(dupError!.dir).toBe(join(scratchDir, 'data', 'zzz')) // loser
-    expect(dupError!.reason).toContain(join(scratchDir, 'data', 'aaa')) // winner
+    expect(dupError!.dir).toBe(join(scratchDir, 'data', 'zzz'))
+    expect(dupError!.reason).toContain(join(scratchDir, 'data', 'aaa'))
 
-    // The WINNER ('aaa') is the registered implementation.
     const node: GraphNode = { id: 'n', opId: 'plugin.dup', position: { x: 0, y: 0 }, params: {} }
     const exec = await executeNode(registry, node, {}, makeCtx())
     const out = exec.outputs.tag as Array<{ items: unknown[] }>
@@ -148,19 +204,19 @@ describe('battery loader', () => {
   })
 
   it('does NOT flag distinct ids that merely share a directory basename', async () => {
-    // Two dirs named 'building_carve' but with DIFFERENT meta ids — the real
-    // scene-generator case. These must both register, no duplicate error.
     for (const [parent, id] of [['legacy', 'building_carve'], ['alg', 'alg_building_carve']] as const) {
       const d = join(scratchDir, 'data', parent, 'building_carve')
       mkdirSync(d, { recursive: true })
-      writeFileSync(
-        join(d, 'meta.json'),
-        JSON.stringify({ id, inputs: [], outputs: [{ name: 'out', type: 'grid', access: 'item' }], params: [] }),
-      )
+      writeContract(d, {
+        opId: id,
+        functionName: 'run',
+        inputs: [],
+        outputs: [{ name: 'out', type: 'grid', access: 'item' }],
+      })
       writeFileSync(join(d, 'index.ts'), `export function run() { return { out: '${id}' }; }\n`)
     }
     const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, { pluginId: 'plugin', scanDirs: [join(scratchDir, 'data')] })
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
     const result = await loader.scan()
     expect(result.errors).toEqual([])
     expect(result.added).toBe(2)
@@ -171,22 +227,16 @@ describe('battery loader', () => {
   it('emits op-added events to subscribers', async () => {
     const opDir = join(scratchDir, 'plain')
     mkdirSync(opDir, { recursive: true })
-    writeFileSync(
-      join(opDir, 'meta.json'),
-      JSON.stringify({
-        id: 'plugin.plain',
-        inputs: [],
-        outputs: [{ name: 'value', type: 'number', access: 'item' }],
-        params: [],
-      }),
-    )
+    writeContract(opDir, {
+      opId: 'plugin.plain',
+      functionName: 'plain',
+      inputs: [],
+      outputs: [{ name: 'value', type: 'number', access: 'item' }],
+    })
     writeFileSync(join(opDir, 'index.ts'), `export function plain() { return { value: 42 }; }\n`)
 
     const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, {
-      pluginId: 'plugin',
-      scanDirs: [scratchDir],
-    })
+    const loader = createBatteryLoader(registry, loaderConfig([scratchDir]))
     const events: string[] = []
     loader.subscribe((e) => events.push(`${e.kind}:${'opId' in e ? e.opId : ''}`))
 
@@ -194,45 +244,19 @@ describe('battery loader', () => {
     expect(events).toContain('op-added:plugin.plain')
   })
 
-  it('drops retired autoTextureBindings engine behavior from battery metadata', async () => {
-    const opDir = join(scratchDir, 'texture')
-    mkdirSync(opDir, { recursive: true })
-    writeFileSync(
-      join(opDir, 'meta.json'),
-      JSON.stringify({
-        id: 'plugin.texture',
-        engineBehavior: 'autoTextureBindings',
-        inputs: [],
-        outputs: [{ name: 'value', type: 'grid', access: 'item' }],
-        params: [],
-      }),
-    )
-    writeFileSync(join(opDir, 'index.ts'), `export function texture() { return { value: [[1]] }; }\n`)
-
-    const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, { pluginId: 'plugin', scanDirs: [scratchDir] })
-    const result = await loader.scan()
-
-    expect(result.errors).toEqual([])
-    expect(registry.get('plugin.texture')?.engineBehavior).toBeUndefined()
-  })
-
-  it('reloads index.ts execute changes without meta.json mtime change', async () => {
+  it('reloads index.ts execute changes without contract mtime change', async () => {
     const opDir = join(scratchDir, 'data', 'hot')
     mkdirSync(opDir, { recursive: true })
-    writeFileSync(
-      join(opDir, 'meta.json'),
-      JSON.stringify({
-        id: 'plugin.hot',
-        inputs: [],
-        outputs: [{ name: 'tag', type: 'string', access: 'item' }],
-        params: [],
-      }),
-    )
+    writeContract(opDir, {
+      opId: 'plugin.hot',
+      functionName: 'hot',
+      inputs: [],
+      outputs: [{ name: 'tag', type: 'string', access: 'item' }],
+    })
     writeFileSync(join(opDir, 'index.ts'), `export function hot() { return { tag: 'v1' }; }\n`)
 
     const registry = new OpRegistry()
-    const loader = createBatteryLoader(registry, { pluginId: 'plugin', scanDirs: [join(scratchDir, 'data')] })
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
     await loader.scan()
 
     const run = async () => {
@@ -243,7 +267,6 @@ describe('battery loader', () => {
     }
     expect(await run()).toBe('v1')
 
-    // Touch only index.ts — meta.json mtime unchanged.
     writeFileSync(join(opDir, 'index.ts'), `export function hot() { return { tag: 'v2' }; }\n`)
     const past = Date.now() - 2000
     const { utimesSync } = await import('node:fs')
@@ -252,5 +275,30 @@ describe('battery loader', () => {
     const rescan = await loader.reload()
     expect(rescan.updated).toBeGreaterThanOrEqual(1)
     expect(await run()).toBe('v2')
+  })
+
+  it('emits op-updated when only icon.svg changes', async () => {
+    const opDir = join(scratchDir, 'data', 'icon')
+    mkdirSync(opDir, { recursive: true })
+    writeContract(opDir, {
+      opId: 'plugin.icon',
+      functionName: 'icon',
+      inputs: [],
+      outputs: [{ name: 'ok', type: 'bool', access: 'item' }],
+    })
+    writeFileSync(join(opDir, 'index.ts'), `export function icon() { return { ok: true }; }\n`)
+    writeFileSync(join(opDir, 'icon.svg'), '<svg viewBox="0 0 24 24"></svg>\n')
+
+    const registry = new OpRegistry()
+    const loader = createBatteryLoader(registry, loaderConfig([join(scratchDir, 'data')]))
+    const events: string[] = []
+    loader.subscribe((e) => events.push(e.kind))
+    await loader.scan()
+    events.length = 0
+
+    writeFileSync(join(opDir, 'icon.svg'), '<svg viewBox="0 0 24 24"><path d="M1 1"/></svg>\n')
+    const rescan = await loader.reload()
+    expect(rescan.updated).toBeGreaterThanOrEqual(1)
+    expect(events).toContain('op-updated')
   })
 })

@@ -1,9 +1,9 @@
 /**
  * Frontend refresh / persist tracing — pairs with backend [persist-trace].
- * Opt-in: localStorage.setItem('wb-scene-generator.debugSync', 'true')
+ * Opt-in: localStorage.setItem('scene-generator.debugSync', 'true')
  */
 
-const LS_KEY = 'wb-scene-generator.debugSync'
+const LS_KEY = 'scene-generator.debugSync'
 
 export function refreshTraceEnabled(): boolean {
   if (typeof localStorage === 'undefined') return false

@@ -1,7 +1,7 @@
 /**
- * Pure URL selection for workbench headless renderer daemons.
+ * Pure URL selection for authoring headless renderer daemons.
  *
- * Host should pass an explicit SCENE_RENDERER_URL / LOWPOLY_RENDERER_URL.
+ * Host should pass an explicit SCENE_RENDERER_URL.
  * Fallback inference must NOT treat FORGEAX_INTERFACE_PORT as proof that the
  * Studio `/__fx-plugin/` reverse proxy is registered — that proxy exists only
  * when FORGEAX_STANDALONE_PROXY=1.
@@ -9,26 +9,14 @@
 
 export const SCENE_RENDERER_SPEC = Object.freeze({
   logPrefix: '[scene-renderer]',
-  pluginId: 'wb-scene-generator',
+  pluginId: 'scene-generator',
   pane: 'renderer',
   defaultPort: '9555',
-  portEnvKeys: Object.freeze(['SCENE_FRONTEND_PORT', 'LOWPOLY_FRONTEND_PORT', 'VITE_DEV_PORT']),
+  portEnvKeys: Object.freeze(['SCENE_FRONTEND_PORT', 'VITE_DEV_PORT']),
   urlOverrideEnv: 'SCENE_RENDERER_URL',
-  skipMessage: 'disabled via FORGEAX_LOWPOLY_HEADLESS_RENDERER=0',
+  skipMessage: 'disabled via FORGEAX_SCENE_HEADLESS_RENDERER=0',
   playwrightMissing:
     'playwright not installed — skipping headless renderer (agent screenshots need a manually-opened renderer panel).',
-});
-
-export const LOWPOLY_RENDERER_SPEC = Object.freeze({
-  logPrefix: '[lowpoly-renderer]',
-  pluginId: 'wb-3d-lowpoly',
-  pane: 'viewer3d',
-  defaultPort: '9565',
-  portEnvKeys: Object.freeze(['LOWPOLY_FRONTEND_PORT', 'VITE_DEV_PORT']),
-  urlOverrideEnv: 'LOWPOLY_RENDERER_URL',
-  skipMessage: 'disabled via FORGEAX_LOWPOLY_HEADLESS_RENDERER=0',
-  playwrightMissing:
-    'playwright not installed — skipping headless renderer (agent screenshots need a manually-opened URDF panel).',
 });
 
 export const HEADLESS_RENDERER_MARKER_ATTR = 'data-forgeax-headless-renderer';

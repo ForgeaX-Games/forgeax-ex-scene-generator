@@ -1,0 +1,538 @@
+/* The Page owns the sidebar. Its workspace panel hosts a full-size Renderer and
+   an optional floating kernel Editor; scene-* names avoid kernel `.app` clashes. */
+
+.scene-authoring {
+  display: grid;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-bg-primary, #14161a);
+  position: relative;
+  container-type: inline-size;
+  container-name: scene-authoring;
+}
+
+.scene-authoring--floating {
+  grid-template-rows: 1fr;
+}
+
+.scene-authoring__restore-layout {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 20;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border, #2a2e36);
+  border-radius: 5px;
+  color: var(--color-text-primary, #e6e8ef);
+  background: var(--color-bg-secondary, #1b1e24);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.scene-authoring__preview-status {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  z-index: 18;
+  display: inline-flex;
+  width: max-content;
+  max-width: min(520px, calc(100% - 32px));
+  align-items: center;
+  gap: 7px;
+  min-height: 24px;
+  box-sizing: border-box;
+  padding: 4px 9px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: rgba(230, 235, 232, 0.78);
+  background: rgba(8, 13, 10, 0.78);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(8px);
+  font: 500 11px/1.2 ui-sans-serif, system-ui, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.scene-authoring__preview-status::before {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(230, 235, 232, 0.52);
+  content: '';
+}
+
+.scene-authoring__preview-status.is-stale {
+  color: #d9c793;
+  border-color: rgba(225, 184, 87, 0.24);
+  background: rgba(20, 18, 10, 0.82);
+}
+
+.scene-authoring__preview-status.is-stale::before {
+  background: #d9b65a;
+  box-shadow: 0 0 0 3px rgba(217, 182, 90, 0.1);
+}
+
+.scene-authoring__preview-status.is-running {
+  color: #a7d2f4;
+  border-color: rgba(111, 184, 238, 0.28);
+  background: rgba(8, 18, 25, 0.82);
+}
+
+.scene-authoring__preview-status.is-running::before {
+  background: #72b9ed;
+  box-shadow: 0 0 0 3px rgba(114, 185, 237, 0.12);
+}
+
+.scene-authoring__panes {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.scene-authoring--floating > .scene-authoring__panes {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.scene-authoring__editor {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.scene-authoring__authoring-layout {
+  --scene-script-panel-width: clamp(420px, 48%, 680px);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.scene-authoring__node-editor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.scene-authoring__authoring-layout > .scene-script-studio {
+  position: absolute;
+  z-index: 12;
+  top: calc(var(--scene-titlebar-height, 30px) + 8px);
+  right: 8px;
+  bottom: 8px;
+  width: var(--scene-script-panel-width);
+  max-width: calc(100% - 16px);
+  min-width: 0;
+  border: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.28);
+  border-radius: 10px;
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(var(--color-accent-rgb, 212, 255, 72), 0.05);
+}
+
+.scene-authoring__authoring-layout.is-script-expanded > .scene-script-studio {
+  left: 8px;
+  width: auto;
+}
+
+.scene-authoring__node-editor > .app {
+  height: 100%;
+}
+
+.scene-authoring--floating > .scene-authoring__editor {
+  --titlebar-height: var(--scene-titlebar-height, 30px);
+  position: absolute;
+  z-index: 10;
+  contain: layout paint;
+  /*
+   * Bundle layout, adapted for Page: its `293px + ...` left offset was the
+   * in-authoring Projects / Node Info rail. Page already owns that rail outside
+   * this workspace, so retaining it created the incorrect large blank column.
+   */
+  top: 8px;
+  right: clamp(8px, 1.2vw, 12px);
+  bottom: calc(16px + clamp(26px, 4vh, 30px));
+  left: calc(
+    18px
+    + clamp(28px, 4.2vh, 34px)
+    + clamp(4px, 0.7vh, 6px)
+    + clamp(4px, 0.7vh, 6px)
+  );
+  border: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.2);
+  border-radius: 12px;
+  background: rgba(11, 16, 13, var(--editor-surface-opacity, 0.2));
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(var(--color-accent-rgb, 212, 255, 72), 0.06);
+  transition:
+    opacity var(--scene-motion-duration, 220ms) var(--scene-motion-ease),
+    visibility 0s linear;
+}
+
+.scene-authoring__editor .toolbar {
+  box-sizing: border-box;
+  height: var(--scene-titlebar-height, 30px);
+  min-height: var(--scene-titlebar-height, 30px);
+  padding-inline: var(--scene-titlebar-padding-inline, 12px);
+  border-bottom-color: var(--scene-titlebar-border);
+}
+
+.scene-authoring__editor .logo-text {
+  color: var(--scene-titlebar-color);
+  background: none;
+  font-size: var(--scene-titlebar-title-size, 14px);
+  font-weight: var(--scene-titlebar-title-weight, 700);
+  -webkit-text-fill-color: currentColor;
+}
+
+.scene-authoring__editor.is-collapsed {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  border-color: transparent;
+  transition:
+    opacity var(--scene-motion-duration, 220ms) ease,
+    visibility 0s linear var(--scene-motion-duration, 220ms);
+}
+
+/* Kernel controls may explicitly restore pointer-events on descendants. Keep
+   the mounted-but-collapsed editor completely outside pointer hit-testing. */
+.scene-authoring__editor.is-collapsed * {
+  pointer-events: none !important;
+}
+
+/* Bundle alpha layers: preserve readable controls while the Preview remains
+   visible through the editor's canvas and battery rail. */
+.scene-authoring__node-editor > .app {
+  height: 100%;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(212, 255, 72, 0.08), transparent 32%),
+    rgba(11, 16, 13, var(--editor-surface-opacity, 0.2));
+}
+
+.scene-authoring__editor .canvas {
+  background-color: rgba(11, 16, 13, var(--editor-surface-opacity, 0.2));
+}
+
+.scene-authoring__editor .battery-bar {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16, 25, 18, var(--editor-surface-opacity, 0.2)),
+      rgba(9, 14, 11, var(--editor-surface-opacity, 0.2))
+    );
+}
+
+.scene-editor-toolbar-actions {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+
+.scene-editor-pin {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition:
+    color var(--scene-motion-duration, 220ms) ease,
+    border-color var(--scene-motion-duration, 220ms) ease,
+    background var(--scene-motion-duration, 220ms) ease,
+    box-shadow var(--scene-motion-duration, 220ms) ease;
+}
+
+.scene-editor-pin svg {
+  transform: scale(1);
+  transition: transform var(--scene-motion-duration, 220ms) var(--scene-motion-ease);
+}
+
+.scene-editor-pin:hover,
+.scene-editor-pin.is-active {
+  color: var(--color-accent);
+  border-color: rgba(212, 255, 72, 0.45);
+  background: rgba(212, 255, 72, 0.1);
+}
+
+.scene-editor-pin.is-active {
+  box-shadow: 0 0 0 3px rgba(212, 255, 72, 0.12);
+}
+
+.scene-editor-pin.is-active svg {
+  transform: scale(1.12);
+}
+
+.scene-editor-pin:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.scene-editor-opacity {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.24);
+  border-radius: 7px;
+  background: rgba(6, 10, 7, 0.72);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.scene-editor-opacity__label {
+  min-width: 0;
+}
+
+.scene-editor-opacity input[type='range'] {
+  width: clamp(54px, 7vw, 92px);
+  margin: 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.scene-editor-opacity__value {
+  min-width: 31px;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.scene-script-toggle {
+  height: 24px;
+  padding: 0 9px;
+  border: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.24);
+  border-radius: 7px;
+  color: var(--color-text-secondary, #a4aaae);
+  background: rgba(6, 10, 7, 0.72);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.scene-script-toggle.is-active {
+  color: var(--color-accent, #d4ff48);
+  border-color: rgba(var(--color-accent-rgb, 212, 255, 72), 0.55);
+}
+
+/* The kernel toolbar reserves 200px for its generic title and prevents the
+   right group from shrinking. Scene Script has denser app actions, so release
+   that fixed width here and progressively trim secondary chrome before it can
+   clip the right edge of a floating editor card. */
+@container scene-authoring (max-width: 920px) {
+  .scene-authoring__editor .toolbar {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  .scene-authoring__editor .toolbar-left {
+    min-width: 128px;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  .scene-authoring__editor .app-logo,
+  .scene-authoring__editor .logo-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .scene-authoring__editor .toolbar-right {
+    min-width: 0;
+    flex: 0 1 auto;
+    gap: 4px;
+  }
+
+  .scene-authoring__editor .toolbar-group,
+  .scene-editor-toolbar-actions {
+    min-width: 0;
+    gap: 4px;
+  }
+
+  .scene-authoring__editor .toolbar-filter-toggle {
+    margin-right: 2px;
+  }
+
+  .scene-authoring__editor .toolbar-filter-toggle-btn {
+    padding-inline: 8px;
+  }
+
+  .scene-editor-opacity__label {
+    display: none;
+  }
+
+  .scene-editor-opacity input[type='range'] {
+    width: 64px;
+  }
+}
+
+@container scene-authoring (max-width: 700px) {
+  .scene-authoring__editor .toolbar-left {
+    min-width: 96px;
+  }
+
+  .scene-authoring__editor .toolbar-btn {
+    width: 24px;
+  }
+
+  .scene-authoring__editor .toolbar-filter-toggle-btn {
+    padding-inline: 7px;
+  }
+
+  .scene-editor-opacity {
+    gap: 4px;
+    padding-inline: 6px;
+  }
+
+  .scene-editor-opacity input[type='range'] {
+    width: 54px;
+  }
+
+  .scene-editor-opacity__value {
+    display: none;
+  }
+}
+
+@container scene-authoring (max-width: 600px) {
+  .scene-authoring__editor .toolbar-btn-probe,
+  .scene-authoring__editor .toolbar-btn-clear-reexec,
+  .scene-editor-opacity {
+    display: none;
+  }
+}
+
+/* Both user-facing panels hidden (Preview + Scene Gen off). Fills the grid's
+   single 1fr row with a centered hint pointing back to the left-nav toggles. */
+.scene-authoring__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-secondary, #8b90a0);
+  background: var(--color-bg-primary, #14161a);
+}
+
+.scene-authoring__empty-inner {
+  max-width: 360px;
+}
+
+.scene-authoring__empty-inner h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--color-text-primary, #e6e8ef);
+}
+
+.scene-authoring__empty-inner p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.scene-pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-bg-primary, #14161a);
+}
+
+.scene-pane__iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: var(--color-bg-primary, #14161a);
+}
+
+/* Focus (single-window fullscreen) modes. */
+.scene-authoring--focus-editor,
+.scene-authoring--focus-renderer {
+  grid-template-rows: 1fr !important;
+}
+
+.scene-authoring--focus-editor > .scene-authoring__panes,
+.scene-authoring--focus-editor > .scene-authoring__editor {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.scene-authoring--focus-editor > .scene-authoring__panes {
+  display: none !important;
+}
+
+.scene-authoring--focus-renderer > .scene-authoring__editor {
+  display: none !important;
+}
+
+.scene-authoring--focus-renderer > .scene-authoring__panes {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+@container scene-authoring (max-width: 700px) {
+  .scene-authoring--floating > .scene-authoring__editor {
+    right: 8px;
+  }
+
+  .scene-editor-opacity__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .scene-authoring__authoring-layout > .scene-script-studio {
+    top: auto;
+    left: 8px;
+    width: auto;
+    height: min(56%, 460px);
+    max-height: calc(100% - var(--scene-titlebar-height, 30px) - 16px);
+  }
+
+  .scene-authoring__authoring-layout.is-script-expanded > .scene-script-studio {
+    top: calc(var(--scene-titlebar-height, 30px) + 8px);
+    height: auto;
+  }
+}
+
+@container scene-authoring (max-width: 520px) {
+  .scene-authoring__editor .toolbar-filter-toggle-btn {
+    min-width: 0;
+    padding-inline: 6px;
+  }
+}

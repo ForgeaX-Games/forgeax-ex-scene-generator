@@ -66,11 +66,7 @@ function App({ client }: { client: ApiClient }) {
   member-is-group; nested groups will land via a dedicated minor.
 - **v0.5.0** — `useCanvasUndoRedo` / `useCanvasCopyPaste` /
   `useCtrlDragGhost` auto-wired into the shell behind feature flags.
-  Layer 2 `executeNode` API integration when kernel ships it.
-
-See `docs/superpowers/plans/2026-05-29-p4-react-ui-migration.md` for
-the full plan, lessons-learnt section, and Phase G/H definitions of
-done.
+  Display-graph editing stays on applyBatch; Scene execution is runSceneModule.
 
 ## Dev playground
 

@@ -11,3 +11,13 @@ export function stableHash(value: string): string {
 export function stableEntityId(prefix: string, material: string): string {
   return `${prefix}_${stableHash(material).slice(0, 12)}`
 }
+
+/**
+ * Public Authoring Entity id is the statement id (`@scene-id`).
+ * The canvas node id, the kernel node id, and the source anchor are the same
+ * string for host calls. Nested helper identities still use `stableEntityId`.
+ */
+export function publicEntityId(statementId: string): string {
+  return statementId
+}
+

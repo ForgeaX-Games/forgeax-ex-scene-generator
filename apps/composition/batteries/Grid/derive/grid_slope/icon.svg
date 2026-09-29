@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="GridSlope">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M7 16l5-8 5 4" fill="none" stroke="#e7f5ee" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M7.2 18.2h9.6" fill="none" stroke="#b7ff5a" stroke-width="1.7" stroke-linecap="round"/>
+</svg>

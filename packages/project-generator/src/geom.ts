@@ -1,20 +1,9 @@
-import { asHeightField, isPoint, type HeightField, type Mesh, type Point, type WorkGrid } from './spatial.js'
+import { asHeightField, isPoint, type HeightField, type Point } from './spatial.js'
 
-export type { HeightField, Mesh, Point, WorkGrid }
+export type { HeightField, Point }
 export {
   asHeightField,
   isPoint,
-} from './spatial.js'
-export type {
-  Parcel,
-  ParcelSet,
-  Placement,
-  PlacementSet,
-  Plane,
-  Region,
-  RegionSet,
-  RoadNetwork,
-  RoadSegment,
 } from './spatial.js'
 
 /** Mix two integers into a deterministic uint32. */
@@ -191,11 +180,10 @@ export function aabbOf(points: readonly Point[], pad = 0): Aabb {
 }
 
 /**
- * Bilinear sample of stored metres. `source` may be a height field, a framed
- * work grid with `values`, or a raw `number[][]` plus `cellSize`.
+ * Bilinear sample of stored metres. `source` is a Heightfield leaf or raw `number[][]`.
  */
 export function sampleHeight(
-  source: HeightField | WorkGrid | ReadonlyArray<readonly number[]>,
+  source: HeightField | ReadonlyArray<readonly number[]>,
   point: Point,
   cellSize = 1,
 ): number {
@@ -219,4 +207,52 @@ export function sampleHeight(
   const z01 = values[y1]![x0] ?? 0
   const z11 = values[y1]![x1] ?? 0
   return z00 * (1 - tx) * (1 - ty) + z10 * tx * (1 - ty) + z01 * (1 - tx) * ty + z11 * tx * ty
+}
+
+/**
+ * 2D Euclidean Signed Distance to an arbitrary 2D Polygon.
+ * Inside is negative (how far from closest edge in metres), boundary is zero, outside is positive.
+ */
+export function sdfPolygon2d(point: Point, polygon: readonly Point[]): number {
+  const n = polygon.length
+  if (n < 3) return Infinity
+  const px = point[0]
+  const py = point[1]
+
+  let minSqDist = Infinity
+  let inside = false
+
+  for (let i = 0, j = n - 1; i < n; j = i++) {
+    const ax = polygon[j]![0]
+    const ay = polygon[j]![1]
+    const bx = polygon[i]![0]
+    const by = polygon[i]![1]
+
+    const abx = bx - ax
+    const aby = by - ay
+    const apx = px - ax
+    const apy = py - ay
+
+    const segLenSq = abx * abx + aby * aby
+    let t = 0
+    if (segLenSq > 1e-12) {
+      t = Math.max(0, Math.min(1, (apx * abx + apy * aby) / segLenSq))
+    }
+    const qx = ax + t * abx
+    const qy = ay + t * aby
+    const dx = px - qx
+    const dy = py - qy
+    const sqDist = dx * dx + dy * dy
+    if (sqDist < minSqDist) {
+      minSqDist = sqDist
+    }
+
+    const intersect = (ay > py) !== (by > py) && px < ((bx - ax) * (py - ay)) / (by - ay || 1e-12) + ax
+    if (intersect) {
+      inside = !inside
+    }
+  }
+
+  const d = Math.sqrt(minSqDist)
+  return inside ? -d : d
 }

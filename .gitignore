@@ -19,4 +19,15 @@ core.*
 **/.review-evidence/
 **/.scratch-repro/
 **/.scratch-parity/
-apps/wb-scene-generator/batteries/groups/test/
+apps/composition/batteries/groups/test/
+
+# Per-developer commit identity (see CLAUDE.md §7); each dev keeps their own.
+.git-identity.local.sh
+
+# 退役的 2d-assets / 3d-model app 与它们的老电池。不加载、不进发布、不做兼容面，
+# 已经不是项目的一部分 —— 从此只在本地留一份参考副本，不再进 git。
+obsolete/
+
+# 本地归档 / 抓取的临时工作区（CLAUDE.md §7 的「不要提交」清单）。原先只靠提交时手写
+# `:!archify` 排除，漏一次就进仓 —— 改成 gate。
+archify/

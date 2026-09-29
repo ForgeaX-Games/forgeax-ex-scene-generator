@@ -35,8 +35,10 @@ export interface RuntimeConfig {
   createExecutionContext?: (base: ExecutionContext) => ExecutionContext
   // Kernel layout under projectRoot. Override for embedding scenarios where the kernel artefacts live outside the project tree.
   layout?: {
-    // graph.json path. Default: <projectRoot>/state/graph.json
+    // Optional graph.json path. Used only when persistGraph is true.
     graphFile?: string
+    // When false, GraphStore stays in memory. Default true.
+    persistGraph?: boolean
     // history.jsonl path. Default: <projectRoot>/state/history.jsonl
     historyFile?: string
     // outputs/ root. Default: <projectRoot>/state/outputs
@@ -75,7 +77,7 @@ export function createRuntime(config: RuntimeConfig): Runtime {
     pluginId: config.pluginId,
     gameRoot: config.gameRoot ?? config.projectRoot,
   })
-  const graph = new GraphStore(graphFile)
+  const graph = new GraphStore(graphFile, { persist: layout.persistGraph !== false })
   const history = new HistoryLog(historyFile)
   const outputs = new OutputCache(outputsDir)
   const assets = createAssetResolver({ root: assetsDir, types: layout.assetTypes })
@@ -104,6 +106,6 @@ export function createRuntime(config: RuntimeConfig): Runtime {
   }
 
   attachBus(runtime, bus)
-  teardowns.push(attachGraphExternalSync(runtime))
+  if (layout.persistGraph !== false) teardowns.push(attachGraphExternalSync(runtime))
   return runtime
 }

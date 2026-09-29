@@ -3,8 +3,8 @@
 // Every editor operation — UI drag, AI tool call, CLI command — translates
 // into one or more Op records and submits them as a single batch. All-or-
 // nothing semantics: validation runs over a copy of the live graph, and
-// only on full success does the kernel swap graph.json + append a single
-// history.jsonl entry.
+// only on full success does the kernel swap the in-memory projection + append a
+// history.jsonl entry. Disk graph.json is optional (GraphStore persist).
 
 import { randomUUID } from 'node:crypto'
 
@@ -39,8 +39,8 @@ function cloneGraph(graph: GraphFileV1): GraphFileV1 {
 
 /**
  * Apply a batch of ops atomically to a pipeline. Runs every op against an
- * in-memory copy first; only on full success does the kernel write
- * graph.json and append the history entry.
+ * in-memory copy first; only on full success does the kernel write the
+ * in-memory projection (and optional graph.json) and append the history entry.
  */
 export async function applyBatch(
   runtime: Runtime,

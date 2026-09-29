@@ -97,7 +97,7 @@ function viewingIdFromWorkspace(workspace: WorkspaceState | null | undefined): s
 
 /**
  * Coarse phase within `switchProject`'s open cascade, for loading-progress UI
- * (e.g. the workbench's project-switch status panel). Read-only telemetry —
+ * (e.g. the authoring's project-switch status panel). Read-only telemetry —
  * nothing branches on it. `null` when no switch is in flight.
  */
 export type SwitchPhase = 'persisting' | 'viewing' | 'hydrating'
@@ -106,7 +106,7 @@ export type SwitchPhase = 'persisting' | 'viewing' | 'hydrating'
  * How this document participates in project open/switch.
  *
  * - `host` (default): owns the full open cascade — viewProject, loadPipeline,
- *   refreshConnectedOutputs, autoExecuteOnOpen. Used by the center workbench
+ *   refreshConnectedOutputs, autoExecuteOnOpen. Used by the center authoring
  *   document that hosts the Editor canvas.
  * - `satellite`: a sibling iframe (left project panel) that only tells the
  *   backend which project is being viewed via `viewProject`; the host document

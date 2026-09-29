@@ -85,6 +85,7 @@ export function buildCanvasNodes(groupCallbacks?: GroupNodeCallbacks): Node[] {
     const nodeType = resolveNodeType(battery)
     const specialStyles: Record<string, Record<string, number>> = {
       text_panel: { width: DEFAULT_BATTERY_WIDTH, height: 150 },
+      json_panel: { width: DEFAULT_BATTERY_WIDTH, height: 168 },
       name_list_panel: { width: DEFAULT_BATTERY_WIDTH, height: 200 },
       grid_panel: { width: DEFAULT_BATTERY_WIDTH, height: 200 },
       ai_battery: { width: DEFAULT_BATTERY_WIDTH },
@@ -161,6 +162,37 @@ function pipelineAwaitingBatteryCatalog(): boolean {
   return currentPipeline.nodes.some(
     (n) => n.batteryId !== RELAY_BATTERY_ID && n.batteryId !== '__group__',
   )
+}
+
+function isSyntheticCanvasNodeId(id: string): boolean {
+  return /^__.+__$/.test(id)
+}
+
+/**
+ * Open/import/project-switch may land far from the current pan/zoom, so those
+ * rebuilds fit once. Dropping or generating a battery must not — the node is
+ * already under the cursor, and empty→first-node looks like a disjoint replace.
+ */
+export function decideCanvasOpenFit(input: {
+  prevIds: ReadonlySet<string>
+  builtIds: readonly string[]
+  openFitDone: boolean
+}): { wholesaleReplace: boolean; needsOpenFit: boolean; markEmptyShown: boolean } {
+  const prevReal = [...input.prevIds].filter((id) => !isSyntheticCanvasNodeId(id))
+  const builtReal = input.builtIds.filter((id) => !isSyntheticCanvasNodeId(id))
+  const realOverlap = builtReal.reduce((acc, id) => acc + (input.prevIds.has(id) ? 1 : 0), 0)
+  const denom = Math.max(builtReal.length, prevReal.length)
+  const wholesaleReplace =
+    prevReal.length > 0 && builtReal.length > 0 && denom > 0 && realOverlap / denom < 0.5
+  const markEmptyShown = builtReal.length === 0
+  // One new node on an empty id set is a drop/generate, not Open. Fitting it
+  // zooms the canvas onto that battery.
+  const firstBatteryAdd = prevReal.length === 0 && builtReal.length === 1
+  const needsOpenFit =
+    builtReal.length > 0
+    && !firstBatteryAdd
+    && (wholesaleReplace || (!input.openFitDone && prevReal.length === 0))
+  return { wholesaleReplace, needsOpenFit, markEmptyShown }
 }
 
 function scheduleOpenFitView(instance: ReactFlowInstance): void {
@@ -419,35 +451,20 @@ export function useCanvasGraphSync({
     const builtEdges = buildCanvasEdges(domainPortTypes)
     setEdges((prev) => reconcileCanvasEdges(prev, builtEdges))
 
-    // Fit the view when the graph was WHOLESALE replaced — i.e. Open/import or a
-    // project switch swaps in a near-disjoint node set. Without this the viewport
-    // stays where it was, so an imported graph laid out far from the old one (or
-    // off the current pan/zoom) appears as an empty canvas until the user fits
-    // manually. Incremental edits (local drag, agent batches) keep most node ids,
-    // so the overlap stays high and we do NOT refit — avoiding jarring jumps.
     const prevIds = prevNodeIdsRef.current
     const builtIds = builtNodes.map((n) => n.id)
     prevNodeIdsRef.current = new Set(builtIds)
-    // Ignore synthetic/terminal nodes (ids like `__qc__`, `__urdf__`, `__bake__`)
-    // when measuring overlap. Compilers auto-append these and they persist across
-    // otherwise-disjoint graphs — e.g. a loop of DSL bakes that each `replace` the
-    // whole graph shares only `__bake__`, and sequential `model.apply` runs share
-    // `__qc__`/`__urdf__`. Counting them made a genuine wholesale replace look like
-    // an incremental edit (`overlap > 0`), so the refit was skipped and every graph
-    // after the first landed off-screen — the "only the first part shows" bug.
-    const isSynthetic = (id: string): boolean => /^__.+__$/.test(id)
-    const prevReal = [...prevIds].filter((id) => !isSynthetic(id))
-    const builtReal = builtIds.filter((id) => !isSynthetic(id))
-    const realOverlap = builtReal.reduce((acc, id) => acc + (prevIds.has(id) ? 1 : 0), 0)
-    // Ratio-based: treat a near-disjoint real-node set as a wholesale replace (so a
-    // swap that happens to reuse a couple of ids still refits) while a normal
-    // incremental edit (high overlap) does not, avoiding jarring viewport jumps.
-    const denom = Math.max(builtReal.length, prevReal.length)
-    const wholesaleReplace = builtReal.length > 0 && (denom === 0 || realOverlap / denom < 0.5)
-    if (wholesaleReplace) openFitDoneRef.current = false
-    const needsOpenFit =
-      builtIds.length > 0 && (wholesaleReplace || !openFitDoneRef.current)
-    if (needsOpenFit) {
+    const decision = decideCanvasOpenFit({
+      prevIds,
+      builtIds,
+      openFitDone: openFitDoneRef.current,
+    })
+    if (decision.markEmptyShown) {
+      openFitDoneRef.current = true
+      pendingOpenFitRef.current = false
+    }
+    if (decision.wholesaleReplace) openFitDoneRef.current = false
+    if (decision.needsOpenFit) {
       if (reactFlowInstance) {
         openFitDoneRef.current = true
         pendingOpenFitRef.current = false

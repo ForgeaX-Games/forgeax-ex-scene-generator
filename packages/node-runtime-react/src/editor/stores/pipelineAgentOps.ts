@@ -114,13 +114,18 @@ export function createAgentOps(get: PipelineGet): AgentActions {
     get().addEdge(edge)
 
     if (_rfSetters) {
-      // One input port allows a single connection: drop any prior edge to the
-      // same target port. Edge styling (port-type colour) lands with the canvas
-      // stage; a neutral default is used here.
+      // Item ports keep one wire. List / tree ports keep every referenced item.
+      const tgtBattery = tgtNode
+        ? state.batteries.find((item) => item.id === tgtNode.batteryId)
+        : undefined
+      const tgtAccess = tgtBattery?.inputs.find((port) => port.name === edge.target.port)?.access
+      const replaceExisting = tgtAccess !== 'list' && tgtAccess !== 'tree'
       _rfSetters.setEdges((eds) => {
-        const filtered = eds.filter(
-          (e) => !(e.target === edge.target.nodeId && e.targetHandle === edge.target.port),
-        )
+        const filtered = replaceExisting
+          ? eds.filter(
+              (e) => !(e.target === edge.target.nodeId && e.targetHandle === edge.target.port),
+            )
+          : eds.filter((e) => e.id !== edge.id)
         return [
           ...filtered,
           {

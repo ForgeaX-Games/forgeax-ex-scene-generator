@@ -268,6 +268,7 @@ export function useCanvasDrop({ reactFlowInstance, setNodes, onExternalDrop, onI
 
       const specialInit: Record<string, { style?: Record<string, number>; params?: Record<string, unknown> }> = {
         text_panel: { style: { width: DEFAULT_BATTERY_WIDTH, height: 150 } },
+        json_panel: { style: { width: DEFAULT_BATTERY_WIDTH, height: 168 }, params: { value: {} } },
         ai_battery: { style: { width: DEFAULT_BATTERY_WIDTH } },
         json_battery: { style: { width: DEFAULT_BATTERY_WIDTH, height: 200 } },
         image_reader: { style: { width: DEFAULT_BATTERY_WIDTH } },

@@ -1,4 +1,8 @@
-// Loader main implementation: walks every configured scanDir, parses each meta.json, dynamic-imports index.ts for the execute closure, builds an OpSpec, and registers it with the kernel registry. Optional chokidar hot-reload watches the same scanDirs and re-scans to emit per-folder add/remove/update events.
+// Loader main implementation: walks every configured scanDir, parses each
+// scene.contract.ts via the host parseSpec hook, dynamic-imports index.ts for
+// the execute closure, builds an OpSpec, and registers it with the kernel
+// registry. Optional chokidar hot-reload watches the same scanDirs and
+// re-scans to emit per-folder add/remove/update events.
 
 import { existsSync, readFileSync, readdirSync, statSync, copyFileSync, unlinkSync } from 'node:fs'
 import { join, basename } from 'node:path'
@@ -6,16 +10,19 @@ import { pathToFileURL } from 'node:url'
 
 import type { OpRegistry } from '../op-registry.js'
 import type { ExecutionContext, OpSpec } from '../types/op-spec.js'
-import { metaToOpSpec } from './meta-parser.js'
-import type { BatteryLoader, BatteryLoaderConfig, BatteryMeta, LoaderEvent, LoaderUnsubscribe, ScanError, ScanResult } from './types.js'
+import type { BatteryLoader, BatteryLoaderConfig, LoaderEvent, LoaderUnsubscribe, ScanError, ScanResult } from './types.js'
+
+const CONTRACT_FILE = 'scene.contract.ts'
 
 // Bookkeeping for one registered op: its source dir, the id it was registered under, and mtimes that drive update detection.
 interface LoadedOp {
   dir: string
   id: string
-  metaMtime: number
-  /** Latest mtime of index.ts / index.js — hot-reload must pick up execute-logic edits without meta.json changes. */
+  contractMtime: number
+  /** Latest mtime of index.ts / index.js — hot-reload must pick up execute-logic edits without contract changes. */
   entryMtime: number
+  /** Palette `icon.svg` is UI, not execute, but the catalog still has to reload it. */
+  iconMtime: number
 }
 
 // Core factory: closes over the kernel registry and config, holding the loaded-op bookkeeping, event subscribers, and the optional watcher, and returns the BatteryLoader surface (see types.ts).
@@ -23,6 +30,10 @@ export function createBatteryLoader(
   registry: OpRegistry,
   config: BatteryLoaderConfig,
 ): BatteryLoader {
+  if (typeof config.parseSpec !== 'function') {
+    throw new TypeError('createBatteryLoader requires parseSpec')
+  }
+
   const loaded = new Map<string, LoadedOp>() // key = dir
   const subscribers = new Set<(event: LoaderEvent) => void>()
   let watcher: { close: () => Promise<void> } | null = null
@@ -57,11 +68,11 @@ export function createBatteryLoader(
     }
   }
 
-  // Recursively collect every directory containing a meta.json. The kernel imposes no fixed depth (2-level / 3-level / mixed layouts are all fine); a directory with meta.json is treated as a leaf and not descended into, and the walk is bounded by the node_modules / dotfile filtering in listSubdirectories.
+  // Recursively collect every directory containing a scene.contract.ts. The kernel imposes no fixed depth (2-level / 3-level / mixed layouts are all fine); a directory with scene.contract.ts is treated as a leaf and not descended into, and the walk is bounded by the node_modules / dotfile filtering in listSubdirectories.
   function findBatteryDirs(root: string, out: string[]): void {
     if (!existsSync(root)) return
     let isLeaf = false
-    if (existsSync(join(root, 'meta.json'))) {
+    if (existsSync(join(root, CONTRACT_FILE))) {
       out.push(root)
       isLeaf = true
     }
@@ -72,6 +83,16 @@ export function createBatteryLoader(
   }
 
   // Latest mtime of the battery entry module (index.ts or index.js).
+  function fileMtime(dir: string, name: string): number {
+    const p = join(dir, name)
+    if (!existsSync(p)) return 0
+    try {
+      return statSync(p).mtimeMs
+    } catch {
+      return 0
+    }
+  }
+
   function entryMtime(dir: string): number {
     let latest = 0
     for (const name of ['index.ts', 'index.js'] as const) {
@@ -86,26 +107,26 @@ export function createBatteryLoader(
     return latest
   }
 
-  // Load one battery directory into a complete OpSpec: parse meta.json, run the filter hook, dynamic-import index.ts for its execute function, and stitch the two together. Every failure is pushed to errors and returns null so a single bad folder never aborts the whole scan.
+  // Load one battery directory into a complete OpSpec: parse scene.contract.ts via parseSpec, run the filter hook, dynamic-import index.ts for its execute function, and stitch the two together. Every failure is pushed to errors and returns null so a single bad folder never aborts the whole scan.
   async function loadOne(
     dir: string,
     errors: ScanError[],
     opts: { bustImport?: boolean } = {},
   ): Promise<OpSpec | null> {
-    const metaPath = join(dir, 'meta.json')
-    if (!existsSync(metaPath)) return null
+    const contractPath = join(dir, CONTRACT_FILE)
+    if (!existsSync(contractPath)) return null
 
-    let meta: BatteryMeta
+    let baseSpec: Omit<OpSpec, 'execute'>
     try {
-      meta = JSON.parse(readFileSync(metaPath, 'utf-8')) as BatteryMeta
+      const source = readFileSync(contractPath, 'utf-8')
+      baseSpec = config.parseSpec(dir, source)
     } catch (e) {
-      errors.push({ dir, reason: `meta.json parse failed: ${e instanceof Error ? e.message : String(e)}` })
+      errors.push({ dir, reason: `scene.contract.ts parse failed: ${e instanceof Error ? e.message : String(e)}` })
       return null
     }
 
-    const fallbackId = meta.id ?? `${config.pluginId}.${basename(dir)}`
-    const baseSpec = metaToOpSpec(meta, fallbackId)
-    const filteredId = config.filter ? config.filter(baseSpec.id, dir) : baseSpec.id
+    const fallbackId = baseSpec.id ?? `${config.pluginId}.${basename(dir)}`
+    const filteredId = config.filter ? config.filter(fallbackId, dir) : fallbackId
     if (filteredId === null) return null
     const finalId = filteredId
 
@@ -179,7 +200,7 @@ export function createBatteryLoader(
     return op
   }
 
-  // Full scan: walk every scanDir, incrementally (re)register each battery by meta.json mtime, and reconcile the registry against what was loaded last time. Op ids must be unique across directories, so a duplicate-id guard makes the first directory to claim an id win (the walk is deterministic because listSubdirectories sorts) and reports + skips any later directory re-using it rather than silently overwriting in filesystem order. Distinct dirs with distinct ids coexist; only a true id clash is flagged.
+  // Full scan: walk every scanDir, incrementally (re)register each battery by contract/index/icon mtime, and reconcile the registry against what was loaded last time. Op ids must be unique across directories, so a duplicate-id guard makes the first directory to claim an id win (the walk is deterministic because listSubdirectories sorts) and reports + skips any later directory re-using it rather than silently overwriting in filesystem order. Distinct dirs with distinct ids coexist; only a true id clash is flagged.
   async function scan(): Promise<ScanResult> {
     const result: ScanResult = { added: 0, updated: 0, removed: 0, errors: [] }
     const visitedDirs = new Set<string>()
@@ -193,20 +214,17 @@ export function createBatteryLoader(
       findBatteryDirs(root, dirs)
       for (const dir of dirs) {
         visitedDirs.add(dir)
-        const metaMtime = (() => {
-          try {
-            return statSync(join(dir, 'meta.json')).mtimeMs
-          } catch {
-            return 0
-          }
-        })()
-
+        const contractMt = fileMtime(dir, CONTRACT_FILE)
         const entryMt = entryMtime(dir)
+        const iconMt = fileMtime(dir, 'icon.svg')
 
         const prev = loaded.get(dir)
-        if (prev && prev.metaMtime === metaMtime && prev.entryMtime === entryMt && registry.has(prev.id)) {
-          // No change.
+        if (prev && prev.contractMtime === contractMt && prev.entryMtime === entryMt && registry.has(prev.id)) {
           noteWinner(prev.id, dir)
+          if (prev.iconMtime === iconMt) continue
+          loaded.set(dir, { ...prev, iconMtime: iconMt })
+          result.updated++
+          emit({ kind: 'op-updated', opId: prev.id, sourceDir: dir })
           continue
         }
 
@@ -233,12 +251,12 @@ export function createBatteryLoader(
             emit({ kind: 'op-removed', opId: prev.id, sourceDir: dir })
           }
           registry.replace(op)
-          loaded.set(dir, { dir, id: op.id, metaMtime, entryMtime: entryMt })
+          loaded.set(dir, { dir, id: op.id, contractMtime: contractMt, entryMtime: entryMt, iconMtime: iconMt })
           result.updated++
           emit({ kind: 'op-updated', opId: op.id, sourceDir: dir })
         } else {
           registry.replace(op)
-          loaded.set(dir, { dir, id: op.id, metaMtime, entryMtime: entryMt })
+          loaded.set(dir, { dir, id: op.id, contractMtime: contractMt, entryMtime: entryMt, iconMtime: iconMt })
           result.added++
           emit({ kind: 'op-added', opId: op.id, sourceDir: dir })
         }

@@ -40,15 +40,15 @@ describe('parseGeneratorContractSource', () => {
     ])
   })
 
-  it('defaults omitted version and maps spatial port identifiers', () => {
+  it('defaults omitted version and maps Geometry / Heightfield identifiers', async () => {
     const result = parseGeneratorContractSource(`
       import { defineGenerator } from '@forgeax/project-generator'
       export const streetTrees = defineGenerator({
         id: "street-trees",
-        inputs: { network: RoadNetwork, spacing: { type: NumberValue, defaultValue: 8 } },
-        outputs: { placements: PlacementSet },
+        inputs: { geometry: Geometry, spacing: { type: NumberValue, defaultValue: 8 } },
+        outputs: { heights: Heightfield },
         run(ctx, args) {
-          return { placements: { placements: [] } }
+          return { heights: args }
         },
       })
     `, 'generators/street-trees.generator.ts')
@@ -56,11 +56,11 @@ describe('parseGeneratorContractSource', () => {
     expect(result.diagnostics).toEqual([])
     expect(result.exports[0]?.meta.version).toBe('1')
     expect(result.exports[0]?.contract.inputs).toEqual([
-      expect.objectContaining({ name: 'network', type: 'any', runtimeType: 'road-network' }),
+      expect.objectContaining({ name: 'geometry', type: 'geometry' }),
       expect.objectContaining({ name: 'spacing', type: 'number', defaultValue: 8 }),
     ])
     expect(result.exports[0]?.contract.outputs).toEqual([
-      expect.objectContaining({ name: 'placements', type: 'any', runtimeType: 'placement-set' }),
+      expect.objectContaining({ name: 'heights', type: 'heightfield' }),
     ])
   })
 
@@ -80,5 +80,41 @@ describe('parseGeneratorContractSource', () => {
     `, 'bad.generator.ts')
     expect(dynamic.exports).toEqual([])
     expect(dynamic.diagnostics[0]?.code).toBe('SCENE_GENERATOR_CONTRACT_STATIC')
+  })
+
+  it('accepts TS aliases, string literals, and numeric versions', () => {
+    const result = parseGeneratorContractSource(`
+      import { defineGenerator } from '@forgeax/project-generator'
+      export const valleyTerrain = defineGenerator({
+        version: 1,
+        description: "Valley terrain generator.",
+        inputs: {
+          width: 'number',
+          height: { type: 'scalar', defaultValue: 100 },
+          seed: number,
+        },
+        outputs: {
+          heightGrid: 'number[][]',
+          preview: 'grid',
+        },
+        run(ctx, args) {
+          return { heightGrid: [], preview: [] }
+        },
+      })
+    `, 'generators/valley.generator.ts')
+
+    expect(result.diagnostics).toEqual([])
+    expect(result.exports[0]?.exportName).toBe('valleyTerrain')
+    expect(result.exports[0]?.meta.id).toBe('valley-terrain')
+    expect(result.exports[0]?.meta.version).toBe('1')
+    expect(result.exports[0]?.contract.inputs).toEqual([
+      expect.objectContaining({ name: 'width', type: 'number' }),
+      expect.objectContaining({ name: 'height', type: 'number', defaultValue: 100 }),
+      expect.objectContaining({ name: 'seed', type: 'number' }),
+    ])
+    expect(result.exports[0]?.contract.outputs).toEqual([
+      expect.objectContaining({ name: 'heightGrid', type: 'grid' }),
+      expect.objectContaining({ name: 'preview', type: 'grid' }),
+    ])
   })
 })

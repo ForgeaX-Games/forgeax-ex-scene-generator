@@ -85,6 +85,18 @@ export function formatSceneDiagnosticRepairSlip(diagnostic: SceneDiagnostic): st
   } else {
     for (const item of combined.slice(0, 5)) lines.push(`- ${item}`)
   }
+  if (diagnostic.fixes && diagnostic.fixes.length > 0) {
+    const codeExamples = diagnostic.fixes
+      .flatMap((fix) => fix.edits)
+      .filter((edit): edit is { type: 'ReplaceSource'; file: string; start: number; end: number; text: string } => edit.type === 'ReplaceSource' && typeof edit.text === 'string' && edit.text.trim().length > 0)
+      .map((edit) => edit.text)
+    if (codeExamples.length > 0) {
+      lines.push('Code fix example:')
+      for (const ex of codeExamples.slice(0, 2)) {
+        lines.push(`\`\`\`ts\n${ex.trim()}\n\`\`\``)
+      }
+    }
+  }
   lines.push(`Technical details: ${diagnostic.code}`)
   return lines.join('\n')
 }
@@ -127,18 +139,28 @@ export function normalizeSceneDiagnostic(
   })
 }
 
+/** Errors take this many slots so Sino can repair the first failure without drowning. */
+export const PUBLIC_ERROR_DIAGNOSTIC_BUDGET = 3
+/** Warnings keep their own budget so a successful commit still surfaces design smells. */
+export const PUBLIC_WARNING_DIAGNOSTIC_BUDGET = 5
+
 /**
- * Agent-facing diagnostics have a fixed response budget: one primary error,
- * at most two related diagnostics, and at most three structured fixes each.
+ * Agent-facing diagnostics: errors first (primary + related), then warnings.
+ * Each diagnostic still carries a full repairSlip (What / Where / Why / How to fix).
  */
 export function toPublicSceneDiagnostics(
   diagnostics: readonly SceneDiagnostic[],
   transaction?: SceneDiagnosticTransaction,
 ): SceneDiagnostic[] {
   if (diagnostics.length === 0) return []
-  const primary = diagnostics.findIndex((item) => item.severity === 'error')
-  const ordered = primary > 0
-    ? [diagnostics[primary], ...diagnostics.slice(0, primary), ...diagnostics.slice(primary + 1)]
-    : [...diagnostics]
-  return ordered.slice(0, 3).map((item) => normalizeSceneDiagnostic(item, transaction))
+  const errors = diagnostics.filter((item) => item.severity === 'error')
+  const warnings = diagnostics.filter((item) => item.severity !== 'error')
+  const primary = errors[0]
+  const relatedErrors = (primary ? errors.slice(1) : errors).slice(0, Math.max(0, PUBLIC_ERROR_DIAGNOSTIC_BUDGET - (primary ? 1 : 0)))
+  const ordered = [
+    ...(primary ? [primary] : []),
+    ...relatedErrors,
+    ...warnings.slice(0, PUBLIC_WARNING_DIAGNOSTIC_BUDGET),
+  ]
+  return ordered.map((item) => normalizeSceneDiagnostic(item, transaction))
 }

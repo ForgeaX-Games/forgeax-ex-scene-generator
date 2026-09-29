@@ -1,8 +1,8 @@
 // Multi-project registry — kernel-level CRUD + open/activate cascade.
 //
 // A generic, plugin-agnostic registry for managing many pipelines ("projects")
-// inside one workspace. Every ForgeaX app (scene, 3d-lowpoly, and any future
-// task type) consumes the SAME registry: the per-project `type` is just a tag,
+// inside one workspace. Scene composition and any future task type consume the
+// SAME registry: the per-project `type` is just a tag,
 // and per-domain extras (assets, thumbnails, asset-detach policy) stay in the
 // app via the optional hooks.
 //
@@ -15,7 +15,7 @@
 //       <id>/
 //         manifest.json                   ← ProjectManifest (incl. storage ref)
 //         state/
-//           graph.json                    ← SSOT (per-project, isolated)
+//           graph.json                    ← runtime projection (per-project, isolated)
 //           history.jsonl                 ← append-only log (per-project, isolated)
 //           outputs/                       ← execution cache (per-project, isolated)
 //
@@ -32,12 +32,13 @@
 // `<workspaceRoot>/state/graph.json` — as a default project (no file moves, so
 // current users keep their work). New projects get `projects/<id>/state/...`.
 
-import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, rmSync } from 'node:fs'
 import { isAbsolute, join } from 'node:path'
 
 import { importPipelineGraph } from './import-graph.js'
 import { collectCachedNodeIds } from './apply-batch.js'
 import type { Runtime } from './runtime.js'
+import { readJsonSafe, writeJsonAtomic } from './project-registry-storage.js'
 
 
 export type {
@@ -95,23 +96,6 @@ function nowIso(): string {
 
 function genProjectId(prefix = 'p'): string {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`
-}
-
-function readJsonSafe<T>(path: string): T | null {
-  if (!existsSync(path)) return null
-  try {
-    return JSON.parse(readFileSync(path, 'utf-8')) as T
-  } catch {
-    return null
-  }
-}
-
-function writeJsonAtomic(path: string, value: unknown): void {
-  const dir = join(path, '..')
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
-  const tmp = `${path}.tmp-${Date.now()}-${Math.random().toString(36).slice(2)}`
-  writeFileSync(tmp, JSON.stringify(value, null, 2), 'utf-8')
-  renameSync(tmp, path)
 }
 
 // Identity of an exclusive-lock/queue *holder*, distinct from `agentId` alone.
@@ -530,7 +514,7 @@ export class ProjectRegistry {
   }
 
   // Emergency escape hatch: fully resets a project's lock + wait queue.
-  // Human/workbench callers ONLY — never callable by an AI caller — because
+  // Human/authoring callers ONLY — never callable by an AI caller — because
   // it is the last-resort manual override for the (expected-never) case
   // where the automatic lease-expiry self-healing somehow fails to recover a
   // stuck project. Not part of the normal AI open/queue/close flow.
@@ -654,6 +638,20 @@ export class ProjectRegistry {
     })
     this.pool.set(id, rt)
     return rt
+  }
+
+  /** Release an unused in-memory runtime; canonical files and outputs stay on disk. */
+  releaseIdleRuntime(id: string): boolean {
+    if (
+      this.workspace.viewingProjectId === id || this.locks.has(id)
+      || [...this.agentSessions.values()].some(session => session.projectId === id)
+      || (this.queues.get(id)?.length ?? 0) > 0
+    ) return false
+    const runtime = this.pool.get(id)
+    if (!runtime) return false
+    runtime.dispose()
+    this.pool.delete(id)
+    return true
   }
 
   // ── mutations ──────────────────────────────────────────────────────────

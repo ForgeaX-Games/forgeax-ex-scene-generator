@@ -59,8 +59,8 @@ describe('Generator compile', () => {
       import { dist, resamplePolyline } from '@forgeax/project-generator/geom'
       export const streetTrees = defineGenerator({
         id: "street-trees",
-        inputs: { network: RoadNetwork },
-        outputs: { placements: PlacementSet, length: NumberValue },
+        inputs: { network: Any },
+        outputs: { placements: Any, length: NumberValue },
         run(_ctx, args: { network: { segments: Array<{ points: number[][] }> } }) {
           const line = args.network.segments[0]?.points ?? [[0, 0], [10, 0]]
           return {
@@ -74,9 +74,42 @@ describe('Generator compile', () => {
     expect(result.diagnostics.filter((item) => item.severity === 'error')).toEqual([])
     expect(result.artifacts[0]?.contract.definitionVersion).toBe('1')
     expect(result.artifacts[0]?.contract.inputs[0]).toEqual(
-      expect.objectContaining({ name: 'network', type: 'any', runtimeType: 'road-network' }),
+      expect.objectContaining({ name: 'network', type: 'any' }),
     )
     expect(result.artifacts[0]?.bundle).toContain('resamplePolyline')
+  })
+
+  it('ignores commented import statements and does not trigger false import cycle', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'generator-comment-import-'))
+    dirs.push(root)
+    await mkdir(join(root, 'generators', 'lib'), { recursive: true })
+    await writeFile(
+      join(root, 'generators', 'lib', 'math.generator-lib.ts'),
+      `// math.generator-lib.ts
+// Usage: import { add } from './math.generator-lib.ts'
+/* Another comment:
+   import { other } from '../nowhere.generator.ts'
+*/
+export function add(a: number, b: number): number { return a + b }
+`,
+    )
+    await writeFile(
+      join(root, 'generators', 'calc.generator.ts'),
+      `import { defineGenerator } from '@forgeax/project-generator'
+import { add } from './lib/math.generator-lib.ts'
+export const calc = defineGenerator({
+  id: "calc",
+  inputs: { a: 'number', b: 'number' },
+  outputs: { res: 'number' },
+  run(_ctx, args: { a: number; b: number }) {
+    return { res: add(args.a, args.b) }
+  },
+})
+`,
+    )
+    const result = await compileGeneratorFile(root, 'generators/calc.generator.ts')
+    expect(result.diagnostics.filter((item) => item.severity === 'error')).toEqual([])
+    expect(result.artifacts[0]?.bundle).toContain('add')
   })
 
   it('rejects a cyclic helper import', async () => {

@@ -1,0 +1,1425 @@
+{
+  "schemaVersion": 2,
+  "id": "@forgeax/scene-generator-composition",
+  "version": "0.4.3",
+  "displayName": {
+    "zh": "场景生成器",
+    "en": "Scene Generator"
+  },
+  "description": {
+    "zh": "由 Sino 负责的完整场景设计创作界面。适用于城市、关卡、地形、道路、街区、动线、空间布局、可玩区域与场景丰富度迭代；以 Scene Script 为创作真值、节点图为同步可视化投影。完整场景请求应派给 sino。",
+    "en": "Sino's complete scene-design authoring for cities, levels, terrain, roads, districts, circulation, spatial layout, playable areas, and iterative scene enrichment. Scene Script is the authoring truth and the node graph its synchronized visual projection. Dispatch complete-scene requests to sino."
+  },
+  "icon": "🌍",
+  "compatibleWith": {
+    "forgeax-node-runtime": "^0.3.0"
+  },
+  "requestedEnv": [
+    "FORGEAX_PLUGIN_DEV_PORTS_FILE",
+    "FORGEAX_EXTENSION_DEV_PORTS_FILE",
+    "FORGEAX_SCENE_BACKEND_URL",
+    "FORGEAX_SCENE_SCREENSHOT_NO_VISION",
+    "FORGEAX_PROJECT_ROOT",
+    "AW_SUPPORT_RUNS_DIR"
+  ],
+  "entry": {
+    "frontend": "./frontend/dist/index.html",
+    "backend": "./backend/src/tool-handlers.ts",
+    "standalone": {
+      "start": "bun run serve",
+      "port": 9555,
+      "readyProbe": "/",
+      "embeddedAlso": false
+    }
+  },
+  "experimental": true,
+  "categories": [
+    "authoring"
+  ],
+  "contributes": {
+    "panelTypes": [
+      {
+        "id": "scene-generator.content",
+        "runtime": "iframe",
+        "entry": "./frontend/dist/index.html"
+      }
+    ],
+    "pages": [
+      {
+        "id": "scene-generator",
+        "title": {
+          "zh": "场景生成器",
+          "en": "Scene Generator"
+        },
+        "icon": "🌍",
+        "cardinality": "singleton",
+        "restorePolicy": "project",
+        "layout": {
+          "version": 2,
+          "root": {
+            "kind": "split",
+            "direction": "horizontal",
+            "sizes": [
+              280,
+              840
+            ],
+            "children": [
+              {
+                "kind": "tabs",
+                "placements": [
+                  "sidebar"
+                ],
+                "active": "sidebar"
+              },
+              {
+                "kind": "tabs",
+                "placements": [
+                  "workspace"
+                ],
+                "active": "workspace"
+              }
+            ]
+          }
+        },
+        "layoutVersion": 2,
+        "panels": [
+          {
+            "id": "sidebar",
+            "panelType": {
+              "extension": "self",
+              "id": "scene-generator.content"
+            },
+            "initialProps": {
+              "pane": "left",
+              "minWidth": 280,
+              "scrollable": true
+            }
+          },
+          {
+            "id": "workspace",
+            "panelType": {
+              "extension": "self",
+              "id": "scene-generator.content"
+            },
+            "initialProps": {
+              "pane": "center",
+              "minHeight": 600,
+              "scrollable": false
+            }
+          }
+        ],
+        "matchProduces": [
+          "**/scene/**/*.scene.ts",
+          "**/scene-model.json",
+          "**/scenes/**.scene.json"
+        ],
+        "preferredAgent": "sino"
+      }
+    ],
+    "activities": [
+      {
+        "id": "scene-generator.launcher",
+        "title": {
+          "zh": "场景生成器",
+          "en": "Scene Generator"
+        },
+        "icon": "🌍",
+        "category": "authoring",
+        "pageType": {
+          "extension": "self",
+          "id": "scene-generator"
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "scene-generator:author-guide",
+        "entry": "./SKILL.md",
+        "trigger": "/scene-generator",
+        "displayName": {
+          "zh": "Scene Generator · Sino 路由指引",
+          "en": "Scene Generator · Sino Routing Guide"
+        },
+        "description": {
+          "zh": "当用户要求生成或修改完整场景、关卡、城市、地形或空间布局时使用。先确认 sino 在 roster 中，再通过 delegate_to_subagent 委派给 sino；message 只转发用户空间需求，不要让 Sino 先读游戏 manifest、挂 SceneAsset 或探入口如何加载。地形走 basePlane / Heightfield / heightfieldExplode，站点是另一块世界米平面。不要由 Forge 自写 SceneAsset pack。",
+          "en": "Use for any request to create or revise a complete scene, level, city, terrain, or spatial layout. Confirm sino in the roster, then delegate via delegate_to_subagent. Pass only the user's spatial brief; do not ask Sino to read the game manifest, attach a SceneAsset, or inspect how the entry loads. Terrain uses basePlane / Heightfield / heightfieldExplode; a site is another world-metre plane. Forge must not substitute a SceneAsset pack."
+        }
+      },
+      {
+        "id": "compose-scene-script",
+        "entry": "./skills/compose-scene-script/SKILL.md",
+        "trigger": "/compose-scene-script",
+        "displayName": {
+          "zh": "Sino · Scene Script 场景设计",
+          "en": "Sino · Scene Script Design"
+        },
+        "description": {
+          "zh": "Sino 的 Scene Script 创作技能：用 basePlane / createGrid / heightfield / heightfieldExplode 写地形，求解放在项目内 Generator，靠诊断改代码。",
+          "en": "Sino's Scene Script skill: author terrain with basePlane / createGrid / heightfield / heightfieldExplode, keep solvers in a project-local Generator, and revise from diagnostics."
+        }
+      }
+    ],
+    "tools": [
+      {
+        "id": "scene:projects.list",
+        "args": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "array"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "列出当前 active game 的 Scene Generator 项目",
+          "en": "List Scene Generator projects for the current active game"
+        }
+      },
+      {
+        "id": "scene:projects.create",
+        "args": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "可选；缺省时使用当前 active game 的默认场景名 / optional; defaults from the active game"
+            },
+            "type": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "fromTemplate": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "在当前 active game 中创建空 Scene Project 并返回项目 id；name 可省略。不打开、不初始化、不执行场景；不接受 gameSlug。",
+          "en": "Create an empty Scene Project in the current active game and return its id; name is optional. This does not open, initialize, or execute the scene, and gameSlug is not accepted."
+        }
+      },
+      {
+        "id": "scene:projects.open",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "打开指定 Scene Project 并建立当前 Sino 会话上下文；实际写入由 Scene Script 事务获取独占锁。",
+          "en": "Open a Scene Project for the current Sino session; Scene Script transactions acquire the exclusive write lock when needed."
+        }
+      },
+      {
+        "id": "scene:projects.close",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "关闭/释放对指定 Scene Generator 项目的独占锁；释放后才能打开另一个项目。释放后锁会立刻移交给排队队列里的下一个 agent（如果有的话）。",
+          "en": "Close/release the exclusive lock on a Scene Generator project; required before opening another. On release the lock is handed immediately to the next agent in that project's wait queue, if any."
+        }
+      },
+      {
+        "id": "scene:projects.heartbeat",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "续期当前会话已持有的 Scene Project 写入锁；正常 Scene Script 事务会自动续期。",
+          "en": "Renew the current session's Scene Project write lease; normal Scene Script transactions renew it automatically."
+        }
+      },
+      {
+        "id": "scene:projects.queue.status",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "查询指定项目当前的排队情况（FIFO，position=1 表示下一个轮到）。只读，不会把你加入队列——加入队列要调用 scene:projects.open。",
+          "en": "Inspect a project's current FIFO wait queue (position 1 = next in line). Read-only — does NOT join the queue; call scene:projects.open to do that."
+        }
+      },
+      {
+        "id": "scene:projects.queue.leave",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "主动退出指定项目的排队队列（例如你决定改去处理别的项目）。幂等；未排队时调用无副作用。",
+          "en": "Voluntarily leave a project's wait queue (e.g. you decided to work on a different project instead). Idempotent; a no-op if you weren't queued."
+        }
+      },
+      {
+        "id": "scene:projects.remove",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "assetPolicy": {
+              "type": "string",
+              "enum": [
+                "detach",
+                "delete"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "requireConfirm": "destructive",
+        "confirmMessage": {
+          "zh": "删除 Scene Generator 项目需要确认",
+          "en": "Deleting a Scene Generator project requires confirmation"
+        },
+        "description": {
+          "zh": "删除指定 Scene Generator 项目",
+          "en": "Remove a Scene Generator project"
+        }
+      },
+      {
+        "id": "scene:script.contracts",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "summary",
+                "detail"
+              ],
+              "default": "summary"
+            },
+            "functionNames": {
+              "type": "array",
+              "maxItems": 6,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "按需查询 Scene Contract。不是 Sino 工具；空项目应直接 commitProject 真实设计，不要开场读合同。",
+          "en": "Look up a Scene Contract on demand. Not a Sino tool; empty projects should commitProject the actual design instead of starting with the catalog."
+        }
+      },
+      {
+        "id": "scene:script.get",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "读取场景源码、源码修订号和 Source Map 状态。",
+          "en": "Read Scene Script source, its revision, and source-map state."
+        }
+      },
+      {
+        "id": "scene:script.validate",
+        "args": {
+          "type": "object",
+          "required": [
+            "source"
+          ],
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "只解析、类型检查和编译 Scene Script，不修改项目。",
+          "en": "Parse, type-check, and compile Scene Script without mutating the project."
+        }
+      },
+      {
+        "id": "scene:script.put",
+        "args": {
+          "type": "object",
+          "required": [
+            "source"
+          ],
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "expectedRevision": {
+              "type": "string"
+            },
+            "canonicalize": {
+              "type": "boolean"
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "以单次源码事务更新场景；成功后节点图、预览和 Source Map 同步刷新。",
+          "en": "Commit one Scene Script transaction and refresh the projected graph, preview, and source map."
+        }
+      },
+      {
+        "id": "scene:script.draft",
+        "args": {
+          "type": "object",
+          "required": [
+            "draftId",
+            "files",
+            "entryFile",
+            "expectedProjectRevision",
+            "execute"
+          ],
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "draftId": {
+              "type": "string"
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "entryFile": {
+              "type": "string"
+            },
+            "expectedProjectRevision": {
+              "type": "string"
+            },
+            "execute": {
+              "type": "boolean"
+            },
+            "files": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "source"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "canonicalize": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "可选的试验性热预览：在隔离 runtime 中编译并执行多文件草稿，不写 canonical source/history。正常分阶段创作直接使用 commitProject；只在高风险或视觉调参时使用 draft。",
+          "en": "Optional speculative hot preview: compile and execute a multi-file draft in an isolated runtime without writing canonical source/history. Normal stage-by-stage authoring commits directly; use draft only for risky or visual tuning."
+        }
+      },
+      {
+        "id": "scene:script.commitProject",
+        "args": {
+          "type": "object",
+          "required": [
+            "files"
+          ],
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "entryFile": {
+              "type": "string"
+            },
+            "expectedProjectRevision": {
+              "type": "string"
+            },
+            "expectedRevision": {
+              "type": "string"
+            },
+            "canonicalize": {
+              "type": "boolean"
+            },
+            "label": {
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "source"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "canonicalize": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "原子提交多个 Scene Script / Generator 文件，然后立即执行该 project revision，并返回 revision 绑定的执行与预览证据。",
+          "en": "Atomically commit multiple Scene Script/Generator files, execute that exact project revision, and return revision-bound execution and preview evidence."
+        }
+      },
+      {
+        "id": "scene:script.verify",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "ifRevision": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "验证 Scene Script 源码、执行产物与 Default 可见输出（mesh / 体素 / grid）是否对齐当前 revision。不要求必须织网。",
+          "en": "Verify source, artifact, execution, and Default visible output (mesh, voxel, or grid) for the current project revision. A mesh is not required."
+        }
+      },
+      {
+        "id": "scene:authoring.lens",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            },
+            "statementId": {
+              "type": "string"
+            },
+            "entityId": {
+              "type": "string"
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "statementId"
+              ]
+            },
+            {
+              "required": [
+                "entityId"
+              ]
+            }
+          ],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "获取一个 Authoring Entity 及其一跳上下游、公共契约、允许动作和源码修订号。",
+          "en": "Get a scoped edit lens with one-hop context, public contract, capabilities, and source revision."
+        }
+      },
+      {
+        "id": "scene:authoring.applyCommands",
+        "args": {
+          "type": "object",
+          "required": [
+            "expectedRevision",
+            "commands"
+          ],
+          "properties": {
+            "projectId": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            },
+            "expectedRevision": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "对 Edit Lens 范围内的 Authoring Entity 应用结构化命令；Agent 无法修改密封模板/组内部拓扑。",
+          "en": "Apply scoped Authoring Entity commands; sealed template/group internals are capability-protected."
+        }
+      },
+      {
+        "id": "scene:batteries.list",
+        "args": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "array"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【人类/Authoring】列出第一批 scene 电池。不向 AI 暴露。",
+          "en": "Human/authoring: first-batch scene battery catalog. Not exposed to AI."
+        }
+      },
+      {
+        "id": "scene:batteries.get",
+        "args": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【Authoring】读取任意 scene 电池定义。",
+          "en": "Authoring access to an individual scene battery specification."
+        }
+      },
+      {
+        "id": "scene:pipeline.get",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标 scene 项目 id；省略时使用 agent 已 open 的项目或 UI 当前 viewing 项目 / target scene project id; when omitted uses the agent's open project or the UI viewing project"
+            },
+            "raw": {
+              "type": "boolean",
+              "description": "true=返回完整 graph（含 params，体积大，仅 debug）；默认 false=轻量摘要 / true=full graph with params (large, debug only); default false=summary"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "hash",
+                "summary"
+              ],
+              "description": "AI 默认 hash=仅 hash+节点/边计数；传 groupId/nodeIds/nameContains/opIdIn 时返回局部拓扑。summary=非筛选全图摘要，仅排障时使用 / AI defaults to hash; selectors return local topology. summary is full graph summary for diagnosis only."
+            },
+            "groupId": {
+              "type": "string",
+              "description": "只返回该组及其邻接边（instantiate 后核对用）/ scope to group neighborhood after instantiate"
+            },
+            "nodeIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "只返回这些 node 及其邻接边 / scope to listed nodes and their edges"
+            },
+            "nameContains": {
+              "type": "string",
+              "description": "grep 式模糊过滤：按节点 name **或 id** 子串（大小写不敏感）匹配。instantiate 的组常共用电池名（如 PlaceOneDecoration），应用 id 前缀查（如 p1d_）。命中节点+邻接边，附 search.matchCount（0 命中时 nodes=[]，不回退全图）。可与 groupId/nodeIds 并集。 / Fuzzy filter on node name OR id (case-insensitive). Instantiated groups often share a battery name — search by groupId prefix (e.g. p1d_). Returns matches + adjacent edges and search.matchCount (0 → empty, never full-graph fallback)."
+            },
+            "opIdIn": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "2026-07-15 新增：按 opId 精确匹配任意一个（如 [\"tree_merge\"] 找所有 tree_merge 节点），行为同 nameContains（命中+邻接边，附带 search.matchCount）。 / 2026-07-15: exact match against any of the given opIds (e.g. [\"tree_merge\"] finds every tree_merge node); same behavior as nameContains (matches + adjacent edges, plus search.matchCount)."
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【Authoring/调试】读取 Runtime Graph 摘要或局部投影；Scene Script Agent 不使用。",
+          "en": "Authoring/debug access to Runtime Graph summaries or local projections; not used by the Scene Script Agent."
+        }
+      },
+      {
+        "id": "scene:pipeline.execute",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标 scene 项目 id；AI 须先 scene:projects.open / target project id; AI must scene:projects.open first"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "summary"
+              ],
+              "description": "AI 默认只返回 verification；summary 返回已有的详细轻量执行摘要，仅在验证失败后用于诊断。"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "执行 canonical Scene Project，默认返回有界验证结果；验证失败时可请求轻量摘要。",
+          "en": "Execute the canonical Scene Project and return bounded verification; request a compact summary after verification failure."
+        }
+      },
+      {
+        "id": "scene:pipeline.export",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标 scene 项目 id / target scene project id"
+            },
+            "name": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "导出当前 scene pipeline 模板",
+          "en": "Export the current scene pipeline template"
+        }
+      },
+      {
+        "id": "scene:baked.bakeFromExecute",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标 scene 项目 id；AI 须先 scene:projects.open / target project id; AI must scene:projects.open first"
+            },
+            "nodeId": {
+              "type": "string",
+              "description": "可选：只 bake 单个节点的输出，省略则整图 execute / optional: bake only one node's output; omitted executes the whole graph"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【UI/CLI】执行场景并生成 baked 快照。",
+          "en": "UI/CLI: execute the scene and produce a baked snapshot."
+        }
+      },
+      {
+        "id": "scene:sceneExport.cook",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标 scene 项目 id / target scene project id"
+            },
+            "sceneName": {
+              "type": "string",
+              "description": "场景名，用于生成 bundleId / scene name, used to derive the bundle id"
+            },
+            "allowMissingAssets": {
+              "type": "boolean",
+              "description": "缺失素材时是否仍打包（默认 false 会因缺资产报错）/ whether to still package when assets are missing (default false errors out)"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【UI/CLI】将 baked 图层打包为 scene.zip。",
+          "en": "UI/CLI: package baked layers into scene.zip."
+        }
+      },
+      {
+        "id": "scene:mesh3dExport.cook",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标 scene 项目 id / target scene project id"
+            },
+            "sceneName": {
+              "type": "string",
+              "description": "场景显示名，写入 meta.json / scene display name written into meta.json"
+            },
+            "sceneId": {
+              "type": "string",
+              "description": "导出目录名；默认用 projectId / export folder id; defaults to projectId"
+            },
+            "gameSlug": {
+              "type": "string",
+              "description": "目标 game slug（推荐显式传入）；省略则用项目绑定的 gameSlug / target game slug (prefer explicit); falls back to project.gameSlug"
+            },
+            "allowMissingAssets": {
+              "type": "boolean",
+              "description": "缺失 3D 材质/模型时是否仍写出（默认 false）/ whether to still write when 3D packs are missing (default false)"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【编排/UI/CLI】baked 3DMesh 导出到 .forgeax/games/<slug>/assets/3d/scenes/scene-generator/<sceneId>/（meta.json + materials/ + models/）。非 scene.zip。",
+          "en": "Orchestration/UI/CLI: export baked 3DMesh to .forgeax/games/<slug>/assets/3d/scenes/scene-generator/<sceneId>/ (meta.json + materials/ + models/). Not scene.zip."
+        }
+      },
+      {
+        "id": "scene:export.glb",
+        "args": {
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "目标场景项目 ID（可选，默认使用当前打开/正在查看的项目）"
+            },
+            "name": {
+              "type": "string",
+              "description": "导出的 GLB 文件名（不含 .glb 后缀，例如 'mountain-terrain' 或 'zhangjiajie-landscape'，默认使用项目名）"
+            },
+            "gameSlug": {
+              "type": "string",
+              "description": "目标游戏 slug（可选，默认使用当前活跃游戏，如 'multi-region'）"
+            },
+            "destDir": {
+              "type": "string",
+              "description": "游戏资产目录下的相对子路径（可选，默认 'assets/3d'，也可设为 'assets' 或 'assets/models'）"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "将当前场景的 3D 地形与模型网格（SceneMesh）一键烘焙并导出为标准 glTF 2.0 二进制文件（.glb），直接落盘至游戏资产目录（默认 assets/3d/<name>.glb），用于游戏集成与复用。",
+          "en": "Bake and export the current scene's 3D terrain and mesh nodes to a standard glTF 2.0 Binary file (.glb), writing directly to the game assets directory (default assets/3d/<name>.glb) for game integration and reuse."
+        }
+      },
+      {
+        "id": "scene:assets.list",
+        "args": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "suffix": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "列出 scene 项目文件系统素材（<workspaceRoot>/assets，非私有库；查发布进库的私有资产用 scene:library.list）",
+          "en": "List scene project filesystem assets (<workspaceRoot>/assets — NOT the private library; use scene:library.list to see published private assets)"
+        }
+      },
+      {
+        "id": "scene:library.list",
+        "args": {
+          "type": "object",
+          "properties": {
+            "zone": {
+              "type": "string",
+              "description": "default 'raw' (publish-bridge landing zone)"
+            },
+            "search": {
+              "type": "string"
+            },
+            "page": {
+              "type": "number"
+            },
+            "pageSize": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "列出可用于当前 Scene Project 的内置与项目私有资产。",
+          "en": "List built-in and project-private assets available to the current Scene Project."
+        }
+      },
+      {
+        "id": "scene:library.useGameTextures",
+        "args": {
+          "type": "object",
+          "required": [
+            "gameSlug"
+          ],
+          "properties": {
+            "gameSlug": {
+              "type": "string",
+              "description": "目标游戏 slug（绑定 <projectRoot>/.forgeax/games/<gameSlug>/textures/ 作为资产源）"
+            },
+            "projectRoot": {
+              "type": "string",
+              "description": "场景侧 host 项目根（默认=本工具 cwd）。返回 dir 供反推后传给 asset2d:publishToGame 的 projectRoot。"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【Authoring】将指定游戏纹理目录绑定为当前场景的资产源。",
+          "en": "Authoring: bind a game texture directory as an asset source for the current scene."
+        }
+      },
+      {
+        "id": "scene:library.publishExternal",
+        "args": {
+          "type": "object",
+          "required": [
+            "assetName",
+            "assetType"
+          ],
+          "properties": {
+            "assetName": {
+              "type": "string",
+              "description": "field4 语义名 / item-name the renderer matches on"
+            },
+            "assetType": {
+              "type": "string",
+              "enum": [
+                "tile",
+                "object"
+              ]
+            },
+            "dataBase64": {
+              "type": "string",
+              "description": "base64 PNG 字节。"
+            },
+            "autotileKind": {
+              "type": "string",
+              "description": "autotile rule alias, required for tile (e.g. common_16)"
+            },
+            "sourceBlobId": {
+              "type": "string",
+              "description": "provenance / idempotency key"
+            },
+            "anchorX": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "anchorY": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "geometryJson": {
+              "type": "string"
+            },
+            "extraFields": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "【兼容工具，不向 Agent 开放】将外部纹理写入项目私有资产库。",
+          "en": "Compatibility tool, not exposed to Agents: write an external texture to the project's private asset library."
+        }
+      },
+      {
+        "id": "scene:screenshot.capture",
+        "args": {
+          "type": "object",
+          "properties": {
+            "timeout": {
+              "type": "number",
+              "minimum": 1000,
+              "maximum": 15000
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "请求 Renderer 截图并返回有界的本地图片引用（可选视觉辅助；用户可在 UI 右键禁用。若返回 disabled 状态，请直接基于结构化数据与 scene:script.verify 验收交付，切勿重试或使用外部工具）。",
+          "en": "Request a Renderer capture for optional visual evidence (toggleable in UI). When disabled, deliver directly using structural verification without retrying."
+        }
+      },
+      {
+        "id": "scene:screenshot.latest",
+        "args": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "读取最近一次 Renderer 截图的有界本地图片引用。",
+          "en": "Read the bounded local image reference for the latest Renderer capture."
+        }
+      },
+      {
+        "id": "scene:screenshot.store",
+        "args": {
+          "type": "object",
+          "required": [
+            "captureId",
+            "dataUrl",
+            "width",
+            "height"
+          ],
+          "properties": {
+            "captureId": {
+              "type": "string"
+            },
+            "dataUrl": {
+              "type": "string"
+            },
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": false,
+        "description": {
+          "zh": "渲染器回写截图数据（内部）",
+          "en": "Renderer callback to store screenshot data"
+        }
+      },
+      {
+        "id": "scene:renderer.info",
+        "args": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "读取 scene 渲染器控制能力",
+          "en": "Read scene renderer control capabilities"
+        }
+      },
+      {
+        "id": "scene:renderer.setViewMode",
+        "args": {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "设置 scene 预览视角",
+          "en": "Set the scene preview view mode"
+        }
+      },
+      {
+        "id": "scene:renderer.selectLayer",
+        "args": {
+          "type": "object",
+          "properties": {
+            "layerKey": {
+              "type": "string"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "nodePath": {
+              "type": "string"
+            },
+            "portName": {
+              "type": "string"
+            },
+            "subLayerValue": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "选择 scene 预览层",
+          "en": "Select a scene preview layer"
+        }
+      },
+      {
+        "id": "scene:renderer.openAllSubLayers",
+        "args": {
+          "type": "object",
+          "properties": {
+            "nodeId": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object"
+        },
+        "exposedToAI": true,
+        "description": {
+          "zh": "展开 scene 预览子层",
+          "en": "Open scene preview sub-layers"
+        }
+      }
+    ],
+    "surfaces": [
+      {
+        "id": "scene-generator.projects",
+        "actions": [
+          {
+            "id": "list",
+            "exposedToAI": true
+          },
+          {
+            "id": "create",
+            "exposedToAI": true
+          },
+          {
+            "id": "open",
+            "exposedToAI": true
+          },
+          {
+            "id": "remove",
+            "exposedToAI": true,
+            "requireConfirm": "destructive"
+          }
+        ]
+      },
+      {
+        "id": "scene-generator.pipeline",
+        "actions": [
+          {
+            "id": "execute",
+            "exposedToAI": true
+          }
+        ]
+      },
+      {
+        "id": "scene-generator.preview",
+        "actions": [
+          {
+            "id": "renderer.info",
+            "exposedToAI": true
+          },
+          {
+            "id": "renderer.setViewMode",
+            "exposedToAI": true
+          },
+          {
+            "id": "renderer.selectLayer",
+            "exposedToAI": true
+          },
+          {
+            "id": "renderer.openAllSubLayers",
+            "exposedToAI": true
+          },
+          {
+            "id": "assets.list",
+            "exposedToAI": true
+          }
+        ]
+      }
+    ],
+    "agents": [
+      {
+        "id": "sino",
+        "role": "scene",
+        "card": {
+          "name": {
+            "zh": "Sino",
+            "en": "Sino"
+          },
+          "cnTitle": "场景设计师",
+          "enTitle": "Scene Designer",
+          "color": "#E5A04C",
+          "avatar": "🏙️"
+        },
+        "personaFile": "./agents/sino/persona/zh.md",
+        "produces": [
+          "**/*.scene.ts",
+          "**/*.generator.ts",
+          "**/*.generator-lib.ts",
+          "**/components/*.scene.ts",
+          "**/looks/*.material.ts"
+        ],
+        "preferredCliProvider": "forgeax-native",
+        "defaultLang": "zh",
+        "multiInstance": false,
+        "tools": [
+          "scene:projects.list",
+          "scene:projects.create",
+          "scene:projects.open",
+          "scene:projects.close",
+          "scene:script.get",
+          "scene:script.draft",
+          "scene:script.commitProject",
+          "scene:script.verify",
+          "scene:authoring.lens",
+          "scene:authoring.applyCommands",
+          "scene:renderer.info",
+          "scene:renderer.setViewMode",
+          "scene:renderer.selectLayer",
+          "scene:renderer.openAllSubLayers",
+          "scene:screenshot.capture",
+          "scene:screenshot.latest",
+          "scene:export.glb"
+        ],
+        "defaultSkills": [
+          {
+            "source": "inline",
+            "skillId": "compose-scene-script"
+          }
+        ]
+      }
+    ]
+  }
+}

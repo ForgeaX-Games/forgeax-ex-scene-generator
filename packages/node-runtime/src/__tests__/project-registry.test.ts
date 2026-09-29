@@ -144,6 +144,25 @@ describe('ProjectRegistry — backfill', () => {
 })
 
 describe('ProjectRegistry — lifecycle + activate swap', () => {
+  it('releases closed runtimes without deleting persisted graphs, and protects active readers',async()=>{
+    const reg=makeRegistry();reg.init()
+    const a=await reg.createProject({name:'Large scene'})
+    const rt=reg.getRuntimeFor(a.id),dispose=vi.spyOn(rt,'dispose')
+    await applyBatch(rt,[{type:'createNode',nodeId:'kept',opId:'demo.a',position:{x:0,y:0},params:{}}])
+    const caller={kind:'ai' as const,agentId:'author'}
+    reg.openProject(a.id,caller)
+    expect(reg.releaseIdleRuntime(a.id)).toBe(false)
+    reg.detachProject(a.id,caller)
+    reg.viewProject(a.id)
+    expect(reg.releaseIdleRuntime(a.id)).toBe(false)
+    reg.viewProject('main')
+    expect(reg.releaseIdleRuntime(a.id)).toBe(true)
+    expect(dispose).toHaveBeenCalledOnce()
+    const fresh=reg.getRuntimeFor(a.id)
+    expect(fresh).not.toBe(rt)
+    expect(getPipeline(fresh)?.nodes.kept).toBeDefined()
+    reg.dispose()
+  })
   it('create → list → activate → delete, with isolated graphs per project', async () => {
     const reg = makeRegistry()
     reg.init()
@@ -322,7 +341,7 @@ describe('ProjectRegistry — exclusive per-agent lock', () => {
     expect(reg.checkMutationAccess(p.id, ai('A'))).toEqual({ ok: true })
     expect(reg.checkMutationAccess(p.id, ai('B')).ok).toBe(false)
     // Humans always pass regardless of who holds it.
-    expect(reg.checkMutationAccess(p.id, { kind: 'workbench' })).toEqual({ ok: true })
+    expect(reg.checkMutationAccess(p.id, { kind: 'extension' })).toEqual({ ok: true })
   })
 
   it('checkMutationAccess surfaces machine-readable codes (recoverable vs conflict)', async () => {
@@ -548,7 +567,7 @@ describe('ProjectRegistry — lock lease + FIFO wait queue', () => {
     const b = await reg.createProject({ name: 'B' })
 
     reg.claimWriteAccess(a.id, ai('A'))
-    expect(reg.forceUnlockProject(a.id, { kind: 'workbench' })).toEqual({ ok: true })
+    expect(reg.forceUnlockProject(a.id, { kind: 'extension' })).toEqual({ ok: true })
 
     expect(reg.getProjectLock(a.id)).toBeNull()
     expect(reg.getAgentOpenProjectId(ai('A'))).toBeNull()
@@ -701,7 +720,7 @@ describe('ProjectRegistry — lock lease + FIFO wait queue', () => {
     expect((deniedForAi as { code: string }).code).toBe('force-unlock-denied')
     expect(reg.getProjectLock(p.id)?.agentId).toBe('A') // unchanged
 
-    expect(reg.forceUnlockProject(p.id, { kind: 'workbench' })).toEqual({ ok: true })
+    expect(reg.forceUnlockProject(p.id, { kind: 'extension' })).toEqual({ ok: true })
     expect(reg.getProjectLock(p.id)).toBeNull()
     expect(reg.getProjectQueue(p.id)).toEqual([])
 

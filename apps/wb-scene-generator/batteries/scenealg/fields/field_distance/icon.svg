@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Field distance battery">
-  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
-  <circle cx="12" cy="12" r="7.5" fill="none" stroke="#2c4339" stroke-width="1.3"/>
-  <circle cx="12" cy="12" r="5" fill="none" stroke="#4f6f63" stroke-width="1.3"/>
-  <circle cx="12" cy="12" r="2.5" fill="none" stroke="#95aa9f" stroke-width="1.3"/>
-  <circle cx="12" cy="12" r="1.4" fill="#b7ff5a"/>
-</svg>

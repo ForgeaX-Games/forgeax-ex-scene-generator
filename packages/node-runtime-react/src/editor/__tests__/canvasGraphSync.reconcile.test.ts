@@ -11,6 +11,7 @@ import { describe, expect, it } from 'vitest'
 import type { Node, Edge } from '../xyflow.js'
 
 import {
+  decideCanvasOpenFit,
   reconcileCanvasNodes,
   reconcileCanvasEdges,
 } from '../components/canvas/useCanvasGraphSync.js'
@@ -119,5 +120,52 @@ describe('reconcileCanvasEdges', () => {
     const prev = [edge('e1', 'n1', 'n2')]
     const built = [edge('e1', 'n1', 'n2')]
     expect(reconcileCanvasEdges(prev, built)).toBe(prev)
+  })
+})
+
+describe('decideCanvasOpenFit', () => {
+  it('does not zoom onto a battery dropped onto an empty canvas', () => {
+    expect(decideCanvasOpenFit({
+      prevIds: new Set(),
+      builtIds: ['n1'],
+      openFitDone: true,
+    })).toEqual({ wholesaleReplace: false, needsOpenFit: false, markEmptyShown: false })
+    expect(decideCanvasOpenFit({
+      prevIds: new Set(),
+      builtIds: ['n1'],
+      openFitDone: false,
+    }).needsOpenFit).toBe(false)
+  })
+
+  it('marks an empty canvas as already shown so a later drop keeps the viewport', () => {
+    expect(decideCanvasOpenFit({
+      prevIds: new Set(),
+      builtIds: [],
+      openFitDone: false,
+    })).toEqual({ wholesaleReplace: false, needsOpenFit: false, markEmptyShown: true })
+  })
+
+  it('open-fits a cold-open graph that already has several nodes', () => {
+    expect(decideCanvasOpenFit({
+      prevIds: new Set(),
+      builtIds: ['n1', 'n2'],
+      openFitDone: false,
+    }).needsOpenFit).toBe(true)
+  })
+
+  it('open-fits a wholesale project switch and ignores synthetic ids', () => {
+    expect(decideCanvasOpenFit({
+      prevIds: new Set(['a1', 'a2', '__bake__']),
+      builtIds: ['b1', 'b2', '__bake__'],
+      openFitDone: true,
+    })).toMatchObject({ wholesaleReplace: true, needsOpenFit: true })
+  })
+
+  it('does not open-fit an incremental add onto an existing graph', () => {
+    expect(decideCanvasOpenFit({
+      prevIds: new Set(['n1']),
+      builtIds: ['n1', 'n2'],
+      openFitDone: true,
+    })).toMatchObject({ wholesaleReplace: false, needsOpenFit: false })
   })
 })

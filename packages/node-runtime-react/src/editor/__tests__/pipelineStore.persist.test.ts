@@ -12,10 +12,11 @@ import type {
 } from '@forgeax/node-runtime'
 
 import { configureEditorTransport, createEditorTransport, type EditorTransport } from '../transport/index.js'
+import { enqueueParamWrite, flushPendingPersist } from '../stores/pipelinePersist.js'
 import { usePipelineStore } from '../stores/pipelineStore.js'
 import type { Pipeline } from '../types.js'
 
-function makePipeline(nodes: Array<{ id: string; batteryId?: string }>): Pipeline {
+function makePipeline(nodes: Array<{ id: string; batteryId?: string; params?: Record<string, unknown> }>): Pipeline {
   const now = '1970-01-01T00:00:00.000Z'
   return {
     id: 'persist-race',
@@ -26,7 +27,7 @@ function makePipeline(nodes: Array<{ id: string; batteryId?: string }>): Pipelin
       batteryId: node.batteryId ?? 'a.one',
       name: node.id,
       position: { x: index * 100, y: 0 },
-      params: {},
+      params: node.params ?? {},
     })),
     edges: [],
     viewport: { x: 0, y: 0, zoom: 1 },
@@ -131,11 +132,15 @@ function createSimpleClient() {
     ['n2', { id: 'n2', opId: 'a.one', name: 'n2', position: { x: 100, y: 0 }, params: {} }],
   ])
   let hash = 'h0'
-  const applyBatch = vi.fn(async (ops: readonly Op[]): Promise<ApplyBatchResult> => {
+  const applyBatch = vi.fn(async (ops: readonly Op[], _opts?: ApplyBatchOptions): Promise<ApplyBatchResult> => {
     for (const op of ops) {
       if (op.type === 'deleteNode') nodes.delete(op.nodeId)
       if (op.type === 'createNode') {
         nodes.set(op.nodeId, { id: op.nodeId, opId: op.opId, name: op.name, position: op.position, params: { ...op.params } })
+      }
+      if (op.type === 'updateNode' && op.params) {
+        const node = nodes.get(op.nodeId)
+        if (node) node.params = { ...node.params, ...op.params }
       }
     }
     hash = `h${applyBatch.mock.calls.length}`
@@ -237,7 +242,7 @@ describe('pipelineStore persist ordering', () => {
     unsubscribe()
   })
 
-  // Opening the workbench over plain http on a LAN address (http://<host>:9555)
+  // Opening the authoring over plain http on a LAN address (http://<host>:9555)
   // is NOT a secure context, so crypto.randomUUID is undefined there. It was
   // called on the first line of every persist, so the whole save+execute chain
   // threw before a single request went out.
@@ -282,5 +287,91 @@ describe('pipelineStore persist ordering', () => {
     expect(errorSpy).toHaveBeenCalled()
     expect(usePipelineStore.getState().logs.some((l) => l.includes('保存失败'))).toBe(true)
     errorSpy.mockRestore()
+  })
+
+  it('reloads the kernel snapshot when persist is rejected so optimistic nodes do not survive', async () => {
+    const sim = createSimpleClient()
+    const err = Object.assign(new Error('Legacy Runtime Graph projects are read-only'), { status: 409 })
+    sim.applyBatch.mockRejectedValueOnce(err)
+    transport = createEditorTransport(sim.client)
+    configureEditorTransport(transport)
+    usePipelineStore.setState({ currentPipeline: makePipeline([{ id: 'n1' }, { id: 'n2' }]), logs: [] })
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    usePipelineStore.getState().addNode({
+      id: 'orphan',
+      batteryId: 'base_plane',
+      name: 'BasePlane',
+      position: { x: 120, y: 80 },
+      params: {},
+    })
+    expect(usePipelineStore.getState().currentPipeline?.nodes.map((n) => n.id)).toContain('orphan')
+    await usePipelineStore.getState().persistSession()
+    await vi.waitFor(() => {
+      expect(usePipelineStore.getState().currentPipeline?.nodes.map((n) => n.id)).not.toContain('orphan')
+    })
+    errorSpy.mockRestore()
+  })
+
+  it('commits a slider value after ephemeral ticks even when the kernel already has it', async () => {
+    const sim = createSimpleClient()
+    transport = createEditorTransport(sim.client)
+    configureEditorTransport(transport)
+    usePipelineStore.setState({
+      currentPipeline: makePipeline([{
+        id: 'n1',
+        params: { value: 48, min: 0, max: 96, precision: 0, __sceneScriptFunctionName: 'numberValue' },
+      }, { id: 'n2' }]),
+    })
+
+    await enqueueParamWrite('n1', {
+      value: 48,
+      min: 0,
+      max: 96,
+      precision: 0,
+      __sceneScriptFunctionName: 'numberValue',
+    })
+    await usePipelineStore.getState().persistSession()
+
+    const durable = sim.applyBatch.mock.calls.find(([, opts]) => !opts?.ephemeral)
+    expect(durable?.[0]?.[0]).toEqual({ type: 'updateNode', nodeId: 'n1', params: { value: 48 } })
+    expect(JSON.stringify(durable?.[0])).not.toContain('numberValue')
+    expect(JSON.stringify(durable?.[0])).not.toMatch(/"min":/)
+  })
+
+  it('param-edit-settle persist sends only extraOps, not a whole-graph diff', async () => {
+    const sim = createSimpleClient()
+    const getPipeline = vi.spyOn(sim.client, 'getPipeline')
+    transport = createEditorTransport(sim.client)
+    configureEditorTransport(transport)
+    usePipelineStore.setState({
+      currentPipeline: makePipeline([{
+        id: 'n1',
+        params: { value: 48, min: 0, max: 96, precision: 0, leaked: true },
+      }, { id: 'n2', params: { value: 1, min: 0, max: 2 } }]),
+    })
+
+    await enqueueParamWrite('n1', {
+      value: 48,
+      min: 0,
+      max: 96,
+      precision: 0,
+      __sceneScriptFunctionName: 'numberValue',
+    })
+    getPipeline.mockClear()
+    sim.applyBatch.mockClear()
+
+    usePipelineStore.getState().schedulePersistSession('param-edit-settle')
+    flushPendingPersist('test')
+    await vi.waitFor(() => expect(sim.applyBatch).toHaveBeenCalled())
+
+    expect(getPipeline).not.toHaveBeenCalled()
+    expect(sim.applyBatch).toHaveBeenCalledTimes(1)
+    expect(sim.applyBatch.mock.calls[0]?.[0]).toEqual([
+      { type: 'updateNode', nodeId: 'n1', params: { value: 48 } },
+    ])
+    expect(sim.applyBatch.mock.calls[0]?.[1]?.ephemeral).toBeUndefined()
+    expect(JSON.stringify(sim.applyBatch.mock.calls[0]?.[0])).not.toContain('leaked')
+    expect(JSON.stringify(sim.applyBatch.mock.calls[0]?.[0])).not.toContain('n2')
   })
 })

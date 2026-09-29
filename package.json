@@ -1,12 +1,12 @@
 {
   "name": "@forgeax-extension/scene-generator",
-  "version": "0.2.5",
+  "version": "0.4.3",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ForgeaX-Games/forgeax-ex-scene-generator.git"
   },
-  "description": "Scene Generator monorepo: shared runtime kernel plus composition, 3D model, and 2D asset generation modules",
+  "description": "Scene Generator monorepo: shared runtime kernel plus Scene Script composition",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=20.19"
@@ -18,30 +18,48 @@
     "apps/*/backend",
     "apps/*/frontend"
   ],
+  "trustedDependencies": [
+    "better-sqlite3"
+  ],
   "scripts": {
-    "build:packages": "bun run --filter @forgeax/node-runtime build && bun run --filter @forgeax/i18n build && bun run --filter @forgeax/scene-authoring build && bun run --filter @forgeax/node-runtime-react build && bun run --filter @forgeax/editor-host build && bun run --filter @forgeax/node-runtime-cli build && bun run --filter @forgeax/project-generator build",
+    "prepare": "bun run build:packages",
+    "build:packages": "bun run --filter @forgeax/node-runtime build && bun run --filter @forgeax/i18n build && bun run --filter @forgeax/scene-authoring build && bun run --filter @forgeax/scene build && bun run --filter @forgeax/node-runtime-react build && bun run --filter @forgeax/project-generator build",
     "build": "bun run build:packages && bun run --filter './apps/*/backend' --if-present build && bun run --filter './apps/*/frontend' --if-present build",
     "build:vendor": "bun run --filter './apps/*/backend' --if-present build:vendor",
+    "dev": "node apps/composition/scripts/dev.mjs",
+    "serve": "node apps/composition/scripts/serve-dist.mjs",
     "build:release": "node scripts/build-standalone-releases.mjs",
     "check:release": "node scripts/check-standalone-releases.mjs",
     "verify:release": "node scripts/verify-standalone-releases.mjs",
-    "test:packaging": "node --test scripts/standalone-plugin-dependencies.test.mjs scripts/ensure-workspace-packages.test.mjs scripts/release-tools.test.mjs",
+    "test:packaging": "node --test scripts/standalone-plugin-dependencies.test.mjs scripts/ensure-workspace-packages.test.mjs scripts/runtime-identity.test.mjs scripts/release-tool-schemas.test.mjs scripts/stage-release-package.test.mjs scripts/generate-manifests.test.mjs scripts/release-tools.test.mjs scripts/packaged-resource-roots.test.mjs",
+    "generate:manifests": "node scripts/generate-manifests.mjs",
     "test:headless-renderer": "node --test scripts/headless-renderer-routing.test.mjs scripts/headless-renderer-core.test.mjs",
-    "test:cold-start": "node --test --test-timeout=90000 scripts/cold-start-health.test.mjs",
+    "test:project-files": "node --test scripts/project-file-tree.test.mjs",
+    "test:cold-start": "bun run build:extension && node --test --test-timeout=90000 scripts/cold-start-health.test.mjs",
     "test": "bun run --workspaces --sequential --if-present test",
     "lint": "bun run --workspaces --sequential --if-present lint",
-    "verify:scene-script": "bun run --cwd apps/wb-scene-generator verify:scene-script",
+    "verify:scene-script": "bun run --cwd apps/composition verify:scene-script",
     "pretypecheck": "bun run --filter './packages/**' --if-present build && bun run build:vendor",
     "typecheck": "bun run --workspaces --sequential --if-present typecheck",
-    "clean": "bun run --workspaces --sequential --if-present clean && rm -rf node_modules"
+    "clean": "bun run --workspaces --sequential --if-present clean && rm -rf node_modules",
+    "pack:scene": "bun apps/composition/backend/src/pack-export/cli.ts",
+    "pack:rebuild": "bun apps/composition/backend/src/pack-export/rebuild-cli.ts",
+    "build:extension": "bun build.mjs",
+    "test:extension": "tsc -p extensions/scene-generator/tsconfig.json && bun run build:extension && node --test extensions/scene-generator/test/*.test.mjs"
   },
   "devDependencies": {
+    "cross-spawn": "7.0.6",
+    "proper-lockfile": "4.1.2",
+    "@forgeax/game": "0.3.9",
+    "@forgeax/engine": "0.2.1",
+    "playwright": "1.60.0",
     "typescript": "^5.6.0",
     "@types/node": "^20.0.0",
     "vitest": "^3.0.0",
     "eslint": "^9.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "@forgeax/scene-authoring": "workspace:*"
   }
 }

@@ -7,11 +7,10 @@
  * Built-in common data types. `list` / `array` are demoted to legacy spellings
  * and map to `any`; DataTree container semantics are expressed by port access.
  *
- * Note on `grid` / `point3d`: these read as domain-flavoured but are retained in
- * the core set for now. `grid` is produced/consumed by common batteries (e.g.
- * datatree grid panels), so it is genuinely common; `point3d` is a downsink
- * candidate to `domainPortTypes` once every plugin that emits it registers it via
- * the domain prop.
+ * Note on `grid` / `point3d`: `grid` stays in the core set because common
+ * batteries (datatree grid panels) emit it. Scene owns `point3d` as a Geometry
+ * subtype marker via `domainPortTypes` (`compatibleWith: ['geometry']`); the
+ * core spelling remains so leftover ports still resolve.
  */
 export type CorePortType =
   | 'number'
@@ -49,6 +48,7 @@ const TYPE_ALIASES: Readonly<Record<string, string>> = Object.freeze({
   boolean: 'bool',
   list: 'any',
   array: 'any',
+  json: 'dict',
 })
 
 /** Normalise an arbitrary type string to a canonical type. */
@@ -70,6 +70,7 @@ export const PORT_TYPE_COLORS: Record<string, string> = Object.freeze({
   grid: '#c084fc',
   dict: '#f472b6',
   image: '#2dd4bf',
+  geometry: '#22d3ee',
   point3d: '#a78bfa',
   object: '#94a3b8',
   any: '#e2e8f0',
@@ -148,7 +149,7 @@ export const CANONICAL_TYPE_META: readonly CanonicalTypeMeta[] = Object.freeze([
   { type: 'string', desc: '字符串', descEn: 'String', aliases: ['str'] },
   { type: 'bool', desc: '布尔', descEn: 'Boolean', aliases: ['boolean'] },
   { type: 'grid', desc: '二维网格', descEn: '2D Grid', aliases: [] },
-  { type: 'dict', desc: '字典', descEn: 'Dict', aliases: [] },
+  { type: 'dict', desc: '字典 / JSON', descEn: 'Dict / JSON', aliases: ['json'] },
   { type: 'image', desc: '图像', descEn: 'Image', aliases: [] },
   { type: 'point3d', desc: '三维点', descEn: 'Point3D', aliases: [] },
   { type: 'object', desc: '对象', descEn: 'Object', aliases: [] },

@@ -29,21 +29,8 @@ export {
   polylineLength,
   resamplePolyline,
   sampleHeight,
+  sdfPolygon2d,
   type Aabb,
   type HeightField,
   type Point,
 } from './geom.js'
-
-export type {
-  Mesh,
-  Parcel,
-  ParcelSet,
-  Placement,
-  PlacementSet,
-  Plane,
-  Region,
-  RegionSet,
-  RoadNetwork,
-  RoadSegment,
-  WorkGrid,
-} from './spatial.js'

@@ -6,6 +6,8 @@
 // Ported from the legacy editor (components/canvas/NumberSliderNode.tsx).
 import { memo, useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import ReactDOM from 'react-dom'
+// Subpath only: the `@forgeax/node-runtime` barrel pulls node:fs into the canvas.
+import { defaultNumberConstSlider } from '@forgeax/node-runtime/number-const-slider'
 import { Handle, Position } from '@xyflow/react'
 import type { NodeProps } from '../../xyflow.js'
 import { usePipelineStore, useUIStore, useHistoryStore } from '../../stores/index.js'
@@ -36,11 +38,13 @@ interface NumberSliderNodeData {
 
 function NumberSliderNode({ id, data, selected, dragging }: NodeProps<NumberSliderNodeData>) {
   const { params } = data
+  const paramValue = typeof params.value === 'number' ? params.value : 0
+  const inferred = defaultNumberConstSlider(paramValue)
 
-  const [value, setValue] = useState(typeof params.value === 'number' ? params.value : 0)
-  const [min, setMin] = useState(typeof params.min === 'number' ? params.min : 0)
-  const [max, setMax] = useState(typeof params.max === 'number' ? params.max : 100)
-  const [precision, setPrecision] = useState(typeof params.precision === 'number' ? params.precision : 0)
+  const [value, setValue] = useState(paramValue)
+  const [min, setMin] = useState(typeof params.min === 'number' ? params.min : inferred.min)
+  const [max, setMax] = useState(typeof params.max === 'number' ? params.max : inferred.max)
+  const [precision, setPrecision] = useState(typeof params.precision === 'number' ? params.precision : inferred.precision)
 
   // Double-click edit mode.
   const [isEditing, setIsEditing] = useState(false)
@@ -56,6 +60,7 @@ function NumberSliderNode({ id, data, selected, dragging }: NodeProps<NumberSlid
   const ctxMenuRef = useRef<HTMLDivElement>(null)
 
   const updateNodeParam = usePipelineStore((s) => s.updateNodeParam)
+  const schedulePersistSession = usePipelineStore((s) => s.schedulePersistSession)
   const edges     = usePipelineStore(s => s.currentPipeline?.edges ?? [])
   const pipeNodes = usePipelineStore(s => s.currentPipeline?.nodes ?? [])
   const batteries = usePipelineStore(s => s.batteries)
@@ -65,6 +70,33 @@ function NumberSliderNode({ id, data, selected, dragging }: NodeProps<NumberSlid
   const removeFavoriteBattery = useUIStore(s => s.removeFavoriteBattery)
   const { tooltip, showImmediate, showDelayed, hide, trackMouse } = useNodeTooltip(1000, 500, dragging)
   const { formatPortValue, formatPortValueExtra } = useNodeValueFormatters()
+
+  const rangeInitialized = useRef(typeof params.max === 'number')
+
+  // Script / kernel updates the value without remounting. Keep the chosen
+  // range and precision — only the displayed value tracks params.
+  useEffect(() => {
+    if (typeof params.value === 'number') setValue(params.value)
+    if (typeof params.min === 'number') setMin(params.min)
+    if (typeof params.max === 'number') setMax(params.max)
+    if (typeof params.precision === 'number') setPrecision(params.precision)
+  }, [params.value, params.min, params.max, params.precision])
+
+  useEffect(() => {
+    if (rangeInitialized.current || typeof params.max === 'number') {
+      rangeInitialized.current = true
+      return
+    }
+    const next = defaultNumberConstSlider(typeof params.value === 'number' ? params.value : 0)
+    setMin(typeof params.min === 'number' ? params.min : next.min)
+    setMax(next.max)
+    if (typeof params.precision !== 'number') setPrecision(next.precision)
+    if (typeof params.min !== 'number') updateNodeParam(id, 'min', next.min, true)
+    updateNodeParam(id, 'max', next.max, true)
+    if (typeof params.precision !== 'number') updateNodeParam(id, 'precision', next.precision, true)
+    rangeInitialized.current = true
+    schedulePersistSession('number-slider-range')
+  }, [id, params.max, params.min, params.precision, params.value, schedulePersistSession, updateNodeParam])
 
   // Round a value to the given precision.
   const roundTo = useCallback((v: number, p: number) => {
@@ -267,9 +299,11 @@ function NumberSliderNode({ id, data, selected, dragging }: NodeProps<NumberSlid
   }, [showCtxMenu])
 
   const fillPct = max > min ? Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100)) : 0
-  const displayValue = precision === 0
-    ? String(Math.round(value))
-    : value.toFixed(precision)
+  const displayValue = precision === 0 && Number.isInteger(value)
+    ? String(value)
+    : precision === 0
+      ? String(value)
+      : value.toFixed(precision)
 
   // Simplify the bound display (avoid overly long numbers).
   const fmtBound = (n: number) =>

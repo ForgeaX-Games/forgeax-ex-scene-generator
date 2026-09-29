@@ -417,6 +417,7 @@ export function resolveNodeTypeAndStyleFromStore(batteryId: string): { type: str
   const nodeType = resolveNodeType(battery)
   const specialStyles: Record<string, Record<string, number>> = {
     text_panel:   { width: DEFAULT_BATTERY_WIDTH, height: 150 },
+    json_panel:   { width: DEFAULT_BATTERY_WIDTH, height: 168 },
     ai_battery:   { width: DEFAULT_BATTERY_WIDTH },
     json_battery: { width: DEFAULT_BATTERY_WIDTH, height: 200 },
     battery:      { width: DEFAULT_BATTERY_WIDTH },

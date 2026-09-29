@@ -139,7 +139,7 @@ export type OpExecuteFn = (
  * Full op specification. Plugins build one of these for each op they expose
  * and call registerOp(spec) at boot.
  *
- * The id is plugin-namespaced (e.g. 'wb-scene.csg.union'). Once published it
+ * The id is plugin-namespaced (e.g. 'scene.csg.union'). Once published it
  * is permanent; renaming breaks every saved graph that references it.
  */
 export interface OpSpec {

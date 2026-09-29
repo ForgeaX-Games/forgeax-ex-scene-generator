@@ -6,7 +6,7 @@ import {
   type GeneratorDefinitionMeta,
   type GeneratorPortDescriptor,
 } from '../contracts/generator.js'
-import { isScenePortTypeName } from '../contracts/portTypes.js'
+import { isScenePortTypeName, normalizePortTypeName } from '../contracts/portTypes.js'
 import type { AtomicNodeFunctionContract, ScenePortTypeName } from '../model/types.js'
 
 export interface ParsedGeneratorExport {
@@ -31,7 +31,10 @@ function staticValue(node: ts.Expression): unknown {
     const value = staticValue(node.operand)
     if (typeof value === 'number') return -value
   }
-  if (ts.isIdentifier(node) && isScenePortTypeName(node.text)) return node.text
+  if (ts.isIdentifier(node)) {
+    const norm = normalizePortTypeName(node.text)
+    return norm ?? node.text
+  }
   if (ts.isArrayLiteralExpression(node)) return node.elements.map((item) => staticValue(item as ts.Expression))
   if (ts.isObjectLiteralExpression(node)) {
     const value: Record<string, unknown> = {}
@@ -57,18 +60,17 @@ function parsePortMap(value: unknown, field: 'inputs' | 'outputs'): Record<strin
   const ports: Record<string, GeneratorPortDescriptor> = {}
   for (const [name, raw] of Object.entries(value as Record<string, unknown>)) {
     if (typeof raw === 'string') {
-      if (!isScenePortTypeName(raw)) throw new TypeError(`Unknown Scene port type '${raw}'.`)
-      ports[name] = { type: raw }
+      const norm = normalizePortTypeName(raw) ?? (isScenePortTypeName(raw) ? raw : 'Any')
+      ports[name] = { type: norm }
       continue
     }
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
       throw new TypeError(`defineGenerator ${field}.${name} must be a type or static descriptor.`)
     }
     const descriptor = raw as Record<string, unknown>
-    const type = descriptor.type
-    if (typeof type !== 'string' || !isScenePortTypeName(type)) {
-      throw new TypeError(`defineGenerator ${field}.${name} requires a known identifier type.`)
-    }
+    const type = typeof descriptor.type === 'string'
+      ? (normalizePortTypeName(descriptor.type) ?? 'Any')
+      : 'Any'
     ports[name] = {
       type: type as ScenePortTypeName,
       ...(typeof descriptor.runtimeType === 'string' ? { runtimeType: descriptor.runtimeType } : {}),
@@ -88,6 +90,13 @@ function parsePortMap(value: unknown, field: 'inputs' | 'outputs'): Record<strin
     }
   }
   return ports
+}
+
+function toKebabCase(str: string): string {
+  return str
+    .replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2')
+    .toLowerCase()
+    .replace(/^-+/, '')
 }
 
 function parseDefineGeneratorCall(
@@ -114,25 +123,31 @@ function parseDefineGeneratorCall(
     }
     values.set(property.name.text, property.initializer)
   }
-  const id = values.get('id')
-  if (!id || !ts.isStringLiteral(id)) {
-    throw new TypeError('defineGenerator requires a string literal id.')
+  const idNode = values.get('id')
+  let id: string = toKebabCase(exportName)
+  if (idNode) {
+    if (ts.isStringLiteral(idNode) || ts.isNoSubstitutionTemplateLiteral(idNode)) {
+      id = idNode.text
+    } else {
+      throw new TypeError('defineGenerator id must be a string literal when provided.')
+    }
   }
   const versionNode = values.get('version')
-  if (versionNode && !ts.isStringLiteral(versionNode) && !ts.isNoSubstitutionTemplateLiteral(versionNode)) {
-    throw new TypeError('defineGenerator version must be a string literal when provided.')
+  let versionStr: string | undefined
+  if (versionNode) {
+    if (ts.isStringLiteral(versionNode) || ts.isNoSubstitutionTemplateLiteral(versionNode) || ts.isNumericLiteral(versionNode)) {
+      versionStr = versionNode.text
+    } else {
+      throw new TypeError('defineGenerator version must be a string or number literal when provided.')
+    }
   }
   if (!hasRun) {
     throw new TypeError('defineGenerator requires a run implementation.')
   }
   const description = values.get('description')
   const meta: GeneratorDefinitionMeta = {
-    id: id.text,
-    version: normalizeGeneratorVersion(
-      versionNode && (ts.isStringLiteral(versionNode) || ts.isNoSubstitutionTemplateLiteral(versionNode))
-        ? versionNode.text
-        : undefined,
-    ),
+    id,
+    version: normalizeGeneratorVersion(versionStr),
     ...(description && (ts.isStringLiteral(description) || ts.isNoSubstitutionTemplateLiteral(description))
       ? { description: description.text }
       : {}),

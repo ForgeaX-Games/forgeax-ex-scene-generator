@@ -27,7 +27,7 @@ export type AssetEvent =
 // `project:created` / `project:deleted` announce that the project *list* itself
 // changed (e.g. an agent created a project via the tool bridge) so other clients
 // can refetch — creation/deletion previously broadcast nothing, leaving sibling
-// panes (the workbench navigation) stale until a manual reload.
+// panes (the authoring navigation) stale until a manual reload.
 export type WorkspaceEvent =
   | { kind: 'project:viewing'; projectId: string; pipelineId: string; newHash: string }
   | { kind: 'project:executing'; projectId: string; pipelineId: string; agentId: string; sessionId?: string }

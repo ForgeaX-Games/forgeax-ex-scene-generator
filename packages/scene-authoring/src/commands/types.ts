@@ -20,6 +20,22 @@ export type AuthoringCommand =
       statementId?: string
     }
   | {
+      type: 'addLiteral'
+      moduleId?: string
+      file?: string
+      binding: string
+      value: string | number | boolean
+      afterStatementId?: string
+      statementId?: string
+    }
+  | {
+      type: 'updateLiteral'
+      moduleId?: string
+      file?: string
+      statementId: string
+      value: string | number | boolean
+    }
+  | {
       type: 'updateArguments'
       moduleId?: string
       file?: string

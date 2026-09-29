@@ -1,6 +1,6 @@
 /* Faithful editor layout — ported verbatim from the legacy editor App.css
    generic editor classes (.app / .editor-pane / .main-layout / .main-content
-   / .canvas-container). The embedded-workbench grid (AssetStore / Renderer /
+   / .canvas-container). The embedded-authoring grid (AssetStore / Renderer /
    Viewer iframes + their splitters + focus modes) is app/domain and lives in
    the consumer, so it is intentionally excluded here. */
 

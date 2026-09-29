@@ -327,6 +327,38 @@ body.bb-resizing {
   color: #fcd34d;
 }
 
+.bb-rail-button.tab-Basic { color: #fbbf24; }
+.bb-rail-button.tab-Basic:hover,
+.bb-rail-button.tab-Basic.active {
+  background-color: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #fcd34d;
+}
+
+.bb-rail-button.tab-Modeling { color: #22d3ee; }
+.bb-rail-button.tab-Modeling:hover,
+.bb-rail-button.tab-Modeling.active {
+  background-color: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.45);
+  color: #67e8f9;
+}
+
+.bb-rail-button.tab-Grid { color: #a3e635; }
+.bb-rail-button.tab-Grid:hover,
+.bb-rail-button.tab-Grid.active {
+  background-color: rgba(132, 204, 22, 0.16);
+  border-color: rgba(132, 204, 22, 0.45);
+  color: #bef264;
+}
+
+.bb-rail-button.tab-Scene { color: #f472b6; }
+.bb-rail-button.tab-Scene:hover,
+.bb-rail-button.tab-Scene.active {
+  background-color: rgba(236, 72, 153, 0.16);
+  border-color: rgba(236, 72, 153, 0.45);
+  color: #f9a8d4;
+}
+
 .bb-rail-button.tab-common { color: #c084fc; }
 .bb-rail-button.tab-common:hover,
 .bb-rail-button.tab-common.active {

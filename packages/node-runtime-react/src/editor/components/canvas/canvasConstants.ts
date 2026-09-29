@@ -24,6 +24,7 @@ import NumberSliderNode from './NumberSliderNode.js'
 import ToggleNode from './ToggleNode.js'
 import AINode from './AINode.js'
 import JsonNode from './JsonNode.js'
+import JsonPanelNode from './JsonPanelNode.js'
 import ImageReaderNode from './ImageReaderNode.js'
 import ImagePreviewNode from './ImagePreviewNode.js'
 import GroupBoundaryNode from './GroupBoundaryNode.js'
@@ -165,6 +166,7 @@ export const nodeTypes: NodeTypes = {
   battery: BatteryNode,
   relay: RelayNode,
   text_panel: TextPanelNode,
+  json_panel: JsonPanelNode,
   prompt: PromptNode,
   name_list_panel: NameListPanelNode,
   grid_panel: GridPanelNode,

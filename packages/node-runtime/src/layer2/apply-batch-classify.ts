@@ -2,6 +2,7 @@ import type { GraphFileV1 } from '../layer1/storage/types.js'
 import type { Position } from '../layer1/types/graph.js'
 import { GROUP_OP_ID } from './group-constants.js'
 import type { Op } from './apply-batch-types.js'
+import { isNumberConstSliderParamKey, NUMBER_CONST_OP_ID } from './number-const-slider.js'
 
 /** Legacy grid fallback when `autoLayoutNew: false` or before incremental layout runs. */
 export function autoNodePosition(graph: GraphFileV1): Position {
@@ -35,8 +36,10 @@ function paramsChangeIsPresentationOnly(
 ): boolean {
   const prev = before?.nodes?.[nodeId]?.params
   if (!prev) return false
-  for (const key of new Set([...Object.keys(prev), ...Object.keys(params)])) {
+  const numberConst = before?.nodes?.[nodeId]?.opId === NUMBER_CONST_OP_ID
+  for (const key of Object.keys(params)) {
     if (PRESENTATION_PARAM_KEYS.has(key)) continue
+    if (numberConst && isNumberConstSliderParamKey(key)) continue
     if (prev[key] === params[key]) continue
     if (JSON.stringify(prev[key] ?? null) !== JSON.stringify(params[key] ?? null)) return false
   }

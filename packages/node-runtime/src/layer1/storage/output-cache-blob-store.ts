@@ -1,9 +1,9 @@
 // Content-addressed blob store for large DataTree item fields — see
-// wb-scene-generator-scene-tree-storage.md. Lives under
+// scene-generator-scene-tree-storage.md. Lives under
 // `<outputsRoot>/_blobs/<sha256>.json.gz`, ONE instance per OutputCache (i.e.
 // per project), shared across every node/port. This is what lets
 // "same scene tree, N different focuses" (the `scene_focus_path` broadcast
-// pattern, see wb-scene-generator-project-switch.md §2.10) collapse to a
+// pattern, see scene-generator-project-switch.md §2.10) collapse to a
 // single stored copy regardless of which port/node/write() call first wrote
 // it — a strict superset of OutputCache's own `dedupeTopLevel` SharedRef
 // mechanism, which only catches same-write, same-reference (`===`) matches.

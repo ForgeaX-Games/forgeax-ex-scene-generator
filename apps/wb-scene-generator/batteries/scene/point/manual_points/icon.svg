@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Manual points battery">
-  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#1a1530" stroke="#6d5fb0" stroke-width="1.2"/>
-  <circle cx="7" cy="8" r="1.6" fill="#c4b5fd"/>
-  <circle cx="12.5" cy="13.5" r="1.6" fill="#c4b5fd"/>
-  <circle cx="16.5" cy="7.5" r="1.6" fill="#c4b5fd"/>
-  <path d="M5.5 17.5h13" stroke="#8b7fd0" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="0.2 2.4"/>
-  <text x="12" y="17.6" font-family="monospace" font-size="3.4" fill="#e9e3ff" text-anchor="middle">(x,y)</text>
-</svg>

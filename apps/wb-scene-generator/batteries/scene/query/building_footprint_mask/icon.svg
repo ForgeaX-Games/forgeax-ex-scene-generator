@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Building footprint mask battery">
-  <rect x="4.5" y="5.5" width="15" height="14" rx="1" fill="none" stroke="#95aa9f" stroke-width="1.2" stroke-dasharray="2 1.5"/>
-  <rect x="7" y="10" width="3" height="3" fill="#95aa9f" opacity="0.55"/>
-  <rect x="10" y="10" width="3" height="3" fill="#95aa9f" opacity="0.55"/>
-  <rect x="13" y="10" width="3" height="3" fill="#95aa9f" opacity="0.55"/>
-  <rect x="10" y="7" width="3" height="2" fill="#b7ff5a"/>
-  <path d="M6 20h12" fill="none" stroke="#95aa9f" stroke-width="1.2" stroke-linecap="round"/>
-</svg>

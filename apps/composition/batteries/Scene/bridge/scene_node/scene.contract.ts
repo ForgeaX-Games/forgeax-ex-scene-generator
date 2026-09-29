@@ -1,0 +1,66 @@
+import { defineAtomic } from '@forgeax/scene-authoring'
+
+export default defineAtomic({
+  functionName: "sceneNode",
+  contractVersion: "1.0.0",
+  opId: "scene_node",
+  label: "场景节点",
+  nameEn: "SceneNode",
+  description: "Hang Geometry as one SceneTree node. kind mesh or voxel. Optional structure / part annotate consuming modules (road pavement) so authoring can find them. Plane is operating geometry; grid is not scene content.",
+  inputs: [
+    {
+      name: "name",
+      type: "string",
+      access: "item",
+      required: true,
+      mode: "parameter",
+      label: "节点名",
+      description: "Node name (no '/').",
+    },
+    {
+      name: "geometry",
+      type: "geometry",
+      access: "item",
+      required: true,
+      label: "geometry",
+      description: "Geometry kind mesh or kind voxel ({ volume | cells }).",
+    },
+    {
+      name: "structure",
+      type: "string",
+      access: "item",
+      required: false,
+      mode: "parameter",
+      options: ["road"],
+      label: "结构",
+      description: "Authoring class so placement can find this hung mesh. road is a consuming module, not a Geometry kind. Unwritten stays unmarked.",
+    },
+    {
+      name: "part",
+      type: "string",
+      access: "item",
+      required: false,
+      mode: "parameter",
+      options: ["pavement", "shoulder", "girder", "pier"],
+      label: "构件",
+      description: "Which piece of the structure. pavement is the driving surface (one triangle-connected mesh for the whole network). shoulder / girder / pier are section, not extra pavements.",
+    },
+  ],
+  outputs: [
+    {
+      name: "scene",
+      type: "scene",
+      access: "item",
+      label: "scene",
+      description: "One-node SceneTree; focus is the new node. Feed into addChild.",
+    },
+    {
+      name: "schema",
+      type: "string",
+      access: "item",
+      label: "schema",
+      description: "mesh or voxel.",
+    },
+  ],
+  deterministic: true,
+})

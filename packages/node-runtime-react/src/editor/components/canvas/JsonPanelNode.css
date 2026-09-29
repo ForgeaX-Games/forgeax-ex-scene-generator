@@ -1,0 +1,101 @@
+.json-panel-node {
+  --node-color: #f472b6;
+  --node-rgb: 244, 114, 182;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(var(--node-rgb), 0.12);
+  border: 1px solid var(--node-color);
+  border-radius: 5px;
+  box-shadow: var(--shadow-lg),
+              inset 0 0 0 1px rgba(var(--node-rgb), 0.55),
+              0 0 16px rgba(var(--node-rgb), 0.18);
+  outline: 2px solid transparent;
+  overflow: hidden;
+  opacity: 0.92;
+}
+
+.json-panel-node.selected {
+  outline-color: var(--node-color);
+  box-shadow: var(--shadow-lg),
+              inset 0 0 0 2px rgba(var(--node-rgb), 0.9),
+              0 0 20px rgba(var(--node-rgb), 0.4);
+}
+
+.json-panel-node .react-flow__handle-right {
+  right: -5px;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.json-panel-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 8px 4px 10px;
+  background: rgba(var(--node-rgb), 0.12);
+  border-bottom: 1px solid rgba(var(--node-rgb), 0.22);
+}
+
+.json-panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.json-panel-badge {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: #f9a8d4;
+}
+
+.json-panel-node .bn-json-editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 8px 8px;
+}
+
+.json-panel-node .bn-json-editor-text {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  max-height: none;
+  box-sizing: border-box;
+  resize: none;
+  margin: 0;
+  padding: 6px 7px;
+  border: 1px solid rgba(244, 114, 182, 0.45);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--color-text-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
+
+.json-panel-node .bn-json-editor-text:focus {
+  outline: 1px solid #f472b6;
+}
+
+.json-panel-node .bn-json-editor-error {
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: #fca5a5;
+  overflow-wrap: anywhere;
+}
+
+.json-panel-resize-line,
+.json-panel-resize-handle {
+  border-color: rgba(244, 114, 182, 0.55);
+}

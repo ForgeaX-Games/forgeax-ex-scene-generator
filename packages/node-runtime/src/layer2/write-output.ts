@@ -1,21 +1,13 @@
-// Layer 2 — out-of-band single-port output write for manual-trigger ops.
+// Layer 2 — out-of-band single-port OutputCache write.
 //
-// Most node outputs are produced by the pipeline walker (execute-node.ts), which
-// caches each port's raw output value under outputs/<nodeId>/<portId>.json.
-// Manual-trigger ops (OpSpec.manualTrigger — e.g. the AI generators behind the
-// editor's Run button) are deliberately NEVER auto-run by the walker; the walker
-// treats them as data boundaries and hydrates downstream consumers from this
-// cache (see execute-node.ts). Their output therefore has to be produced by the
-// explicit user action (the Run button) and persisted here, so genuine
-// downstream consumers pick it up on the next incremental run WITHOUT the op
-// being re-fired.
+// Scene execution writes ports via runSceneModule → writeTraceOutputs. This
+// helper is the same cache contract for editor/tests that need to seed or
+// replace one port without walking the display graph.
 //
-// Cache contract (must match the walker): `data` holds the port value in the
-// SAME wire shape the executor's dispatcher produces — a DataTreeEntry[] array
-// (e.g. an item-access scalar is `[{ path: [0], items: [value] }]`). The walker
-// reads `entry.data` straight back and feeds it to the downstream op's
-// dispatcher (see resolve-inputs.ts), which peels item/list/tree access. Writing
-// a bare scalar here would break item-access consumers, so we wrap with DataTree.
+// Cache contract: `data` holds the port value in the dispatcher wire shape —
+// a DataTreeEntry[] array (an item-access scalar is
+// `[{ path: [0], items: [value] }]`). Writing a bare scalar would break
+// item-access consumers, so we wrap with DataTree.
 
 import { DataTree } from '../layer1/index.js'
 import { busFor } from './event-bus.js'

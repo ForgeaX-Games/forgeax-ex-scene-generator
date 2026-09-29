@@ -6,9 +6,7 @@ import { fileURLToPath } from 'node:url'
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const pluginApps = [
-  'wb-2d-scene-asset-generator',
-  'wb-3d-lowpoly',
-  'wb-scene-generator',
+  'composition',
 ]
 const forbiddenDependency = /^(?:file:|link:|workspace:|git\+)/u
 const dependencySections = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']

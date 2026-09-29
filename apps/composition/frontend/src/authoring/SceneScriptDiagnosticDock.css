@@ -1,0 +1,224 @@
+.scene-diagnostic-dock {
+  --diag-error: #fb7185;
+  --diag-error-rgb: 251, 113, 133;
+  --diag-warn: #fbbf24;
+  --diag-warn-rgb: 251, 191, 36;
+  --diag-rail: var(--bb-current-width, 56px);
+  --diag-minimap: 128px;
+  position: absolute;
+  left: calc(var(--diag-rail) + 12px);
+  right: var(--diag-minimap);
+  bottom: 12px;
+  z-index: 11;
+  box-sizing: border-box;
+  width: auto;
+  min-width: 0;
+  max-width: calc(100% - var(--diag-rail) - 24px);
+  max-height: min(240px, 34%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(var(--diag-error-rgb), 0.28);
+  border-radius: 10px;
+  background: rgba(16, 18, 22, 0.9);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-primary, #e6e8ef);
+  pointer-events: auto;
+  user-select: text;
+}
+
+.scene-authoring__authoring-layout.has-script:not(.is-script-expanded) .scene-diagnostic-dock {
+  right: calc(8px + var(--scene-script-panel-width, clamp(420px, 48%, 680px)) + 8px);
+}
+
+.scene-diagnostic-dock[data-tone='warning'] {
+  border-color: rgba(var(--diag-warn-rgb), 0.3);
+}
+
+.scene-diagnostic-dock__title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scene-diagnostic-dock__title strong {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-diagnostic-dock__counts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.scene-diagnostic-dock__counts span {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.scene-diagnostic-dock__counts [data-severity='error'] {
+  color: #ffe4e8;
+  background: rgba(var(--diag-error-rgb), 0.22);
+}
+
+.scene-diagnostic-dock__counts [data-severity='warning'] {
+  color: #fff4d4;
+  background: rgba(var(--diag-warn-rgb), 0.2);
+}
+
+.scene-diagnostic-dock ul {
+  margin: 0;
+  padding: 6px;
+  overflow: auto;
+  list-style: none;
+}
+
+.scene-diagnostic-dock li {
+  margin: 0 0 4px;
+}
+
+.scene-diagnostic-dock li:last-child {
+  margin-bottom: 0;
+}
+
+.scene-diagnostic-dock__item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+  padding: 7px 8px 8px 10px;
+  border-radius: 7px;
+  border-left: 3px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.scene-diagnostic-dock li[data-severity='error'] .scene-diagnostic-dock__item {
+  border-left-color: var(--diag-error);
+  background: rgba(var(--diag-error-rgb), 0.08);
+}
+
+.scene-diagnostic-dock li[data-severity='warning'] .scene-diagnostic-dock__item {
+  border-left-color: var(--diag-warn);
+  background: rgba(var(--diag-warn-rgb), 0.07);
+}
+
+.scene-diagnostic-dock__item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.scene-diagnostic-dock li[data-severity='error'] .scene-diagnostic-dock__item:hover {
+  background: rgba(var(--diag-error-rgb), 0.14);
+}
+
+.scene-diagnostic-dock li[data-severity='warning'] .scene-diagnostic-dock__item:hover {
+  background: rgba(var(--diag-warn-rgb), 0.12);
+}
+
+.scene-diagnostic-dock__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.scene-diagnostic-dock__severity {
+  flex: 0 0 auto;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+.scene-diagnostic-dock li[data-severity='error'] .scene-diagnostic-dock__severity {
+  color: #fff;
+  background: rgba(var(--diag-error-rgb), 0.85);
+}
+
+.scene-diagnostic-dock li[data-severity='warning'] .scene-diagnostic-dock__severity {
+  color: #2a2108;
+  background: var(--diag-warn);
+}
+
+.scene-diagnostic-dock code {
+  min-width: 0;
+  color: #f3d2b0;
+  font-size: 10px;
+  font-weight: 600;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.scene-diagnostic-dock__message {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #d7dbe6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic='error'] .battery-node {
+  --node-color: #fb7185;
+  --node-rgb: 251, 113, 133;
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic='warning'] .battery-node {
+  --node-color: #fbbf24;
+  --node-rgb: 251, 191, 36;
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic] .battery-node::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic='error'] .battery-node::before {
+  box-shadow:
+    0 0 0 1px rgba(251, 113, 133, 0.45),
+    0 0 22px rgba(251, 113, 133, 0.38);
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic='warning'] .battery-node::before {
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.4),
+    0 0 18px rgba(251, 191, 36, 0.3);
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic='error']:not(:has(.battery-node)) {
+  filter: drop-shadow(0 0 10px rgba(251, 113, 133, 0.5));
+}
+
+.scene-authoring__node-editor .react-flow__node[data-scene-diagnostic='warning']:not(:has(.battery-node)) {
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.42));
+}

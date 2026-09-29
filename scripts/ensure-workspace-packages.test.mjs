@@ -12,9 +12,7 @@ import {
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const apps = [
-  'wb-scene-generator',
-  'wb-3d-lowpoly',
-  'wb-2d-scene-asset-generator',
+  'composition',
 ]
 
 test('findMonorepoRoot walks up from each app directory', () => {
@@ -50,7 +48,7 @@ test('ensureWorkspacePackages from a nested temp app still uses the workspace ro
   const staging = mkdtempSync(join(tmpdir(), 'forgeax-ensure-ws-'))
   try {
     writeFileSync(join(staging, 'package.json'), JSON.stringify({ workspaces: ['packages/*'] }))
-    const appDir = join(staging, 'apps', 'wb-scene-generator', 'scripts')
+    const appDir = join(staging, 'apps', 'scene-generator', 'scripts')
     mkdirSync(appDir, { recursive: true })
     const calls = []
     ensureWorkspacePackages(appDir, {
@@ -71,7 +69,7 @@ test('ensureWorkspacePackages from a nested temp app still uses the workspace ro
 test('ensureWorkspacePackages throws when the filter fails and exit is disabled', () => {
   assert.throws(
     () =>
-      ensureWorkspacePackages(join(repoRoot, 'apps', 'wb-scene-generator'), {
+      ensureWorkspacePackages(join(repoRoot, 'apps', 'scene-generator'), {
         spawnSync: () => ({ status: 2 }),
         exit: false,
         stdio: 'pipe',

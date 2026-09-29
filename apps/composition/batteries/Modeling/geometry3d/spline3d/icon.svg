@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Spline 3D">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M6.4 16.4 C9 8.2, 15 16, 17.6 8.6" fill="none" stroke="#e7f5ee" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M6.4 16.4 V13.8 M17.6 8.6 V6.6" fill="none" stroke="#e7f5ee" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="6.4" cy="16.4" r="1.1" fill="#b7ff5a"/>
+  <circle cx="12" cy="11.8" r="1.1" fill="#b7ff5a"/>
+  <circle cx="17.6" cy="8.6" r="1.1" fill="#b7ff5a"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Surface band">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M5.6 16.4 L12 6.8 L18.4 16.4 Z" fill="none" stroke="#e7f5ee" stroke-width="1.3" stroke-linejoin="round"/>
+  <path d="M7.2 14.6 C9.4 13.4, 11.2 15.2, 12.8 14.2 C14.2 13.3, 15.4 14.8, 17 13.8" fill="none" stroke="#b7ff5a" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M7.2 14.6 C9.4 13.4, 11.2 15.2, 12.8 14.2 C14.2 13.3, 15.4 14.8, 17 13.8" fill="none" stroke="#10211d" stroke-width="0.7" stroke-linecap="round"/>
+</svg>

@@ -2,7 +2,7 @@
 // legacy editor layout EXACTLY: Toolbar (top) · BatteryBar (left) · Canvas
 // (center), inside the real `.app`/`.editor-pane`/`.main-layout`/
 // `.main-content`/`.canvas-container` structure. Node params are edited inline
-// on the nodes (as in legacy); the legacy app-level chrome (embedded-workbench
+// on the nodes (as in legacy); the legacy app-level chrome (embedded-authoring
 // iframes, projects modal) is NOT part of the generic editor — a consumer
 // injects domain bits via `domainNodeTypes` + `toolbarActions`.
 //
@@ -47,7 +47,7 @@ export interface EditorProps {
   /** App/domain status sections injected into the settings Status panel. */
   settingsStatusExtra?: ReactNode
   /**
-   * Workbench-fullscreen state + toggle, forwarded to the toolbar's faithful
+   * Authoring-fullscreen state + toggle, forwarded to the toolbar's faithful
    * Maximize2 / Minimize2 control. When omitted the fullscreen button is hidden.
    */
   isFullscreen?: boolean
@@ -57,7 +57,7 @@ export interface EditorProps {
   /**
    * Generic Open / Save handlers forwarded to the toolbar's settings menu.
    * The legacy editor's FolderOpen / save-dialog actions; a consumer wires
-   * these to the graph import / export flow (see scene-generator WorkbenchHost).
+   * these to the graph import / export flow (see scene-generator AuthoringHost).
    * The buttons only render when wired.
    */
   onOpen?: () => void
@@ -86,6 +86,11 @@ export interface EditorProps {
    */
   editorSyncKey?: string
   /**
+   * When set, only these op ids appear in the battery palette. Other catalog
+   * entries stay loaded for execution. Omit to show the full catalog.
+   */
+  paletteAllowOpIds?: readonly string[]
+  /**
    * App/domain handler for a canvas drop that carries no `application/battery`
    * payload — typically an asset dragged from an embedded panel in a sibling
    * iframe, whose native dataTransfer does not cross the boundary. Receives the
@@ -96,7 +101,7 @@ export interface EditorProps {
   onExternalDrop?: ExternalDropHandler
 }
 
-export function Editor({ apiClient, domainNodeTypes, domainPortTypes, domainValueFormatters, toolbarActions, settingsActions, settingsStatusExtra, isFullscreen, onToggleFullscreen, title, onOpen, onSave, showRunControl = true, statusBar, showSettingsButton = true, editorSyncKey, onExternalDrop }: EditorProps): JSX.Element {
+export function Editor({ apiClient, domainNodeTypes, domainPortTypes, domainValueFormatters, toolbarActions, settingsActions, settingsStatusExtra, isFullscreen, onToggleFullscreen, title, onOpen, onSave, showRunControl = true, statusBar, showSettingsButton = true, editorSyncKey, paletteAllowOpIds, onExternalDrop }: EditorProps): JSX.Element {
   useLayoutEffect(() => {
     const transport = createEditorTransport(apiClient)
     configureEditorTransport(transport)
@@ -121,7 +126,7 @@ export function Editor({ apiClient, domainNodeTypes, domainPortTypes, domainValu
     ui.setConnectionStatus('connecting')
     Promise.all([
       store.loadBatteries(),
-      // Hosted apps (scene-generator WorkbenchHost) run projectStore.bootstrap()
+      // Hosted apps (scene-generator AuthoringHost) run projectStore.bootstrap()
       // which switchProject → viewProject → loadPipeline → refreshConnectedOutputs
       // → autoExecuteOnOpen (see projectStore.ts refreshOutputsAfterProjectSwitch).
       // Avoid racing an early pull before viewProject sets the client routing id,
@@ -137,7 +142,7 @@ export function Editor({ apiClient, domainNodeTypes, domainPortTypes, domainValu
       // `nodeOutputs`, making `autoExecuteOnOpen()` see everything as "missing"
       // again and re-run the (potentially multi-second) pipeline a second time
       // for no reason. Observed in practice as two back-to-back full executions
-      // on the very first project open — see wb-scene-generator-project-switch.md
+      // on the very first project open — see scene-generator-project-switch.md
       // §2.13 / P0-8.
       (async (): Promise<boolean> => {
         if (useProjectStore.getState().viewingProjectId === null) {
@@ -227,7 +232,7 @@ export function Editor({ apiClient, domainNodeTypes, domainPortTypes, domainValu
               showSettingsButton={showSettingsButton}
             />
             <div className="main-layout">
-              <BatteryBar />
+              <BatteryBar paletteAllowOpIds={paletteAllowOpIds} />
               <div className="main-content">
                 <div className="canvas-container">
                   <Canvas domainNodeTypes={domainNodeTypes} domainPortTypes={domainPortTypes} onExternalDrop={onExternalDrop} />

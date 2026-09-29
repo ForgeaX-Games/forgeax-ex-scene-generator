@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Polygon 3D">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <path d="M7.6 8.4 L16.2 7.2 L17.4 14.6 L9.2 16.6 Z" fill="none" stroke="#e7f5ee" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M7.6 8.4 L9.2 6.2 L17.4 5.2 L16.2 7.2" fill="none" stroke="#e7f5ee" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="7.6" cy="8.4" r="1.1" fill="#b7ff5a"/>
+</svg>

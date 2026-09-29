@@ -1,5 +1,5 @@
 /**
- * Shared Chromium lifecycle for workbench headless renderer daemons.
+ * Shared Chromium lifecycle for authoring headless renderer daemons.
  *
  * Ownership rules:
  * - Each launch attempt owns a local browser/context/page session.
@@ -321,7 +321,7 @@ export async function runHeadlessRenderer(options) {
   const log = options.log ?? console;
   const exit = options.exit ?? ((code) => process.exit(code));
 
-  if (env.FORGEAX_LOWPOLY_HEADLESS_RENDERER === '0') {
+  if (env.FORGEAX_SCENE_HEADLESS_RENDERER === '0') {
     log.log?.(`${spec.logPrefix} ${spec.skipMessage}`);
     exit(0);
     return null;

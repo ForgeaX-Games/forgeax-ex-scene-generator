@@ -8,12 +8,13 @@ import type { ImportGraphInput, ImportGraphOptions } from './import-graph.js'
 export type AssetDeletePolicy = 'detach' | 'delete'
 
 // Identity of whoever drives a project op, forwarded by the app's route layer from the tool-call
-// `caller`. The exclusive-lock rules apply ONLY to kind:'ai' callers — humans (UI: 'user'/
-// 'workbench') are never locked (final authority).
+// `caller`. The exclusive-lock rules apply ONLY to kind:'ai' callers — humans
+// and product extensions are never locked (final authority).
 export interface CallerIdentity {
-  kind: 'ai' | 'user' | 'workbench' | 'cli' | 'skill'
+  kind: 'ai' | 'user' | 'extension' | 'cli' | 'skill'
   agentId?: string
   sessionId?: string
+  extensionId?: string
 }
 
 // Current holder of a project's exclusive lock (process-lifetime only).

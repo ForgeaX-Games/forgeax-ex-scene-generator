@@ -143,7 +143,7 @@ export function mergeEntriesWithPrefix<T>(
   return out;
 }
 
-// ConcatByPath unions the paths across all slots and, for each path, concatenates the items from every slot in slot order; it is used by tree_merge when inferredAccess === 'item' to merge at the item level, so each branch's path is preserved while its items grow across slots and slots lacking a path simply skip it (e.g. [{[0]:[a,b],[1]:[c]},{[0]:[x],[1]:[y,z]}] becomes {[0]:[a,b,x],[1]:[c,y,z]}).
+// ConcatByPath unions the paths across all slots and, for each path, concatenates the items from every slot in slot order; it is the item-level merge (as opposed to mergeEntriesWithPrefix, which lifts a dimension), so each branch's path is preserved while its items grow across slots and slots lacking a path simply skip it (e.g. [{[0]:[a,b],[1]:[c]},{[0]:[x],[1]:[y,z]}] becomes {[0]:[a,b,x],[1]:[c,y,z]}).
 export function concatEntriesByPath<T>(
   slots: ReadonlyArray<ReadonlyArray<DataTreeEntry<T>>>,
 ): DataTreeEntry<T>[] {

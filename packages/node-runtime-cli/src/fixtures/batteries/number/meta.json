@@ -1,7 +1,0 @@
-{
-  "id": "fixture.number",
-  "name": "number",
-  "inputs": [],
-  "outputs": [{ "name": "out", "type": "number", "access": "item" }],
-  "params": [{ "name": "value", "type": "number", "default": 0 }]
-}

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Circle profile battery">
-  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
-  <circle cx="12" cy="12" r="6.4" fill="none" stroke="#e7f5ee" stroke-width="1.6"/>
-  <circle cx="12" cy="12" r="1.1" fill="#b7ff5a"/>
-  <circle cx="18.4" cy="12" r="1.3" fill="#b7ff5a"/>
-</svg>

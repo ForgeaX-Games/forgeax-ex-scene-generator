@@ -1,17 +1,20 @@
-// graph.json SSOT — load / save with atomic write + hash invariant.
-//
-// On every successful save:
-//   1. canonicalise the payload (sorted keys, no hash field)
-//   2. compute sha256 over the canonical bytes
-//   3. write to a sibling temp file then rename — atomic on POSIX FS
-// On load, the stored hash must match the recomputed canonical hash;
-// mismatches are surfaced as an 'invariant' StorageError.
+// In-memory last-run display projection for the canvas.
+// Composition Scene Projects own semantics in `.scene.ts`; this store holds
+// the display graph projected from a Scene Script call trace. Scene execute
+// is runSceneModule, not executeNode walking this graph.
+// Disk `graph.json` is an optional cache (persist: true). It is not a project
+// SSOT and is not required to open or execute.
 
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs'
 import { dirname } from 'node:path'
 
 import type { GraphFileV1 } from './types.js'
+
+export interface GraphStoreOptions {
+  /** When false, never read or write graph.json. Default true for kernel tests. */
+  persist?: boolean
+}
 
 /** Stable, deterministic JSON canonicalisation: sorted keys at every level. */
 export function canonicalize(value: unknown): unknown {
@@ -23,7 +26,7 @@ export function canonicalize(value: unknown): unknown {
   return out
 }
 
-/** Compute the hash that goes into graph.json.hash. Excludes the hash field itself. */
+/** Compute the hash that goes into GraphFileV1.hash. Excludes the hash field itself. */
 export function computeGraphHash(graph: Omit<GraphFileV1, 'hash'> & { hash?: string }): string {
   const { hash: _drop, ...rest } = graph
   void _drop
@@ -31,44 +34,62 @@ export function computeGraphHash(graph: Omit<GraphFileV1, 'hash'> & { hash?: str
   return createHash('sha256').update(canon).digest('hex')
 }
 
+function fileSignature(path: string): string | null {
+  try {
+    const st = statSync(path)
+    return `${st.mtimeMs}:${st.size}`
+  } catch {
+    return null
+  }
+}
+
 export class GraphStore {
-  constructor(private readonly path: string) {}
+  private snapshot: GraphFileV1 | null = null
+  private fileSig: string | null = null
 
-  // Parsed-graph cache keyed by the file's (mtime, size) signature. graph.json
-  // is the read-hot SSOT: every query (getPipeline / getNode / listNodes /
-  // listGroups / per-inner-node group probes) calls load(). Without a cache each
-  // call re-reads the file, re-parses it, AND re-canonicalises + re-hashes the
-  // ENTIRE graph (every group's node/edge definitions) just to re-verify the
-  // tamper hash — O(graph) work + a full deep-clone of transient garbage on
-  // every read. We cache the validated result and reuse it while the file's
-  // mtime+size signature is unchanged, so repeated reads cost a single stat().
-  private cache: { sig: string; graph: GraphFileV1 } | null = null
+  constructor(
+    private readonly path: string,
+    private readonly options: GraphStoreOptions = {},
+  ) {}
 
+  get persist(): boolean {
+    return this.options.persist !== false
+  }
+
+  /** True when a compiled projection is in memory, or a persisted file exists. */
   exists(): boolean {
-    return existsSync(this.path)
+    if (this.snapshot) return true
+    return this.persist && existsSync(this.path)
   }
 
   /**
-   * Load and validate. Returns null when the file does not exist.
-   * Throws on hash mismatch or schema mismatch — caller decides whether
-   * to recover (e.g. record a `kernel:migration` history entry) or refuse.
+   * Install a compiled projection without requiring a disk file.
+   * Hash is recomputed unless the caller already stamped a 64-char sha256.
+   */
+  hydrate(graph: Omit<GraphFileV1, 'hash'> & { hash?: string }): GraphFileV1 {
+    const hash = typeof graph.hash === 'string' && /^[0-9a-f]{64}$/u.test(graph.hash)
+      ? graph.hash
+      : computeGraphHash(graph)
+    const next: GraphFileV1 = { ...(graph as GraphFileV1), hash, schemaVersion: 1 }
+    this.snapshot = next
+    return next
+  }
+
+  /**
+   * Load the compiled projection. Memory snapshot wins.
+   * When persist is on and the file changed under us, re-read and validate.
+   * Returns null when nothing has been compiled yet.
    */
   load(): GraphFileV1 | null {
+    if (!this.persist) return this.snapshot
+
     if (!existsSync(this.path)) {
-      this.cache = null
-      return null
+      return this.snapshot
     }
-    // Cheap freshness probe: reuse the validated parse while the on-disk
-    // mtime+size is unchanged. A save() (atomic rename) or external edit shifts
-    // the signature and forces a re-read + re-validate below.
-    let sig: string | null = null
-    try {
-      const st = statSync(this.path)
-      sig = `${st.mtimeMs}:${st.size}`
-      if (this.cache && this.cache.sig === sig) return this.cache.graph
-    } catch {
-      sig = null
-    }
+
+    const sig = fileSignature(this.path)
+    if (this.snapshot && sig !== null && sig === this.fileSig) return this.snapshot
+
     let parsed: GraphFileV1
     try {
       parsed = JSON.parse(readFileSync(this.path, 'utf-8')) as GraphFileV1
@@ -84,22 +105,18 @@ export class GraphStore {
         `graph.json hash mismatch — file may have been edited externally (stored=${parsed.hash}, recomputed=${recomputed})`,
       )
     }
-    if (sig !== null) this.cache = { sig, graph: parsed }
+    this.snapshot = parsed
+    this.fileSig = sig
     return parsed
   }
 
   /**
-   * Atomic save with optimistic concurrency check.
+   * Atomic update of the in-memory projection. Writes graph.json only when persist is on.
    *
-   * When `expectedPrevHash` is given, the function reads the current
-   * file (if any) and ensures its hash matches before overwriting.
-   * Mismatch → throw; the caller must reload, rebase the change, and retry.
-   *
-   * The supplied graph's `hash` field is overwritten with the
-   * recomputed canonical hash before writing.
+   * When `expectedPrevHash` is given, the current snapshot/file hash must match.
    */
   save(graph: Omit<GraphFileV1, 'hash'> & { hash?: string }, opts: { expectedPrevHash?: string; compact?: boolean } = {}): GraphFileV1 {
-    if (opts.expectedPrevHash !== undefined && existsSync(this.path)) {
+    if (opts.expectedPrevHash !== undefined) {
       const current = this.load()
       const currentHash = current?.hash ?? '<missing>'
       if (currentHash !== opts.expectedPrevHash) {
@@ -109,22 +126,21 @@ export class GraphStore {
       }
     }
 
-    const finalHash = computeGraphHash(graph)
-    const finalGraph: GraphFileV1 = { ...(graph as GraphFileV1), hash: finalHash, schemaVersion: 1 }
+    const finalGraph = this.hydrate({ ...graph, hash: undefined })
 
-    const dir = dirname(this.path)
-    if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
-    const tmp = `${this.path}.tmp-${Date.now()}-${Math.random().toString(36).slice(2)}`
-    writeFileSync(
-      tmp,
-      opts.compact ? JSON.stringify(finalGraph) : JSON.stringify(finalGraph, null, 2),
-      'utf-8',
-    )
-    renameSync(tmp, this.path)
-    // Drop the parse cache so the next load() re-stats the freshly written file
-    // and rebuilds its (mtime, size) signature — guards against a same-tick
-    // signature collision on our own writes.
-    this.cache = null
+    if (this.persist) {
+      const dir = dirname(this.path)
+      if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+      const tmp = `${this.path}.tmp-${Date.now()}-${Math.random().toString(36).slice(2)}`
+      writeFileSync(
+        tmp,
+        opts.compact ? JSON.stringify(finalGraph) : JSON.stringify(finalGraph, null, 2),
+        'utf-8',
+      )
+      renameSync(tmp, this.path)
+      this.fileSig = fileSignature(this.path)
+    }
+
     return finalGraph
   }
 }

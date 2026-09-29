@@ -1,4 +1,4 @@
-// ProjectPanel — the inline, non-modal project manager for a workbench's left
+// ProjectPanel — the inline, non-modal project manager for an authoring app's left
 // side pane. The SSOT for "switch / create / delete project" UI: it is driven by
 // the same `useProjectStore` as the editor canvas, so a switch here flips the
 // center editor live (via the project:viewing cross-client sync), and a switch

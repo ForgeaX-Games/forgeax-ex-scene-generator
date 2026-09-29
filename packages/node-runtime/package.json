@@ -32,6 +32,11 @@
       "source": "./src/layer2/diff-pipeline.ts",
       "types": "./dist/layer2/diff-pipeline.d.ts",
       "import": "./dist/layer2/diff-pipeline.js"
+    },
+    "./number-const-slider": {
+      "source": "./src/layer2/number-const-slider.ts",
+      "types": "./dist/layer2/number-const-slider.d.ts",
+      "import": "./dist/layer2/number-const-slider.js"
     }
   },
   "files": [
@@ -42,10 +47,9 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "clean": "rm -rf dist *.tsbuildinfo",
+    "clean": "rm -rf dist .tsbuildinfo *.tsbuildinfo",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "chokidar": "^4.0.0",

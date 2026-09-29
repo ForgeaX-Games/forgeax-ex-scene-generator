@@ -3,7 +3,7 @@
 // a SINGLE atomic batch.
 //
 // This is the kernel-level port of the legacy editor's "load pipeline from
-// file" feature (forgeax-wb-scene pipeline.service.loadFromFile +
+// file" feature (forgeax-scene pipeline.service.loadFromFile +
 // normalizePipeline). Crucially, the replacement does NOT wipe the canvas
 // ad-hoc: it produces an ordered Op[] (delete-all → createNode → connect →
 // createGroup → setMetadata) and submits it through applyBatch, so the change

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Base plane">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
+  <rect x="6.4" y="7.2" width="11.2" height="9.6" rx="1.2" fill="none" stroke="#e7f5ee" stroke-width="1.6"/>
+  <path d="M6.4 10.4 H17.6 M6.4 13.6 H17.6 M10.1 7.2 V16.8 M13.9 7.2 V16.8" fill="none" stroke="#e7f5ee" stroke-width="0.9" opacity="0.55"/>
+  <circle cx="6.4" cy="7.2" r="1.15" fill="#b7ff5a"/>
+</svg>

@@ -1,5 +1,5 @@
 // One-off empirical verification script for the recursive (Merkle-DAG) content
-// addressing fix described in wb-scene-generator-scene-tree-storage.md §8.
+// addressing fix described in scene-generator-scene-tree-storage.md §8.
 //
 // Read-only against the real project: only ever calls `read()`/`portByteSize()`/
 // `envelopeByteSize()` on the EXISTING project directory — never `write()` or

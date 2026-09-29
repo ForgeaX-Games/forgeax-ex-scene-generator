@@ -1,11 +1,9 @@
 // Layer 2 applyBatch output-cache invalidation.
 //
 // Deleting an input edge (or a node / group) changes what a target node — and
-// everything downstream of it — resolves for its inputs. The persisted outputs/
-// cache for that subtree is therefore stale and must be invalidated, otherwise
-// the next execute re-hydrates old values. This is most visible for
-// manualTrigger ops: the executor skips re-running them and reads their cached
-// output straight back, so without invalidation "删除输入边后输出没变".
+// everything downstream of it — would show from last-run OutputCache. That
+// subtree must be invalidated so the next Scene run does not hydrate stale
+// ports. Seed caches with writeNodeOutput; do not walk the display graph.
 
 import { mkdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
@@ -13,7 +11,6 @@ import { tmpdir } from 'node:os'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import { applyBatch, createRuntime } from '../layer2/index.js'
-import { executeNode } from '../layer2/execute-node.js'
 import { writeNodeOutput } from '../layer2/write-output.js'
 import type { OpSpec } from '../layer1/index.js'
 
@@ -74,8 +71,8 @@ describe('applyBatch output-cache invalidation', () => {
   it('invalidates the target node cache when its input edge is disconnected', async () => {
     const runtime = fresh()
     await seedChain(runtime)
-    await (await executeNode(runtime, { nodeId: 's' })).done
-    // Cache is primed: d doubled 21 -> 42.
+    writeNodeOutput(runtime, 's', 'out', 21)
+    writeNodeOutput(runtime, 'd', 'out', 42)
     expect(runtime.outputs.read('d', 'out')).not.toBeNull()
 
     const res = await applyBatch(runtime, [{ type: 'disconnect', edgeId: 'e1' }])
@@ -94,7 +91,9 @@ describe('applyBatch output-cache invalidation', () => {
       { type: 'connect', edgeId: 'e1', source: { nodeId: 's', port: 'out' }, target: { nodeId: 'd1', port: 'in' } },
       { type: 'connect', edgeId: 'e2', source: { nodeId: 'd1', port: 'out' }, target: { nodeId: 'd2', port: 'in' } },
     ])
-    await (await executeNode(runtime, { nodeId: 's' })).done
+    writeNodeOutput(runtime, 's', 'out', 5)
+    writeNodeOutput(runtime, 'd1', 'out', 10)
+    writeNodeOutput(runtime, 'd2', 'out', 20)
     expect(runtime.outputs.read('d1', 'out')).not.toBeNull()
     expect(runtime.outputs.read('d2', 'out')).not.toBeNull()
 
@@ -102,20 +101,6 @@ describe('applyBatch output-cache invalidation', () => {
 
     expect(runtime.outputs.read('d1', 'out')).toBeNull()
     expect(runtime.outputs.read('d2', 'out')).toBeNull()
-  })
-
-  it('re-executing after disconnect falls back to the input default (output changes)', async () => {
-    const runtime = fresh()
-    await seedChain(runtime)
-    await (await executeNode(runtime, { nodeId: 's' })).done
-    // 21 -> 42 cached.
-    expect((runtime.outputs.read('d', 'out')!.data as Array<{ items: number[] }>)[0]!.items).toEqual([42])
-
-    await applyBatch(runtime, [{ type: 'disconnect', edgeId: 'e1' }])
-    // Run d's own closure: no incoming edge => `in` falls back to default 10 => 20.
-    const result = await (await executeNode(runtime, { nodeId: 'd' })).done
-    expect(result.status).toBe('completed')
-    expect((runtime.outputs.read('d', 'out')!.data as Array<{ items: number[] }>)[0]!.items).toEqual([20])
   })
 
   it('manualTrigger node: disconnecting its input edge clears the stale cached output', async () => {
@@ -132,19 +117,13 @@ describe('applyBatch output-cache invalidation', () => {
     // Delete the input edge. ai's cache must be dropped — not hydrated as stale.
     await applyBatch(runtime, [{ type: 'disconnect', edgeId: 'e1' }])
     expect(runtime.outputs.read('ai', 'image')).toBeNull()
-
-    // A subsequent execute does NOT re-run the manualTrigger op (execute returns
-    // the sentinel only if it ran), and produces no output for it (empty cache).
-    const result = await (await executeNode(runtime, { nodeId: 'ai' })).done
-    expect(result.status).toBe('completed')
-    expect(result.outputs.ai).toEqual({})
-    expect(runtime.outputs.read('ai', 'image')).toBeNull()
   })
 
   it('deleting a node invalidates its surviving downstream caches', async () => {
     const runtime = fresh()
     await seedChain(runtime)
-    await (await executeNode(runtime, { nodeId: 's' })).done
+    writeNodeOutput(runtime, 's', 'out', 21)
+    writeNodeOutput(runtime, 'd', 'out', 42)
     expect(runtime.outputs.read('d', 'out')).not.toBeNull()
 
     // Delete s (cascade-removes e1). d is surviving downstream => its cache stale.
@@ -164,7 +143,10 @@ describe('applyBatch output-cache invalidation', () => {
       { type: 'connect', edgeId: 'e1', source: { nodeId: 's1', port: 'out' }, target: { nodeId: 'd1', port: 'in' } },
       { type: 'connect', edgeId: 'e2', source: { nodeId: 's2', port: 'out' }, target: { nodeId: 'd2', port: 'in' } },
     ])
-    await (await executeNode(runtime, {})).done
+    writeNodeOutput(runtime, 's1', 'out', 3)
+    writeNodeOutput(runtime, 'd1', 'out', 6)
+    writeNodeOutput(runtime, 's2', 'out', 7)
+    writeNodeOutput(runtime, 'd2', 'out', 14)
     expect(runtime.outputs.read('d1', 'out')).not.toBeNull()
     expect(runtime.outputs.read('d2', 'out')).not.toBeNull()
 
@@ -183,7 +165,9 @@ describe('applyBatch output-cache invalidation', () => {
       { type: 'connect', edgeId: 'e1', source: { nodeId: 's', port: 'out' }, target: { nodeId: 'd1', port: 'in' } },
       { type: 'connect', edgeId: 'e2', source: { nodeId: 'd1', port: 'out' }, target: { nodeId: 'd2', port: 'in' } },
     ])
-    await (await executeNode(runtime, { nodeId: 's' })).done
+    writeNodeOutput(runtime, 's', 'out', 5)
+    writeNodeOutput(runtime, 'd1', 'out', 10)
+    writeNodeOutput(runtime, 'd2', 'out', 20)
     expect(runtime.outputs.read('d2', 'out')).not.toBeNull()
 
     await applyBatch(runtime, [{ type: 'updateNode', nodeId: 's', params: { value: 9 } }])

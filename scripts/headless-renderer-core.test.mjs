@@ -337,13 +337,13 @@ describe('headless renderer lifecycle', () => {
     const logs = [];
     const renderer = await runHeadlessRenderer({
       spec: SCENE_RENDERER_SPEC,
-      env: { FORGEAX_LOWPOLY_HEADLESS_RENDERER: '0' },
+      env: { FORGEAX_SCENE_HEADLESS_RENDERER: '0' },
       chromium: { launch() { throw new Error('should not launch'); } },
       log: { log: (msg) => logs.push(msg), warn() {}, error() {} },
       exit: (code) => exits.push(code),
     });
     assert.equal(renderer, null);
     assert.deepEqual(exits, [0]);
-    assert.match(logs[0], /disabled via FORGEAX_LOWPOLY_HEADLESS_RENDERER=0/);
+    assert.match(logs[0], /disabled via FORGEAX_SCENE_HEADLESS_RENDERER=0/);
   });
 });

@@ -9,5 +9,5 @@ export type { ActivePipelineRunInfo, ProjectExecutionLock } from './projectViews
 export { pt } from './projectI18n.js'
 export { EditorControlsPanel } from './EditorControlsPanel.js'
 export type { EditorControlsPanelProps } from './EditorControlsPanel.js'
-export { StandaloneWorkbenchShell, isStandaloneWorkbench } from './StandaloneWorkbenchShell.js'
-export type { StandaloneWorkbenchShellProps } from './StandaloneWorkbenchShell.js'
+export { StandaloneExtensionShell, isStandaloneExtension } from './StandaloneExtensionShell.js'
+export type { StandaloneExtensionShellProps } from './StandaloneExtensionShell.js'

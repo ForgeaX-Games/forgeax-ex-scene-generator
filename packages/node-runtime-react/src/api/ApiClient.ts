@@ -215,6 +215,10 @@ export interface ApiClient {
    * transports that don't implement it force callers to fall back to the
    * per-port path.
    */
+  /** Persist deferred Grid ports from the last in-memory run so Default can load them. */
+  materializeNodeOutputs?(
+    ports: ReadonlyArray<{ nodeId: string; portId: string }>,
+  ): Promise<{ ok: true; hydrated: number }>
   getNodeOutputsBatch?(
     ports: ReadonlyArray<{ nodeId: string; portId: string }>,
     opts?: { metaOnly?: boolean },
@@ -226,7 +230,7 @@ export interface ApiClient {
       /**
        * Present when the backend shipped a Phase-2 deduped wire envelope
        * instead of a `tooLarge` sentinel — see
-       * wb-scene-generator-scene-tree-storage.md §3. `value` still holds the
+       * scene-generator-scene-tree-storage.md §3. `value` still holds the
        * DataTreeEntry[]-shaped payload, but any item field that repeats
        * (e.g. a `scene_focus_path` decoration tree shared by many branches)
        * is replaced by `{ __outputCacheBlobRef: hash }`; `blobs[hash]` holds

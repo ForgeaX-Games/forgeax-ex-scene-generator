@@ -1,19 +1,12 @@
-// useCanvasConnect tests — guards the restored `inferredAccess` connect-hook.
+// useCanvasConnect tests — port-type/access resolution and edge cardinality.
 //
-// Regression: the kernel port originally dropped the legacy tree_merge slot[0]
-// behaviour-band lock (resolvePortAccess + inferred* write), so scene inputs
-// (access:'item') fell into the structural-pack default branch instead of the
-// item-concat branch. These tests pin the faithful behaviour back:
-//   (1) onConnect on item_0 from an item-access source locks inferredAccess +
-//       inferredType onto the tree_merge node params;
-//   (2) isValidConnection rejects a later slot whose access disagrees with the
-//       locked band, and accepts one that matches;
-//   (3) a source without access (relay) does not write inferred*.
+// Covered: a list-access target port accumulates one edge per referenced item
+// (the `[a, b]` construction) instead of replacing the previous wire, and group /
+// group_input / group_output boundary handles resolve their real inner port type
+// so cross-group wires type-check by the inner tier rather than a flat `any`.
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
-import { addEdge } from '@xyflow/react'
-import type { Connection } from '@xyflow/react'
 import type { Edge, Node } from '../xyflow.js'
 
 import { createMockApiClient } from '../../test/mockApiClient.js'
@@ -24,9 +17,10 @@ import { createEmptyPipeline } from '../stores/pipelineStore.helpers.js'
 import { useCanvasConnect, resolveConnectionPortType } from '../components/canvas/useCanvasConnect.js'
 import type { Battery, Pipeline } from '../types.js'
 
-const treeMergeBattery: Battery = {
-  id: 'tree_merge',
-  name: 'TreeMerge',
+// A dynamic-input sink: `any`-typed tree slots that auto-expand on connect.
+const dynamicSinkBattery: Battery = {
+  id: 'dyn_sink',
+  name: 'DynSink',
   type: 'special',
   category: 'datatree',
   description: '',
@@ -53,19 +47,6 @@ const sceneSourceBattery: Battery = {
   params: [],
 }
 
-// A list-access source — disagrees with the locked 'item' band.
-const listSourceBattery: Battery = {
-  id: 'list_src',
-  name: 'ListSrc',
-  type: 'ts',
-  category: 'datatree',
-  description: '',
-  version: '1.0.0',
-  inputs: [],
-  outputs: [{ name: 'out', type: 'scene', access: 'list' }],
-  params: [],
-}
-
 function batteryNode(id: string, battery: Battery, params: Record<string, unknown> = {}): Node {
   return {
     id,
@@ -78,7 +59,7 @@ function batteryNode(id: string, battery: Battery, params: Record<string, unknow
 function seedPipeline(): Pipeline {
   const p = createEmptyPipeline()
   p.nodes = [
-    { id: 'tm', batteryId: 'tree_merge', name: 'TreeMerge', position: { x: 0, y: 0 }, params: {} },
+    { id: 'tm', batteryId: 'dyn_sink', name: 'DynSink', position: { x: 0, y: 0 }, params: {} },
     { id: 's0', batteryId: 'grid2node', name: 'A', position: { x: 0, y: 0 }, params: {} },
     { id: 's1', batteryId: 'grid2node', name: 'B', position: { x: 0, y: 0 }, params: {} },
   ]
@@ -89,7 +70,7 @@ beforeEach(() => {
   const client = createMockApiClient({ ops: [] })
   configureEditorTransport(createEditorTransport(client))
   usePipelineStore.setState({
-    batteries: [treeMergeBattery, sceneSourceBattery, listSourceBattery],
+    batteries: [dynamicSinkBattery, sceneSourceBattery, polylineBattery, pointBattery],
     currentPipeline: seedPipeline(),
     selectedNode: null,
     selectedNodeIds: [],
@@ -116,69 +97,32 @@ function makeHook(nodes: Node[]) {
   return { result, getEdges: () => edges, getNodes: () => rfNodes }
 }
 
-describe('useCanvasConnect — tree_merge inferredAccess lock', () => {
-  it('locks inferredAccess/inferredType on item_0 connect from an item-access source', () => {
-    const tm = batteryNode('tm', treeMergeBattery, { portCount: 2 })
-    const s0 = batteryNode('s0', sceneSourceBattery)
-    const { result } = makeHook([tm, s0])
+const polylineBattery: Battery = {
+  id: 'polyline2d',
+  name: 'Polyline2d',
+  type: 'ts',
+  category: 'geometry2d',
+  description: '',
+  version: '1.0.0',
+  inputs: [{ name: 'points', type: 'point2d', access: 'list' }],
+  outputs: [{ name: 'geometry', type: 'polyline2d', access: 'item' }],
+  params: [],
+}
 
-    const conn: Connection = { source: 's0', sourceHandle: 'scene', target: 'tm', targetHandle: 'item_0' }
-    act(() => {
-      result.current.onConnect(conn)
-    })
+const pointBattery: Battery = {
+  id: 'point2d',
+  name: 'Point2d',
+  type: 'ts',
+  category: 'geometry2d',
+  description: '',
+  version: '1.0.0',
+  inputs: [],
+  outputs: [{ name: 'geometry', type: 'point2d', access: 'item' }],
+  params: [],
+}
 
-    const node = usePipelineStore.getState().currentPipeline!.nodes.find((n) => n.id === 'tm')!
-    expect(node.params.inferredAccess).toBe('item')
-    expect(node.params.inferredType).toBe('scene')
-  })
-
-  it('does not write inferred* when the source carries no access', () => {
-    // Relay source: resolvePortAccess returns undefined → no lock.
-    const tm = batteryNode('tm', treeMergeBattery, { portCount: 2 })
-    const relay: Node = {
-      id: 'r0',
-      type: 'relay',
-      position: { x: 0, y: 0 },
-      data: { portType: 'scene' },
-    }
-    const { result } = makeHook([tm, relay])
-    act(() => {
-      result.current.onConnect({ source: 'r0', sourceHandle: 'relay_out', target: 'tm', targetHandle: 'item_0' })
-    })
-    const node = usePipelineStore.getState().currentPipeline!.nodes.find((n) => n.id === 'tm')!
-    expect(node.params.inferredAccess).toBeUndefined()
-  })
-
-  it('isValidConnection rejects a later slot whose access disagrees with the locked band', () => {
-    const tm = batteryNode('tm', treeMergeBattery, { portCount: 3, inferredAccess: 'item', inferredType: 'scene' })
-    const sceneSrc = batteryNode('s1', sceneSourceBattery)
-    const listSrc = batteryNode('l1', listSourceBattery)
-    const { result } = makeHook([tm, sceneSrc, listSrc])
-
-    // list-access source into item-locked slot → rejected.
-    expect(
-      result.current.isValidConnection({ source: 'l1', sourceHandle: 'out', target: 'tm', targetHandle: 'item_1' }),
-    ).toBe(false)
-
-    // matching item-access source → accepted.
-    expect(
-      result.current.isValidConnection({ source: 's1', sourceHandle: 'scene', target: 'tm', targetHandle: 'item_1' }),
-    ).toBe(true)
-  })
-
-  it('isValidConnection imposes no access lock before slot[0] is connected', () => {
-    const tm = batteryNode('tm', treeMergeBattery, { portCount: 3 })
-    const listSrc = batteryNode('l1', listSourceBattery)
-    const { result } = makeHook([tm, listSrc])
-    expect(
-      result.current.isValidConnection({ source: 'l1', sourceHandle: 'out', target: 'tm', targetHandle: 'item_1' }),
-    ).toBe(true)
-  })
-})
-
-// Group boundary ports now mirror the inner port's real type + access, so
-// cross-group wires type-check and colour by the inner tier instead of a flat
-// `any`. These tests pin resolveConnectionPortType + the access-driven lock.
+// Group boundary ports mirror the inner port's real type + access, so cross-group
+// wires type-check and colour by the inner tier instead of a flat `any`.
 function collapsedGroupNode(id: string): Node {
   return {
     id,
@@ -206,6 +150,33 @@ function boundaryNode(id: string, boundaryType: 'input' | 'output'): Node {
   }
 }
 
+describe('useCanvasConnect — list port construction', () => {
+  it('keeps every site wire into points instead of replacing the previous edge', () => {
+    const road = batteryNode('road', polylineBattery)
+    const origin = batteryNode('origin', pointBattery)
+    const plaza = batteryNode('plaza', pointBattery)
+    usePipelineStore.setState({
+      currentPipeline: {
+        ...createEmptyPipeline(),
+        nodes: [
+          { id: 'road', batteryId: 'polyline2d', name: 'road', position: { x: 0, y: 0 }, params: {} },
+          { id: 'origin', batteryId: 'point2d', name: 'origin', position: { x: 0, y: 0 }, params: {} },
+          { id: 'plaza', batteryId: 'point2d', name: 'plaza', position: { x: 0, y: 0 }, params: {} },
+        ],
+      },
+    })
+    const { result, getEdges } = makeHook([road, origin, plaza])
+    act(() => {
+      result.current.onConnect({ source: 'origin', sourceHandle: 'geometry', target: 'road', targetHandle: 'points' })
+      result.current.onConnect({ source: 'plaza', sourceHandle: 'geometry', target: 'road', targetHandle: 'points' })
+    })
+    expect(getEdges()).toEqual([
+      expect.objectContaining({ source: 'origin', target: 'road', targetHandle: 'points' }),
+      expect.objectContaining({ source: 'plaza', target: 'road', targetHandle: 'points' }),
+    ])
+  })
+})
+
 describe('useCanvasConnect — group boundary port resolution', () => {
   it('resolves a collapsed group node output/input port type (not any)', () => {
     const g = collapsedGroupNode('g1')
@@ -223,24 +194,12 @@ describe('useCanvasConnect — group boundary port resolution', () => {
   })
 
   it('cross-group wire type-checks by the inner tier (scene→scene ok)', () => {
-    const tm = batteryNode('tm', treeMergeBattery, { portCount: 2 })
+    const tm = batteryNode('tm', dynamicSinkBattery, { portCount: 2 })
     const g = collapsedGroupNode('g1')
     const { result } = makeHook([tm, g])
-    // group output (scene) into a fresh tree_merge slot → allowed.
+    // group output (scene) into an `any` slot → allowed.
     expect(
       result.current.isValidConnection({ source: 'g1', sourceHandle: 'out:x:scene', target: 'tm', targetHandle: 'item_0' }),
     ).toBe(true)
-  })
-
-  it('group output access locks the tree_merge band on item_0 connect', () => {
-    const tm = batteryNode('tm', treeMergeBattery, { portCount: 2 })
-    const g = collapsedGroupNode('g1')
-    const { result } = makeHook([tm, g])
-    act(() => {
-      result.current.onConnect({ source: 'g1', sourceHandle: 'out:x:scene', target: 'tm', targetHandle: 'item_0' })
-    })
-    const node = usePipelineStore.getState().currentPipeline!.nodes.find((n) => n.id === 'tm')!
-    expect(node.params.inferredAccess).toBe('item')
-    expect(node.params.inferredType).toBe('scene')
   })
 })

@@ -1,7 +1,7 @@
 // Storage barrel — graph.json, history.jsonl, outputs/.
 
 export * from './types.js'
-export { canonicalize, computeGraphHash, GraphStore } from './graph-store.js'
+export { canonicalize, computeGraphHash, GraphStore, type GraphStoreOptions } from './graph-store.js'
 export { HistoryLog } from './history-log.js'
 export { OutputCache } from './output-cache.js'
 export type { OutputCacheMeta, OutputCacheRetention, OutputCachePruneResult } from './output-cache.js'

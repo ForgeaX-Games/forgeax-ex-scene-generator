@@ -2,6 +2,8 @@
 // in-flight maps are shared (never duplicated) so an older async persist cannot
 // commit after a newer delete.
 
+import type { Op } from '@forgeax/node-runtime'
+import { isNumberConstSliderParamKey } from '@forgeax/node-runtime/number-const-slider'
 import { getEditorTransport } from '../transport/index.js'
 import {
   logPersistDone,
@@ -99,7 +101,7 @@ export function forgetPersistBatchMeta(batchId: string): void {
 
 /**
  * `crypto.randomUUID()` exists only in a SECURE CONTEXT (https, or http on
- * localhost). The dev workbench is routinely opened over plain http on a LAN
+ * localhost). The dev authoring is routinely opened over plain http on a LAN
  * address (`http://<host>:9555`), where it is simply undefined — and this id is
  * minted on the FIRST line of every persist, so the TypeError aborted the whole
  * save+execute chain before a single request went out: dropped batteries showed
@@ -130,24 +132,45 @@ function randomBatchId(): string {
 const PERSIST_MAX_ATTEMPTS = 3
 const PERSIST_RETRY_BACKOFF_MS = [200, 700]
 
+function persistErrorStatus(error: unknown): number {
+  if (error && typeof error === 'object' && 'status' in error) {
+    const status = Number((error as { status: unknown }).status)
+    if (Number.isFinite(status)) return status
+  }
+  return 0
+}
+
+function shouldRetryPersist(error: unknown, attempt: number): boolean {
+  if (attempt >= PERSIST_MAX_ATTEMPTS) return false
+  const status = persistErrorStatus(error)
+  if (status >= 400 && status < 500 && status !== 408 && status !== 429) return false
+  return true
+}
+
+function resyncCanvasAfterPersistFailure(): void {
+  void _persistGet?.().loadPipeline().catch(() => undefined)
+}
+
 async function persistWithRetry(
   transport: ReturnType<typeof getEditorTransport>,
   snapshot: Pipeline,
   seq: number,
   actor: string,
   clientBatchId: string,
+  extraOps: readonly Op[] = [],
 ): Promise<Awaited<ReturnType<typeof transport.api.updatePipeline>> | null> {
   for (let attempt = 1; ; attempt += 1) {
     try {
-      return await transport.api.updatePipeline(snapshot, actor, clientBatchId)
+      return await transport.api.updatePipeline(snapshot, actor, clientBatchId, extraOps)
     } catch (error) {
       // A newer snapshot is already queued — it carries this edit too, so
       // retrying a stale one would only overwrite fresher state.
       if (seq !== _localMutationSeq) return null
-      if (attempt >= PERSIST_MAX_ATTEMPTS) {
+      if (!shouldRetryPersist(error, attempt)) {
         console.error('[persist] pipeline save failed — the canvas is now ahead of the kernel:', error)
         _persistGet?.().addLog(`保存失败：画布改动未写入内核（${String(error)}）。请重试一次编辑或刷新页面。`)
-        throw error
+        resyncCanvasAfterPersistFailure()
+        return null
       }
       syncTrace('persist:retry', { attempt, actor, error: String(error) })
       await new Promise((resolve) => setTimeout(resolve, PERSIST_RETRY_BACKOFF_MS[attempt - 1] ?? 700))
@@ -161,11 +184,23 @@ async function persistWithRetry(
  * outright, since nothing flushed on unload. `visibilitychange → hidden` still
  * runs with the document alive, so the request actually goes out.
  */
+export const PARAM_EDIT_SETTLE_REASON = 'param-edit-settle'
+
+let _scheduledPersistReason: string | undefined
+let _scheduledPersistKind: 'settle' | 'snapshot' | undefined
+
 export function flushPendingPersist(reason: string): void {
   if (_persistTimer === null) return
   clearTimeout(_persistTimer)
   _persistTimer = null
   syncTrace('persist:flush-before-unload', { reason })
+  const settleOnly = _scheduledPersistKind === 'settle'
+  _scheduledPersistReason = undefined
+  _scheduledPersistKind = undefined
+  if (settleOnly) {
+    void enqueueDurableParamPersist(getLocalMutationSeq())
+    return
+  }
   void _persistGet?.().persistSession()
 }
 
@@ -187,7 +222,9 @@ export function enqueuePipelinePersist(snapshot: Pipeline, seq: number, actor = 
       return null
     }
     const t0 = performance.now()
-    const res = await persistWithRetry(transport, snapshot, seq, actor, clientBatchId)
+    const extraOps = takeDurableParamOps()
+    const res = await persistWithRetry(transport, snapshot, seq, actor, clientBatchId, extraOps)
+    if (res === null || res.status !== 'ok') restoreDurableParamOps(extraOps)
     if (res === null) return null
     // A rejected batch is a silent data loss too: HTTP succeeded, the kernel
     // refused the ops (a self-inconsistent diff, a stale expectedPrevHash), and
@@ -195,6 +232,7 @@ export function enqueuePipelinePersist(snapshot: Pipeline, seq: number, actor = 
     if (res.status === 'rejected') {
       console.error('[persist] kernel rejected the batch — this edit was NOT saved:', res.reason)
       _persistGet?.().addLog(`保存被内核拒绝，本次改动未写入：${res.reason ?? '未知原因'}`)
+      resyncCanvasAfterPersistFailure()
     }
     const hashUpdated = !!(res?.status === 'ok' && res.newHash)
     // The canvas already reflects this local edit (RF setters / store writes),
@@ -236,11 +274,50 @@ export function enqueuePipelinePersist(snapshot: Pipeline, seq: number, actor = 
 // overwrite the pending value, and the trailing run flushes that latest value.
 // Stale intermediate values are dropped — the kernel only ever computes the
 // newest param the user actually dragged to, so the round-trip can't grow.
+//
+// After the drag settles, param-edit-settle sends that updateNode as extraOps
+// only (no whole-graph diff). persistSession still prepends leftover extraOps
+// when drop / delete / project-switch persist a snapshot.
 interface PendingParamWrite {
   inFlight: boolean
   pending: { params: Record<string, unknown>; batchId?: string } | null
 }
 const _paramWrites = new Map<string, PendingParamWrite>()
+const _durableParamWrites = new Map<string, Record<string, unknown>>()
+
+/** Slider chrome and compile stamps stay on the kernel node; Scene Script only needs the value. */
+function scriptPersistParams(params: Record<string, unknown>): Record<string, unknown> {
+  const withoutMeta = Object.fromEntries(
+    Object.entries(params).filter(([key]) => !key.startsWith('__')),
+  )
+  const hasChrome = Object.keys(withoutMeta).some((key) => isNumberConstSliderParamKey(key))
+  if (typeof withoutMeta.value === 'number' && hasChrome) {
+    return { value: withoutMeta.value }
+  }
+  return withoutMeta
+}
+
+function rememberDurableParamWrite(nodeId: string, params: Record<string, unknown>): void {
+  _durableParamWrites.set(nodeId, scriptPersistParams(params))
+}
+
+function takeDurableParamOps(): Op[] {
+  if (_durableParamWrites.size === 0) return []
+  const ops: Op[] = [..._durableParamWrites.entries()].map(([nodeId, params]) => ({
+    type: 'updateNode',
+    nodeId,
+    params,
+  }))
+  _durableParamWrites.clear()
+  return ops
+}
+
+function restoreDurableParamOps(ops: readonly Op[]): void {
+  for (const op of ops) {
+    if (op.type !== 'updateNode' || !op.params) continue
+    if (!_durableParamWrites.has(op.nodeId)) _durableParamWrites.set(op.nodeId, { ...op.params })
+  }
+}
 
 export function enqueueParamWrite(
   nodeId: string,
@@ -255,6 +332,7 @@ export function enqueueParamWrite(
   // Always record the latest desired params; an in-flight write picks them up
   // when it drains, so a burst collapses to one trailing write of the newest value.
   entry.pending = { params, batchId }
+  rememberDurableParamWrite(nodeId, params)
   if (entry.inFlight) return Promise.resolve()
 
   const drain = async (): Promise<void> => {
@@ -274,8 +352,83 @@ export function enqueueParamWrite(
     // A newer tick may have arrived while this write was in flight — flush it.
     e.inFlight = false
     if (e.pending) await drain()
+    else if (_paramWrites.get(nodeId) === e) _paramWrites.delete(nodeId)
   }
   return drain()
+}
+
+async function persistOpsWithRetry(
+  transport: ReturnType<typeof getEditorTransport>,
+  ops: readonly Op[],
+  seq: number,
+  actor: string,
+  clientBatchId: string,
+): Promise<Awaited<ReturnType<typeof transport.api.applyOps>> | null> {
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      return await transport.api.applyOps(ops, actor, undefined, clientBatchId)
+    } catch (error) {
+      if (seq !== _localMutationSeq) return null
+      if (!shouldRetryPersist(error, attempt)) {
+        console.error('[persist] pipeline save failed — the canvas is now ahead of the kernel:', error)
+        _persistGet?.().addLog(`保存失败：画布改动未写入内核（${String(error)}）。请重试一次编辑或刷新页面。`)
+        resyncCanvasAfterPersistFailure()
+        return null
+      }
+      syncTrace('persist:retry', { attempt, actor, error: String(error) })
+      await new Promise((resolve) => setTimeout(resolve, PERSIST_RETRY_BACKOFF_MS[attempt - 1] ?? 700))
+    }
+  }
+}
+
+function enqueueDurableParamPersist(seq: number, actor = 'editor', batchId?: string) {
+  const clientBatchId = batchId ?? randomBatchId()
+  const run = async () => {
+    if (seq !== _localMutationSeq) return null
+    const extraOps = takeDurableParamOps()
+    if (extraOps.length === 0) return { status: 'ok' as const }
+    let transport: ReturnType<typeof getEditorTransport>
+    try {
+      transport = getEditorTransport()
+    } catch (error) {
+      console.error('[persist] no editor transport — this edit was NOT saved:', error)
+      _persistGet?.().addLog('保存失败：编辑器与内核的连接已失效，本次改动未写入。请刷新页面后重试。')
+      restoreDurableParamOps(extraOps)
+      return null
+    }
+    const t0 = performance.now()
+    const res = await persistOpsWithRetry(transport, extraOps, seq, actor, clientBatchId)
+    if (res === null || res.status !== 'ok') restoreDurableParamOps(extraOps)
+    if (res === null) return null
+    if (res.status === 'rejected') {
+      console.error('[persist] kernel rejected the batch — this edit was NOT saved:', res.reason)
+      _persistGet?.().addLog(`保存被内核拒绝，本次改动未写入：${res.reason ?? '未知原因'}`)
+      resyncCanvasAfterPersistFailure()
+    }
+    const hashUpdated = !!(res?.status === 'ok' && res.newHash)
+    if (hashUpdated) _onSyncedHash?.(res.newHash!)
+    if (res?.status === 'ok' && res.batchId) {
+      rememberPersistBatchMeta(res.batchId, {
+        layoutOnly: res.layoutOnly,
+        invalidatedNodeCount: res.invalidatedNodeCount,
+      })
+    }
+    logPersistDone({
+      status: res?.status ?? 'unknown',
+      newHash: res?.newHash,
+      layoutOnly: res.layoutOnly,
+      lastSyncedHashUpdated: hashUpdated,
+      durationMs: performance.now() - t0,
+    })
+    return res
+  }
+  const next = _persistQueue.then(run, run)
+  _persistQueue = next.catch(() => undefined)
+  _localPersistInFlight.set(clientBatchId, next)
+  void next.finally(() => {
+    _localPersistInFlight.delete(clientBatchId)
+  })
+  return next
 }
 
 export function createPersistSession(get: PipelineGet): () => Promise<void> {
@@ -284,6 +437,8 @@ export function createPersistSession(get: PipelineGet): () => Promise<void> {
       clearTimeout(_persistTimer)
       _persistTimer = null
     }
+    _scheduledPersistReason = undefined
+    _scheduledPersistKind = undefined
     logPersistFlush()
     const { currentPipeline } = get()
     if (!currentPipeline) return
@@ -314,9 +469,22 @@ export function createSchedulePersistSession(get: PipelineGet): (reason?: string
       setPersistTraceReason(reason)
       logPersistSchedule(reason)
     }
+    if (reason === PARAM_EDIT_SETTLE_REASON) {
+      if (_scheduledPersistKind !== 'snapshot') _scheduledPersistKind = 'settle'
+    } else {
+      _scheduledPersistKind = 'snapshot'
+    }
+    _scheduledPersistReason = reason ?? _scheduledPersistReason
     if (_persistTimer) clearTimeout(_persistTimer)
     _persistTimer = setTimeout(() => {
       _persistTimer = null
+      const settleOnly = _scheduledPersistKind === 'settle'
+      _scheduledPersistReason = undefined
+      _scheduledPersistKind = undefined
+      if (settleOnly) {
+        void enqueueDurableParamPersist(getLocalMutationSeq())
+        return
+      }
       void get().persistSession()
     }, PERSIST_DEBOUNCE_MS)
   }

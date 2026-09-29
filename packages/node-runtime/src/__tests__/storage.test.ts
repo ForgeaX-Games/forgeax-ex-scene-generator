@@ -94,6 +94,18 @@ describe('GraphStore', () => {
     expect(() => store.load()).toThrow(/hash mismatch/)
   })
 
+  it('hydrates and loads without writing graph.json when persist is off', () => {
+    const path = join(scratchDir, 'graph.json')
+    const store = new GraphStore(path, { persist: false })
+    expect(store.exists()).toBe(false)
+    const written = store.save(makeGraph())
+    expect(store.exists()).toBe(true)
+    expect(existsSync(path)).toBe(false)
+    expect(store.load()?.hash).toBe(written.hash)
+    const again = new GraphStore(path, { persist: false })
+    expect(again.load()).toBeNull()
+  })
+
   it('honours expectedPrevHash for concurrent-write detection', () => {
     const store = new GraphStore(join(scratchDir, 'graph.json'))
     const v1 = store.save(makeGraph())
@@ -274,7 +286,7 @@ describe('OutputCache', () => {
     expect(meta.dataChunks).toBe(40)
   })
 
-  // Mirrors the real g_veg_* blow-up (wb-scene-generator-project-switch.md §2.10):
+  // Mirrors the real g_veg_* blow-up (scene-generator-project-switch.md §2.10):
   // a `scene_focus_path`-style fan-out returns `{ tree, focus }` for every branch,
   // reusing the SAME `tree` object across all of them (only `focus` differs). Sharding
   // must not re-embed that shared tree once per branch.
@@ -311,7 +323,7 @@ describe('OutputCache', () => {
     expect(totalBytes).toBeLessThan(2 * 1024 * 1024) // << 125 * ~1MB if it weren't deduped
   })
 
-  // Guards the P0-5 safety net (see wb-scene-generator-project-switch.md §2.10):
+  // Guards the P0-5 safety net (see scene-generator-project-switch.md §2.10):
   // portByteSize() is a cheap disk-based PROXY for "how big will this be once the
   // HTTP route actually reassembles + JSON.stringify()s it". Dedup shrinks the disk
   // footprint but NOT the true wire size (every branch still gets its own full copy
@@ -389,7 +401,7 @@ describe('OutputCache', () => {
     15000,
   )
 
-  // Blob-store content-addressed dedup (see wb-scene-generator-scene-tree-storage.md)
+  // Blob-store content-addressed dedup (see scene-generator-scene-tree-storage.md)
   // is a superset of SharedRef: it also catches duplicates that AREN'T the same
   // object reference — across different write() calls, and across different ports —
   // as long as the content is byte-identical once compact-encoded.
@@ -525,7 +537,7 @@ describe('OutputCache', () => {
     expect(cache.read('n3', 'out')?.data).toEqual(mkBranches(bigB, 40))
   })
 
-  // Recursive (Merkle-DAG) content addressing — see wb-scene-generator-scene-tree-storage.md
+  // Recursive (Merkle-DAG) content addressing — see scene-generator-scene-tree-storage.md
   // §8. `add_child`'s append-only merge chain re-embeds "the whole tree so far" as a
   // fresh top-level object at every step; the old flat "hash the whole tree" scheme
   // stored ~N almost-entirely-overlapping copies. Recursing into `children` and hashing

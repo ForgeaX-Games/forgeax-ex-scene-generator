@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scene Generator"
+  short_description: "Build modular 3D scenes with a live authoring UI"
+  default_prompt: "Use $scene-build to create a medieval market."

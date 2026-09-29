@@ -65,7 +65,7 @@ export { DEFAULT_OUTPUT_CACHE_RETENTION } from './output-cache-format.js'
 
 export class OutputCache {
   // Content-addressed store for large top-level item fields (see
-  // wb-scene-generator-scene-tree-storage.md) — one instance per project,
+  // scene-generator-scene-tree-storage.md) — one instance per project,
   // shared across every node/port so "same tree, N focuses" dedupes even
   // across write() calls and across ports, not just within one write().
   private readonly blobStore: OutputCacheBlobStore
@@ -79,8 +79,8 @@ export class OutputCache {
   // project switch fans out getNodeOutput()/batch-output reads for the SAME
   // ports from multiple independent callers in quick succession (the editor's
   // own output hydration AND the renderer iframe's useNodePreviews, each
-  // re-fetching every grid/voxel port on `workbench:project-changed` — see
-  // wb-scene-generator-project-switch.md §2.3/§2.4) plus repeat UI refreshes.
+  // re-fetching every grid/voxel port on `authoring:project-changed` — see
+  // scene-generator-project-switch.md §2.3/§2.4) plus repeat UI refreshes.
   // Without a cache, EVERY one of those calls re-does readFileSync + JSON.parse
   // (and, for large sharded voxel payloads, re-reads + re-parses every chunk
   // file) even though the output hasn't changed since the last read — this is
@@ -197,7 +197,7 @@ export class OutputCache {
    * directory walk) only for entries written before this caching existed. This
    * is what keeps `portByteSize()`/`envelopeByteSize()` cheap under repeated
    * calls (project switch re-fetches the same ports from multiple callers, see
-   * wb-scene-generator-project-switch.md §2.3/§2.4) even as chunk count grows
+   * scene-generator-project-switch.md §2.3/§2.4) even as chunk count grows
    * with map scale — the expensive scan happens once, at write() time, instead
    * of once per read-side caller.
    */
@@ -251,7 +251,7 @@ export class OutputCache {
    * ever calling `expandPayload`/`resolveSharedRefs`/building that (possibly
    * hundreds-of-MB) structure. Two independent corrections vs. a naive
    * `directoryByteSize` of the raw chunk files, both required (see
-   * wb-scene-generator-project-switch.md §2.10):
+   * scene-generator-project-switch.md §2.10):
    *   1. Dedup-aware: a `SharedRef` pointer is a few dozen bytes on disk but
    *      contributes a FULL re-embedded copy to the eventual JSON (every
    *      occurrence gets independently stringified — JSON has no way to
@@ -559,7 +559,7 @@ export class OutputCache {
    * client that hydrates blob refs from `blobs` before use ends up with
    * exactly what plain `read()` would have produced, but the WIRE payload for
    * "same tree, N focuses" is 1 tree + N tiny pointers instead of N full
-   * copies — see wb-scene-generator-scene-tree-storage.md §3. Small
+   * copies — see scene-generator-scene-tree-storage.md §3. Small
    * (non-sharded) entries never had blob refs written in the first place, so
    * they fall back to the identical `read()` behaviour with an empty `blobs`.
    */
@@ -974,7 +974,7 @@ export class OutputCache {
   /**
    * Content-address `value`, recursing into `SceneNodeSnapshot.children` first
    * (post-order / bottom-up) so each subtree is hashed independently of its
-   * ancestors — see wb-scene-generator-scene-tree-storage.md §8. This is what lets
+   * ancestors — see scene-generator-scene-tree-storage.md §8. This is what lets
    * `add_child`'s append-only merge chain (each step re-embeds "the whole tree so
    * far" as a fresh top-level object) collapse to storing every *unique* subtree
    * exactly once: an untouched sibling subtree keeps the same `path`/`version`/
@@ -1017,7 +1017,7 @@ export class OutputCache {
    * `SharedRef`'s same-write reference-identity dedup into a content-addressed
    * dedup that also catches cross-write, cross-port, cross-subtree, and
    * reference-distinct-but-content-equal duplicates (see
-   * wb-scene-generator-scene-tree-storage.md). Returns `undefined` for small
+   * scene-generator-scene-tree-storage.md). Returns `undefined` for small
    * values, telling the caller to inline it as today. `compressPayload` is
    * idempotent on already-compact `{__voxelCells}` blobs (and on child fields
    * that are already `{__outputCacheBlobRef}` pointers), so calling it again on

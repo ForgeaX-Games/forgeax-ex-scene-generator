@@ -1,0 +1,2691 @@
+/* Left iframe: scroll the whole sidebar; no double scroll on html/body. */
+html,
+body[data-pane='left'] {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body[data-pane='left'] #root {
+  height: 100%;
+}
+
+.scene-left-pane {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  padding: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  color: var(--color-text-primary, #edf2f7);
+  background: var(--color-bg-primary, #070b08);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.scene-left-pane::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.scene-left-pane h2,
+.scene-left-pane p {
+  margin: 0;
+}
+
+.scene-left-pane__empty,
+.scene-left-pane__tips p {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__notice {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 8px 0 8px 10px;
+  border: none;
+  border-left: 2px solid rgba(248, 113, 113, 0.7);
+  border-radius: 0;
+  color: #fecaca;
+  background: none;
+  font-size: 12px;
+}
+
+/* Blocks below hero: no card chrome — hairline dividers only. */
+.scene-left-pane__section {
+  margin: 0;
+  padding: 14px 0 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+
+.scene-left-pane__section + .scene-left-pane__section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scene-left-pane__section--projects {
+  padding-top: 12px;
+  /* Flex column so the project list can fill (and scroll within) the section's
+     resizable height instead of overflowing it. */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Edit toolbar — only mounted while the canvas is in edit mode. */
+.scene-left-pane__toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 2px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scene-left-pane__toolbar-row input {
+  cursor: pointer;
+}
+
+.scene-left-pane__toolbar-row--z {
+  justify-content: space-between;
+}
+
+.scene-left-pane__z-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.scene-left-pane__z-control button,
+.scene-left-pane__z-control input {
+  height: 22px;
+  border: 1px solid var(--color-border, #2a2e36);
+  border-radius: var(--radius-sm, 4px);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  font-size: 11px;
+}
+
+.scene-left-pane__z-control button {
+  width: 22px;
+  cursor: pointer;
+}
+
+.scene-left-pane__z-control input {
+  width: 48px;
+  padding: 0 4px;
+  text-align: center;
+}
+
+.scene-left-pane__brush-modes {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0 2px;
+}
+
+.scene-left-pane__brush-btn {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  cursor: pointer;
+}
+
+.scene-left-pane__brush-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.scene-left-pane__brush-btn.is-active {
+  border-color: rgba(120, 170, 255, 0.7);
+  background: rgba(120, 170, 255, 0.18);
+}
+
+.scene-left-pane__brush-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Cropped screenshot result (Edit tools → 截图（去背景）). */
+.scene-left-pane__shot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0 2px;
+  padding: 8px;
+  font-size: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.scene-left-pane__shot--error {
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fca5a5;
+}
+
+.scene-left-pane__shot-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.scene-left-pane__shot-close {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.scene-left-pane__shot-close:hover {
+  opacity: 1;
+}
+
+.scene-left-pane__shot-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  align-self: center;
+  background: repeating-conic-gradient(rgba(255, 255, 255, 0.08) 0% 25%, transparent 0% 50%) 0 / 12px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.scene-left-pane__shot-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__shot-data {
+  width: 100%;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #d7dbe6;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 6px;
+}
+
+/* ── Shared "NODE INFO" title typography ──────────────────────────────────
+   Mirror the *computed* section-title look so every heading reads identically.
+   The pane's .editor-controls__title resets to `font: inherit` (Inter, ~16px,
+   weight 400) and keeps the kernel's uppercase + 0.04em letter-spacing; the
+   accent-green colour comes from the scene-left-pane override. Copy all of that
+   here (size, weight, spacing, transform, colour) so Projects / modals / tabs
+   are a full transplant — not a smaller, bolder approximation. */
+.scene-left-pane .proj-panel__head h2,
+.scene-left-pane .proj-modal__head h2,
+.scene-left-pane__panel-tabs .editor-controls__btn,
+.scene-left-pane__group-tab {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent, #d4ff48);
+}
+
+/* Match Projects heading to the History/section-title style (accent green). */
+.scene-left-pane .proj-panel__head {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  min-height: var(--scene-titlebar-height, 30px);
+  border-bottom: 1px solid var(--scene-titlebar-border);
+}
+
+.scene-left-pane .proj-panel__head h2 {
+  opacity: 1;
+  margin: 0;
+  color: var(--scene-titlebar-color);
+  font-size: var(--scene-titlebar-title-size, 14px);
+  font-weight: var(--scene-titlebar-title-weight, 700);
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+/* Wizard / delete heading — match the Projects section heading style. */
+.scene-left-pane .proj-modal__head h2 {
+  opacity: 1;
+  margin: 0;
+}
+
+.scene-left-pane .proj-modal__head {
+  margin-bottom: 10px;
+}
+
+/* Wizard field labels — muted text matching the panel palette. */
+.scene-left-pane .proj-field span {
+  font-size: 14px;
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 1;
+}
+
+/* Wizard inputs / selects — dark bg consistent with the sidebar. */
+.scene-left-pane .proj-field input,
+.scene-left-pane .proj-field select {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+.scene-left-pane .proj-field input:focus,
+.scene-left-pane .proj-field select:focus {
+  border-color: var(--color-accent, #d4ff48);
+  outline: none;
+}
+
+.scene-left-pane .proj-field {
+  margin-bottom: 8px;
+}
+
+/* Wizard / delete footer buttons — accent-green primary, muted secondary. */
+.scene-left-pane .proj-modal__foot {
+  margin-top: 10px;
+}
+
+.scene-left-pane .proj-modal__foot .proj-btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.scene-left-pane .proj-modal__foot .proj-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.scene-left-pane .proj-modal__foot .proj-btn--primary {
+  background: rgba(212, 255, 72, 0.12);
+  border-color: rgba(212, 255, 72, 0.4);
+  color: var(--color-accent, #d4ff48);
+}
+
+.scene-left-pane .proj-modal__foot .proj-btn--primary:hover {
+  background: rgba(212, 255, 72, 0.2);
+}
+
+.scene-left-pane .proj-modal__foot .proj-btn--danger {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+}
+
+.scene-left-pane .proj-modal__foot .proj-btn--danger:hover {
+  background: rgba(248, 113, 113, 0.2);
+}
+
+/* Delete dialog copy / policy — match sidebar text palette. */
+.scene-left-pane .proj-delete__copy {
+  font-size: 12px;
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 1;
+}
+
+.scene-left-pane .proj-delete__policy {
+  border-color: rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+}
+
+.scene-left-pane .proj-delete__policy legend {
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 1;
+}
+
+/* Compact project actions use the same minimal line-action icon family. */
+.scene-left-pane .proj-panel__head .proj-btn {
+  padding: 0;
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  line-height: 1;
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+
+.scene-left-pane .proj-panel__head .proj-btn > svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.scene-left-pane .proj-panel__head .proj-btn--primary {
+  background: none;
+  border: none;
+  color: var(--color-accent, #d4ff48);
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.scene-left-pane .proj-panel__head .proj-btn--primary:hover {
+  background: none;
+  opacity: 1;
+}
+
+/* Accent-green active card. */
+.scene-left-pane .proj-card--active {
+  border-color: var(--color-accent, #d4ff48);
+  box-shadow: 0 0 0 1px var(--color-accent, #d4ff48) inset;
+}
+
+.scene-left-pane .proj-card--active:hover {
+  background: rgba(212, 255, 72, 0.05);
+}
+
+.scene-left-pane .proj-card__badge {
+  color: var(--color-accent, #d4ff48);
+  border-color: rgba(212, 255, 72, 0.45);
+}
+
+.scene-left-pane h2 {
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.55;
+}
+
+/* Project list: keep proj-card boxes; fill the section + scroll; hide scrollbar.
+   The panel fills the section (flex:1) and the list takes the remaining space
+   below the header, so the last card is always fully reachable by scrolling
+   (a fixed max-height let the section's overflow clip the bottom row). */
+.scene-left-pane__section--projects .proj-panel {
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+.scene-left-pane .proj-panel__list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+.scene-left-pane .proj-panel__list::-webkit-scrollbar {
+  width: 6px;
+}
+.scene-left-pane .proj-panel__list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 3px;
+}
+
+.scene-left-pane .proj-panel__list .proj-card {
+  flex: 0 0 auto;
+  min-height: 60px;
+}
+
+/* Game scope bar — accent-green toggle matching the sidebar palette. */
+.scene-left-pane .proj-panel__scope {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.scene-left-pane .proj-panel__scope-context-label {
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 1;
+}
+
+.scene-left-pane .proj-panel__scope-context-value {
+  color: var(--color-text-primary, #e6e8ee);
+}
+
+.scene-left-pane .proj-panel__scope-switch--on .proj-panel__scope-switch-track {
+  background: rgba(212, 255, 72, 0.22);
+  border-color: rgba(212, 255, 72, 0.5);
+}
+
+.scene-left-pane .proj-panel__scope-switch--on:hover .proj-panel__scope-switch-track {
+  border-color: rgba(212, 255, 72, 0.7);
+}
+
+.scene-left-pane .proj-card__icon-btn:hover:not(:disabled) {
+  color: var(--color-accent, #d4ff48);
+}
+
+.scene-left-pane .proj-card__meta {
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 1;
+}
+
+.scene-left-pane__pane-row em,
+.scene-left-pane__projects em {
+  font-size: 11px;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__steps,
+.scene-left-pane__projects {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scene-left-pane__steps {
+  display: grid;
+  gap: 0;
+}
+
+.scene-left-pane__steps li {
+  padding: 8px 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-text-secondary, #9aa4b2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scene-left-pane__steps li:last-child {
+  border-bottom: none;
+}
+
+.scene-left-pane__steps li::before {
+  display: none;
+}
+
+.scene-left-pane__pane-row,
+.scene-left-pane__projects li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scene-left-pane__pane-row:first-of-type,
+.scene-left-pane__projects li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.scene-left-pane__pane-row span,
+.scene-left-pane__projects span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.scene-left-pane__projects li.is-active span {
+  color: #fb923c;
+}
+
+/* Drag handle at the bottom of the projects section. */
+.scene-left-pane__projects-resize {
+  flex-shrink: 0;
+  height: 8px;
+  margin: 0 -12px;
+  cursor: ns-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: none;
+}
+
+.scene-left-pane__projects-resize::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.15s;
+}
+
+.scene-left-pane__projects-resize:hover::after {
+  background: var(--color-accent, #d4ff48);
+}
+
+/* AssetStore / Preview toggles — flat row under title. */
+.scene-left-pane__panel-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 0;
+}
+
+.scene-left-pane__panel-tabs .editor-controls__btn {
+  /* Three labels must coexist on one narrow row. Shrink the font + padding from
+     the shared 16px title size so ASSETSTORE / PREVIEW / SCENE GEN all fit on a
+     single line and fill the row (no wrap, no truncation). */
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 6px 4px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  font-weight: 400;
+}
+
+.scene-left-pane__panel-tabs .editor-controls__btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Bundle-derived floating-column cards, mapped into the Page-owned left panel. */
+.scene-left-pane__section--projects {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text-primary, #e6e8ec);
+  font-size: 12px;
+}
+
+.scene-left-pane__section--projects > .proj-panel {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid var(--color-border, #263326);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-bg-secondary, #101912);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
+}
+
+.scene-left-pane__section--projects .proj-panel__list {
+  flex: 1;
+  min-height: 0;
+  padding-top: 8px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 255, 72, 0.38) transparent;
+}
+
+.scene-left-pane__section--projects .proj-panel__list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scene-left-pane__section--projects .proj-panel__list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(212, 255, 72, 0.38);
+}
+
+.scene-left-pane__section--projects .proj-panel__list .proj-card {
+  flex: 0 0 auto;
+  min-height: 64px;
+}
+
+.scene-left-pane__section--projects .proj-card__open {
+  gap: 2px;
+  padding: 7px 6px 7px 10px;
+}
+
+.scene-left-pane__section--projects .proj-card__name {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-left-pane__section--projects .proj-card__meta {
+  line-height: 1.25;
+}
+
+.scene-node-dashboard {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid var(--color-border, #263326);
+  border-radius: var(--radius-md, 8px);
+  color: var(--color-text-primary, #e6e8ec);
+  background: var(--color-bg-secondary, #101912);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
+}
+
+.scene-node-dashboard__tabs {
+  flex: 0 0 auto;
+  display: grid;
+  /* Keep the compact dashboard navigation on one deliberate row. */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: end;
+  gap: 2px;
+  margin: 0 -2px 8px;
+  padding: 0 2px;
+  border-bottom: 1px solid var(--color-border, #263326);
+}
+
+.scene-node-dashboard__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 28px;
+  padding: 5px 4px;
+  border: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-radius: var(--radius-sm, 4px) var(--radius-sm, 4px) 0 0;
+  color: var(--color-text-secondary, #9ca3af);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.scene-node-dashboard__tab > svg {
+  display: block;
+  opacity: 0.72;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.scene-node-dashboard__tab:hover {
+  color: var(--color-text-primary, #f3f7ee);
+  border-color: rgba(255, 255, 255, 0.08);
+  border-bottom-color: var(--color-border, #263326);
+  background: var(--color-bg-tertiary, #162219);
+}
+
+.scene-node-dashboard__tab.is-active {
+  z-index: 1;
+  margin-bottom: -1px;
+  border-color: var(--color-border-strong, #3a4b38);
+  border-bottom-color: var(--color-bg-secondary, #101912);
+  color: var(--color-accent, #d4ff48);
+  background: var(--color-bg-secondary, #101912);
+}
+
+.scene-node-dashboard__tab:hover > svg,
+.scene-node-dashboard__tab.is-active > svg {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.scene-node-dashboard__content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.scene-node-dashboard .scene-node-info {
+  min-height: 100%;
+}
+
+/* Import — a compact file-action button immediately to the right of the
+   create action (NOT right-aligned). Both header actions share the same
+   accent-green stroke treatment. */
+.scene-left-pane__open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+  color: var(--color-accent, #d4ff48);
+  opacity: 0.6;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.scene-left-pane__open-btn:hover {
+  opacity: 1;
+  background: rgba(212, 255, 72, 0.12);
+}
+
+.scene-left-pane__open-btn svg {
+  display: block;
+}
+
+/* Keep the project title actions on one optical baseline. */
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head {
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head h2 {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 0 1 auto;
+  margin: 0;
+  line-height: 22px;
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head .proj-btn,
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head .scene-left-pane__open-btn {
+  flex: 0 0 22px;
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  margin: 0;
+  line-height: 1;
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head .proj-btn {
+  border-radius: 4px;
+  color: var(--scene-accent, #b8ff3d);
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head .proj-btn::after {
+  display: block;
+  line-height: 20px;
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head .proj-btn:hover,
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head .scene-left-pane__open-btn:hover {
+  background: color-mix(in srgb, var(--scene-accent, #b8ff3d) 12%, transparent);
+  opacity: 1;
+}
+
+/* Per-project Save — icon button in the card toolbar (Save · Rename · Delete). */
+.scene-left-pane .proj-card__icon-btn:hover:not(:disabled) {
+  color: var(--color-accent, #d4ff48);
+}
+
+/* Save fallback modal — overlay inside the pane with the copyable graph JSON.
+   Chrome reuses the project wizard/delete palette (.proj-modal__head/__foot,
+   .proj-btn) so it reads as part of the same surface. */
+.scene-left-pane__save {
+  /* The left pane is its own (scrollable) iframe; `fixed` pins the overlay to
+     the iframe viewport so it's a clean full-pane surface, instead of an
+     `absolute` box anchored to the scroll origin (which left the taller pane
+     content — e.g. the Help section — peeking out below it). */
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 12px;
+  background:
+    radial-gradient(circle at top left, rgba(251, 146, 60, 0.16), transparent 34%),
+    var(--color-bg-primary, #14161a);
+}
+
+.scene-left-pane__save-head {
+  margin-bottom: 2px;
+}
+
+.scene-left-pane__save-copy {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__save-copy code {
+  color: var(--color-text-primary, #f8fafc);
+  word-break: break-all;
+}
+
+.scene-left-pane__save-json {
+  flex: 1;
+  width: 100%;
+  resize: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #d7dbe6;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.scene-left-pane__save-json:focus {
+  border-color: var(--color-accent, #d4ff48);
+  outline: none;
+}
+
+.scene-left-pane__save-foot {
+  margin-top: 0;
+}
+
+/* Scene / AssetStore / Preview group — underline tabs, no outer box. */
+.scene-left-pane__group-tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scene-left-pane__group-tab {
+  flex: 1;
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--color-text-secondary, #9aa4b2);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.scene-left-pane__group-tab:hover {
+  color: var(--color-text-primary, #edf2f7);
+}
+
+.scene-left-pane__group-tab.is-active {
+  color: #fb923c;
+  background: transparent;
+  border-bottom-color: #fb923c;
+}
+
+/* Controls wrapper: natural height, no inner scroll — the outer .scene-left-pane scrolls. */
+.scene-left-pane__section--controls {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+/* Panel: natural height from children (no height/min-height constraint). */
+.scene-left-pane .editor-controls-panel {
+  /* intentionally no height — sized by children */
+}
+
+/* Each sub-section: JS sets explicit pixel height; clip + column layout. */
+.scene-left-pane .editor-controls__section {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-top: none;
+}
+
+/* Content area: constrained by parent's explicit height, scrolls internally.
+   Horizontal overflow is clipped (no sideways scrollbar) — the node-info
+   miniature keeps its lead-outs inside the pane via its own width budget. */
+.scene-left-pane .editor-controls__section-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Keep scroll behaviour but hide the scrollbar chrome (matches the pane). */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scene-left-pane .editor-controls__section-content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.scene-left-pane .editor-controls__title {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--color-accent, #d4ff48);
+  opacity: 1;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(212, 255, 72, 0.28);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+  font: inherit;
+}
+
+.scene-left-pane button.editor-controls__title {
+  cursor: pointer;
+}
+
+/* Collapse / expand triangle next to section titles. */
+.section-collapse-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-accent, #d4ff48);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.section-collapse-toggle:hover {
+  opacity: 1;
+}
+
+/* Drag handle: titles of Data Types and Help are resizers. */
+.scene-left-pane .editor-controls__title.is-draggable {
+  cursor: ns-resize;
+  user-select: none;
+  touch-action: none;
+  /* Reserve hover chrome in the box model so content below does not shift. */
+  margin: 0 -4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 3px;
+}
+
+.scene-left-pane .editor-controls__title.is-draggable:hover {
+  background: rgba(212, 255, 72, 0.06);
+}
+
+.scene-left-pane .editor-controls__btn {
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+}
+
+.preview-controls-panel {
+  min-height: 0;
+}
+
+.preview-controls-panel__content {
+  min-height: 0;
+}
+
+.preview-controls-panel .scene-left-pane__layer-inspector {
+  padding: 0;
+}
+
+.preview-controls-panel .scene-left-pane__layer-inspector--empty {
+  display: flex;
+  min-height: 100%;
+  align-items: center;
+}
+
+.preview-controls-panel .scene-left-pane__inspector-hero {
+  margin-top: 0;
+}
+
+.preview-controls-panel .scene-left-pane__brush-modes,
+.preview-controls-panel .scene-left-pane__toolbar-row {
+  flex-shrink: 0;
+}
+
+.scene-left-pane .editor-controls__btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.scene-left-pane .editor-controls__btn.is-on {
+  border: none;
+  background: rgba(251, 146, 60, 0.16);
+  color: #fb923c;
+}
+
+.scene-left-pane .history-toolbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scene-left-pane .history-total-count {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.scene-left-pane .history-undo-badge--active {
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scene-left-pane .history-clear-btn {
+  border: none;
+  background: transparent;
+}
+
+.scene-left-pane .history-clear-btn:hover {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.scene-left-pane .history-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.scene-left-pane .settings-panel-empty {
+  padding-left: 0;
+}
+
+.scene-left-pane .dtype-alias {
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scene-left-pane__help {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.scene-left-pane__help p {
+  margin: 0;
+}
+
+/* Help: short titled blocks, compact. Titles are plain white (no accent, no
+   bold, no divider) so the section stays dense and easy to skim. */
+.scene-left-pane__help-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.scene-left-pane__help-group + .scene-left-pane__help-group {
+  margin-top: 8px;
+}
+
+.scene-left-pane__help-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-primary, #f8fafc);
+}
+
+.scene-left-pane__help-group ol,
+.scene-left-pane__help-group ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.scene-left-pane__help-group li {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.scene-left-pane__help kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ── Larger body text across menus ────────────────────────────────────────
+   The pane's content was hard to read at 10–12px; bump the readable body
+   copy (kernel-rendered Data Types / History rows + pane hints) up a notch.
+   Scoped under .scene-left-pane so only this pane is affected, not the kernel
+   defaults used elsewhere. */
+.scene-left-pane .dtype-name {
+  font-size: 15px;
+}
+
+.scene-left-pane .dtype-desc {
+  font-size: 12px;
+}
+
+.scene-left-pane .dtype-alias,
+.scene-left-pane .dtype-hex {
+  font-size: 12px;
+}
+
+.scene-left-pane .history-label,
+.scene-left-pane .settings-panel-empty {
+  font-size: 13px;
+}
+
+.scene-left-pane .history-time {
+  font-size: 12px;
+}
+
+/* History toolbar: step count + Clear button a touch larger for legibility. */
+.scene-left-pane .history-total-count,
+.scene-left-pane .history-undo-badge,
+.scene-left-pane .history-count,
+.scene-left-pane .history-clear-btn {
+  font-size: 12px;
+}
+
+.scene-left-pane__hint,
+.scene-left-pane__rule-desc,
+.scene-left-pane__rule-meta > div {
+  font-size: 13px;
+}
+
+/* ===== Node Info (top of the Scene Generator controls) ===== */
+.scene-node-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Fill the section-content height so the empty hint can vertically centre. */
+  min-height: 100%;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Whole-canvas tallies: even columns sized to fit; the grid fills the width
+   and reflows from 3-per-row to 2-per-row when the pane gets cramped, so the
+   6 stats read as 2×3 and collapse to 3×2 without manual breakpoints. */
+.scene-node-info__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+  gap: 6px 10px;
+}
+
+.ni-stat {
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ni-stat b {
+  margin-right: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-accent, #d4ff48);
+}
+
+/* When nothing is selected, centre the prompt in the remaining space. */
+.scene-node-info__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 0.85;
+}
+
+.scene-node-info__diagnostics {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 7px 9px;
+  border: 1px solid rgba(251, 113, 133, 0.28);
+  border-radius: 8px;
+  background: rgba(251, 113, 133, 0.07);
+}
+
+.scene-node-info__diagnostics small {
+  margin-right: 2px;
+  color: var(--color-text-secondary, #8b90a0);
+}
+
+.scene-node-info__diagnostic {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 5px 7px 6px 8px;
+  border-left: 3px solid transparent;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.scene-node-info__diagnostic[data-severity='error'] {
+  border-left-color: #fb7185;
+  background: rgba(251, 113, 133, 0.08);
+}
+
+.scene-node-info__diagnostic[data-severity='warning'] {
+  border-left-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.07);
+}
+
+.scene-node-info__diagnostics code {
+  color: #f3d2b0;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.scene-node-info__diagnostic span {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #d7dbe6;
+}
+
+/* The selected battery, drawn like its real canvas node, centred so the
+   lead-out wires + peer text have room in the side gutters. */
+.scene-node-info__diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+/* Faithful battery card: accent-green border + glow, tinted title bar. */
+.ni-node {
+  position: relative;
+  /* Width is set adaptively by the panel's layout effect to fill the pane,
+     leaving fixed side gutters for the value lead-outs. */
+  min-width: 92px;
+  max-width: 100%;
+  border: 1px solid var(--color-accent, #d4ff48);
+  border-radius: 8px;
+  background: rgba(212, 255, 72, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(212, 255, 72, 0.5),
+              0 0 14px rgba(212, 255, 72, 0.18);
+}
+
+.ni-node__title {
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  background: rgba(212, 255, 72, 0.1);
+  border-bottom: 1px solid rgba(212, 255, 72, 0.25);
+  border-radius: 7px 7px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scene-node-info__scene-status {
+  padding: 6px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.scene-node-info__scene-status strong {
+  color: rgba(212, 255, 72, 0.95);
+}
+
+.scene-node-info__scene-status small {
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.scene-node-info__provenance {
+  display: grid;
+  gap: 5px;
+  padding: 8px 10px;
+  font-size: 10px;
+}
+
+.scene-node-info__provenance div {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 6px;
+}
+
+.scene-node-info__provenance small {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.scene-node-info__provenance span,
+.scene-node-info__provenance code {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-node-info__source-tree {
+  display: grid;
+  gap: 5px;
+  padding: 8px 10px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+}
+
+.scene-node-info__source-tree small {
+  margin-bottom: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+}
+
+.scene-node-info__source-tree span {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.72);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-node-info__details {
+  width: min(100%, 360px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.scene-node-info__details-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.scene-node-info__status-chip {
+  padding: 2px 5px;
+  border: 1px solid rgba(212, 255, 72, 0.4);
+  border-radius: 999px;
+  color: rgba(212, 255, 72, 0.95);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.scene-node-info__status-chip--equivalence-verified {
+  border-color: rgba(120, 215, 170, 0.5);
+  color: rgba(150, 235, 190, 0.96);
+}
+
+.scene-node-info__source-files {
+  display: grid;
+  gap: 2px;
+  max-height: 120px;
+  overflow: auto;
+}
+
+.scene-project-info {
+  display: grid;
+  gap: 10px;
+  padding: 4px 2px;
+}
+
+.scene-project-info > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(212, 255, 72, 0.22);
+  border-radius: 8px;
+  background: rgba(212, 255, 72, 0.05);
+}
+
+.scene-project-info header div {
+  display: grid;
+  gap: 3px;
+}
+
+.scene-project-info header small,
+.scene-project-info__tree > small {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+}
+
+.scene-project-info header strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.scene-project-info > header > span {
+  color: rgba(212, 255, 72, 0.9);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.scene-project-info__metrics {
+  display: grid;
+  gap: 5px;
+  padding: 0 4px;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 10px;
+}
+
+.scene-project-info__metrics b {
+  color: rgba(255, 255, 255, 0.92);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+}
+
+.scene-project-info__tree {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.scene-project-info__tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.scene-project-info__tree-header > small {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-project-info__tree-header > span {
+  flex: 0 0 auto;
+  color: var(--color-text-muted, #667260);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.scene-project-info__tree-list,
+.scene-project-info__tree-children {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scene-project-info__tree-list {
+  display: grid;
+  gap: 1px;
+  max-height: min(36vh, 300px);
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-accent-rgb, 212, 255, 72), 0.28) transparent;
+}
+
+.scene-project-info__tree-item {
+  min-width: 0;
+}
+
+.scene-project-info__tree-row {
+  display: grid;
+  grid-template-columns: 14px 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  padding: 5px 4px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 10px;
+}
+
+.scene-project-info__tree-row--folder {
+  border: none;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.scene-project-info__tree-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scene-project-info__tree-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 16px;
+  color: var(--color-text-muted, #667260);
+}
+
+.scene-project-info__tree-icon {
+  color: var(--color-accent, #d4ff48);
+  opacity: 0.78;
+}
+
+.scene-project-info__tree-name {
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-project-info__tree-row--file .scene-project-info__tree-name {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.scene-project-info__tree-row--folder .scene-project-info__tree-name {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.scene-project-info__tree-count {
+  color: var(--color-text-muted, #667260);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.scene-project-info__tree-children {
+  margin-left: 9px;
+  padding: 2px 0 2px 9px;
+  border-left: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.16);
+}
+
+.scene-project-info__tree-file-icon {
+  position: relative;
+  display: block;
+  width: 10px;
+  height: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 2px;
+}
+
+.scene-project-info__tree-file-icon::after {
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  width: 4px;
+  height: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.36);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.36);
+  background: var(--color-bg-secondary, #101912);
+  content: '';
+}
+
+.scene-project-info__tree-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  min-width: 0;
+  max-width: 106px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.scene-project-info__tree-kind {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(134, 194, 255, 0.86);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-project-info__tree-kind--generator,
+.scene-project-info__tree-kind--state {
+  color: rgba(212, 255, 72, 0.82);
+}
+
+.scene-project-info__tree-meta > small {
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 9px;
+}
+
+.scene-project-info__empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 12px 6px;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.scene-project-info__retry {
+  padding: 3px 8px;
+  border: 1px solid var(--color-border-strong, #3a4b38);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--color-accent, #d4ff48);
+  background: transparent;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.scene-project-info__retry:hover {
+  background: rgba(var(--color-accent-rgb, 212, 255, 72), 0.1);
+}
+
+/* Compact scene project browser.
+   The shared ProjectPanel is also used by other authoringes, so the scene
+   plugin keeps this density pass local instead of changing the kernel chrome. */
+.scene-left-pane__section--projects > .proj-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: 6px;
+  padding: 8px;
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__head,
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__status,
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__list {
+  grid-column: 1 / -1;
+}
+
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__filter {
+  grid-column: 1;
+  width: auto;
+  min-width: 0;
+  padding: 4px 7px;
+  border-radius: 5px;
+}
+
+/* Scope stays in the filter row as a compact toggle. Its context is still in
+   the DOM for accessibility and appears as a small tooltip on hover/focus. */
+.scene-left-pane__section--projects > .proj-panel > .proj-panel__scope {
+  position: relative;
+  grid-column: 2;
+  align-self: stretch;
+  width: 30px;
+  min-width: 30px;
+  box-sizing: border-box;
+  justify-content: center;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-context {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  right: 0;
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 8px;
+  border: 1px solid rgba(var(--color-accent-rgb, 212, 255, 72), 0.28);
+  border-radius: 6px;
+  background: rgba(12, 18, 14, 0.98);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope:hover .proj-panel__scope-context,
+.scene-left-pane__section--projects .proj-panel__scope:focus-within .proj-panel__scope-context {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-context-label {
+  display: block;
+  font-size: 9px;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-context-value {
+  display: block;
+  max-width: 204px;
+  color: var(--color-accent, #d4ff48);
+  font-size: 10px;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-switch {
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-switch-track {
+  width: 26px;
+  height: 14px;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-switch-thumb {
+  width: 10px;
+  height: 10px;
+}
+
+.scene-left-pane__section--projects .proj-panel__scope-switch--on .proj-panel__scope-switch-thumb {
+  transform: translateX(12px);
+}
+
+/* File-browser rows: one compact line for the common case, with metadata and
+   actions retained but visually subordinate. */
+.scene-left-pane__section--projects .proj-panel__list {
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1px;
+  padding-top: 2px;
+  padding-right: 2px;
+}
+
+.scene-left-pane__section--projects .proj-panel__list .proj-card {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.scene-left-pane__section--projects .proj-panel__list .proj-card:hover {
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.scene-left-pane__section--projects .proj-panel__list .proj-card--active {
+  border-color: rgba(var(--color-accent-rgb, 212, 255, 72), 0.22);
+  box-shadow: inset 2px 0 0 var(--color-accent, #d4ff48);
+  background: rgba(var(--color-accent-rgb, 212, 255, 72), 0.09);
+}
+
+.scene-left-pane__section--projects .proj-card__open {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 3px 4px 3px 8px;
+}
+
+.scene-left-pane__section--projects .proj-card__inner {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.scene-left-pane__section--projects .proj-card__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.scene-left-pane__section--projects .proj-card__meta {
+  order: 3;
+  flex: 0 0 clamp(92px, 34%, 120px);
+  width: clamp(92px, 34%, 120px);
+  min-width: 0;
+  overflow: hidden;
+  margin-left: auto;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* Created time is redundant in a working project browser. Keep the last
+   edited timestamp as the only trailing metadata so the project name gets the
+   remaining responsive width. */
+.scene-left-pane__section--projects .proj-card__meta-created,
+.scene-left-pane__section--projects .proj-card__meta-separator {
+  display: none;
+}
+
+.scene-left-pane__section--projects .proj-card__meta-edited {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-left-pane__section--projects .proj-card__badges {
+  order: 2;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 96px;
+  margin: 0;
+  flex-wrap: nowrap;
+}
+
+.scene-left-pane__section--projects .proj-card__badge {
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 9px;
+  padding-inline: 5px;
+}
+
+.scene-left-pane__section--projects .proj-card__toolbar {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 6px;
+  align-self: center;
+  height: auto;
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid rgba(212, 255, 72, 0.24);
+  border-radius: 6px;
+  background: rgba(10, 16, 12, 0.98);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(8px);
+  transform: translateY(-50%);
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.scene-left-pane__section--projects .proj-card:hover .proj-card__toolbar,
+.scene-left-pane__section--projects .proj-card:focus-within .proj-card__toolbar {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateY(-1px);
+}
+
+.scene-left-pane__section--projects .proj-card__icon-btn {
+  width: 22px;
+  height: 22px;
+}
+
+.ni-node__ports {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 6px;
+  padding: 7px 0;
+}
+
+.ni-node__col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ni-node__col--in { align-items: flex-start; }
+.ni-node__col--out { align-items: flex-end; }
+
+.ni-node__empty {
+  font-size: 10px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+/* A port row: dot on the node edge + the port name inside the card. The wire
+   + peer text hang off the edge (absolute) so they reach into the gutter. */
+.ni-port {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ni-port--out { justify-content: flex-end; }
+.ni-port--idle { opacity: 0.55; }
+
+.ni-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.ni-port--in .ni-dot { margin-left: -4px; }
+.ni-port--out .ni-dot { margin-right: -4px; }
+
+.ni-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.9);
+  /* Wrap long port names rather than truncating; prefer the zero-width breaks
+     inserted at word boundaries (mainRoad​Grid), only chopping mid-word as a
+     last resort. */
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.ni-port--out .ni-name { text-align: right; }
+
+/* Lead-out: a short wire from the port dot to the peer, drawn outside the
+   card so it sits in the gutter. */
+.ni-lead {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.ni-port--in .ni-lead {
+  right: 100%;
+  flex-direction: row-reverse;
+}
+
+.ni-port--out .ni-lead {
+  left: 100%;
+}
+
+.ni-wire {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* Unconnected ports keep the wire's 14px slot (so values line up) but draw
+   nothing in it. */
+.ni-wire--ghost {
+  background: transparent;
+  opacity: 0;
+}
+
+/* Value box: an adaptive definite width (set via --ni-value-w to fill the side
+   gutter) so each value line stays unwrapped and short values like "grid" sit
+   on one line. */
+.ni-peers {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: var(--ni-value-w, 58px);
+  flex: none;
+}
+
+.ni-port--in .ni-peers { align-items: flex-end; }
+.ni-port--out .ni-peers { align-items: flex-start; }
+
+.ni-peer {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  width: 100%;
+  min-width: 0;
+}
+
+.ni-port--in .ni-peer { text-align: right; }
+.ni-port--out .ni-peer { text-align: left; }
+
+/* Kind label line (e.g. "grid" / "Value"), dimmer than the value below it. */
+.ni-peer__kind {
+  width: 100%;
+  font-size: 9px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ni-peer__node {
+  width: 100%;
+  font-size: 10px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.82);
+  /* The value itself; wraps onto at most 2 lines as a safety net (the box width
+     adapts to the gutter so this is rarely needed). */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== Selected rule detail (AssetStore group) ===== */
+.scene-left-pane__hint {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #9aa4b2);
+  opacity: 0.85;
+}
+
+.scene-left-pane__rule {
+  display: grid;
+  gap: 8px;
+}
+
+.scene-left-pane__rule-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scene-left-pane__rule-head h2 {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-left-pane__rule-schema {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(45, 212, 191, 0.16);
+  color: #5eead4;
+}
+
+/* Output (read-only) layer badge — neutral, distinct from the teal editable badge. */
+.scene-left-pane__rule-schema.is-output {
+  background: rgba(148, 163, 184, 0.16);
+  color: #cbd5e1;
+}
+
+.scene-left-pane__rule-alias {
+  font-size: 11px;
+  font-family: "Fira Code", ui-monospace, monospace;
+  color: var(--color-text-secondary, #9aa4b2);
+  word-break: break-all;
+}
+
+.scene-left-pane__rule-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__rule-meta {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.scene-left-pane__rule-meta > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.scene-left-pane__rule-meta dt {
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__rule-meta dd {
+  margin: 0;
+  text-align: right;
+  color: var(--color-text-primary, #f8fafc);
+  font-variant-numeric: tabular-nums;
+}
+
+.scene-left-pane__rule-faces {
+  display: grid;
+  gap: 4px;
+}
+
+.scene-left-pane__rule-face {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scene-left-pane__rule-face-name {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5eead4;
+}
+
+.scene-left-pane__rule-face-stats {
+  font-size: 11px;
+  color: var(--color-text-secondary, #9aa4b2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== AssetStore panel content (inside editor-controls sections) ===== */
+.scene-left-pane .asp-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
+}
+.scene-left-pane .asp-subhead {
+  margin: 4px 0 0;
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent, #d4ff48);
+  opacity: 0.85;
+}
+.scene-left-pane .asp-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.scene-left-pane .editor-controls__btn.asp-btn-primary {
+  background: rgba(212, 255, 72, 0.18);
+  color: var(--color-accent, #d4ff48);
+}
+.scene-left-pane .editor-controls__btn.asp-btn-danger {
+  color: #fca5a5;
+}
+.scene-left-pane .editor-controls__btn.asp-btn-danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+}
+.asp-search {
+  position: relative;
+  display: flex;
+}
+.asp-input {
+  width: 100%;
+  background: var(--color-bg-secondary, #101912);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: var(--color-text-primary, #f3f7ee);
+  font-size: 12px;
+  padding: 5px 7px;
+}
+.asp-input:focus {
+  outline: none;
+  border-color: var(--color-accent, #d4ff48);
+}
+.asp-input-clear {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-secondary, #9aa4b2);
+  cursor: pointer;
+  font-size: 14px;
+}
+.asp-suggest {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 3px;
+  list-style: none;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--color-bg-secondary, #101912);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+.asp-suggest-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--color-text-primary, #f3f7ee);
+}
+.asp-suggest-item.is-active {
+  background: rgba(212, 255, 72, 0.16);
+}
+.asp-suggest-thumb {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+}
+.asp-suggest-alias {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.asp-suggest-badge {
+  flex: none;
+  font-size: 9px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: rgba(212, 255, 72, 0.2);
+  color: var(--color-accent, #d4ff48);
+}
+.asp-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.asp-field {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.asp-field-num {
+  font-size: 9px;
+  color: var(--color-text-tertiary, #6b7280);
+  min-width: 12px;
+}
+.asp-field-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #9aa4b2);
+  margin-right: 2px;
+}
+.asp-field.is-active .asp-field-label {
+  color: var(--color-accent, #d4ff48);
+}
+.asp-field-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.asp-opt {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-secondary, #9aa4b2);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.asp-opt.is-active {
+  background: rgba(212, 255, 72, 0.22);
+  color: var(--color-accent, #d4ff48);
+  border-color: rgba(212, 255, 72, 0.35);
+}
+.asp-field-input {
+  flex: 1;
+  min-width: 80px;
+  padding: 3px 6px;
+  font-size: 11px;
+}
+.asp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.scene-left-pane .asp-actions .editor-controls__btn {
+  flex: 1;
+  min-width: 72px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.asp-input--narrow {
+  width: 4.5em;
+}
+.asp-anchor-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.asp-anchor-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+.asp-hint {
+  font-size: 11px;
+  color: var(--color-text-secondary, #9aa4b2);
+  margin: 0;
+  line-height: 1.4;
+}
+.asp-hint--muted {
+  color: var(--color-text-tertiary, #6b7280);
+}
+.asp-hint--err {
+  color: #fca5a5;
+}
+.asp-preview-thumb {
+  position: relative;
+  aspect-ratio: 1;
+  max-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary, #101912);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.asp-preview-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  image-rendering: pixelated;
+}
+.asp-preview-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--color-accent, #d4ff48);
+  color: #07140c;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.asp-preview-name {
+  font-size: 11px;
+  word-break: break-all;
+  color: var(--color-text-primary, #f3f7ee);
+}
+.asp-meta {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 10px;
+  font-size: 11px;
+}
+.asp-meta div {
+  display: contents;
+}
+.asp-meta dt {
+  color: var(--color-text-secondary, #9aa4b2);
+}
+.asp-meta dd {
+  margin: 0;
+  text-align: right;
+  color: var(--color-text-primary, #f3f7ee);
+  font-variant-numeric: tabular-nums;
+}
+.asp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.asp-tag {
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-secondary, #9aa4b2);
+}
+.asp-info-summary {
+  font-size: 11px;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+.asp-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.asp-info-table th,
+.asp-info-table td {
+  padding: 3px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: left;
+}
+.asp-info-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.asp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.asp-modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-primary, #0b120d);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  gap: 10px;
+}
+.asp-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 650;
+}
+.asp-modal-close {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary, #9aa4b2);
+  font-size: 18px;
+  cursor: pointer;
+}
+.asp-modal-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.asp-modal-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.asp-modal-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.asp-modal-alias {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.asp-modal-zone {
+  color: var(--color-text-tertiary, #6b7280);
+}
+.asp-modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.scene-left-pane__layer-inspector {
+  gap: 10px;
+}
+
+.scene-left-pane__inspector-hero {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(45, 212, 191, 0.22);
+  background:
+    linear-gradient(135deg, rgba(45, 212, 191, 0.12), rgba(59, 130, 246, 0.06)),
+    rgba(255, 255, 255, 0.03);
+}
+
+.scene-left-pane__inspector-title {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+}
+
+.scene-left-pane__asset-preview {
+  position: relative;
+  min-height: 68px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.scene-left-pane__asset-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.scene-left-pane__asset-preview-label {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.78);
+  color: #ccfbf1;
+}
+
+.scene-left-pane__asset-preview.is-empty,
+.scene-left-pane__asset-preview.is-missing {
+  padding: 8px;
+  align-content: center;
+  gap: 5px;
+  color: var(--color-text-secondary, #9aa4b2);
+}
+
+.scene-left-pane__asset-preview.is-empty .scene-left-pane__asset-preview-label,
+.scene-left-pane__asset-preview.is-missing .scene-left-pane__asset-preview-label {
+  position: static;
+  background: transparent;
+  color: inherit;
+}
+
+.scene-left-pane__asset-preview.is-missing {
+  border-color: rgba(251, 146, 60, 0.28);
+  background: rgba(251, 146, 60, 0.08);
+}
+
+.scene-left-pane__asset-preview strong {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  color: #fed7aa;
+}
+
+.scene-left-pane__inspector-card {
+  padding: 8px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.scene-left-pane__layer-inspector .scene-left-pane__inspector-sub {
+  margin: 0 0 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #93c5fd;
+}
+
+.scene-left-pane__metric-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.scene-left-pane__metric-grid > div {
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.scene-left-pane__metric-grid dd {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.scene-left-pane__attr-list .scene-left-pane__attr-row dd input {
+  width: 100%;
+  max-width: 140px;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+}
+
+.scene-left-pane__attr-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.scene-left-pane__attr-add input {
+  flex: 1 1 80px;
+  min-width: 60px;
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+}
+
+.scene-left-pane__template-apply select {
+  width: 100%;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.scene-left-pane__inspector-status {
+  font-size: 11px;
+  color: #5eead4;
+  margin-top: 8px;
+}

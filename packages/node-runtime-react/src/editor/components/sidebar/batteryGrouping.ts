@@ -84,14 +84,13 @@ export function formatBigLabel(label: string): string {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
-// 已知的流水线阶段大标签顺序（wb-3d-lowpoly）。这些标签按此人工顺序排在最前，
-// 其余大标签 A→Z；其它插件不含这些标签，故不受影响。
-const PIPELINE_STAGE_ORDER = ['Generate', 'Modify', 'Assemble', 'Output']
+// First-batch rail: Basic literals, then Modeling, then Grid, then Scene.
+const BIG_LABEL_ORDER = ['Basic', 'Modeling', 'Grid', 'Scene']
 
-/** 大标签比较器：已知流水线阶段按 PIPELINE_STAGE_ORDER，其余按 localeCompare。 */
+/** 大标签比较器：Basic 第一，Modeling 第二，已知流水线阶段按顺序，其余按 localeCompare。 */
 export function compareBigLabel(a: string, b: string): number {
-  const ia = PIPELINE_STAGE_ORDER.indexOf(a)
-  const ib = PIPELINE_STAGE_ORDER.indexOf(b)
+  const ia = BIG_LABEL_ORDER.indexOf(a)
+  const ib = BIG_LABEL_ORDER.indexOf(b)
   if (ia >= 0 || ib >= 0) {
     if (ia < 0) return 1
     if (ib < 0) return -1
@@ -129,12 +128,43 @@ export function applyOrder(savedOrder: string[], allLabels: string[]): string[] 
   return result
 }
 
+// Constructors first (2d → heightfield → 3d), then the operators that consume
+// them: pose puts a mesh in the world, surface relates geometry to a surface.
+const MODELING_SMALL_LABEL_ORDER = [
+  'geometry2d',
+  'heightfield',
+  'geometry3d',
+  'layout',
+  'pose',
+  'query',
+  'surface',
+]
+
+const GRID_SMALL_LABEL_ORDER = [
+  'init',
+  'noise',
+  'arith',
+  'filter',
+  'morph',
+  'sample',
+  'derive',
+  'partition',
+  'zone',
+  'global',
+  'lattice',
+  'ca',
+]
+
 export function sortSmallLabels(labels: string[], bigLabel: string | null): string[] {
   const sorted = [...labels].sort()
-  // The common batteries (input / list / number …) live under the `common` big
-  // tag (batteries-common); curate their sub-group order, everything else A→Z.
-  if (bigLabel !== 'common') return sorted
-  const priority = ['input', 'list', 'datatree', 'number', 'preview']
+  const priority = bigLabel === 'common'
+    ? ['input', 'list', 'datatree', 'number', 'preview']
+    : bigLabel === 'Modeling'
+      ? MODELING_SMALL_LABEL_ORDER
+      : bigLabel === 'Grid'
+        ? GRID_SMALL_LABEL_ORDER
+        : null
+  if (!priority) return sorted
   return sorted.sort((a, b) => {
     const ai = priority.indexOf(a)
     const bi = priority.indexOf(b)

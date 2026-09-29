@@ -137,9 +137,10 @@ export function isMissingExecuteTarget(
 }
 
 /**
- * After a Scene Script (or other rewrite) persist, the canvas-minted node id
- * is gone and the kernel has a newly compiled entity. Prefer that single new
- * id; otherwise run the whole graph.
+ * After an import/replace persist, the requested node id may be gone.
+ * Prefer that id when the kernel still has it; if exactly one new node
+ * appeared, execute that. Scene Script drops keep the canvas id, so this
+ * is a safety net for other rewrites — not a second identity system.
  */
 export function pickExecuteTargetAfterRemap(
   requestedId: string,
@@ -258,9 +259,6 @@ export function createIncrementalExecute(get: PipelineGet): PipelineState['incre
       let result = fullExec
         ? await callPipelineExecute()
         : await callPipelineExecute({ startNodeId: nodeId })
-      // Canonical Scene Script persist compiles a new entity id. The drop still
-      // holds the canvas-minted id, so the first incremental walk misses and
-      // never hydrates previewLayers. Retry against the kernel snapshot.
       let executedId = nodeId
       if (!fullExec && isMissingExecuteTarget(result)) {
         const kernel = await getEditorTransport().api.getPipeline()

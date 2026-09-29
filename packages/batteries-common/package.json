@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Shared common batteries for ForgeaX workbench plugins",
+  "description": "Shared common batteries for ForgeaX authoring plugins",
   "files": [
     "batteries"
   ],

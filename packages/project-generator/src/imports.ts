@@ -89,13 +89,21 @@ export function diagnoseGeneratorImport(
   return undefined
 }
 
+export function stripSourceComments(source: string): string {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/[^\n\r]*/g, '')
+}
+
 export function collectRelativeImports(source: string): string[] {
+  const clean = stripSourceComments(source)
   const specifiers: string[] = []
-  for (const match of source.matchAll(/from\s+["']([^"']+)["']/g)) specifiers.push(match[1])
-  for (const match of source.matchAll(/import\s*\(\s*["']([^"']+)["']\s*\)/g)) specifiers.push(match[1])
+  for (const match of clean.matchAll(/from\s+["']([^"']+)["']/g)) specifiers.push(match[1])
+  for (const match of clean.matchAll(/import\s*\(\s*["']([^"']+)["']\s*\)/g)) specifiers.push(match[1])
   return specifiers
 }
 
 export function hasDynamicImport(source: string): boolean {
-  return /\bimport\s*\(/.test(source)
+  const clean = stripSourceComments(source)
+  return /\bimport\s*\(/.test(clean)
 }

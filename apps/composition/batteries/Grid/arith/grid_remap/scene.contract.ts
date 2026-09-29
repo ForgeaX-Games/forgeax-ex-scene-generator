@@ -1,0 +1,70 @@
+import { defineAtomic } from '@forgeax/scene-authoring'
+
+export default defineAtomic({
+  functionName: "gridRemap",
+  contractVersion: "1.0.0",
+  opId: "grid_remap",
+  label: "区间重映射",
+  nameEn: "GridRemap",
+  description: "Linear remap from [fromMin, fromMax] to [toMin, toMax].",
+  inputs: [
+    {
+      name: "grid",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      required: true,
+      label: "网格",
+    },
+    {
+      name: "fromMin",
+      type: "number",
+      access: "item",
+      defaultValue: 0,
+      mode: "parameter",
+      label: "从最小",
+    },
+    {
+      name: "fromMax",
+      type: "number",
+      access: "item",
+      defaultValue: 1,
+      mode: "parameter",
+      label: "从最大",
+    },
+    {
+      name: "toMin",
+      type: "number",
+      access: "item",
+      defaultValue: 0,
+      mode: "parameter",
+      label: "到最小",
+    },
+    {
+      name: "toMax",
+      type: "number",
+      access: "item",
+      defaultValue: 1,
+      mode: "parameter",
+      label: "到最大",
+    },
+    {
+      name: "mask",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      required: false,
+      label: "遮罩",
+    },
+  ],
+  outputs: [
+    {
+      name: "grid",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      label: "网格",
+    },
+  ],
+  deterministic: true,
+})

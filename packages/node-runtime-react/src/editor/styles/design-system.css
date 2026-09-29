@@ -1,6 +1,6 @@
 /* 💡 全局样式表：定义 CSS 变量、主题配色方案、基础排版及滚动条样式 */
 :root {
-  /* Forgeax 深绿工作台配色：near-black 基底 + moss-green 面板 + lime 高亮 */
+  /* Forgeax 深绿创作界面配色：near-black 基底 + moss-green 面板 + lime 高亮 */
   --color-bg-primary: #070b08;
   --color-bg-secondary: #101912;
   --color-bg-titlebar: #050806;

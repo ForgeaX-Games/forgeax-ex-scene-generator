@@ -109,7 +109,7 @@ describe('importPipelineGraph — kernel-graph-v1', () => {
 
 describe('importPipelineGraph — legacy-pipeline-v1', () => {
   it('maps batteryId → opId and round-trips the viewport', async () => {
-    const rt = fresh(['wb.union', 'wb.grid'])
+    const rt = fresh(['legacy.union', 'legacy.grid'])
     const res = await importPipelineGraph(
       rt,
       {
@@ -125,12 +125,12 @@ describe('importPipelineGraph — legacy-pipeline-v1', () => {
           viewport: { x: -10, y: -20, zoom: 0.75 },
         },
       },
-      { opIdMap: { legacyGrid: 'wb.grid', legacyUnion: 'wb.union' } },
+      { opIdMap: { legacyGrid: 'legacy.grid', legacyUnion: 'legacy.union' } },
     )
     expect(res.status).toBe('ok')
     const snap = getPipeline(rt)!
-    expect(snap.nodes.g!.opId).toBe('wb.grid')
-    expect(snap.nodes.u!.opId).toBe('wb.union')
+    expect(snap.nodes.g!.opId).toBe('legacy.grid')
+    expect(snap.nodes.u!.opId).toBe('legacy.union')
     expect(snap.metadata?.viewport).toEqual({ x: -10, y: -20, zoom: 0.75 })
   })
 })

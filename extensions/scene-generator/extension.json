@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "id": "scene-generator",
+  "version": "0.4.3",
+  "skills": ["skills/scene-generator-authoring"],
+  "cli": "cli.mjs"
+}

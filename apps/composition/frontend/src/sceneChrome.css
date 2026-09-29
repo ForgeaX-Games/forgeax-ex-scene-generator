@@ -1,0 +1,318 @@
+/* Scene Generator surface tokens. Values follow ForgeaX界面设计规范.html and
+   keep the plugin surfaces visually consistent with the engine editor. */
+:root {
+  --prim-color-lime-300: #dfff78;
+  --prim-color-lime-400: #d4ff48;
+  --prim-color-lime-500: #b1d43c;
+  --prim-color-lime-700: #6a7f24;
+  --prim-color-teal-300: #63eacf;
+  --prim-color-teal-400: #48ffcf;
+  --prim-color-teal-700: #1d6655;
+  --prim-color-orange-300: #ffc481;
+  --prim-color-orange-400: #ffb056;
+  --prim-color-neutral-0: #fff;
+  --prim-color-neutral-200: #ccc;
+  --prim-color-neutral-400: #999;
+  --prim-color-neutral-600: #666;
+  --prim-color-neutral-750: #404040;
+  --prim-color-neutral-800: #333;
+  --prim-color-neutral-850: #242424;
+  --prim-color-neutral-900: #191919;
+  --prim-color-neutral-950: #0d0d0d;
+  --prim-color-neutral-1000: #000;
+  --prim-color-sky-300: #7dd3fc;
+  --prim-color-sky-400: #6cc4ff;
+  --prim-color-green-400: #4fd17f;
+  --prim-color-green-600: #1b9d4b;
+  --prim-color-yellow-600: #ba8e06;
+  --prim-color-red-400: #f26a6a;
+  --prim-color-red-600: #be3636;
+  --prim-color-blue-400: #639cf8;
+  --prim-color-purple-300: #cc9bfa;
+  --prim-color-purple-500: #a855f7;
+  --prim-color-pink-300: #ff6db8;
+  --prim-color-pink-400: #ff0080;
+
+  --color-background-canvas: var(--prim-color-neutral-950);
+  --color-background-base: var(--prim-color-neutral-900);
+  --color-background-elevated: var(--prim-color-neutral-850);
+  --color-background-floating: var(--prim-color-neutral-800);
+  --color-text-primary: var(--prim-color-neutral-0);
+  --color-text-secondary: rgba(255, 255, 255, .6);
+  --color-text-tertiary: rgba(255, 255, 255, .3);
+  --color-text-disabled: rgba(255, 255, 255, .2);
+  --color-text-on-bright-primary: var(--prim-color-neutral-1000);
+  --color-text-on-bright-secondary: rgba(0, 0, 0, .6);
+  --color-border-subtle: var(--prim-color-neutral-800);
+  --color-border-default: var(--prim-color-neutral-750);
+  --color-border-strong: #737373;
+  --color-divider-subtle: rgba(255, 255, 255, .05);
+  --color-divider-default: rgba(255, 255, 255, .1);
+  --color-divider-strong: rgba(255, 255, 255, .15);
+  --color-brand-primary: var(--prim-color-lime-400);
+  --color-brand-primary-light: var(--prim-color-lime-300);
+  --color-brand-primary-soft: var(--prim-color-lime-700);
+  --color-brand-primary-hover: #c5f038;
+  --color-interaction-hover: rgba(255, 255, 255, .05);
+  --color-interaction-selected-brand: rgba(212, 255, 72, .1);
+  --color-interaction-selected-neutral: rgba(255, 255, 255, .1);
+  --color-interaction-error: rgba(242, 106, 106, .1);
+  --color-overlay-focus: rgba(212, 255, 72, .3);
+  --color-status-success: var(--prim-color-green-600);
+  --color-status-warning: var(--prim-color-yellow-600);
+  --color-status-error: var(--prim-color-red-600);
+
+  --prim-font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+  --prim-font-mono: "JetBrains Mono", "Fira Mono", "SF Mono", Menlo, Consolas, monospace;
+  --prim-space-2: 2px;
+  --prim-space-4: 4px;
+  --prim-space-6: 6px;
+  --prim-space-8: 8px;
+  --prim-space-10: 10px;
+  --prim-space-12: 12px;
+  --prim-space-16: 16px;
+  --prim-space-20: 20px;
+  --prim-radius-2: 2px;
+  --prim-radius-4: 4px;
+  --prim-radius-6: 6px;
+  --prim-radius-8: 8px;
+  --prim-radius-12: 12px;
+  --prim-radius-16: 16px;
+  --motion-duration-fast: 110ms;
+  --motion-duration-base: 150ms;
+  --motion-duration-smooth: 190ms;
+  --motion-ease-out: cubic-bezier(.16, 1, .3, 1);
+
+  /* Existing plugin aliases. Keeping these aliases lets the renderer and the
+     shared node editor consume one semantic palette. */
+  --color-bg-primary: var(--color-background-canvas);
+  --color-bg-secondary: var(--color-background-base);
+  --color-bg-titlebar: var(--color-background-base);
+  --color-bg-titlebar-gradient: var(--color-background-elevated);
+  --color-bg-tertiary: var(--color-background-elevated);
+  --color-bg-elevated: var(--color-background-floating);
+  --color-accent: var(--color-brand-primary);
+  --color-accent-rgb: 212, 255, 72;
+  --color-accent-contrast: var(--color-text-on-bright-primary);
+  --color-accent-hover: var(--color-interaction-selected-brand);
+  --color-accent-active: rgba(212, 255, 72, .18);
+  --color-border: var(--color-border-default);
+  --color-text-muted: var(--color-text-tertiary);
+  --font-family: var(--prim-font-sans);
+  --font-mono: var(--prim-font-mono);
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-lg: 14px;
+  --spacing-xs: var(--prim-space-4);
+  --spacing-sm: var(--prim-space-8);
+  --spacing-md: var(--prim-space-12);
+  --spacing-lg: var(--prim-space-16);
+  --spacing-xl: var(--prim-space-20);
+  --radius-sm: var(--prim-radius-4);
+  --radius-md: var(--prim-radius-6);
+  --radius-lg: var(--prim-radius-12);
+  --scene-titlebar-height: 32px;
+  --scene-titlebar-title-size: 13px;
+  --scene-titlebar-title-weight: 600;
+  --scene-titlebar-padding-inline: var(--prim-space-12);
+  --scene-titlebar-color: var(--color-brand-primary);
+  --scene-titlebar-border: var(--color-divider-default);
+  --scene-motion-duration: var(--motion-duration-smooth);
+  --scene-motion-ease: var(--motion-ease-out);
+}
+
+:root[data-theme='light'] {
+  --color-background-canvas: #f4f6ef;
+  --color-background-base: #e9eee0;
+  --color-background-elevated: #f7faef;
+  --color-background-floating: #fff;
+  --color-text-primary: #17210f;
+  --color-text-secondary: rgba(23, 33, 15, .68);
+  --color-text-tertiary: rgba(23, 33, 15, .46);
+  --color-text-disabled: rgba(23, 33, 15, .28);
+  --color-text-on-bright-primary: #17210f;
+  --color-text-on-bright-secondary: rgba(23, 33, 15, .68);
+  --color-border-subtle: #d7dfcc;
+  --color-border-default: #c3ceb5;
+  --color-border-strong: #9aaa88;
+  --color-divider-subtle: rgba(23, 33, 15, .06);
+  --color-divider-default: rgba(23, 33, 15, .12);
+  --color-divider-strong: rgba(23, 33, 15, .18);
+  --color-brand-primary: #6a7f24;
+  --color-brand-primary-light: #6a7f24;
+  --color-brand-primary-soft: #dfe9bd;
+  --color-brand-primary-hover: #56691c;
+  --color-interaction-hover: rgba(23, 33, 15, .06);
+  --color-interaction-selected-brand: rgba(106, 127, 36, .14);
+  --color-interaction-selected-neutral: rgba(23, 33, 15, .08);
+  --color-interaction-error: rgba(190, 54, 54, .12);
+  --color-overlay-focus: rgba(106, 127, 36, .26);
+  --color-status-success: #1b9d4b;
+  --color-status-warning: #ba8e06;
+  --color-status-error: #be3636;
+  --color-accent-rgb: 106, 127, 36;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --color-background-canvas: #f4f6ef;
+    --color-background-base: #e9eee0;
+    --color-background-elevated: #f7faef;
+    --color-background-floating: #fff;
+    --color-text-primary: #17210f;
+    --color-text-secondary: rgba(23, 33, 15, .68);
+    --color-text-tertiary: rgba(23, 33, 15, .46);
+    --color-border-subtle: #d7dfcc;
+    --color-border-default: #c3ceb5;
+    --color-border-strong: #9aaa88;
+    --color-divider-subtle: rgba(23, 33, 15, .06);
+    --color-divider-default: rgba(23, 33, 15, .12);
+    --color-divider-strong: rgba(23, 33, 15, .18);
+    --color-brand-primary: #6a7f24;
+    --color-brand-primary-soft: #dfe9bd;
+    --color-interaction-hover: rgba(23, 33, 15, .06);
+    --color-interaction-selected-brand: rgba(106, 127, 36, .14);
+    --color-interaction-selected-neutral: rgba(23, 33, 15, .08);
+    --color-accent-rgb: 106, 127, 36;
+  }
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-background-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--prim-font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--motion-duration-smooth) var(--motion-ease-out), color var(--motion-duration-smooth) var(--motion-ease-out);
+}
+
+button, input, textarea, select { font: inherit; }
+button { color: inherit; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--color-overlay-focus);
+  outline-offset: 1px;
+}
+::selection { background: var(--color-interaction-selected-brand); color: var(--color-text-primary); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-divider-strong); border-radius: var(--prim-radius-4); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-border-strong); }
+
+.standalone-shell, .app, .editor-pane, .renderer-surface {
+  background: var(--color-background-canvas);
+  color: var(--color-text-primary);
+}
+.standalone-shell__splitter, .sidebar-resize-handle { background: var(--color-divider-default); }
+.standalone-shell__splitter:hover, .standalone-shell--dragging .standalone-shell__splitter,
+.sidebar-resize-handle:hover, .sidebar-resize-handle:active { background: var(--color-brand-primary); }
+.toolbar, .renderer-toolbar {
+  background: var(--color-background-base);
+  border-bottom: 1px solid var(--color-divider-default);
+  box-shadow: 0 1px 0 var(--color-divider-subtle);
+}
+.toolbar-btn, .renderer-drawer-pill__button, .editor-controls__btn,
+.renderer-modal__btn, .renderer-layers__add, .proj-btn, .proj-card__icon-btn {
+  border-color: var(--color-border-default);
+  background: var(--color-background-elevated);
+  color: var(--color-text-secondary);
+  border-radius: var(--prim-radius-6);
+  transition: background var(--motion-duration-fast) var(--motion-ease-out), border-color var(--motion-duration-fast) var(--motion-ease-out), color var(--motion-duration-fast) var(--motion-ease-out), transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+.toolbar-btn:hover, .renderer-drawer-pill__button:hover, .editor-controls__btn:hover,
+.renderer-modal__btn:hover, .renderer-layers__add:hover, .proj-btn:hover, .proj-card__icon-btn:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-interaction-hover);
+  color: var(--color-text-primary);
+}
+.toolbar-btn:active, .renderer-drawer-pill__button:active, .editor-controls__btn:active,
+.renderer-modal__btn:active, .renderer-layers__add:active, .proj-btn:active, .proj-card__icon-btn:active {
+  transform: translateY(1px);
+}
+.toolbar-btn.active, .toolbar-filter-toggle-btn.is-active, .renderer-drawer-pill__button.is-active,
+.renderer-effects-option.is-active, .renderer-effects-coordinate-toggle.is-active,
+.sidebar-tab.active, .proj-card--active {
+  border-color: var(--color-brand-primary);
+  background: var(--color-interaction-selected-brand);
+  color: var(--color-brand-primary);
+}
+.toolbar-btn-run, .renderer-export-btn, .proj-btn--primary, .renderer-modal__btn--primary {
+  border-color: var(--color-brand-primary);
+  background: var(--color-brand-primary);
+  color: var(--color-text-on-bright-primary);
+  font-weight: 600;
+}
+.toolbar-btn-run:hover, .renderer-export-btn:hover:not(:disabled), .proj-btn--primary:hover, .renderer-modal__btn--primary:hover {
+  background: var(--color-brand-primary-hover);
+  color: var(--color-text-on-bright-primary);
+}
+
+.battery-bar, .left-sidebar, .sidebar, .editor-controls-panel, .proj-panel,
+.renderer-drawer-panel, .renderer-layers__section, .renderer-effects-panel {
+  background: var(--color-background-base);
+  border-color: var(--color-divider-default);
+  color: var(--color-text-primary);
+}
+.battery-row, .proj-card, .renderer-layer-row, .renderer-schema-group__head,
+.proj-panel__scope, .editor-controls__section {
+  border-color: var(--color-divider-subtle);
+  background: transparent;
+}
+.battery-row:hover, .proj-card:hover, .renderer-layer-row:hover, .renderer-schema-group__head:hover {
+  background: var(--color-interaction-hover);
+}
+.battery-row.active, .battery-row.selected, .renderer-layer-row.is-selected,
+.renderer-layer-row.is-editor-selected { background: var(--color-interaction-selected-brand); }
+.battery-row-name, .proj-card__name, .renderer-layer-name, .renderer-drawer-panel__title,
+.editor-controls__title { color: var(--color-text-primary); }
+.battery-row-meta, .proj-card__meta, .renderer-layer-count, .renderer-layers__hint,
+.renderer-status-pill, .renderer-preview-label__zoom { color: var(--color-text-tertiary); }
+
+.battery-bar input, .battery-bar select, .proj-panel__filter, .renderer-export-popover__field input,
+.renderer-modal__field input, .renderer-modal__field textarea, .gsd-input {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--prim-radius-6);
+  background: var(--color-background-canvas);
+  color: var(--color-text-primary);
+}
+.battery-bar input:focus, .battery-bar select:focus, .proj-panel__filter:focus,
+.renderer-export-popover__field input:focus, .renderer-modal__field input:focus,
+.renderer-modal__field textarea:focus, .gsd-input:focus {
+  border-color: var(--color-brand-primary);
+  box-shadow: 0 0 0 2px var(--color-overlay-focus);
+  outline: none;
+}
+.renderer-body, .renderer-canvas-wrap, .canvas-container { background: var(--color-background-canvas); }
+.renderer-status-pill { background: var(--color-background-elevated); border: 1px solid var(--color-divider-default); }
+.renderer-export-popover, .renderer-modal, .popup-panel, .proj-modal, .dev-note-modal, .gsd-modal {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--prim-radius-8);
+  background: var(--color-background-floating);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .24);
+  color: var(--color-text-primary);
+}
+.renderer-export-popover__title, .renderer-modal__title, .dev-note-modal-title, .gsd-title { color: var(--color-brand-primary); }
+.renderer-modal-backdrop, .gsd-overlay, .proj-modal__backdrop { background: rgba(13, 13, 13, .62); }
+.renderer-drawer-pill { background: var(--color-background-base); border: 1px solid var(--color-divider-default); border-radius: var(--prim-radius-8); }
+.renderer-layers__empty, .renderer-preview-label, .battery-empty, .sidebar-empty, .proj-empty {
+  color: var(--color-text-tertiary);
+}
+.renderer-layer-color, .renderer-schema-badge, .battery-row-icon { border-radius: var(--prim-radius-4); }
+
+.renderer-drawer-panel, .renderer-drawer-panel.is-open, .renderer-modal, .proj-modal, .dev-note-modal, .gsd-modal {
+  animation: scene-surface-in var(--motion-duration-smooth) var(--motion-ease-out);
+}
+@keyframes scene-surface-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}

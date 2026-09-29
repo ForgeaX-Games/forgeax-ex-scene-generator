@@ -518,7 +518,7 @@ describe('pipelineStore live-sync backbone', () => {
   })
 
   it('refreshConnectedOutputs hydrates a Phase-2 blob-ref envelope before storing the output', async () => {
-    // See wb-scene-generator-scene-tree-storage.md §3: the backend may ship a
+    // See scene-generator-scene-tree-storage.md §3: the backend may ship a
     // deduped envelope for a sharded port instead of `tooLarge` — `value` still
     // has the DataTreeEntry[] shape, but a repeated field is replaced by
     // `{ __outputCacheBlobRef }`, with the one real copy in `blobs`. The store

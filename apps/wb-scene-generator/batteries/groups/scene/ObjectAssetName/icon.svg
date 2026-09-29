@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Set object name group">
-  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
-  <path d="M9.4 5.2 13.6 7.3v4.6L9.4 14 5.2 11.9V7.3z" fill="none" stroke="#95aa9f" stroke-width="1.4" stroke-linejoin="round"/>
-  <path d="M5.2 7.3 9.4 9.4 13.6 7.3" fill="none" stroke="#95aa9f" stroke-width="1.4" stroke-linejoin="round"/>
-  <path d="M9.4 9.4V14" fill="none" stroke="#95aa9f" stroke-width="1.4" stroke-linejoin="round"/>
-  <path d="M12.3 12.3h4.3a1.4 1.4 0 0 1 1 0.4l2.7 2.7a1 1 0 0 1 0 1.4l-2.6 2.6a1 1 0 0 1-1.4 0l-2.7-2.7a1.4 1.4 0 0 1-0.4-1z" fill="#10211d" stroke="#95aa9f" stroke-width="1.4" stroke-linejoin="round"/>
-  <circle cx="15.3" cy="15.3" r="1.2" fill="#b7ff5a"/>
-</svg>

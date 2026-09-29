@@ -3,6 +3,7 @@ import type { Op } from '@forgeax/node-runtime'
 export const SCENE_SCRIPT_VERSION = '0.1'
 
 export type ContractKind = 'atomic' | 'group' | 'template'
+/** Canvas name of a TypeScript shape layer: Item / List / ShapeTree. SceneTree uses `item`. */
 export type PortAccess = 'item' | 'list' | 'tree'
 export type ActorKind = 'user' | 'agent' | 'template-maintainer' | 'compiler'
 export type GroupCapability =
@@ -176,6 +177,11 @@ export interface RawTemplateGroup {
   _nestedGroups?: RawTemplateGroup[]
 }
 
+export interface BatteryCanvasHint {
+  nodeType?: string
+  hideOutputs?: boolean
+}
+
 export interface NodeFunctionContract {
   functionName: string
   kind: ContractKind
@@ -183,6 +189,12 @@ export interface NodeFunctionContract {
   opId?: string
   definitionId?: string
   definitionVersion?: string
+  /** Palette title. Becomes OpSpec.name when the loader derives from this contract. */
+  label?: string
+  /** English palette title. Becomes OpSpec.nameEn. */
+  nameEn?: string
+  /** Canvas presentation that is not part of OpSpec. */
+  canvas?: BatteryCanvasHint
   /** Evidence-derived authoring status; omitted when no acceptance source is attached. */
   sceneScriptStatus?: 'legacy' | 'script-callable' | 'equivalence-verified'
   description: string
@@ -218,7 +230,7 @@ export type SceneLiteral = string | number | boolean | null
 export type SceneExpression =
   | { kind: 'literal'; value: SceneLiteral }
   | { kind: 'reference'; binding: string; output?: string }
-  /** A statically resolved Scene function used by a compiler builtin such as repeat. */
+  /** A statically resolved Scene function used as a call argument. */
   | { kind: 'callable'; functionName: string }
   | { kind: 'array'; items: SceneExpression[] }
   | { kind: 'object'; properties: Record<string, SceneExpression> }
@@ -233,24 +245,41 @@ export interface SceneCallStatement {
   source: SourceRange
 }
 
+/** Top-level `const width = 1200` — projected as a Basic/input node, not a function call. */
+export type ScenePrimitiveValue = string | number | boolean
+
+export interface SceneLiteralStatement {
+  kind: 'literal'
+  statementId: string
+  binding: string
+  value: ScenePrimitiveValue
+  source: SourceRange
+}
+
+export type SceneStatement = SceneCallStatement | SceneLiteralStatement
+
 export type ScenePortTypeName =
   | 'Scene'
   | 'NumberValue'
   | 'StringValue'
   | 'BooleanValue'
   | 'Grid'
+  | 'Heightfield'
   | 'Point2d'
-  | 'Mesh'
+  | 'Polyline2d'
+  | 'Spline2d'
+  | 'Polygon2d'
+  | 'Network2d'
+  | 'Point3d'
+  | 'Polyline3d'
+  | 'Spline3d'
+  | 'Polygon3d'
+  | 'Network3d'
+  | 'Geometry'
+  | 'Dict'
   | 'NumberList'
   | 'StringList'
   | 'Any'
-  | 'Plane'
-  | 'WorkGrid'
-  | 'RegionSet'
-  | 'RoadNetwork'
-  | 'ParcelSet'
-  | 'PlacementSet'
-  | 'Reserved'
 
 export interface SceneGroupDefinitionMeta {
   id: string
@@ -285,7 +314,7 @@ export interface SceneGroupDefinition {
   exportName: string
   meta: SceneGroupDefinitionMeta
   paramNames: string[]
-  body: SceneCallStatement[]
+  body: SceneStatement[]
   returnOutputs: Record<string, SceneExpression>
   source: SourceRange
 }
@@ -313,7 +342,7 @@ export interface SceneModuleAst {
   imports: SceneImport[]
   exports: SceneExport[]
   definitions: SceneGroupDefinition[]
-  statements: SceneCallStatement[]
+  statements: SceneStatement[]
 }
 
 export interface SceneProjectAst {
@@ -395,6 +424,8 @@ export interface SourceMapEntry {
   definitionId?: string
   definitionVersion?: string
   instancePath?: string
+  /** Set when this runtime node is a compiled projection of one call argument, not its own statement. */
+  argument?: string
 }
 
 /** Stable, data-only provenance for one public runtime result and its projections. */

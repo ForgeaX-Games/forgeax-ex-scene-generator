@@ -5,18 +5,19 @@ import type {
   PortContract,
   ScenePortTypeName,
 } from '../model/types.js'
-import { isScenePortTypeName, portContractForType } from './portTypes.js'
+import { normalizePortTypeName, portContractForType } from './portTypes.js'
 
 export const LOCAL_GENERATOR_OP_PREFIX = 'local/'
 
 export const DEFAULT_GENERATOR_VERSION = '1'
 
-export function normalizeGeneratorVersion(version: string | undefined): string {
+export function normalizeGeneratorVersion(version: string | number | undefined): string {
+  if (typeof version === 'number') return String(version)
   return typeof version === 'string' && version.trim().length > 0 ? version.trim() : DEFAULT_GENERATOR_VERSION
 }
 
 export interface GeneratorPortDescriptor {
-  type: ScenePortTypeName
+  type: ScenePortTypeName | string
   runtimeType?: string
   runtimePort?: string
   access?: PortAccess
@@ -62,8 +63,9 @@ export interface GeneratorDefinition<
 export type GeneratorDefinitionInput<
   TInputs extends Record<string, unknown> = Record<string, unknown>,
   TOutputs extends Record<string, unknown> = Record<string, unknown>,
-> = Omit<GeneratorDefinition<TInputs, TOutputs>, 'version'> & {
-  version?: string
+> = Omit<GeneratorDefinition<TInputs, TOutputs>, 'version' | 'id'> & {
+  id?: string
+  version?: string | number
 }
 
 export function localGeneratorOpId(definitionId: string): string {
@@ -73,14 +75,14 @@ export function localGeneratorOpId(definitionId: string): string {
 function inferredAccess(descriptor: GeneratorPortDescriptor): PortAccess | undefined {
   if (descriptor.access) return descriptor.access
   if (typeof descriptor.runtimeType === 'string' && descriptor.runtimeType.endsWith('-list')) return 'list'
+  const canonical = normalizePortTypeName(typeof descriptor.type === 'string' ? descriptor.type : undefined)
+  if (canonical === 'NumberList' || canonical === 'StringList') return 'list'
   return undefined
 }
 
 function portFromDescriptor(name: string, descriptor: GeneratorPortDescriptor): PortContract {
-  if (!isScenePortTypeName(descriptor.type)) {
-    throw new TypeError(`defineGenerator port '${name}' uses unknown Scene type '${descriptor.type}'`)
-  }
-  const base = portContractForType(name, descriptor.type)
+  const canonical = normalizePortTypeName(descriptor.type) ?? 'Any'
+  const base = portContractForType(name, canonical)
   const access = inferredAccess(descriptor)
   const runtimeType = descriptor.runtimeType ?? base.runtimeType
   return {
@@ -98,21 +100,50 @@ function portFromDescriptor(name: string, descriptor: GeneratorPortDescriptor): 
   }
 }
 
+export type GeneratorFn<
+  TInputs extends Record<string, unknown> = Record<string, unknown>,
+  TOutputs extends Record<string, unknown> = Record<string, unknown>,
+> = ((args?: TInputs) => TOutputs | Promise<TOutputs>) & GeneratorDefinition<TInputs, TOutputs>
+
+function defaultGeneratorContext(seed = 1): GeneratorContext {
+  const mulberry = (value: number) => {
+    let t = value >>> 0
+    return () => {
+      t += 0x6d2b79f5
+      let r = Math.imul(t ^ (t >>> 15), 1 | t)
+      r ^= r + Math.imul(r ^ (r >>> 7), 61 | r)
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296
+    }
+  }
+  let stream = mulberry(seed)
+  return {
+    seed,
+    random: (salt) => (salt === undefined ? stream() : mulberry(seed + salt)()),
+    rng: (salt) => mulberry(salt === undefined ? seed + Math.floor(stream() * 1e9) : seed + salt),
+    log: () => undefined,
+    signal: new AbortController().signal,
+  }
+}
+
 /**
- * Type-only helper for project-local Generators. The host never executes this
- * to read a Contract; static AST parse is the only allowed Contract source.
+ * Project-local Generator. Static AST parse remains the Contract source.
+ * The returned value is also callable so Scene Script can `import` and invoke it.
  */
 export function defineGenerator<
   TInputs extends Record<string, unknown> = Record<string, unknown>,
   TOutputs extends Record<string, unknown> = Record<string, unknown>,
->(definition: GeneratorDefinitionInput<TInputs, TOutputs>): GeneratorDefinition<TInputs, TOutputs> {
-  if (typeof definition.id !== 'string' || definition.id.trim().length === 0) {
-    throw new TypeError('defineGenerator requires a non-empty id')
-  }
+>(definition: GeneratorDefinitionInput<TInputs, TOutputs>): GeneratorFn<TInputs, TOutputs> {
+  const id = typeof definition.id === 'string' && definition.id.trim() ? definition.id.trim() : 'anonymous-generator'
   if (typeof definition.run !== 'function') {
     throw new TypeError('defineGenerator requires a run implementation')
   }
-  return { ...definition, version: normalizeGeneratorVersion(definition.version) }
+  const normalized: GeneratorDefinition<TInputs, TOutputs> = {
+    ...definition,
+    id,
+    version: normalizeGeneratorVersion(definition.version),
+  }
+  const fn = ((args: TInputs = {} as TInputs) => normalized.run(defaultGeneratorContext(), args)) as GeneratorFn<TInputs, TOutputs>
+  return Object.assign(fn, normalized)
 }
 
 export function generatorContractFromMeta(

@@ -52,7 +52,7 @@ export interface DataChunk {
 // Sentinel left in place of a duplicated top-level field value — resolved back to the
 // earlier chunk's already-expanded value on read. This is what lets a scene-typed op
 // like `scene_focus_path` (which returns `{ tree: input.tree, focus }`, reusing the SAME
-// tree object across every fan-out branch — see wb-scene-generator-project-switch.md
+// tree object across every fan-out branch — see scene-generator-project-switch.md
 // §2.10) avoid re-embedding (and re-compressing) that tree once per branch: N sibling
 // items sharing one un-mutated object by reference get serialized once, not N times.
 // Only top-level fields are checked — every known port value (`{tree,focus}` and friends)
@@ -93,7 +93,7 @@ export function isDataTreeEntry(v: unknown): v is { path: number[]; items: unkno
 }
 
 /**
- * Duck-type a `SceneNodeSnapshot` (see wb-scene-generator's scene/types.ts) without
+ * Duck-type a `SceneNodeSnapshot` (see scene-generator's scene/types.ts) without
  * importing it — `node-runtime` stays app-agnostic. Detected shape:
  * `{ name: string, path: string, version: number, children: unknown[] }`. Used only
  * to decide whether a big field is worth recursing into for per-subtree content

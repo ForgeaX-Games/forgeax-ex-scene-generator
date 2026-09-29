@@ -6,6 +6,10 @@ export {
   enqueueGroupParamExecute,
   subscribeLocalParamEdit,
 } from './pipelineStore.js'
+export {
+  LOCAL_PARAM_EDIT_BATCH_PREFIX,
+  isLocalParamEditBatch,
+} from './localParamEditBatch.js'
 export { useHistoryStore } from './historyStore.js'
 export type { HistoryActionType, HistoryEntry } from './historyStore.js'
 export { useUIStore } from './uiStore.js'

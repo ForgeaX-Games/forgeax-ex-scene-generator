@@ -1,20 +1,6 @@
-/** Structural spatial payloads for Generator ports. Values stay JSON-serializable. */
+/** First-batch Generator helpers. Agent-facing types are Geometry / Grid / Heightfield / Scene. */
 
 export type Point = readonly [number, number]
-
-export interface Plane {
-  origin: Point
-  size: Point
-}
-
-export interface WorkGrid {
-  origin: Point
-  cellSize: number
-  columns: number
-  rows: number
-  /** Metres when present. Framing-only grids omit values. */
-  values?: ReadonlyArray<readonly number[]>
-}
 
 export interface HeightField {
   values: ReadonlyArray<readonly number[]>
@@ -31,47 +17,6 @@ export interface Mesh {
   colors?: ReadonlyArray<number>
 }
 
-export interface Region {
-  id: string
-  polygon: Point[]
-  kind?: string
-}
-
-export interface RegionSet {
-  regions: Region[]
-}
-
-export interface RoadSegment {
-  id: string
-  points: Point[]
-  kind?: string
-}
-
-export interface RoadNetwork {
-  segments: RoadSegment[]
-}
-
-export interface Parcel {
-  id: string
-  polygon: Point[]
-  kind?: string
-}
-
-export interface ParcelSet {
-  parcels: Parcel[]
-}
-
-export interface Placement {
-  position: Point
-  yaw?: number
-  kind?: string
-  prototype?: string
-}
-
-export interface PlacementSet {
-  placements: Placement[]
-}
-
 export function isPoint(value: unknown): value is Point {
   return Array.isArray(value)
     && value.length >= 2
@@ -81,15 +26,16 @@ export function isPoint(value: unknown): value is Point {
     && Number.isFinite(value[1])
 }
 
-function isGridLike(value: unknown): value is HeightField | WorkGrid {
-  return Boolean(value && typeof value === 'object' && !Array.isArray(value) && Array.isArray((value as HeightField).values))
+export function isHeightField(value: unknown): value is HeightField {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
+  return Array.isArray((value as Partial<HeightField>).values)
 }
 
 export function asHeightField(
-  source: HeightField | WorkGrid | ReadonlyArray<readonly number[]>,
+  source: HeightField | ReadonlyArray<readonly number[]>,
   cellSize = 1,
 ): HeightField | undefined {
-  if (isGridLike(source)) {
+  if (isHeightField(source)) {
     const values = source.values
     if (!values) return undefined
     const origin = isPoint(source.origin) ? source.origin : [0, 0] as const
@@ -101,5 +47,9 @@ export function asHeightField(
   if (Array.isArray(source)) {
     return { values: source, cellSize, origin: [0, 0] }
   }
+  // Reached only when `isHeightField` said no AND it is not an array — i.e. a
+  // non-object, or an object whose `values` is not an array. Both are unusable.
+  // (This is a real runtime boundary: `geom.ts` re-exports us into the
+  // `.generator.ts` subprocess sandbox, where inputs are not type-guaranteed.)
   return undefined
 }

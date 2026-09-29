@@ -18,8 +18,7 @@
     "build": "tsc -b",
     "clean": "rm -rf dist *.tsbuildinfo",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "intl-messageformat": "^10.5.0"

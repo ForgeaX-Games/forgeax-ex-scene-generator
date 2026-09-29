@@ -1,5 +1,5 @@
 // Phase-2 wire envelope hydration — see
-// wb-scene-generator-scene-tree-storage.md §3. The backend's
+// scene-generator-scene-tree-storage.md §3. The backend's
 // `/nodes/outputs/batch` and single-port `/nodes/:id/outputs/:portId` routes
 // can ship a DEDUPED payload instead of `tooLarge` for a port whose branches
 // share one large field (e.g. `scene_focus_path`'s decoration tree broadcast):

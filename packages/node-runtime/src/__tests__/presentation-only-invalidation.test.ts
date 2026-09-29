@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import { applyBatch, createRuntime, executeNode } from '../layer2/index.js'
+import { applyBatch, createRuntime, writeNodeOutput } from '../layer2/index.js'
 import type { OpSpec } from '../layer1/index.js'
 
 let scratch: string
@@ -46,7 +46,8 @@ async function graphWithCachedOutputs() {
     { type: 'createNode', nodeId: 'sink', opId: 'kernel.sink', position: { x: 200, y: 0 }, params: {} },
     { type: 'connect', source: { nodeId: 'src', port: 'out' }, target: { nodeId: 'sink', port: 'in' } },
   ])
-  await (await executeNode(runtime)).done
+  writeNodeOutput(runtime, 'src', 'out', 7)
+  writeNodeOutput(runtime, 'sink', 'out', 7)
   expect(runtime.outputs.read('sink', 'out')?.data).toBeDefined()
   return runtime
 }
@@ -106,5 +107,34 @@ describe('output-cache invalidation seeds', () => {
     expect(result.layoutOnly).toBe(false)
     expect(result.invalidatedNodeCount).toBeGreaterThan(0)
     expect(runtime.outputs.read('sink', 'out')?.data).toBeUndefined()
+  })
+})
+
+describe('number_const slider presentation', () => {
+  it('keeps downstream caches when only max/precision change', async () => {
+    const runtime = createRuntime({ projectRoot: scratch, pipelineId: 'p1', pluginId: 'plugin.test' })
+    runtime.registry.register({
+      id: 'number_const',
+      inputs: [{ name: 'value', type: 'number', access: 'item' }],
+      outputs: [{ name: 'value', type: 'number', access: 'item' }],
+      params: [{ name: 'value', type: 'number' }],
+      execute: (_ctx, args) => ({ value: args.value }),
+    })
+    runtime.registry.register(sinkOp)
+    await applyBatch(runtime, [
+      { type: 'createNode', nodeId: 'src', opId: 'number_const', position: { x: 0, y: 0 }, params: { value: 12, min: 0, max: 24, precision: 0 } },
+      { type: 'createNode', nodeId: 'sink', opId: 'kernel.sink', position: { x: 200, y: 0 }, params: {} },
+      { type: 'connect', source: { nodeId: 'src', port: 'value' }, target: { nodeId: 'sink', port: 'in' } },
+    ])
+    writeNodeOutput(runtime, 'src', 'value', 12)
+    writeNodeOutput(runtime, 'sink', 'out', 12)
+    expect(runtime.outputs.read('sink', 'out')?.data).toBeDefined()
+
+    const result = await applyBatch(runtime, [
+      { type: 'updateNode', nodeId: 'src', params: { max: 99, precision: 1 } },
+    ])
+    expect(result.layoutOnly).toBe(true)
+    expect(result.invalidatedNodeCount).toBe(0)
+    expect(runtime.outputs.read('sink', 'out')?.data).toBeDefined()
   })
 })

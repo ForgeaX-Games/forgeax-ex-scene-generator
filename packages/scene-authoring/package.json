@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Restricted Scene Script parser, contracts, compiler, and source mapping",
+  "description": "Scene Script contracts, diagnostics, identity, and Generator static parse",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -12,9 +12,47 @@
       "source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./scene-tree": {
+      "source": "./src/types/scene-tree.ts",
+      "types": "./dist/types/scene-tree.d.ts",
+      "import": "./dist/types/scene-tree.js"
+    },
+    "./scene-transform": {
+      "source": "./src/types/scene-transform.ts",
+      "types": "./dist/types/scene-transform.d.ts",
+      "import": "./dist/types/scene-transform.js"
+    },
+    "./mesh-asset": {
+      "source": "./src/types/mesh-asset.ts",
+      "types": "./dist/types/mesh-asset.d.ts",
+      "import": "./dist/types/mesh-asset.js"
+    },
+    "./scene-asset": {
+      "source": "./src/types/scene-asset.ts",
+      "types": "./dist/types/scene-asset.d.ts",
+      "import": "./dist/types/scene-asset.js"
+    },
+    "./scene-wire": {
+      "source": "./src/types/scene-wire.ts",
+      "types": "./dist/types/scene-wire.d.ts",
+      "import": "./dist/types/scene-wire.js"
+    },
+    "./generator-context": {
+      "source": "./src/generator-context.ts",
+      "types": "./dist/generator-context.d.ts",
+      "import": "./dist/generator-context.js"
+    },
+    "./values": {
+      "source": "./src/types/values.ts",
+      "types": "./dist/types/values.d.ts",
+      "import": "./dist/types/values.js"
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsc -b",
     "clean": "rm -rf dist *.tsbuildinfo",

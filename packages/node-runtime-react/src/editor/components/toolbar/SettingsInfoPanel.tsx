@@ -3,7 +3,7 @@
 //
 // Ported faithfully from the legacy editor (components/toolbar/
 // SettingsInfoPanel.tsx). The legacy panel also aggregated app-level Renderer
-// and Asset Store status from a workbench-status store; that store and those
+// and Asset Store status from an authoring-status store; that store and those
 // two sections are app-level coupling and are stripped here, leaving the
 // generic Editor section. Markup and CSS classes for the Editor section are
 // preserved verbatim.

@@ -70,8 +70,8 @@ export type {
 export { PipelineFileDialog, ProjectsDialog, ProjectPanel, EditorControlsPanel, SaveIcon, pt } from './components/chrome/index.js'
 export type { PipelineFileDialogProps, ProjectsDialogProps, ProjectPanelProps, EditorControlsPanelProps, ActivePipelineRunInfo } from './components/chrome/index.js'
 // Standalone (non-Studio) split shell: left navigation pane + center editor.
-export { StandaloneWorkbenchShell, isStandaloneWorkbench } from './components/chrome/index.js'
-export type { StandaloneWorkbenchShellProps } from './components/chrome/index.js'
+export { StandaloneExtensionShell, isStandaloneExtension } from './components/chrome/index.js'
+export type { StandaloneExtensionShellProps } from './components/chrome/index.js'
 // Composed editor: Toolbar · BatteryBar · Canvas in the legacy layout.
 export { Editor } from './Editor.js'
 export type { EditorProps } from './Editor.js'

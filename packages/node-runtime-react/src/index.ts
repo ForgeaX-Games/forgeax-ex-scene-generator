@@ -16,16 +16,22 @@
 // What the `.` entry still exports, and why:
 //   * API contract types — the stable cross-process contract both apps type
 //     their HttpApiClient against.
+//   * `LOCAL_PARAM_EDIT_BATCH_PREFIX` — graph:applied batchId tag for slider
+//     writes. The renderer param-drag lane matches this without importing ./editor.
 //   * Theme bundles — the self-contained `./themes` surface, also re-exported
 //     here for back-compat (`./themes` remains the canonical import path).
 
 // API contract ---------------------------------------------------------------
 export type { ApiClient, ActivateProjectResult, CreateProjectRequest, GroupTemplateBattery, GroupTemplateDocs, PromptDto, TextPresetDto, ViewProjectResult } from './api/index.js'
-// Phase-2 wire-envelope hydration (see wb-scene-generator-scene-tree-storage.md
+// Phase-2 wire-envelope hydration (see scene-generator-scene-tree-storage.md
 // §3) — a pure, React-free helper HttpApiClient implementations call to undo a
 // deduped batch/single-port response before handing the value to callers. Part
 // of the API contract, not the editor runtime, so it lives at this entry too.
 export { hydrateBlobRefs } from './api/index.js'
+export {
+  LOCAL_PARAM_EDIT_BATCH_PREFIX,
+  isLocalParamEditBatch,
+} from './editor/stores/localParamEditBatch.js'
 
 // Theme bundles + token resolver --------------------------------------------
 export { defaultTheme, legacyTheme, resolveTheme } from './themes/index.js'

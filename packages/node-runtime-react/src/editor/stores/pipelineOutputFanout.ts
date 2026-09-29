@@ -331,7 +331,7 @@ export async function fanOutConnectedOutputsBatch(
         stats.topPorts.push({ nodeId: r.nodeId, port: r.portId, bytes: 0, ms: msPerPort, skipped: false })
         continue
       }
-      // Phase-2 envelope (see wb-scene-generator-scene-tree-storage.md §3): when
+      // Phase-2 envelope (see scene-generator-scene-tree-storage.md §3): when
       // `r.blobs` is present, `r.value` has `{ __outputCacheBlobRef }` placeholders
       // in place of a repeated large field (e.g. a shared decoration tree) —
       // hydrate back to the normal shape BEFORE it ever reaches nodeOutputs, so

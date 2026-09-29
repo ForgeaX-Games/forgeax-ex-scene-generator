@@ -38,22 +38,22 @@ function emptyPipeline(id = 'test-pipeline'): Pipeline {
 describe('EditorApiAdapter', () => {
   it('getBatteries derives batteries from listOps()', async () => {
     const client = createMockApiClient({
-      ops: [spec('wb-scene.csg.union', 'Union'), spec('wb-scene.grid.make', 'Grid')],
+      ops: [spec('scene.csg.union', 'Union'), spec('scene.grid.make', 'Grid')],
     })
     const { api } = createEditorTransport(client)
 
     const batteries = await api.getBatteries()
 
-    expect(batteries.map((b) => b.id)).toEqual(['wb-scene.csg.union', 'wb-scene.grid.make'])
+    expect(batteries.map((b) => b.id)).toEqual(['scene.csg.union', 'scene.grid.make'])
     expect(batteries[0].name).toBe('Union')
     // Category derives from the op-id namespace.
-    expect(batteries[0].category).toBe('wb-scene')
+    expect(batteries[0].category).toBe('scene')
   })
 
   it('getBatteries preserves access metadata on static and dynamic ports', async () => {
     const client = createMockApiClient({
       ops: [{
-        ...spec('wb-scene.add_child', 'Add Child'),
+        ...spec('scene.add_child', 'Add Child'),
         inputs: [
           { name: 'scene', type: 'scene', access: 'item' },
           { name: 'nodes', type: 'scene', access: 'list' },
@@ -284,6 +284,34 @@ describe('EditorApiAdapter', () => {
 
     expect(res.status).toBe('ok')
     expect(applySpy).not.toHaveBeenCalled()
+  })
+
+  it('updatePipeline extra ops persist even when the graph already matches', async () => {
+    const client = createMockApiClient({
+      ops: [spec('a.one', 'One')],
+      nodes: [{ id: 'n1', opId: 'a.one', position: { x: 0, y: 0 }, params: { value: 48 } }],
+    })
+    const applySpy = vi.spyOn(client, 'applyBatch')
+    const { api } = createEditorTransport(client)
+    const desired = emptyPipeline()
+    desired.nodes.push({
+      id: 'n1',
+      batteryId: 'a.one',
+      name: 'One',
+      position: { x: 0, y: 0 },
+      params: { value: 48 },
+    })
+
+    const res = await api.updatePipeline(desired, 'editor', undefined, [
+      { type: 'updateNode', nodeId: 'n1', params: { value: 48 } },
+    ])
+
+    expect(res.status).toBe('ok')
+    expect(applySpy).toHaveBeenCalledTimes(1)
+    expect(applySpy.mock.calls[0]![0]).toEqual([
+      { type: 'updateNode', nodeId: 'n1', params: { value: 48 } },
+    ])
+    expect(applySpy.mock.calls[0]![1]?.ephemeral).toBeUndefined()
   })
 
   it('executePipeline calls client.execute', async () => {

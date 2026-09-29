@@ -26,6 +26,9 @@ import {
 } from './pipelineOutputFanout.js'
 import type { PipelineGet } from './pipelineStore.types.js'
 import type { RefreshReason } from '../utils/refreshTrace.js'
+import { LOCAL_PARAM_EDIT_BATCH_PREFIX } from './localParamEditBatch.js'
+
+export { LOCAL_PARAM_EDIT_BATCH_PREFIX, isLocalParamEditBatch } from './localParamEditBatch.js'
 
 // Live-sync reconciler: the canvas updates only when a `graph:applied` WS frame
 // arrives, so a single missed frame (WS reconnect after a `tsx --watch` backend
@@ -75,7 +78,7 @@ export function rememberLocalParamEditBatch(batchId: string): void {
   }
 }
 export function nextLocalParamEditBatchId(): string {
-  return `editor-param-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+  return `${LOCAL_PARAM_EDIT_BATCH_PREFIX}${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
 }
 
 function consumeLocalParamEditBatch(batchId: string): boolean {

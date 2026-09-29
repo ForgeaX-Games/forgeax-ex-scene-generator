@@ -3,7 +3,7 @@
 // batteries. Persisted to localStorage where available.
 //
 // App-level fields from the legacy editor are stripped: projects, workspace,
-// multi-iframe inline panels (renderer/assetstore/viewer), workbench focus,
+// multi-iframe inline panels (renderer/assetstore/viewer), authoring focus,
 // and the battery-meta network calls (stars / dev-notes). Only the generic
 // editor UI state remains. The legacy lang toggle also broadcast a WS event to
 // a separate renderer iframe; with no second frame here that broadcast is
@@ -86,11 +86,18 @@ function loadJsonArray<T>(key: string): T[] {
   }
 }
 
-function applyTheme(theme: Theme): void {
+function systemTheme(): Theme {
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  }
+  return 'dark'
+}
+
+function applyTheme(theme: Theme, persist = true): void {
   if (typeof document !== 'undefined') {
     document.documentElement.setAttribute('data-theme', theme)
   }
-  writeStorage('theme', theme)
+  if (persist) writeStorage('theme', theme)
 }
 
 /**
@@ -112,8 +119,9 @@ function loadLocalTextPresets(): TextPreset[] {
 
 // ── Initial values ────────────────────────────────────────────────────────
 
-const initialTheme: Theme = (readStorage('theme') as Theme) || 'dark'
-applyTheme(initialTheme)
+const storedTheme = readStorage('theme')
+const initialTheme: Theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : systemTheme()
+applyTheme(initialTheme, storedTheme === 'light' || storedTheme === 'dark')
 const initialLangMode: LangMode = (readStorage('langMode') as LangMode) || 'en'
 const initialProbeMode = readStorage('probeMode') === 'true'
 const initialShowDevNoteCount = readStorage('showDevNoteCount') !== 'false'
@@ -296,8 +304,8 @@ export const useUIStore = create<UIState>((set) => ({
       return { showDevNoteCount: next }
     }),
 
-  // Save a preset. When the active client backs presets with a server store
-  // (the 2d-scene-asset-generator does), persist there (one file per entry) and
+  // Save a preset. When the active client backs presets with a server store,
+  // persist there (one file per entry) and
   // refresh from the merged built-in + user list. Otherwise fall back to the
   // legacy localStorage list. `title` is the user-entered label.
   addTextPreset: (text, title) =>
@@ -497,6 +505,18 @@ export const useUIStore = create<UIState>((set) => ({
 // Only persisted prefs flow this way; ephemeral live state uses the editor
 // bridge (see sync/editorBridge.ts).
 if (typeof window !== 'undefined') {
+  if (typeof window.matchMedia === 'function') {
+    const systemThemeQuery = window.matchMedia('(prefers-color-scheme: light)')
+    const onSystemThemeChange = (): void => {
+      const stored = readStorage('theme')
+      if (stored === 'light' || stored === 'dark') return
+      const next = systemThemeQuery.matches ? 'light' : 'dark'
+      applyTheme(next, false)
+      useUIStore.setState({ theme: next })
+    }
+    systemThemeQuery.addEventListener?.('change', onSystemThemeChange)
+  }
+
   window.addEventListener('storage', (e: StorageEvent) => {
     switch (e.key) {
       case 'langMode': {

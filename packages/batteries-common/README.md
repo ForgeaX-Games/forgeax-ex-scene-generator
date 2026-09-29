@@ -1,6 +1,6 @@
 # @forgeax/batteries-common
 
-Shared batteries loaded by downstream workbench plugins.
+Shared batteries loaded by downstream authoring plugins.
 
 The scan root is `batteries/`; each top-level folder under it becomes a palette
 category. The current shared pack is `common/`, with subfolders such as

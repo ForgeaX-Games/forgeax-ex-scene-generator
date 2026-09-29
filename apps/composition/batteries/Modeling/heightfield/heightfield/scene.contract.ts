@@ -1,0 +1,63 @@
+import { defineAtomic } from '@forgeax/scene-authoring'
+
+export default defineAtomic({
+  functionName: "heightfield",
+  contractVersion: "2.0.0",
+  opId: "heightfield",
+  label: "高度场",
+  nameEn: "Heightfield",
+  description: "Bind a Geometry plane to a height Grid. Output is a Heightfield packet: region, lattice, height, mask (default ones), and an optional dict of named attribute Grids.",
+  inputs: [
+    {
+      name: "geometry",
+      type: "geometry",
+      runtimeType: "geometry",
+      access: "item",
+      required: true,
+      mode: "value",
+      description: "Operating Geometry plane this packet covers.",
+      label: "平面",
+    },
+    {
+      name: "height",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      required: true,
+      mode: "value",
+      description: "Height Grid at native rows/cols (grid[y][x] = metres). Lattice of the packet.",
+      label: "高度",
+    },
+    {
+      name: "mask",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      required: false,
+      mode: "value",
+      description: "Control Grid on the same lattice. Defaults to all 1s.",
+      label: "遮罩",
+    },
+    {
+      name: "attributes",
+      type: "dict",
+      runtimeType: "dict",
+      access: "item",
+      required: false,
+      mode: "value",
+      description: "Named attribute Grids on the same lattice (hardness, flow, …). Dict of Grid.",
+      label: "属性",
+    },
+  ],
+  outputs: [
+    {
+      name: "heightfield",
+      type: "heightfield",
+      runtimeType: "heightfield",
+      access: "item",
+      description: "Sampleable Heightfield packet. Not scene content and not a mesh.",
+      label: "高度场",
+    },
+  ],
+  deterministic: true,
+})

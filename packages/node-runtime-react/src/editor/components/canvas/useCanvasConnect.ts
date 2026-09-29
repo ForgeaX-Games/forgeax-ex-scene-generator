@@ -63,14 +63,13 @@ export function resolveConnectionPortType(
 
 /**
  * Resolve a handle's DataTree access ('item' | 'list' | 'tree') from node data.
- * Used only to lock a `tree_merge` node's behaviour band on the first connect of
- * slot[0]: an 'item'-access upstream takes the item-level concat branch; anything
- * else (list / tree / unknown) keeps the structural-pack default. Relay ports
- * carry no access and return undefined (caller skips writing inferred*).
+ * Drives edge cardinality on connect: an item port keeps a single wire, while a
+ * list / tree port is the `[a, b]` construction and accumulates one edge per
+ * referenced item. Relay ports carry no access and return undefined.
  *
  * Group / group_input / group_output boundary ports mirror the inner source
- * port's access (resolved at createGroup time), so a group output feeding a
- * tree_merge slot locks the same item/list tier the inner battery would.
+ * port's access (resolved at createGroup time), so a group output wires with the
+ * same item/list tier the inner battery would.
  */
 function resolvePortAccess(
   node: Node | undefined,
@@ -115,26 +114,6 @@ export function useCanvasConnect({ nodes, setEdges, setNodes, domainPortTypes }:
       const sourceType = resolveConnectionPortType(sourceNode, connection.sourceHandle, 'source')
       const targetType = resolveConnectionPortType(targetNode, connection.targetHandle, 'target')
 
-      // tree_merge later-slot lock: slot[0]'s first connect wrote inferred*; every
-      // slot[i>0] must match the locked access (and type) so the function takes
-      // the same behaviour band for every input.
-      const targetBatteryId = targetNode?.data?.battery?.id
-      const targetHandle = connection.targetHandle
-      if (
-        targetBatteryId === 'tree_merge' &&
-        targetHandle &&
-        targetHandle !== 'item_0' &&
-        targetHandle.startsWith('item_')
-      ) {
-        const lockedAccess = targetNode?.data?.params?.inferredAccess as BatteryAccess | undefined
-        const lockedType = targetNode?.data?.params?.inferredType as string | undefined
-        if (lockedAccess !== undefined) {
-          const sourceAccess = resolvePortAccess(sourceNode, connection.sourceHandle, 'source')
-          if (sourceAccess !== undefined && sourceAccess !== lockedAccess) return false
-          if (lockedType && sourceType && !isTypeCompatible(sourceType, lockedType, domainPortTypes)) return false
-        }
-      }
-
       if (!sourceType || !targetType) return true
 
       return isTypeCompatible(sourceType, targetType, domainPortTypes)
@@ -152,16 +131,24 @@ export function useCanvasConnect({ nodes, setEdges, setNodes, domainPortTypes }:
       // Shared id: RF edge and store edge use the same id so disconnect can
       // match precisely in the store.
       const edgeId = `e-${params.source}-${params.sourceHandle}-${params.target}-${params.targetHandle}`
+      const targetNodeForAccess = nodes.find((n) => n.id === params.target)
+      const targetAccess = resolvePortAccess(targetNodeForAccess, params.targetHandle, 'target')
+      const replaceExisting = targetAccess !== 'list' && targetAccess !== 'tree'
 
-      // One input port allows one edge: drop any edge already on the target port.
+      // Item ports keep one wire. List / tree ports are the `[a, b]` construction:
+      // each referenced item is its own edge into the same slot.
       setEdges((eds) => {
-        const oldEdges = eds.filter(
-          (e) => e.target === params.target && e.targetHandle === params.targetHandle,
-        )
+        const oldEdges = replaceExisting
+          ? eds.filter(
+              (e) => e.target === params.target && e.targetHandle === params.targetHandle,
+            )
+          : []
         oldEdges.forEach((e) => removePipelineEdge(e.id))
-        const filtered = eds.filter(
-          (e) => !(e.target === params.target && e.targetHandle === params.targetHandle),
-        )
+        const filtered = replaceExisting
+          ? eds.filter(
+              (e) => !(e.target === params.target && e.targetHandle === params.targetHandle),
+            )
+          : eds.filter((e) => e.id !== edgeId)
         return addEdge(
           { ...params, id: edgeId, style: { stroke: edgeColor, strokeWidth: 2 }, animated: false },
           filtered,
@@ -207,43 +194,6 @@ export function useCanvasConnect({ nodes, setEdges, setNodes, domainPortTypes }:
               ),
             )
             updateNodeParam(params.target, 'portType', nextPortType, true)
-          }
-        }
-
-        // tree_merge slot[0] first connect: read the upstream port's access (+ type)
-        // and lock the behaviour band onto node.params. Once written it is never
-        // reset on disconnect/reconnect (the first connection fixes the band);
-        // deleting the node clears it. Scene inputs carry access:'item', so this
-        // selects the item-concat branch instead of the structural-pack default.
-        if (params.target && params.targetHandle === 'item_0') {
-          const targetNode = nodes.find((n) => n.id === params.target)
-          if (
-            targetNode?.data?.battery?.id === 'tree_merge' &&
-            targetNode.data.params?.inferredAccess === undefined
-          ) {
-            const sourceAccess = resolvePortAccess(sourceNode, params.sourceHandle, 'source')
-            const sourceTypeForLock = sourcePortType
-            if (sourceAccess !== undefined) {
-              setNodes((nds) =>
-                nds.map((n) =>
-                  n.id === params.target
-                    ? {
-                        ...n,
-                        data: {
-                          ...n.data,
-                          params: {
-                            ...n.data.params,
-                            inferredAccess: sourceAccess,
-                            ...(sourceTypeForLock ? { inferredType: sourceTypeForLock } : {}),
-                          },
-                        },
-                      }
-                    : n,
-                ),
-              )
-              updateNodeParam(params.target, 'inferredAccess', sourceAccess, true)
-              if (sourceTypeForLock) updateNodeParam(params.target, 'inferredType', sourceTypeForLock, true)
-            }
           }
         }
 

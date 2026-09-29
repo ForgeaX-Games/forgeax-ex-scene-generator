@@ -1,0 +1,19 @@
+{
+  "name": "scene-generator",
+  "version": "0.4.3",
+  "description": "Create modular TypeScript environments with a live Scene Generator UI and native Engine Packs.",
+  "author": { "name": "ForgeaX" },
+  "repository": "https://github.com/ForgeaX-Games/forgeax-ex-scene-generator",
+  "license": "Apache-2.0",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Scene Generator",
+    "shortDescription": "Create 3D scenes with a live authoring UI.",
+    "longDescription": "Describe an environment to start the local authoring UI, create reusable TypeScript scene modules, and export native Engine Packs.",
+    "developerName": "ForgeaX",
+    "category": "Productivity",
+    "capabilities": ["Write"],
+    "defaultPrompt": ["Create a medieval market with Scene Generator."],
+    "brandColor": "#D2FF32"
+  }
+}

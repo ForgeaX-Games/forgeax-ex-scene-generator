@@ -1,4 +1,4 @@
-// DataTree fundamental types and path utilities — the data-shape contract the rest of the datatree cluster builds on. Three invariants are enforced by the codec: a path has length >= 1 (no empty path, scalars live at [0]), every path element is a non-negative finite integer, and paths within one tree are unique (validated by DataTree.fromEntries).
+// DataTree fundamental types and path utilities — the canvas wire form of TypeScript ShapeTree. Authoring SSOT is Item / List / ShapeTree / SceneTree in @forgeax/scene-authoring. Three invariants are enforced by the codec: a path has length >= 1 (no empty path, scalars live at [0]), every path element is a non-negative finite integer, and paths within one tree are unique (validated by DataTree.fromEntries).
 
 export type Path = readonly number[];
 

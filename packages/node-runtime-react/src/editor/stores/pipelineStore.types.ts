@@ -46,7 +46,7 @@ export interface PipelineState {
    * True while `refreshConnectedOutputs` has an in-flight fan-out pass (the
    * O(nodes×ports) output-cache read triggered by mount / project-switch /
    * graph:applied / exec:completed). Read-only signal for loading-progress UI
-   * (e.g. the workbench's project-switch status panel) — nothing here gates
+   * (e.g. the authoring's project-switch status panel) — nothing here gates
    * on it; it is purely additive telemetry.
    */
   outputsRefreshBusy: boolean

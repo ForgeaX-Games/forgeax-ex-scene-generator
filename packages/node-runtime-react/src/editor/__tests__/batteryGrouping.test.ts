@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
+  compareBigLabel,
   formatSmallLabel,
   getBigLabel,
   getSmallLabel,
@@ -48,11 +49,35 @@ describe('BatteryBar grouping labels', () => {
     expect(getSmallLabel(tpl)).toBe('architecture')
   })
 
+  it('sorts Modeling small labels constructors first, then pose and surface operators', () => {
+    expect(sortSmallLabels(
+      ['surface', 'geometry3d', 'pose', 'heightfield', 'geometry2d'],
+      'Modeling',
+    )).toEqual(['geometry2d', 'heightfield', 'geometry3d', 'pose', 'surface'])
+  })
+
+  it('sorts Grid small labels in math-family order', () => {
+    expect(sortSmallLabels(
+      ['ca', 'zone', 'arith', 'noise', 'init', 'partition', 'filter'],
+      'Grid',
+    )).toEqual(['init', 'noise', 'arith', 'filter', 'partition', 'zone', 'ca'])
+  })
+
   it('sorts common small labels in the curated battery order', () => {
     expect(sortSmallLabels(
       ['number', 'preview', 'list', 'input', 'datatree', 'z_extra'],
       'common',
     )).toEqual(['input', 'list', 'datatree', 'number', 'preview', 'z_extra'])
+  })
+
+  it('sorts Basic first, then Modeling, then Grid', () => {
+    expect(['scene', 'Grid', 'Modeling', 'common', 'Basic'].sort(compareBigLabel)).toEqual([
+      'Basic',
+      'Modeling',
+      'Grid',
+      'common',
+      'scene',
+    ])
   })
 
   it('formats preview as Annotation for common annotation batteries', () => {

@@ -99,6 +99,28 @@ describe('Scene Script diagnostic contract', () => {
     expect(JSON.stringify(result).length).toBeLessThan(10_000)
   })
 
+  it('keeps warnings after errors so agents can digest design smells on a successful apply', () => {
+    const diagnostics = [
+      ...Array.from({ length: 2 }, (_, index) => createSceneDiagnostic({
+        code: `SCENE_ERR_${index}`,
+        phase: 'compile',
+        severity: 'error' as const,
+        message: `error ${index}`,
+      })),
+      ...Array.from({ length: 6 }, (_, index) => createSceneDiagnostic({
+        code: `SCENE_WARN_${index}`,
+        phase: 'type',
+        severity: 'warning' as const,
+        message: `warning ${index}`,
+        howToFix: ['Inspect the warning repair slip.'],
+      })),
+    ]
+    const result = toPublicSceneDiagnostics(diagnostics)
+    expect(result.filter((item) => item.severity === 'error')).toHaveLength(2)
+    expect(result.filter((item) => item.severity === 'warning')).toHaveLength(5)
+    expect(result.find((item) => item.severity === 'warning')?.repairSlip).toContain('How to fix:')
+  })
+
   it('assembles a repair slip from structured fields for humans and agents', () => {
     const diagnostic = createSceneDiagnostic({
       code: 'SCENE_TYPE_REQUIRED_INPUT',
@@ -129,5 +151,29 @@ describe('Scene Script diagnostic contract', () => {
     expect(publicPayload[0]?.code).toBe('SCENE_TYPE_REQUIRED_INPUT')
     expect(JSON.stringify(publicPayload)).not.toContain('private stack')
     expect(formatSceneDiagnosticRepairSlip(diagnostic)).toBe(diagnostic.repairSlip)
+  })
+
+  it('includes code fix example in repair slip when structured ReplaceSource fix is present', () => {
+    const diagnostic = createSceneDiagnostic({
+      code: 'SCENE_TYPE_WRONG_PORT',
+      phase: 'type',
+      severity: 'error',
+      message: 'Type mismatch on mesh input.',
+      operation: 'meshSceneNode',
+      signature: 'meshSceneNode({ name: string, mesh: Mesh })',
+      fixes: [{
+        fixId: 'fix-mesh-call',
+        title: 'Pass mesh property from heightfieldMesh',
+        edits: [{
+          type: 'ReplaceSource',
+          file: 'main.scene.ts',
+          start: 0,
+          end: 10,
+          text: 'meshSceneNode({ name: "Terrain", mesh: m.mesh })',
+        }],
+      }],
+    })
+    expect(diagnostic.repairSlip).toContain('Code fix example:')
+    expect(diagnostic.repairSlip).toContain('meshSceneNode({ name: "Terrain", mesh: m.mesh })')
   })
 })

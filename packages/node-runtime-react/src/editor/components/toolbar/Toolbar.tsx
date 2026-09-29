@@ -1,14 +1,14 @@
 // Top toolbar: the editor title slot, a Run/Stop execute control, a settings
 // dropdown (language + data-probe toggles, dev-note-count toggle, optional
 // save/open, status info, operation history, data-types legend), a probe-mode
-// toggle, an injectable app-level actions slot, and a workbench-fullscreen
+// toggle, an injectable app-level actions slot, and an authoring-fullscreen
 // toggle.
 //
 // Ported faithfully from the legacy editor (components/toolbar/Toolbar.tsx).
 // App-level coupling is stripped:
 //   - The legacy app-title ("Scene Generator") becomes an injectable `title`.
 //   - The Render / AssetStore / Viewer embedded sub-app toggles, the project
-//     picker, the Develop/Templates battery filter, and the workbench-focus
+//     picker, the Develop/Templates battery filter, and the authoring-focus
 //     store are app-level; the consumer supplies them via the `actions` slot.
 //   - Legacy file save/open used an app-level apiService + savePipelineAs /
 //     loadPipelineFromFile. Here save/open are generic optional callbacks
@@ -172,7 +172,7 @@ export interface ToolbarProps {
    */
   settingsStatusExtra?: ReactNode
   /**
-   * Workbench-fullscreen state + toggle. Both app-level (multi-pane workbench);
+   * Authoring-fullscreen state + toggle. Both app-level (multi-pane authoring);
    * when omitted the fullscreen button is hidden.
    */
   isFullscreen?: boolean
@@ -192,7 +192,7 @@ function Toolbar({ title = 'Node Editor', showRunControl = true, actions, onSave
   // Selected field-by-field — calling `usePipelineStore()`/`useUIStore()` with
   // no selector subscribes to the WHOLE store, so this toolbar would re-render
   // on every unrelated store update (e.g. every streamed nodeOutputs tick while
-  // a pipeline runs). See RendererSurface.tsx in wb-scene-generator for the
+  // a pipeline runs). See RendererSurface.tsx in scene-generator for the
   // same bug's write-up.
   const pipelineStatus = usePipelineStore((s) => s.pipelineStatus)
   const executePipeline = usePipelineStore((s) => s.executePipeline)
@@ -418,7 +418,7 @@ function Toolbar({ title = 'Node Editor', showRunControl = true, actions, onSave
           </div>
           )}
 
-          {/* Workbench fullscreen toggle — only when the consumer wires it. */}
+          {/* Authoring fullscreen toggle — only when the consumer wires it. */}
           {onToggleFullscreen && (
             <button
               className={`toolbar-btn${isFullscreen ? ' active' : ''}`}

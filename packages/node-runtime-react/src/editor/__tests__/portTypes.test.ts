@@ -14,6 +14,13 @@ const DOMAIN_TYPES: DomainPortTypes = [
 ]
 
 describe('port type registry', () => {
+  it('aliases json to dict so a JSON panel is the dict editor', () => {
+    expect(getPortTypeColor('json')).toBe(getPortTypeColor('dict'))
+    expect(isTypeCompatible('json', 'dict')).toBe(true)
+    expect(isTypeCompatible('dict', 'json')).toBe(true)
+    expect(resolveCanonicalTypeMeta().find((item) => item.type === 'dict')?.aliases).toContain('json')
+  })
+
   it('keeps domain types out of the core defaults', () => {
     expect(CANONICAL_TYPE_META.some((m) => m.type === 'scene')).toBe(false)
     expect(CANONICAL_TYPE_META.some((m) => m.type === 'geometry')).toBe(false)

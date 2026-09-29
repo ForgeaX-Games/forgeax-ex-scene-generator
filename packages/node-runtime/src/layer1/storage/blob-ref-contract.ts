@@ -2,7 +2,7 @@
 // OutputCache chunk files and (Phase 2) HTTP output envelopes. Kept in its own
 // tiny module (no fs/crypto imports) so the frontend package can import just
 // the key/guard without pulling in any Node-only storage code — see
-// wb-scene-generator-scene-tree-storage.md.
+// scene-generator-scene-tree-storage.md.
 
 export const OUTPUT_CACHE_BLOB_REF_KEY = '__outputCacheBlobRef' as const
 

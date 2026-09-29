@@ -8,9 +8,7 @@ import { describe, it, expect } from 'vitest'
 import {
   OpRegistry,
   executeNode,
-  topologicalSort,
   type ExecutionContext,
-  type GraphEdge,
   type GraphNode,
   type OpSpec,
 } from '../layer1/index.js'
@@ -57,17 +55,6 @@ describe('layer1 smoke', () => {
     const sumEntries = result.outputs.sum as Array<{ path: number[]; items: unknown[] }>
     expect(sumEntries).toHaveLength(1)
     expect(sumEntries[0].items).toEqual([5])
-  })
-
-  it('topologicalSort orders dependent nodes correctly', () => {
-    const ids = ['c', 'a', 'b']
-    const edges: GraphEdge[] = [
-      { id: 'e1', source: { nodeId: 'a', port: 'out' }, target: { nodeId: 'b', port: 'in' } },
-      { id: 'e2', source: { nodeId: 'b', port: 'out' }, target: { nodeId: 'c', port: 'in' } },
-    ]
-    const order = topologicalSort(ids, edges)
-    expect(order.indexOf('a')).toBeLessThan(order.indexOf('b'))
-    expect(order.indexOf('b')).toBeLessThan(order.indexOf('c'))
   })
 
   it('rejects an unregistered op with a clear error', async () => {

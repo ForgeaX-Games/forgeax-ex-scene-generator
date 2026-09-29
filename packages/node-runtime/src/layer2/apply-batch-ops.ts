@@ -12,6 +12,7 @@ import {
   applyUngroup,
   applyUpdateGroup,
 } from './apply-batch-group-ops.js'
+import { NUMBER_CONST_OP_ID, isNumberConstSliderParamKey } from './number-const-slider.js'
 
 // Bootstrap an empty graph file — used by the first applyBatch on a fresh project.
 export function emptyGraph(pipelineId: string, ts: string): Omit<GraphFileV1, 'hash'> {
@@ -61,7 +62,17 @@ export function mergeNodeParams(
   existing: Record<string, unknown> | undefined,
   patch: Record<string, unknown>,
 ): Record<string, unknown> {
-  return normalizeTextPanelParams(opId, { ...(existing ?? {}), ...patch }) ?? { ...(existing ?? {}), ...patch }
+  const merged = { ...(existing ?? {}), ...patch }
+  if (opId && opId !== NUMBER_CONST_OP_ID) {
+    const leakedChrome = ['min', 'max', 'precision'].some((key) => key in merged)
+    if (leakedChrome) {
+      for (const key of Object.keys(merged)) {
+        if (isNumberConstSliderParamKey(key)) delete merged[key]
+      }
+      if (typeof merged.value === 'number') delete merged.value
+    }
+  }
+  return normalizeTextPanelParams(opId, merged) ?? merged
 }
 
 export function applyOps(

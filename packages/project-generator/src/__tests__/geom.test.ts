@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { createRng, dist, hashSeed, resamplePolyline, sampleHeight } from '../geom.js'
-import type { Mesh, PlacementSet, WorkGrid } from '../sdk.js'
+import { asHeightField, createRng, dist, hashSeed, resamplePolyline, sampleHeight } from '../geom.js'
+import type { Mesh } from '../spatial.js'
 
 describe('Generator geom', () => {
   it('hashes seeds and draws a stable rng stream', () => {
@@ -20,20 +20,21 @@ describe('Generator geom', () => {
     expect(sampleHeight({ values: [[4]], cellSize: 8, origin: [0, 0] }, [3, 3])).toBe(4)
   })
 
-  it('publishes structural Mesh and spatial port payload types', () => {
+  it('normalizes raw readonly grids and structured height fields', () => {
+    const raw = [[1, 2], [3, 4]] as const
+    expect(asHeightField(raw, 2)).toEqual({ values: raw, cellSize: 2, origin: [0, 0] })
+    expect(asHeightField({ values: raw, cellSize: 4, origin: [8, 12] })).toEqual({
+      values: raw,
+      cellSize: 4,
+      origin: [8, 12],
+    })
+  })
+
+  it('accepts a triangle Mesh payload', () => {
     const mesh = {
       positions: [0, 0, 0, 1, 0, 0, 0, 1, 0],
       indices: [0, 1, 2],
     } satisfies Mesh
-    const grid = {
-      origin: [0, 0],
-      cellSize: 8,
-      columns: 1,
-      rows: 1,
-    } satisfies WorkGrid
-    const placements = { placements: [{ position: [0, 0] }] } satisfies PlacementSet
     expect(mesh.indices).toHaveLength(3)
-    expect(grid.cellSize).toBe(8)
-    expect(placements.placements).toHaveLength(1)
   })
 })

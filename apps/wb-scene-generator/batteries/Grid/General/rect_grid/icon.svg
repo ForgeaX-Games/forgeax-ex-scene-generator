@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Create grid battery">
-  <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#10211d" stroke="#4f6f63" stroke-width="1.2"/>
-  <rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="none" stroke="#e7f5ee" stroke-width="1.5"/>
-  <path d="M10.17 6.8v10.4M13.83 6.8v10.4M6.8 10.17h10.4M6.8 13.83h10.4" fill="none" stroke="#95aa9f" stroke-width="1.2" stroke-linecap="round"/>
-</svg>

@@ -1,0 +1,71 @@
+import { defineAtomic } from '@forgeax/scene-authoring'
+
+export default defineAtomic({
+  functionName: "heightfieldExplode",
+  contractVersion: "1.0.0",
+  opId: "heightfield_explode",
+  label: "拆开高度场",
+  nameEn: "HeightfieldExplode",
+  description: "Unpack a Heightfield packet into region, lattice, height, mask, and a dict of named attribute Grids.",
+  inputs: [
+    {
+      name: "heightfield",
+      type: "heightfield",
+      runtimeType: "heightfield",
+      access: "item",
+      required: true,
+      mode: "value",
+      description: "Heightfield packet to unpack.",
+      label: "高度场",
+    },
+  ],
+  outputs: [
+    {
+      name: "geometry",
+      type: "geometry",
+      runtimeType: "geometry",
+      access: "item",
+      description: "World-metre plane of the packet.",
+      label: "平面",
+    },
+    {
+      name: "columns",
+      type: "number",
+      access: "item",
+      description: "Lattice columns (from the height Grid).",
+      label: "列",
+    },
+    {
+      name: "rows",
+      type: "number",
+      access: "item",
+      description: "Lattice rows (from the height Grid).",
+      label: "行",
+    },
+    {
+      name: "height",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      description: "Height channel Grid.",
+      label: "高度",
+    },
+    {
+      name: "mask",
+      type: "grid",
+      runtimeType: "grid",
+      access: "item",
+      description: "Mask channel Grid.",
+      label: "遮罩",
+    },
+    {
+      name: "attributes",
+      type: "dict",
+      runtimeType: "dict",
+      access: "item",
+      description: "Named attribute Grids on the same lattice. Dict of Grid.",
+      label: "属性",
+    },
+  ],
+  deterministic: true,
+})
