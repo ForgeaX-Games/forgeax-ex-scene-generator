@@ -63,7 +63,7 @@ test('bun dev backend /health is up after workspace packages are ensured', { tim
 
 async function verifyDiscovery(projectRoot, frontendPort, backendPort, child) {
   const { check, run } = await import('../dist/extensions/scene-generator/cli.mjs')
-  const context = { projectRoot, stateDir: join(projectRoot, '.forgeax/extensions/scene-generator'), packageVersion: '0.3.9' }
+  const context = { projectRoot, stateDir: join(projectRoot, '.forgeax/extensions/scene-generator'), packageVersion: '0.3.10' }
   const savedOrigin = process.env.FORGEAX_SCENE_BACKEND_URL
   process.env.FORGEAX_SCENE_BACKEND_URL = `http://127.0.0.1:${backendPort}`
   let config

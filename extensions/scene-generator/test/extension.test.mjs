@@ -18,7 +18,7 @@ test('relocated standard extension operates against the real Scene Generator ser
   await cp(resolve(repo, 'dist/extensions/scene-generator'), relocated, { recursive: true })
   const { check, run } = await import(pathToFileURL(resolve(relocated, 'cli.mjs')).href)
   const stateDir = resolve(root, '.forgeax/extensions/scene-generator')
-  const context = { projectRoot: root, stateDir, packageVersion: '0.3.9' }
+  const context = { projectRoot: root, stateDir, packageVersion: '0.3.10' }
   await assert.rejects(access(stateDir))
   await assert.rejects(check(context, ['--base-url', 'https://example.com', '--json']), /scene_config_invalid/)
   await assert.rejects(check(context, ['--base-url', 'invalid']), /scene_config_invalid/)

@@ -87,7 +87,7 @@ export async function run(context: ExtensionContext, args: readonly string[]) {
   if (command === 'publish') {
     await engineRelease(context.projectRoot)
     if (input.schemaVersion !== undefined && input.schemaVersion !== '2.0.0') {
-      throw new Error('scene_engine_schema: Engine 0.2.1 requires ScriptablePack 2.0.0')
+      throw new Error('scene_engine_schema: Engine 0.3.3 requires ScriptablePack 2.0.0')
     }
   }
   const exported = await request(config, `${prefix}/pack-export/cook`, { ...input, projectId: project, destination })

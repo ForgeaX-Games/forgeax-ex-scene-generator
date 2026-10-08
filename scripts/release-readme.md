@@ -4,7 +4,7 @@ Create TypeScript scenes with an independent authoring UI and export native Engi
 
 ## Install and start
 
-Requires Node.js 20.19 or newer, npm, and Bun 1.3.14.
+Requires Node.js 22.13 or newer, npm, and Bun 1.3.14.
 
 ### Codex plugin
 
@@ -18,7 +18,7 @@ npx --package @forgeax-extension/scene-generator@latest scene-generator install
 Start a new Codex task, select **Scene Generator** from the `@` menu, and describe
 the scene, for example: "Create a medieval market." The included `scene-build`
 Skill starts the local service on demand, opens the authoring UI, and creates
-modular TypeScript scenes. Native Pack and Engine GUID delivery use Engine 0.2.1.
+modular TypeScript scenes. Native Pack and Engine GUID delivery use Engine 0.3.3.
 
 Installation registers the plugin through `codex plugin add` and preserves other
 personal plugins. Service startup occurs when the Skill is used. Workspaces keep
@@ -54,4 +54,7 @@ for the game project through
 `node node_modules/@forgeax/game/dist/main.js scene-generator enable --ide codex`, then request
 scene authoring through the installed Skill. The independent service must be running.
 
-Native asset publication uses Engine 0.2.1 and returns Engine asset GUIDs.
+Native asset publication uses Engine 0.3.3 and returns Engine asset GUIDs.
+The supported host version is `@forgeax/game 0.3.10`, which prepares Engine SDK
+0.3.3 when creating a game. Existing games use the SDK migration flow to update
+their dependencies, lockfile, and Engine Skills while preserving source and GUIDs.

@@ -175,7 +175,7 @@ function aggregateManifest(builtModules) {
 function packageJson(version, dependencies) {
   return {
     name: '@forgeax-extension/scene-generator', version, private: false, type: 'module', packageManager: 'bun@1.3.14',
-    description: 'ForgeaX Scene Generator extension.',
+    description: 'ForgeaX Scene Generator extension.', engines: readJson(join(ROOT, 'package.json')).engines,
     repository: { type: 'git', url: 'git+https://github.com/ForgeaX-Games/forgeax-ex-scene-generator.git' }, license: 'Apache-2.0',
     files: ['dist', 'modules', 'schemas', 'extensions', 'README.md', 'serve.mjs', 'forgeax-extension.json', 'plugin.json', '.codex-plugin', 'skills', 'codex'],
     bin: { 'scene-generator': './codex/cli.mjs' },

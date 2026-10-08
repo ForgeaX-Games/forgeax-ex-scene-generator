@@ -9,7 +9,7 @@ const repo = resolve(import.meta.dirname, '../../../../..')
 const scratch = resolve(repo, '.scratch-repro/native-pack')
 const tsx = createRequire(resolve(repo, 'apps/composition/backend/package.json')).resolve('tsx')
 
-describe('Engine 0.2.1 native scene publication', () => {
+describe('Engine 0.3.3 native scene publication', () => {
   it('builds named entities, parent references, native materials, and optional lighting', async () => {
     mkdirSync(scratch, { recursive: true })
     const root = mkdtempSync(resolve(scratch, 'consumer-'))

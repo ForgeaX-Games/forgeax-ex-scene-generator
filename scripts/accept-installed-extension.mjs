@@ -99,7 +99,7 @@ try {
   await assert.rejects(call(['publish', '--project', exported.projectId, '--out', 'assets/rejected', '--options', invalidOptions]), /scene_engine_schema/)
   await assert.rejects(access(resolve(game, 'assets/rejected')))
   const published = await call(['publish', '--project', exported.projectId, '--out', 'assets/scene-generator/acceptance'])
-  assert.equal(published.engine.version, '0.2.1')
+  assert.equal(published.engine.version, '0.3.3')
   assert.equal(published.engine.authority, 'engine-build-catalog')
   assert.equal(published.sceneGuid, exported.sceneGuid)
   assert(published.engine.assets.some(asset => asset.kind === 'mesh'))

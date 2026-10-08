@@ -2,7 +2,7 @@ import { resolvePackSchemaVersion, type PackSchemaVersion } from './inputs.js'
 import type { PackProjection } from './engineBridge.js'
 import { emitV1Declarations } from './emitPackV1.js'
 
-/** Emits an explicitly selected Engine Pack protocol (default 2.0.0, Engine 0.2.1). Engine SDK imports belong only
+/** Emits an explicitly selected Engine Pack protocol (default 2.0.0, Engine 0.3.3). Engine SDK imports belong only
  * to the generated consumer artifact; this application has no Engine dependency.
  */
 

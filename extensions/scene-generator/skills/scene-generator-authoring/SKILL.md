@@ -9,7 +9,7 @@ Accept a creative request such as "Use Scene Generator to generate a medieval ma
 
 Run commands from the game project directory. The `@forgeax/game` host keeps this extension disabled until explicitly enabled and installs this Skill on enable. Use the installation-specific `{{CLI}}` command sequentially; extension operations share the host's project lock.
 
-This extension connects to the local Scene Generator API configured during enable. The independent Scene Generator UI and service must already be running. Use `{{CLI}} doctor --json` to verify the connection; report a connection failure before continuing dependent work. Native publication requires the game's declared and installed `@forgeax/engine` version to be `0.2.1`.
+This extension connects to the local Scene Generator API configured during enable. The independent Scene Generator UI and service must already be running. Use `{{CLI}} doctor --json` to verify the connection; report a connection failure before continuing dependent work. Native publication requires the game's declared and installed `@forgeax/engine` version to be `0.3.3`; the host version is `@forgeax/game 0.3.10` and requires Node.js 22.13 or newer.
 
 ## Open the authoring UI
 

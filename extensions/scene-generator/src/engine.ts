@@ -6,7 +6,7 @@ import { dirname, relative, resolve, isAbsolute, sep } from 'node:path'
 import { promisify } from 'node:util'
 
 const execute = promisify(execFile)
-export const ENGINE_VERSION = '0.2.1'
+export const ENGINE_VERSION = '0.3.3'
 
 export async function engineRelease(projectRoot: string) {
   const manifestPath = resolve(projectRoot, 'package.json')
