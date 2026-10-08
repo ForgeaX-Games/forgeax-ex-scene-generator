@@ -22,7 +22,7 @@
     },
     "apps/composition": {
       "name": "@forgeax/scene-generator-composition",
-      "version": "0.4.3",
+      "version": "0.1.42",
       "dependencies": {
         "jszip": "^3.10.1",
       },

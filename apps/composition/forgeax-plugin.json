@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "@forgeax/scene-generator-composition",
-  "version": "0.4.3",
+  "version": "0.1.42",
   "displayName": {
     "zh": "场景生成器",
     "en": "Scene Generator"

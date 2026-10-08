@@ -30,6 +30,7 @@ function checkPackage(packageRoot) {
   const pkg = readJson(packageRoot, 'package.json')
   const manifest = readJson(packageRoot, 'forgeax-extension.json')
   assert(pkg.private !== true, `${pkg.name} must be publishable`)
+  assert(pkg.publishConfig?.tag === 'latest', `${pkg.name} must explicitly publish to latest`)
   assert(/^bun@\d/u.test(pkg.packageManager ?? ''), `${pkg.name} must declare a pinned Bun package manager`)
   assert(pkg.name === '@forgeax-extension/scene-generator', `${pkg.name} must be the canonical Scene Generator package`)
   assert(manifest.id === '@forgeax-extension/scene-generator', `${pkg.name} manifest id must match the package`)

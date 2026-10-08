@@ -1,6 +1,6 @@
 {
   "name": "@forgeax/scene-generator-composition",
-  "version": "0.4.3",
+  "version": "0.1.42",
   "private": true,
   "description": "Scene Generator — ForgeaX node-programming plugin built on @forgeax/node-runtime",
   "license": "Apache-2.0",

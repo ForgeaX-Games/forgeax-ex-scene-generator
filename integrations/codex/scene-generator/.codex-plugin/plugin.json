@@ -1,6 +1,6 @@
 {
   "name": "scene-generator",
-  "version": "0.4.3",
+  "version": "0.1.42",
   "description": "Create modular TypeScript environments with a live Scene Generator UI and native Engine Packs.",
   "author": { "name": "ForgeaX" },
   "repository": "https://github.com/ForgeaX-Games/forgeax-ex-scene-generator",

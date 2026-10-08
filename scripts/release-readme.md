@@ -9,10 +9,10 @@ Requires Node.js 22.13 or newer, npm, and Bun 1.3.14.
 ### Codex plugin
 
 With a Codex CLI that provides `codex plugin`, install the plugin into your
-personal Codex configuration (available from Scene Generator 0.4.3):
+personal Codex configuration:
 
 ```sh
-npx --package @forgeax-extension/scene-generator@latest scene-generator install
+npx --yes @forgeax-extension/scene-generator@latest install
 ```
 
 Start a new Codex task, select **Scene Generator** from the `@` menu, and describe
